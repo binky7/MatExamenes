@@ -81,6 +81,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaRegistrarTema.setPadre(this);
         vistaModificarTema.setPadre(this);
         vistaConsultarTemas.setPadre(this);
+        vistaConsultarCursos.setPadre(this);
         
         //Agregar un panel y su identificador. Para agregar mas identificadores
         //ir a vista.interfaz.InterfazVista y agregarlos al enum Vista
@@ -90,6 +91,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistas.add(vistaModificarTema, Vista.ModificarTema.toString());
         vistas.add(vistaRegistrarExamen, Vista.RegistrarExamen.toString());
         vistas.add(vistaRegistrarCurso, Vista.RegistrarCurso.toString());
+        vistas.add(vistaConsultarCursos, Vista.ConsultarCursos.toString());
     }
     
     /**
@@ -365,18 +367,18 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         //Mostrar vistaConsultarCursos
-//        JPanel actual = getVistaActual();
-//        boolean ok = true;
-//        
-//        if(actual.getName().startsWith("Registrar") || actual.getName()
-//                .startsWith("Modificar")) {
-//            ok = ((InterfazVista)actual).confirmarCambio();
-//        }
-//        
-//        if(ok) {
-//            limpiarVistas();
-//            manejadorVista.show(vistas, Vista.ConsultarCursos.toString());
-//        }
+        JPanel actual = getVistaActual();
+        boolean ok = true;
+        
+        if(actual.getName().startsWith("Registrar") || actual.getName()
+                .startsWith("Modificar")) {
+            ok = ((InterfazVista)actual).confirmarCambio();
+        }
+        
+        if(ok) {
+            limpiarVistas();
+            manejadorVista.show(vistas, Vista.ConsultarCursos.toString());
+        }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
