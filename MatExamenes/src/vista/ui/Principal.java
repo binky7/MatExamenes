@@ -92,6 +92,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistas.add(vistaRegistrarExamen, Vista.RegistrarExamen.toString());
         vistas.add(vistaRegistrarCurso, Vista.RegistrarCurso.toString());
         vistas.add(vistaConsultarCursos, Vista.ConsultarCursos.toString());
+        int i =0;
     }
     
     /**
