@@ -12,7 +12,6 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import modelo.dto.CursoDTO;
 import modelo.dto.UsuarioDTO;
-import vista.controlador.CVMantenerTemas;
 import vista.interfaz.InterfazVista;
 
 /**
@@ -20,51 +19,22 @@ import vista.interfaz.InterfazVista;
  * @author Jesus Donaldo
  */
 public class VistaConsultarCursos extends javax.swing.JPanel implements 
-        AncestorListener, InterfazVista{
+        InterfazVista{
 
-    private CVMantenerTemas controlVista;
     private InterfazVista padre;
     /**
      * Creates new form ConsultarCursos
      */
     public VistaConsultarCursos() {
         initComponents();
-        this.addAncestorListener(this);
-        //Para manipular las listas
-        lstCursos.setModel(new DefaultListModel());
-        
-        //Solo seleccionar uno a la vez
-        lstCursos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
     
     public void limpiar() {}
-    
-    /**
-     * Se manda llamar al mostrarse la vista por primera vez (no despues de
-     * regresar de modificar)
-     */
-    private void consultarCursos() {
-        List<CursoDTO> cursos = controlVista.obtenerCursos();
-        
-        if(cursos != null && !cursos.isEmpty()) {
-            mostrarCursos(cursos);
-        }
-        ((DefaultListModel)lstCursos.getModel()).addElement("Otros");
-    }
-    
+
     public void setPadre(InterfazVista padre) {
         this.padre = padre;
     }
-    
-    private void mostrarCursos(List<CursoDTO> cursos) {
-        DefaultListModel listModel = (DefaultListModel) lstCursos.getModel();
-        
-        listModel.clear();
-        //Mostrar cada curso, no remover, si no buscar por medio del for
-        for(CursoDTO curso : cursos) {
-            listModel.addElement(curso.getNombre());
-        }
-    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -99,19 +69,20 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(276, 276, 276))
             .addGroup(layout.createSequentialGroup()
-                .addGap(206, 206, 206)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(389, Short.MAX_VALUE))
+                .addContainerGap(302, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(293, 293, 293))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(359, 359, 359))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,29 +108,6 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
     private javax.swing.JList lstCursos;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void ancestorAdded(AncestorEvent event) {
-        if(isShowing()) {
-            //Este evento ocurre cuando se muestra la vista. Aqui llamaremos
-            //a la consulta de cursos
-            if(((DefaultListModel)lstCursos.getModel()).isEmpty()) {
-                //Consultar de nuevo los cursos solo cuando ya no halla cursos
-                //en la lista, para evitar que se reinicien al regresar de
-                //modificar
-                consultarCursos();
-            }
-        }
-    }
-
-    @Override
-    public void ancestorRemoved(AncestorEvent event) {
-        //No implementado
-    }
-
-    @Override
-    public void ancestorMoved(AncestorEvent event) {
-        //No implementado
-    }
 
     @Override
     public void mostrarVistaModificar(Object entidad, Vista vista) {
