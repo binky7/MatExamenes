@@ -26,9 +26,7 @@ public class Validador {
         if(campo == null || campo.trim().isEmpty()) {
             ok = true;
         }
-        
-        
-        return ok;
+                return ok;
     }
     
     /**
