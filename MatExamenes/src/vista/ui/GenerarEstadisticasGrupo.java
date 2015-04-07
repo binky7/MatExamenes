@@ -1,0 +1,259 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package vista.ui;
+
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.Chart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import vista.tablasEstadisticas.SampleTableModel;
+
+/**
+ *
+ * @author BoredmanDA
+ */
+public class GenerarEstadisticasGrupo extends javax.swing.JPanel {
+
+    /**
+     * Creates new form GenerarEstadisticasAlumno
+     */
+    
+    private JFXPanel chartFxPanel;
+    private SampleTableModel tableModel;
+    private Chart chart;
+    
+    public GenerarEstadisticasGrupo() {
+        initComponents();
+        createDataTable();
+        
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                initAndShowGUI();
+            }
+        });
+        
+        JFrame frame = new JFrame();
+        frame.add(this);
+        frame.pack();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+    
+    public static void main(String[] args) {
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new GenerarEstadisticasGrupo();
+            }
+        });
+        
+    }
+
+    private void createDataTable() {
+
+        String[] names = {"Algebra", "Geometria", "Trigonometria"};
+
+        Object[][] data = {
+            {new Double(80), new Double(85), new Double(70)}     
+        };
+
+        tableModel = new SampleTableModel(names, data);
+    }
+    
+    private void initAndShowGUI() {
+        //This method is invoked on the EDT thread
+        chartFxPanel = new JFXPanel();
+        add(chartFxPanel);
+        chartFxPanel.setSize(232, 503);
+        chartFxPanel.setLocation(367, 38);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                initFX(chartFxPanel);
+            }
+        });
+    }
+    
+    private void initFX(JFXPanel fxPanel) {
+        //This method is invoked on the JavaFX thread
+        Scene scene = createScene();
+        fxPanel.setScene(scene);
+    }
+
+    private Scene createScene() {
+        chart = createBarChart();
+
+        return new Scene(chart);
+    }
+    
+    private BarChart createBarChart() {
+
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setCategories(FXCollections.<String>observableArrayList(tableModel.
+                getColumnNames()));
+        xAxis.setLabel("Alumnos");
+        double tickUnit = tableModel.getTickUnit();
+
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setTickUnit(tickUnit);
+        yAxis.setLabel("Calificacion");
+        
+        final BarChart chart = new BarChart(xAxis, yAxis, tableModel.getBarChartData());
+        
+        Platform.runLater(new Runnable() {
+            public void run() {
+                for (int row = 0; row < tableModel.getRowCount(); row++) {
+                    for (int column = 0; column < tableModel.getColumnCount(); column++) {
+                        XYChart.Series<String, Number> s =
+                                (XYChart.Series<String, Number>) chart.getData().get(row);
+                        BarChart.Data data = s.getData().get(column);
+                        Object value = tableModel.getValueAt(row, column);
+                        data.setYValue(value);
+                    }
+
+
+                }
+                chart.setTitle("Efraín");
+
+            }
+        });
+        return chart;
+    }
+    
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
+        jLabel15 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+
+        setPreferredSize(new java.awt.Dimension(800, 600));
+
+        jList1.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane5.setViewportView(jList1);
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel15.setText("Curso:");
+
+        jButton2.setText("Buscar");
+        jButton2.setToolTipText("");
+
+        jLabel17.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel17.setText("Exámenes:");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Id", "Título", "Fecha Creación", "Fecha Modificación", "Autor"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel15)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel17)
+                        .addGap(188, 188, 188))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(123, 123, 123))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel15)
+                        .addGap(21, 21, 21)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(jButton2)))
+                .addContainerGap(129, Short.MAX_VALUE))
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JList jList1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTable jTable1;
+    // End of variables declaration//GEN-END:variables
+}
