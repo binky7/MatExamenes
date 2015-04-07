@@ -23,6 +23,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
     
     //Para manipular las vistas
     private final CardLayout manejadorVista = new CardLayout();
+    private VistaHOME vistaHome;
     private VistaRegistrarTema vistaRegistrarTema;
     private VistaConsultarTemas vistaConsultarTemas;
     private VistaModificarTema vistaModificarTema;
@@ -47,6 +48,8 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistas.setLayout(manejadorVista);
         
         //Crear vistas
+        vistaHome = new VistaHOME();
+        vistaHome.setName(Vista.HOME.toString());
         vistaRegistrarTema = new VistaRegistrarTema();
         vistaRegistrarTema.setName(Vista.RegistrarTema.toString());
         vistaRegistrarExamen = new RegistrarExamen();
@@ -70,7 +73,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         
         //Agregar un panel y su identificador. Para agregar mas identificadores
         //ir a vista.interfaz.InterfazVista y agregarlos al enum Vista
-        vistas.add(new JPanel(), Vista.Primero.toString());
+        vistas.add(vistaHome, Vista.HOME.toString());
         vistas.add(vistaRegistrarTema, Vista.RegistrarTema.toString());
         vistas.add(vistaConsultarTemas, Vista.ConsultarTemas.toString());
         vistas.add(vistaModificarTema, Vista.ModificarTema.toString());
@@ -274,8 +277,12 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         //Mostrar vistaRegistrarTema
         JPanel actual = getVistaActual();
+        boolean ok = true;
         
-        boolean ok = ((InterfazVista)actual).confirmarCambio();
+        if(actual.getName().startsWith("Registrar") || actual.getName()
+                .startsWith("Modificar")) {
+            ok = ((InterfazVista)actual).confirmarCambio();
+        }
         
         if(ok) {
             limpiarVistas();
@@ -285,14 +292,34 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         //Mostrar vistaConsultarTemas
-        limpiarVistas();
-        manejadorVista.show(vistas, Vista.ConsultarTemas.toString());
+        JPanel actual = getVistaActual();
+        boolean ok = true;
+        
+        if(actual.getName().startsWith("Registrar") || actual.getName()
+                .startsWith("Modificar")) {
+            ok = ((InterfazVista)actual).confirmarCambio();
+        }
+        
+        if(ok) {
+            limpiarVistas();
+            manejadorVista.show(vistas, Vista.ConsultarTemas.toString());
+        }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        //Mostrar vistaRegistrarExamen (Solo era una prueba)
-        limpiarVistas();
-        manejadorVista.show(vistas, Vista.RegistrarExamen.toString());
+        JPanel actual = getVistaActual();
+        boolean ok = true;
+        
+        if(actual.getName().startsWith("Registrar") || actual.getName()
+                .startsWith("Modificar")) {
+            ok = ((InterfazVista)actual).confirmarCambio();
+        }
+        
+        if(ok) {
+            //Mostrar vistaRegistrarExamen (Solo era una prueba)
+            limpiarVistas();
+            manejadorVista.show(vistas, Vista.RegistrarExamen.toString());
+        }
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     /**
@@ -374,7 +401,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
     }
 
     @Override
-    public void mostrarVistaConsultar(Vista vista) {
+    public void mostrarVista(Vista vista) {
         //Muestra la vista consultar necesaria
         manejadorVista.show(vistas, vista.toString());
     }

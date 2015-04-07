@@ -19,7 +19,7 @@ public interface InterfazVista {
      * agregar conforme se vayan requiriendo
      */
     enum Vista {
-        RegistrarTema, RegistrarExamen, ConsultarTemas, ModificarTema, Primero
+        RegistrarTema, RegistrarExamen, ConsultarTemas, ModificarTema, HOME
     }
     
     /**
@@ -36,7 +36,7 @@ public interface InterfazVista {
      * modificar y se muestra la vista consultar
      * @param vista el identificador de la vista consultar para mostrarse
      */
-    void mostrarVistaConsultar(Vista vista);
+    void mostrarVista(Vista vista);
     
     /**
      * Este método es especial para las vistas modificar que implementan esta

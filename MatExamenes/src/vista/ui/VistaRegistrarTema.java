@@ -6,10 +6,14 @@
 package vista.ui;
 
 import javax.swing.JOptionPane;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import modelo.dto.TemaDTO;
+import modelo.dto.UsuarioDTO;
 import org.hibernate.exception.ConstraintViolationException;
 import vista.controlador.CVMantenerTemas;
 import vista.controlador.Validador;
+import vista.interfaz.InterfazVista;
 
 /**
  *
@@ -18,15 +22,21 @@ import vista.controlador.Validador;
 //IMPORTANTE> El tamaño de los paneles no debe sobrepasar el de 800, 579
 //Esto para que quede bien con el frame y los menus. No lo probe mas para ver
 //Si quedaba bien de lo ancho pero espero que no sea un mayor problema
-public class VistaRegistrarTema extends javax.swing.JPanel {
+public class VistaRegistrarTema extends javax.swing.JPanel implements
+        InterfazVista {
 
     private CVMantenerTemas controlVista;
+    private InterfazVista padre;
     
     /**
      * Creates new form VistaRegistrarTema
      */
     public VistaRegistrarTema() {
         initComponents();
+    }
+    
+    public void setPadre(InterfazVista padre) {
+        this.padre = padre;
     }
     
     public void setControlador(CVMantenerTemas controlVista) {
@@ -159,4 +169,37 @@ public class VistaRegistrarTema extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField txtfNombre;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void mostrarVistaModificar(Object entidad, Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarVista(Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarEntidad(Object entidad) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean confirmarCambio() {
+        
+       boolean cambiar = false;
+        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+                + "quieres cambiar de pantalla?\nTodos los cambios no "
+                + "guardados se perderán");
+        if (ok == 0) {
+            cambiar = true;
+        }
+        return cambiar;
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

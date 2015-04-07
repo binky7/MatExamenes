@@ -4,12 +4,18 @@
  */
 package vista.ui;
 
+import javax.swing.JOptionPane;
+import modelo.dto.UsuarioDTO;
+import vista.interfaz.InterfazVista;
+
 /**
  *
  * @author BoredmanDA
  */
-public class RegistrarExamen extends javax.swing.JPanel {
+public class RegistrarExamen extends javax.swing.JPanel implements
+        InterfazVista {
 
+    private InterfazVista padre;
     /**
      * Creates new form RegistrarExamen
      */
@@ -17,6 +23,10 @@ public class RegistrarExamen extends javax.swing.JPanel {
         initComponents();
     }
 
+    public void setPadre(InterfazVista padre) {
+        this.padre = padre;
+    }
+    
     public void limpiar() {
         
     }
@@ -469,4 +479,36 @@ public class RegistrarExamen extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void mostrarVistaModificar(Object entidad, Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarVista(Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarEntidad(Object entidad) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean confirmarCambio() {
+        boolean cambiar = false;
+        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+                + "quieres cambiar de pantalla?\nTodos los cambios no "
+                + "guardados se perderán");
+        if (ok == 0) {
+            cambiar = true;
+        }
+        return cambiar;
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

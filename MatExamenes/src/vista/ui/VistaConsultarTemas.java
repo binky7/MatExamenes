@@ -15,6 +15,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import modelo.dto.CursoDTO;
 import modelo.dto.TemaDTO;
+import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerTemas;
 import vista.interfaz.InterfazVista;
 import vista.interfaz.InterfazVista.Vista;
@@ -24,7 +25,7 @@ import vista.interfaz.InterfazVista.Vista;
  * @author Jesus Donaldo
  */
 public class VistaConsultarTemas extends javax.swing.JPanel implements 
-        AncestorListener {
+        AncestorListener, InterfazVista {
 
     private CVMantenerTemas controlVista;
     //Para poder mostrar vista Modificar
@@ -326,6 +327,31 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
     @Override
     public void ancestorMoved(AncestorEvent event) {
         //No implementado
+    }
+
+    @Override
+    public void mostrarVistaModificar(Object entidad, Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarVista(Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarEntidad(Object entidad) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean confirmarCambio() {
+        return true;
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

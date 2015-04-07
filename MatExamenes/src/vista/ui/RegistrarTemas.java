@@ -5,14 +5,12 @@
  */
 package vista.ui;
 
-import modelo.dto.UsuarioDTO;
-import vista.interfaz.InterfazVista;
 
 /**
  *
  * @author ivan
  */
-public class RegistrarTemas extends javax.swing.JFrame implements InterfazVista {
+public class RegistrarTemas extends javax.swing.JFrame {
 
     /**
      * Creates new form RegistrarTemas
@@ -90,28 +88,4 @@ public class RegistrarTemas extends javax.swing.JFrame implements InterfazVista 
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void mostrarVistaModificar(Object entidad, Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mostrarVistaConsultar(Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mostrarEntidad(Object entidad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean confirmarCambio() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public UsuarioDTO obtenerUsuarioActual() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

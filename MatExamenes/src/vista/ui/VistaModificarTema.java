@@ -155,7 +155,11 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         // Ejecutado cuando selecciona regresar, pero es lo mismo que al
         //Seleccionar modificar
         //Muestra la vista consultar temas
-        padre.mostrarVistaConsultar(Vista.ConsultarTemas);
+        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+                + "quieres cambiar de pantalla?\nTodos los cambios no "
+                + "guardados se perderán");
+
+        padre.mostrarVista(Vista.ConsultarTemas);
         limpiar();
     }//GEN-LAST:event_pasarControlVistaConsulta
 
@@ -186,7 +190,7 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         }
         if (ok) {
             JOptionPane.showMessageDialog(this, "Tema Modificado");
-            padre.mostrarVistaConsultar(Vista.ConsultarTemas);
+            padre.mostrarVista(Vista.ConsultarTemas);
             limpiar();
         }
     }//GEN-LAST:event_modificarTema
@@ -206,7 +210,7 @@ public class VistaModificarTema extends javax.swing.JPanel implements
     }
 
     @Override
-    public void mostrarVistaConsultar(Vista vista) {
+    public void mostrarVista(Vista vista) {
         //No implementado
     }
 
@@ -219,11 +223,19 @@ public class VistaModificarTema extends javax.swing.JPanel implements
 
     @Override
     public boolean confirmarCambio() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean cambiar = false;
+        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+                + "quieres cambiar de pantalla?\nTodos los cambios no "
+                + "guardados se perderán");
+        if (ok == 0) {
+            cambiar = true;
+        }
+        return cambiar;
     }
 
     @Override
     public UsuarioDTO obtenerUsuarioActual() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 }
