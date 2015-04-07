@@ -9,14 +9,16 @@ package vista.ui;
  *
  * @author Jesus Donaldo
  */
-public class ConsultarCursos extends javax.swing.JPanel {
+public class VistaConsultarCursos extends javax.swing.JPanel {
 
     /**
      * Creates new form ConsultarCursos
      */
-    public ConsultarCursos() {
+    public VistaConsultarCursos() {
         initComponents();
     }
+    
+    public void limpiar() {}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,7 +65,7 @@ public class ConsultarCursos extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(197, Short.MAX_VALUE))
+                .addContainerGap(389, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -76,7 +78,7 @@ public class ConsultarCursos extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap(187, Short.MAX_VALUE))
+                .addContainerGap(165, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

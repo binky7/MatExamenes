@@ -159,6 +159,7 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
         }
         if (ok) {
             JOptionPane.showMessageDialog(this, "Tema Registrado");
+            padre.mostrarVista(Vista.HOME);
         }
     }//GEN-LAST:event_guardarTema
 

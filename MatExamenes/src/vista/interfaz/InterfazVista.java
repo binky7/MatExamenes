@@ -19,7 +19,8 @@ public interface InterfazVista {
      * agregar conforme se vayan requiriendo
      */
     enum Vista {
-        RegistrarTema, RegistrarExamen, ConsultarTemas, ModificarTema, HOME
+        RegistrarTema, RegistrarExamen, ConsultarTemas, ModificarTema, HOME,
+        RegistrarCurso, ConsultarCursos
     }
     
     /**
