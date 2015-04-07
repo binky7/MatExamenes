@@ -27,6 +27,8 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
      */
     public VistaConsultarCursos() {
         initComponents();
+        
+        int x =0;
     }
     
     public void limpiar() {}
