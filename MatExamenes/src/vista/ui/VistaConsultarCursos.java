@@ -5,17 +5,31 @@
  */
 package vista.ui;
 
+import javax.swing.DefaultListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import modelo.dto.UsuarioDTO;
+import vista.interfaz.InterfazVista;
+
 /**
  *
  * @author Jesus Donaldo
  */
-public class VistaConsultarCursos extends javax.swing.JPanel {
+public class VistaConsultarCursos extends javax.swing.JPanel implements 
+        AncestorListener, InterfazVista{
 
     /**
      * Creates new form ConsultarCursos
      */
     public VistaConsultarCursos() {
         initComponents();
+        this.addAncestorListener(this);
+        //Para manipular las listas
+        lstCursos.setModel(new DefaultListModel());
+        
+        //Solo seleccionar uno a la vez
+        lstCursos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
     
     public void limpiar() {}
@@ -30,17 +44,17 @@ public class VistaConsultarCursos extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane3 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList();
+        lstCursos = new javax.swing.JList();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
-        jList2.setModel(new javax.swing.AbstractListModel() {
+        lstCursos.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane3.setViewportView(jList2);
+        jScrollPane3.setViewportView(lstCursos);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("Cursos");
@@ -87,7 +101,47 @@ public class VistaConsultarCursos extends javax.swing.JPanel {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JList jList2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JList lstCursos;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void ancestorAdded(AncestorEvent event) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void ancestorRemoved(AncestorEvent event) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void ancestorMoved(AncestorEvent event) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarVistaModificar(Object entidad, Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarVista(Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarEntidad(Object entidad) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean confirmarCambio() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
