@@ -81,6 +81,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaRegistrarTema.setPadre(this);
         vistaModificarTema.setPadre(this);
         vistaConsultarTemas.setPadre(this);
+        vistaConsultarCursos.setPadre(this);
         
         //Agregar un panel y su identificador. Para agregar mas identificadores
         //ir a vista.interfaz.InterfazVista y agregarlos al enum Vista
@@ -90,6 +91,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistas.add(vistaModificarTema, Vista.ModificarTema.toString());
         vistas.add(vistaRegistrarExamen, Vista.RegistrarExamen.toString());
         vistas.add(vistaRegistrarCurso, Vista.RegistrarCurso.toString());
+        vistas.add(vistaConsultarCursos, Vista.ConsultarCursos.toString());
     }
     
     /**
