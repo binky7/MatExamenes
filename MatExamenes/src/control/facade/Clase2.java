@@ -7,7 +7,7 @@ package control.facade;
 
 /**
  *
- * @author ivan
+ * @author jhk
  */
 public class Clase2 {
     
