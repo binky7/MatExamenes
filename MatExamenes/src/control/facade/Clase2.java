@@ -10,5 +10,5 @@ package control.facade;
  * @author jhk
  */
 public class Clase2 {
-    
+    int lolol;
 }
