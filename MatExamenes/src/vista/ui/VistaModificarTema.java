@@ -159,8 +159,10 @@ public class VistaModificarTema extends javax.swing.JPanel implements
                 + "quieres cambiar de pantalla?\nTodos los cambios no "
                 + "guardados se perderán");
 
-        padre.mostrarVista(Vista.ConsultarTemas);
-        limpiar();
+        if(ok == 0) {
+            padre.mostrarVista(Vista.ConsultarTemas);
+            limpiar();
+        }
     }//GEN-LAST:event_pasarControlVistaConsulta
 
     /**
