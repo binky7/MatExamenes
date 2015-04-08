@@ -14,4 +14,6 @@ public class Clase2 {
     
     int alfredo;
     int ivan;
+    
+    int ivan2;
 }
