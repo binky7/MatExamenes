@@ -17,4 +17,5 @@ public class Clase2 {
     
     int ivan2;
     int alfredo2;
+    int fernando;
 }
