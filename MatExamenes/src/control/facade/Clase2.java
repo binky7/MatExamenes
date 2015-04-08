@@ -12,5 +12,6 @@ package control.facade;
 public class Clase2 {
     int lolol;
     
+    int alfredo;
     int ivan;
 }
