@@ -280,7 +280,7 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
             
             if(tema != null) {
                 //Mostrar la vista modificar tema enviandole el objeto tema
-                padre.mostrarVistaModificar(tema, Vista.ModificarTema);
+                padre.mostrarVistaConEntidad(tema, Vista.ModificarTema);
             }
             else {
                 JOptionPane.showMessageDialog(this, "Ha ocurrido un error");
@@ -330,7 +330,7 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
     }
 
     @Override
-    public void mostrarVistaModificar(Object entidad, Vista vista) {
+    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -341,7 +341,9 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
 
     @Override
     public void mostrarEntidad(Object entidad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int index = lstTemas.getSelectedIndex();
+        String nombreTema = ((TemaDTO)entidad).getNombre();
+        ((DefaultListModel) lstTemas.getModel()).setElementAt(nombreTema, index);
     }
 
     @Override

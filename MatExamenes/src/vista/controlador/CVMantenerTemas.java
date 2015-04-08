@@ -5,10 +5,9 @@
  */
 package vista.controlador;
 
+import control.delegate.MantenerTemasDELEGATE;
 import java.util.Collections;
 import java.util.List;
-import modelo.dao.CursoDAO;
-import modelo.dao.TemaDAO;
 import modelo.dto.CursoDTO;
 import modelo.dto.TemaDTO;
 
@@ -19,8 +18,7 @@ import modelo.dto.TemaDTO;
 public class CVMantenerTemas {
     
     //No se usara aqui pero es para demostrar como funciona....
-    private final TemaDAO temaDAO;
-    private final CursoDAO cursoDAO;
+    private final MantenerTemasDELEGATE mantenerTemasDELEGATE;
     
     //Listas de dto necesarios
     //dtos para consultar
@@ -33,8 +31,7 @@ public class CVMantenerTemas {
     TemaDTO tema;
     
     public CVMantenerTemas() {
-        temaDAO = new TemaDAO();
-        cursoDAO = new CursoDAO();
+        mantenerTemasDELEGATE = new MantenerTemasDELEGATE();
     }
     
     /**
@@ -43,7 +40,7 @@ public class CVMantenerTemas {
      * @return el id generado por la inserción
      */
     public int guardarTema(TemaDTO tema) {
-        int id = temaDAO.insertar(tema);
+        int id = mantenerTemasDELEGATE.guardarTema(tema);
         return id;
     }
     
@@ -55,7 +52,7 @@ public class CVMantenerTemas {
         List<CursoDTO> listaCursos;
         
         //Asigna los cursos obtenidos en la lista.
-        listaCursos = cursoDAO.obtenerTodos();
+        listaCursos = mantenerTemasDELEGATE.obtenerCursos();
         cursos = listaCursos;
         
         return listaCursos;
@@ -81,7 +78,7 @@ public class CVMantenerTemas {
             if(index >= 0) {
                 //Se obtiene el objeto de la lista (que contiene la llave prim)
                 objCurso = cursos.get(index);
-                listaTemas = cursoDAO.obtenerTemas(objCurso);
+                listaTemas = mantenerTemasDELEGATE.obtenerTemasDeCurso(objCurso);
                 temas = listaTemas;
             }
         }
@@ -97,7 +94,7 @@ public class CVMantenerTemas {
         List<TemaDTO> listaTemas;
         
         //Se obtienen los temas sin asignar y se sustituye la lista
-        listaTemas = temaDAO.obtenerTemasSinAsignar();
+        listaTemas = mantenerTemasDELEGATE.obtenerTemasSinAsignar();
         temas = listaTemas;
         
         return listaTemas;
@@ -156,7 +153,7 @@ public class CVMantenerTemas {
         if (this.tema != null) {
             this.tema.setNombre(tema.getNombre());
 
-            temaDAO.modificar(this.tema);
+            mantenerTemasDELEGATE.modificarTema(this.tema);
         }
         else {
             System.out.println("Error inesperado!");
@@ -182,7 +179,7 @@ public class CVMantenerTemas {
             if(index >= 0) {
                 //Se obtiene el objeto de la lista (que contiene la llave prim)
                 objTema = temas.get(index);
-                temaDAO.eliminar(objTema);
+                mantenerTemasDELEGATE.eliminarTema(objTema);
                 temas.remove(index);
             }
         }

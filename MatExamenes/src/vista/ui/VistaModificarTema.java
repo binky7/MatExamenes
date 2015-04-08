@@ -190,7 +190,7 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         }
         if (ok) {
             JOptionPane.showMessageDialog(this, "Tema Modificado");
-            padre.mostrarVista(Vista.ConsultarTemas);
+            padre.mostrarVistaConEntidad(tema, Vista.ConsultarTemas);
             limpiar();
         }
     }//GEN-LAST:event_modificarTema
@@ -205,7 +205,7 @@ public class VistaModificarTema extends javax.swing.JPanel implements
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void mostrarVistaModificar(Object entidad, Vista vista) {
+    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
         //No implementado
     }
 

@@ -112,7 +112,7 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
 
 
     @Override
-    public void mostrarVistaModificar(Object entidad, Vista vista) {
+    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

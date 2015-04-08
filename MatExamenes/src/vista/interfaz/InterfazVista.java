@@ -30,7 +30,7 @@ public interface InterfazVista {
      * @param entidad el objeto dto que se mostrara en la vista modificar
      * @param vista el identificador de la vista modificar para mostrarse.
      */
-    void mostrarVistaModificar(Object entidad, Vista vista);
+    void mostrarVistaConEntidad(Object entidad, Vista vista);
     
     /**
      * Se utiliza para ordenarle a la vista a mostrar la vista correspondiente

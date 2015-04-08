@@ -515,7 +515,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void mostrarVistaModificar(Object entidad, Vista vista) {
+    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
         //Muestra la vista modificar necesaria y le envia el objeto entidad.
         manejadorVista.show(vistas, vista.toString());
         

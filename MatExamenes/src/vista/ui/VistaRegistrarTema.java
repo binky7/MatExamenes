@@ -172,7 +172,7 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void mostrarVistaModificar(Object entidad, Vista vista) {
+    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
