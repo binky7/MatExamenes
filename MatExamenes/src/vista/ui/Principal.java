@@ -116,21 +116,6 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
     }
     
     /**
-     * Utilizado cada que se cambia de panel para limpiar componentes y memoria
-     */
-    private void limpiarVistas() {
-        vistaRegistrarTema.limpiar();
-        vistaConsultarTemas.limpiar();
-        vistaModificarTema.limpiar();
-        vistaRegistrarExamen.limpiar();
-        vistaRegistrarCurso.limpiar();
-        vistaConsultarCursos.limpiar();
-        vistaRegistrarGrupo.limpiar();
-        vistaConsultarGrupo.limpiar();
-        vistaModificarGrupo.limpiar();
-    }
-    
-    /**
      * Obtener la vista actualmente mostrada
      * @return vista actual
      */
@@ -345,7 +330,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         }
         
         if(ok) {
-            limpiarVistas();
+            ((InterfazVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.RegistrarTema.toString());
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -361,7 +346,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         }
         
         if(ok) {
-            limpiarVistas();
+            ((InterfazVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.ConsultarTemas.toString());
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -377,7 +362,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         
         if(ok) {
             //Mostrar vistaRegistrarExamen (Solo era una prueba)
-            limpiarVistas();
+            ((InterfazVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.RegistrarExamen.toString());
         }
     }//GEN-LAST:event_jMenuItem9ActionPerformed
@@ -394,7 +379,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         
         if(ok) {
             //Mostrar vistaRegistrarCurso (Solo era una prueba)
-            limpiarVistas();
+            ((InterfazVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.RegistrarCurso.toString());
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
@@ -410,7 +395,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         }
         
         if(ok) {
-            limpiarVistas();
+            ((InterfazVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.ConsultarCursos.toString());
         }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
@@ -426,7 +411,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         }
         
         if(ok) {
-            limpiarVistas();
+            ((InterfazVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.RegistrarGrupo.toString());
         }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
@@ -442,7 +427,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         }
         
         if(ok) {
-            limpiarVistas();
+            ((InterfazVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.ConsultarGrupo.toString());
         }
     }//GEN-LAST:event_jMenuItem13ActionPerformed
@@ -543,6 +528,11 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
 
     @Override
     public UsuarioDTO obtenerUsuarioActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void limpiar() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

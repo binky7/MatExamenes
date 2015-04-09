@@ -46,6 +46,7 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
     /**
      * Limpia los campos de la vista
      */
+    @Override
     public void limpiar() {
         txtfNombre.setText("");
     }

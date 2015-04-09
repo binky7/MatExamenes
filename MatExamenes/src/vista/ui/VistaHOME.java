@@ -5,12 +5,15 @@
  */
 package vista.ui;
 
+import modelo.dto.UsuarioDTO;
+import vista.interfaz.InterfazVista;
+
 
 /**
  *
  * @author Jesus Donaldo
  */
-public class VistaHOME extends javax.swing.JPanel {
+public class VistaHOME extends javax.swing.JPanel implements InterfazVista {
 
     /**
      * Creates new form VistaPrimera
@@ -45,5 +48,35 @@ public class VistaHOME extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarVista(Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarEntidad(Object entidad) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean confirmarCambio() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void limpiar() {
+        //No implementado
+    }
 
 }

@@ -51,4 +51,6 @@ public interface InterfazVista {
     boolean confirmarCambio();
     
     UsuarioDTO obtenerUsuarioActual();
+    
+    void limpiar();
 }
