@@ -6,7 +6,7 @@
 package control.facade;
 
 import java.util.List;
-import modelo.dao.TemaDAO;
+import modelo.dao.DAOServiceLocator;
 import modelo.dto.TemaDTO;
 
 /**
@@ -14,19 +14,14 @@ import modelo.dto.TemaDTO;
  * @author ivan
  */
 public class TemaFACADE {
-    private final TemaDAO temaDAO;
-    
-    public TemaFACADE() {
-        temaDAO = new TemaDAO();
-    }
-    
+
     /**
      * Persiste el tema en la base de datos
      * @param tema el objeto a persistir
      * @return el id generado por la inserción
      */
     public int guardarTema(TemaDTO tema) {
-        int id = temaDAO.insertar(tema);
+        int id = DAOServiceLocator.getTemaDAO().insertar(tema);
         return id;
     }
     
@@ -37,7 +32,8 @@ public class TemaFACADE {
     public List<TemaDTO> obtenerTemasSinAsignar() {
         List<TemaDTO> listaTemas;
 
-        listaTemas = temaDAO.obtenerTemasSinAsignar();        
+        listaTemas = DAOServiceLocator.getTemaDAO()
+                .obtenerTemasSinAsignar();        
         return listaTemas;
     }
     
@@ -49,7 +45,7 @@ public class TemaFACADE {
      * en la base de datos correctamente
      */
     public void modificarTema(TemaDTO tema) {
-        temaDAO.modificar(tema);
+        DAOServiceLocator.getTemaDAO().modificar(tema);
     }
     
     /**
@@ -58,7 +54,7 @@ public class TemaFACADE {
      * @param tema 
      */
     public void eliminarTema(TemaDTO tema) {
-        temaDAO.eliminar(tema);
+        DAOServiceLocator.getTemaDAO().eliminar(tema);
 
     }
 }

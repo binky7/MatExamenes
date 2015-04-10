@@ -5,8 +5,7 @@
  */
 package control.delegate;
 
-import control.facade.CursoFACADE;
-import control.facade.TemaFACADE;
+import control.facade.FACADEServiceLocator;
 import java.util.List;
 import modelo.dto.CursoDTO;
 import modelo.dto.TemaDTO;
@@ -16,21 +15,14 @@ import modelo.dto.TemaDTO;
  * @author ivan
  */
 public class MantenerTemasDELEGATE {
-    private final TemaFACADE temaFACADE;
-    private final CursoFACADE cursoFACADE;
-    
-    public MantenerTemasDELEGATE() {
-        temaFACADE = new TemaFACADE();
-        cursoFACADE = new CursoFACADE();
-    }
-    
+      
     /**
      * Persiste el tema en la base de datos
      * @param tema el objeto a persistir
      * @return el id generado por la inserción
      */
     public int guardarTema(TemaDTO tema) {
-        int id = temaFACADE.guardarTema(tema);
+        int id = FACADEServiceLocator.getTemaFACADE().guardarTema(tema);
         return id;
     }
     
@@ -41,7 +33,7 @@ public class MantenerTemasDELEGATE {
     public List<CursoDTO> obtenerCursos() {
         List<CursoDTO> listaCursos;
         
-        listaCursos = cursoFACADE.obtenerCursos();
+        listaCursos = FACADEServiceLocator.getCursoFACADE().obtenerCursos();
         return listaCursos;
     }
     
@@ -52,7 +44,8 @@ public class MantenerTemasDELEGATE {
     public List<TemaDTO> obtenerTemasSinAsignar() {
         List<TemaDTO> listaTemas;
 
-        listaTemas = temaFACADE.obtenerTemasSinAsignar();        
+        listaTemas = FACADEServiceLocator.getTemaFACADE()
+                .obtenerTemasSinAsignar();        
         return listaTemas;
     }
     
@@ -64,7 +57,8 @@ public class MantenerTemasDELEGATE {
     public List<TemaDTO> obtenerTemasDeCurso(CursoDTO curso) {
         List<TemaDTO> listaTemas;
         
-        listaTemas = cursoFACADE.obtenerTemasDeCurso(curso);
+        listaTemas = FACADEServiceLocator.getCursoFACADE()
+                .obtenerTemasDeCurso(curso);
         return listaTemas;
     }
     
@@ -76,7 +70,7 @@ public class MantenerTemasDELEGATE {
      * en la base de datos correctamente
      */
     public void modificarTema(TemaDTO tema) {
-        temaFACADE.modificarTema(tema);
+        FACADEServiceLocator.getTemaFACADE().modificarTema(tema);
     }
     
     /**
@@ -85,7 +79,7 @@ public class MantenerTemasDELEGATE {
      * @param tema 
      */
     public void eliminarTema(TemaDTO tema) {
-        temaFACADE.eliminarTema(tema);
+        FACADEServiceLocator.getTemaFACADE().eliminarTema(tema);
 
     }
 }

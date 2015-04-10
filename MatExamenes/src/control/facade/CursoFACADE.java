@@ -6,7 +6,7 @@
 package control.facade;
 
 import java.util.List;
-import modelo.dao.CursoDAO;
+import modelo.dao.DAOServiceLocator;
 import modelo.dto.CursoDTO;
 import modelo.dto.TemaDTO;
 
@@ -15,11 +15,6 @@ import modelo.dto.TemaDTO;
  * @author ivan
  */
 public class CursoFACADE {
-    private final CursoDAO cursoDAO;
-    
-    public CursoFACADE() {
-        cursoDAO = new CursoDAO();
-    }
     
     /**
      * Persiste el curso en la base de datos.
@@ -27,7 +22,7 @@ public class CursoFACADE {
      * @return el id generado por la inseción.
      */
     public int guardarCurso(CursoDTO curso) {
-        int id = cursoDAO.insertar(curso);
+        int id = DAOServiceLocator.getCursoDAO().insertar(curso);
         return id;
     }
     
@@ -38,7 +33,7 @@ public class CursoFACADE {
     public List<CursoDTO> obtenerCursos() {
         List<CursoDTO> listaCursos;
         
-        listaCursos = cursoDAO.obtenerTodos();
+        listaCursos = DAOServiceLocator.getCursoDAO().obtenerTodos();
         return listaCursos;
     }
     
@@ -50,15 +45,15 @@ public class CursoFACADE {
     public List<TemaDTO> obtenerTemasDeCurso(CursoDTO curso) {
         List<TemaDTO> listaTemas;
         
-        listaTemas = cursoDAO.obtenerTemas(curso);
+        listaTemas = DAOServiceLocator.getCursoDAO().obtenerTemas(curso);
         return listaTemas;
     }
     
     public void modificarCurso(CursoDTO curso) {
-        cursoDAO.modificar(curso);
+        DAOServiceLocator.getCursoDAO().modificar(curso);
     }
     
     public void eliminarcurso(CursoDTO curso) {
-        cursoDAO.eliminar(curso);
+        DAOServiceLocator.getCursoDAO().eliminar(curso);
     }
 }
