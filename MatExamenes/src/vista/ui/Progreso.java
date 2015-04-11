@@ -16,7 +16,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import vista.tablasEstadisticas.SampleTableModel;
+import vista.tablaEstadisticas.SampleTableModel;
 
 /**
  *

@@ -461,6 +461,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                //Aqui se ponia el security manager.... stuuppidd
                 new Principal().setVisible(true);
             }
         });

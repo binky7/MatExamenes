@@ -4,25 +4,31 @@
  * and open the template in the editor.
  */
 package control.delegate;
-
-import control.facade.FACADEServiceLocator;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.List;
 import modelo.dto.CursoDTO;
 import modelo.dto.TemaDTO;
+import remoteAccess.Enlace;
 
 /**
  *
  * @author ivan
  */
 public class MantenerTemasDELEGATE {
-      
+    
     /**
      * Persiste el tema en la base de datos
      * @param tema el objeto a persistir
      * @return el id generado por la inserción
      */
     public int guardarTema(TemaDTO tema) {
-        int id = FACADEServiceLocator.getTemaFACADE().guardarTema(tema);
+        int id = -1;
+        try {
+            id = Enlace.getPersistencia().guardarEntidad(tema);
+        } catch(RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
         return id;
     }
     
@@ -31,9 +37,17 @@ public class MantenerTemasDELEGATE {
      * @return lista de todos los cursos.
      */
     public List<CursoDTO> obtenerCursos() {
-        List<CursoDTO> listaCursos;
+        List<CursoDTO> listaCursos = null;
         
-        listaCursos = FACADEServiceLocator.getCursoFACADE().obtenerCursos();
+        try {
+            listaCursos = Enlace.getPersistencia()
+                    .obtenerEntidades(CursoDTO.class);
+        } catch (RemoteException ex) {
+            System.out.println(ex);
+        } catch (NotBoundException ex) {
+            System.out.println(ex);
+        }
+        
         return listaCursos;
     }
     
@@ -42,10 +56,16 @@ public class MantenerTemasDELEGATE {
      * @return Los temas que no pertenecen a ningun curso
      */
     public List<TemaDTO> obtenerTemasSinAsignar() {
-        List<TemaDTO> listaTemas;
+        List<TemaDTO> listaTemas = null;
 
-        listaTemas = FACADEServiceLocator.getTemaFACADE()
-                .obtenerTemasSinAsignar();        
+        try {
+            listaTemas = Enlace.getPersistencia().obtenerTemasSinAsignar();
+        } catch (RemoteException ex) {
+            System.out.println(ex);
+        } catch (NotBoundException ex) {
+            System.out.println(ex);
+        }
+        
         return listaTemas;
     }
     
@@ -55,10 +75,16 @@ public class MantenerTemasDELEGATE {
      * @return los temas de dicho curso
      */
     public List<TemaDTO> obtenerTemasDeCurso(CursoDTO curso) {
-        List<TemaDTO> listaTemas;
+        List<TemaDTO> listaTemas = null;
         
-        listaTemas = FACADEServiceLocator.getCursoFACADE()
-                .obtenerTemasDeCurso(curso);
+        try {
+            listaTemas = Enlace.getPersistencia().obtenerTemasDeCurso(curso);
+        } catch (RemoteException ex) {
+            System.out.println(ex);
+        } catch (NotBoundException ex) {
+            System.out.println(ex);
+        }
+        
         return listaTemas;
     }
     
@@ -70,7 +96,13 @@ public class MantenerTemasDELEGATE {
      * en la base de datos correctamente
      */
     public void modificarTema(TemaDTO tema) {
-        FACADEServiceLocator.getTemaFACADE().modificarTema(tema);
+        try {
+            Enlace.getPersistencia().modificarEntidad(tema);
+        } catch (RemoteException ex) {
+            System.out.println(ex);
+        } catch (NotBoundException ex) {
+            System.out.println(ex);
+        }
     }
     
     /**
@@ -79,7 +111,12 @@ public class MantenerTemasDELEGATE {
      * @param tema 
      */
     public void eliminarTema(TemaDTO tema) {
-        FACADEServiceLocator.getTemaFACADE().eliminarTema(tema);
-
+        try {
+            Enlace.getPersistencia().eliminarEntidad(tema);
+        } catch (RemoteException ex) {
+            System.out.println(ex);
+        } catch (NotBoundException ex) {
+            System.out.println(ex);
+        }
     }
 }
