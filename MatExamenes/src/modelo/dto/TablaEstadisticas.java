@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package vista.tablaEstadisticas;
+package modelo.dto;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +14,7 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author Jesus Donaldo
  */
-public class SampleTableModel extends AbstractTableModel {
+public class TablaEstadisticas extends AbstractTableModel {
     
     private String[] names;
     private Object[][] data;
@@ -28,7 +28,7 @@ public class SampleTableModel extends AbstractTableModel {
 //            {new Double(85)}
 //        };
 
-    public SampleTableModel(String[] columns, Object[][] data) {
+    public TablaEstadisticas(String[] columns, Object[][] data) {
         
         names = columns;
         this.data = data;

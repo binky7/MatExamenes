@@ -16,7 +16,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import vista.tablaEstadisticas.SampleTableModel;
+import modelo.dto.TablaEstadisticas;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
@@ -34,7 +34,7 @@ public class GenerarEstadisticasExamen extends javax.swing.JPanel implements Ser
      * Creates new form GenerarEstadisticasAlumno
      */
     private JFXPanel chartFxPanel;
-    private SampleTableModel tableModel;
+    private TablaEstadisticas tableModel;
     private Chart chart;
 
     public GenerarEstadisticasExamen() {
@@ -57,7 +57,7 @@ public class GenerarEstadisticasExamen extends javax.swing.JPanel implements Ser
             {new Double(100), new Double(85), new Double(70)}     
         };
 
-        tableModel = new SampleTableModel(names, data);
+        tableModel = new TablaEstadisticas(names, data);
     }
 
     private void initAndShowGUI() {

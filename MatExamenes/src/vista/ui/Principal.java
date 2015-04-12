@@ -82,9 +82,12 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaModificarGrupo = new VistaModificarGrupo();
         vistaModificarGrupo.setName(Vista.ModificarGrupo.toString());
         vistaConsultarCalificaciones = new VistaConsultarCalificaciones();
-        vistaConsultarCalificaciones.setName(Vista.ConsultarCalificaciones.toString());
-        vistaConsultarCalificacionesExamen = new VistaConsultarCalificacionesExamen();
-        vistaConsultarCalificacionesExamen.setName(Vista.ConsultarCalificacionesExamen.toString());
+        vistaConsultarCalificaciones.setName(Vista
+                .ConsultarCalificaciones.toString());
+        vistaConsultarCalificacionesExamen = 
+                new VistaConsultarCalificacionesExamen();
+        vistaConsultarCalificacionesExamen.setName(Vista
+                .ConsultarCalificacionesExamen.toString());
         
         //Crear controladores vistas
         CVMantenerTemas cvMantenerTemas = new CVMantenerTemas();
@@ -100,7 +103,8 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaConsultarGrupo.setControlador(cvMantenerGrupos);
         vistaModificarGrupo.setControlador(cvMantenerGrupos);
         vistaConsultarCalificaciones.setControlador(cvConsultarCalificaciones);
-        vistaConsultarCalificacionesExamen.setControlador(cvConsultarCalificaciones);
+        vistaConsultarCalificacionesExamen
+                .setControlador(cvConsultarCalificaciones);
         
         //Asignar padre a vistas
         vistaRegistrarTema.setPadre(this);
@@ -125,8 +129,10 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistas.add(vistaRegistrarGrupo, Vista.RegistrarGrupo.toString());
         vistas.add(vistaConsultarGrupo, Vista.ConsultarGrupo.toString());
         vistas.add(vistaModificarGrupo, Vista.ModificarGrupo.toString());
-        vistas.add(vistaConsultarCalificaciones, Vista.ConsultarCalificaciones.toString());
-        vistas.add(vistaConsultarCalificacionesExamen, Vista.ConsultarCalificacionesExamen.toString());
+        vistas.add(vistaConsultarCalificaciones, Vista.ConsultarCalificaciones
+                .toString());
+        vistas.add(vistaConsultarCalificacionesExamen, Vista
+                .ConsultarCalificacionesExamen.toString());
     }
     
     /**

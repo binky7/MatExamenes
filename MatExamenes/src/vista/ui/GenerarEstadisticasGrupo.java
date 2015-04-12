@@ -15,7 +15,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import vista.tablaEstadisticas.SampleTableModel;
+import modelo.dto.TablaEstadisticas;
 
 /**
  *
@@ -28,7 +28,7 @@ public class GenerarEstadisticasGrupo extends javax.swing.JPanel {
      */
     
     private JFXPanel chartFxPanel;
-    private SampleTableModel tableModel;
+    private TablaEstadisticas tableModel;
     private Chart chart;
     
     public GenerarEstadisticasGrupo() {
@@ -83,7 +83,7 @@ public class GenerarEstadisticasGrupo extends javax.swing.JPanel {
             {new Double(80), new Double(85), new Double(70)}     
         };
 
-        tableModel = new SampleTableModel(names, data);
+        tableModel = new TablaEstadisticas(names, data);
     }
     
     private void initAndShowGUI() {

@@ -16,7 +16,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import vista.tablaEstadisticas.SampleTableModel;
+import modelo.dto.TablaEstadisticas;
 
 /**
  *
@@ -28,7 +28,7 @@ public class GenerarEstadisticasTurno extends javax.swing.JPanel {
      * Creates new form Progreso
      */
     private JFXPanel chartFxPanel;
-    private SampleTableModel tableModel;
+    private TablaEstadisticas tableModel;
     private Chart chart;
     
     public GenerarEstadisticasTurno() {
@@ -57,7 +57,7 @@ public class GenerarEstadisticasTurno extends javax.swing.JPanel {
             {new Double(100), new Double(80), new Double(60)}
         };
 
-        tableModel = new SampleTableModel(names, data);
+        tableModel = new TablaEstadisticas(names, data);
     }
     
     private void initAndShowGUI() {
