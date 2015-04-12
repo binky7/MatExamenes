@@ -22,8 +22,8 @@ public class MantenerTemasDELEGATE {
      * @param tema el objeto a persistir
      * @return el id generado por la inserción
      */
-    public int guardarTema(TemaDTO tema) {
-        int id = -1;
+    public Integer guardarTema(TemaDTO tema) {
+        Integer id = null;
         try {
             id = Enlace.getPersistencia().guardarEntidad(tema);
         } catch(RemoteException | NotBoundException ex) {
@@ -94,29 +94,39 @@ public class MantenerTemasDELEGATE {
      * como String, int, double etc... Las relaciones con otros objetos deben
      * ser mantenidos en este controlador para poder hacer la modificacion
      * en la base de datos correctamente
+     * @return 
      */
-    public void modificarTema(TemaDTO tema) {
+    public boolean modificarTema(TemaDTO tema) {
+        boolean ok = false;
+        
         try {
-            Enlace.getPersistencia().modificarEntidad(tema);
+            ok = Enlace.getPersistencia().modificarEntidad(tema);
         } catch (RemoteException ex) {
             System.out.println(ex);
         } catch (NotBoundException ex) {
             System.out.println(ex);
         }
+        
+        return ok;
     }
     
     /**
      * Se elimina el tema, este debe estar en la lista mantenida en
      * este controlador
      * @param tema 
+     * @return  
      */
-    public void eliminarTema(TemaDTO tema) {
+    public boolean eliminarTema(TemaDTO tema) {
+        boolean ok = false;
+        
         try {
-            Enlace.getPersistencia().eliminarEntidad(tema);
+            ok = Enlace.getPersistencia().eliminarEntidad(tema);
         } catch (RemoteException ex) {
             System.out.println(ex);
         } catch (NotBoundException ex) {
             System.out.println(ex);
         }
+        
+        return ok;
     }
 }

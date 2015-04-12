@@ -8,7 +8,6 @@ package vista.ui;
 import javax.swing.JOptionPane;
 import modelo.dto.TemaDTO;
 import modelo.dto.UsuarioDTO;
-import org.hibernate.exception.ConstraintViolationException;
 import vista.controlador.CVMantenerTemas;
 import vista.controlador.Validador;
 import vista.interfaz.InterfazVista;
@@ -172,7 +171,6 @@ public class VistaModificarTema extends javax.swing.JPanel implements
      */
     private void modificarTema(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarTema
         //Modificar Tema
-        boolean ok = true;
         //Encapsular objeto
         TemaDTO tema = encapsularTema();
         if(tema == null) {
@@ -183,14 +181,11 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         //Persistir el objeto en la base de datos
         //Es necesario hacer un try catch en cada clase cuando se llame a
         //este metodo
-        try {
-            controlVista.modificarTema(tema);
-        } catch (ConstraintViolationException ex) {
-            //No se pudo guardar porque habia un tema duplicado
+        boolean ok = controlVista.modificarTema(tema);
+        //No se pudo guardar porque habia un tema duplicado
+        if (!ok) {
             JOptionPane.showMessageDialog(this, "Tema existente");
-            ok = false;
-        }
-        if (ok) {
+        } else {
             JOptionPane.showMessageDialog(this, "Tema Modificado");
             padre.mostrarVistaConEntidad(tema, Vista.ConsultarTemas);
             limpiar();

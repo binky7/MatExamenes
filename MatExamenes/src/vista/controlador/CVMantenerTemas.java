@@ -39,8 +39,8 @@ public class CVMantenerTemas {
      * @param tema el objeto a persistir
      * @return el id generado por la inserción
      */
-    public int guardarTema(TemaDTO tema) {
-        int id = mantenerTemasDELEGATE.guardarTema(tema);
+    public Integer guardarTema(TemaDTO tema) {
+        Integer id = mantenerTemasDELEGATE.guardarTema(tema);
         return id;
     }
     
@@ -60,29 +60,20 @@ public class CVMantenerTemas {
  
     /**
      * Obtener los temas de un curso
-     * @param curso el curso
+     * @param index
      * @return los temas de dicho curso
      */
-    public List<TemaDTO> obtenerTemasDeCurso(String curso) {
+    public List<TemaDTO> obtenerTemasDeCurso(int index) {
         List<TemaDTO> listaTemas = null;
-        
-        if(cursos != null && !cursos.isEmpty()) {
-            CursoDTO objCurso = new CursoDTO();
-            objCurso.setNombre(curso);
-            
-            //Ordena y busca en la lista el curso con el nombre especificado
-            Collections.sort(cursos);
-            int index = Collections.binarySearch(cursos, objCurso);
-            
-            //Si se encontro el objeto
-            if(index >= 0) {
-                //Se obtiene el objeto de la lista (que contiene la llave prim)
-                objCurso = cursos.get(index);
-                listaTemas = mantenerTemasDELEGATE.obtenerTemasDeCurso(objCurso);
-                temas = listaTemas;
-            }
+
+        if (cursos != null && !cursos.isEmpty()) {
+            //Se obtiene el objeto de la lista (que contiene la llave prim)
+            CursoDTO objCurso = cursos.get(index);
+            listaTemas = mantenerTemasDELEGATE
+                    .obtenerTemasDeCurso(objCurso);
+            temas = listaTemas;
         }
-        
+
         return listaTemas;
     }
 
@@ -103,40 +94,25 @@ public class CVMantenerTemas {
     /**
      * Obtener el tema completo con todas sus relaciones, en este caso no tiene
      * ninguna asi que nomas buscamos en la lista de temas y lo regresamos
-     * @param nombreTema el nombre del tema obtenido de la vista
+     * @param index
      * @return el objeto tema con su nombre de tema y id. Es importante denotar
      * que al buscarse por nombre y no por id se puede modificar un tema pero
      * no reflejarse los cambios al momento en la vista. Por esta razon al
      * buscar el antigüo nombre del curso en la lista se regresara null
      */
-    public TemaDTO obtenerTema(String nombreTema) {
+    public TemaDTO obtenerTema(int index) {
         TemaDTO objTema = null;
-        
+
         //Se obtiene el objeto completo, como no tiene mas relaciones no es
         //Necesario llamar al dao, tambien como se va a modificar se asigna
         //al atributo tema
-        
-        if(temas != null && !temas.isEmpty()) {
-            objTema = new TemaDTO();
-            objTema.setNombre(nombreTema);
-            
-            //Ordena y busca en la lista el tema con el nombre especificado
-            Collections.sort(temas);
-            int index = Collections.binarySearch(temas, objTema);
-            
-            //Si se encontro el objeto
-            if(index >= 0) {
-                //Se obtiene el objeto de la lista (que contiene la llave prim)
-                objTema = temas.get(index);
-            }
-            else {
-                objTema = null;
-            }
+        if (temas != null && !temas.isEmpty()) {
+            objTema = temas.get(index);
         }
-        
+
         //Se guarda el objeto para su posterior uso en la modificacion
         tema = objTema;
-        
+
         return tema;
     }
     
@@ -146,43 +122,45 @@ public class CVMantenerTemas {
      * como String, int, double etc... Las relaciones con otros objetos deben
      * ser mantenidos en este controlador para poder hacer la modificacion
      * en la base de datos correctamente
+     * @return 
      */
-    public void modificarTema(TemaDTO tema) {
+    public boolean modificarTema(TemaDTO tema) {
         //Pasar todos los atributos basicos que pudieron cambiar al atributo
         //tema para ser enviado
+        boolean ok;
+        
         if (this.tema != null) {
             this.tema.setNombre(tema.getNombre());
 
-            mantenerTemasDELEGATE.modificarTema(this.tema);
+            ok = mantenerTemasDELEGATE.modificarTema(this.tema);
         }
         else {
             System.out.println("Error inesperado!");
+            ok = false;
         }
+        return ok;
     }
     
     /**
      * Se elimina el tema, este debe estar en la lista mantenida en
      * este controlador
-     * @param tema 
+     * @param index 
+     * @return  
      */
-    public void eliminarTema(String tema) {
+    public boolean eliminarTema(int index) {
 
-        if(temas != null && !temas.isEmpty()) {
-            TemaDTO objTema = new TemaDTO();
-            objTema.setNombre(tema);
-            
-            //Ordena y busca en la lista el tema con el nombre especificado
-            Collections.sort(temas);
-            int index = Collections.binarySearch(temas, objTema);
-            
-            //Si se encontro el objeto
-            if(index >= 0) {
-                //Se obtiene el objeto de la lista (que contiene la llave prim)
-                objTema = temas.get(index);
-                mantenerTemasDELEGATE.eliminarTema(objTema);
+        boolean ok = false;
+
+        if (temas != null && !temas.isEmpty()) {
+            //Se obtiene el objeto de la lista (que contiene la llave prim)
+            TemaDTO objTema = temas.get(index);
+            ok = mantenerTemasDELEGATE.eliminarTema(objTema);
+            if (ok) {
                 temas.remove(index);
             }
         }
+
+        return ok;
     }
     
     

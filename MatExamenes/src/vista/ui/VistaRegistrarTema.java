@@ -6,11 +6,8 @@
 package vista.ui;
 
 import javax.swing.JOptionPane;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 import modelo.dto.TemaDTO;
 import modelo.dto.UsuarioDTO;
-import org.hibernate.exception.ConstraintViolationException;
 import vista.controlador.CVMantenerTemas;
 import vista.controlador.Validador;
 import vista.interfaz.InterfazVista;
@@ -140,7 +137,6 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
      */
     private void guardarTema(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarTema
         //Guardar Tema
-        boolean ok = true;
         //Encapsular objeto
         TemaDTO tema = encapsularTema();
         if(tema == null) {
@@ -151,14 +147,12 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
         //Persistir el objeto en la base de datos
         //Es necesario hacer un try catch en cada clase cuando se llame a
         //este metodo
-        try {
-            controlVista.guardarTema(tema);
-        } catch (ConstraintViolationException ex) {
+        Integer id = controlVista.guardarTema(tema);
+
+        if (id == null) {
             //No se pudo guardar porque habia un tema duplicado
             JOptionPane.showMessageDialog(this, "Tema existente");
-            ok = false;
-        }
-        if (ok) {
+        } else {
             JOptionPane.showMessageDialog(this, "Tema Registrado");
             padre.mostrarVista(Vista.HOME);
             limpiar();

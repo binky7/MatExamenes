@@ -109,7 +109,7 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         //llamado lazy fetch, por eso se vuelve a llamar a la bd
         else {
             temas = controlVista.obtenerTemasDeCurso(lstCursos
-                    .getSelectedValue().toString());
+                    .getSelectedIndex());
         }
         
         if(temas != null && !temas.isEmpty()) {
@@ -256,11 +256,16 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
     private void eliminarTema(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarTema
         //Eliminar Tema
         //Si se selecciono algo
+        boolean ok;
         if (lstTemas.getSelectedIndex() != -1) {
-            controlVista.eliminarTema(lstTemas.getSelectedValue().toString());
-            JOptionPane.showMessageDialog(this, "Tema eliminado");
-            ((DefaultListModel) lstTemas.getModel())
-                    .remove(lstTemas.getSelectedIndex());
+            ok = controlVista.eliminarTema(lstTemas.getSelectedIndex());
+            if (ok) {
+                JOptionPane.showMessageDialog(this, "Tema eliminado");
+                ((DefaultListModel) lstTemas.getModel())
+                        .remove(lstTemas.getSelectedIndex());
+            } else {
+                JOptionPane.showMessageDialog(this, "Ha ocurrido un error");
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione un tema");
         }
@@ -275,8 +280,7 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         
         //Mostrar la vista modificar
         if(lstTemas.getSelectedIndex() != -1) {
-            TemaDTO tema = controlVista.obtenerTema(lstTemas
-                    .getSelectedValue().toString());
+            TemaDTO tema = controlVista.obtenerTema(lstTemas.getSelectedIndex());
             
             if(tema != null) {
                 //Mostrar la vista modificar tema enviandole el objeto tema
