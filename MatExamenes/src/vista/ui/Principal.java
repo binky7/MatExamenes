@@ -36,6 +36,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
     private VistaConsultarGrupo vistaConsultarGrupo;
     private VistaModificarGrupo vistaModificarGrupo;
     private VistaConsultarCalificaciones vistaConsultarCalificaciones;
+    private VistaConsultarCalificacionesExamen vistaConsultarCalificacionesExamen;
     
     /**
      * Creates new form Principal
@@ -82,6 +83,8 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaModificarGrupo.setName(Vista.ModificarGrupo.toString());
         vistaConsultarCalificaciones = new VistaConsultarCalificaciones();
         vistaConsultarCalificaciones.setName(Vista.ConsultarCalificaciones.toString());
+        vistaConsultarCalificacionesExamen = new VistaConsultarCalificacionesExamen();
+        vistaConsultarCalificacionesExamen.setName(Vista.ConsultarCalificacionesExamen.toString());
         
         //Crear controladores vistas
         CVMantenerTemas cvMantenerTemas = new CVMantenerTemas();
@@ -96,6 +99,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaConsultarGrupo.setControlador(cvMantenerGrupos);
         vistaModificarGrupo.setControlador(cvMantenerGrupos);
         vistaConsultarCalificaciones.setControlador(cvConsultarCalificaciones);
+        vistaConsultarCalificacionesExamen.setControlador(cvConsultarCalificaciones);
         
         //Asignar padre a vistas
         vistaRegistrarTema.setPadre(this);
@@ -106,6 +110,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaConsultarGrupo.setPadre(this);
         vistaModificarGrupo.setPadre(this);
         vistaConsultarCalificaciones.setPadre(this);
+        vistaConsultarCalificacionesExamen.setPadre(this);
         
         //Agregar un panel y su identificador. Para agregar mas identificadores
         //ir a vista.interfaz.InterfazVista y agregarlos al enum Vista
@@ -120,6 +125,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistas.add(vistaConsultarGrupo, Vista.ConsultarGrupo.toString());
         vistas.add(vistaModificarGrupo, Vista.ModificarGrupo.toString());
         vistas.add(vistaConsultarCalificaciones, Vista.ConsultarCalificaciones.toString());
+        vistas.add(vistaConsultarCalificacionesExamen, Vista.ConsultarCalificacionesExamen.toString());
     }
     
     /**
