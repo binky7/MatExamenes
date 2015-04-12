@@ -5,19 +5,28 @@
  */
 package vista.ui;
 
+import modelo.dto.UsuarioDTO;
+import vista.interfaz.InterfazVista;
+
 /**
  *
  * @author Jesus Donaldo
  */
-public class ConsultarExamenes extends javax.swing.JPanel {
+public class VistaConsultarExamenes extends javax.swing.JPanel
+implements InterfazVista {
 
+    private InterfazVista padre;
     /**
      * Creates new form ConsultarExamenes
      */
-    public ConsultarExamenes() {
+    public VistaConsultarExamenes() {
         initComponents();
     }
 
+    public void setPadre(InterfazVista padre) {
+        this.padre = padre;
+    }
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,7 +48,7 @@ public class ConsultarExamenes extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
-        setPreferredSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(800, 579));
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel15.setText("Curso:");
@@ -99,6 +108,11 @@ public class ConsultarExamenes extends javax.swing.JPanel {
 
         jButton2.setText("Modificar");
         jButton2.setToolTipText("");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pasarControlVistaModificar(evt);
+            }
+        });
 
         jButton3.setText("Eliminar");
         jButton3.setToolTipText("");
@@ -117,7 +131,7 @@ public class ConsultarExamenes extends javax.swing.JPanel {
                         .addComponent(jLabel16))
                     .addComponent(jButton1)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel17)
@@ -156,9 +170,13 @@ public class ConsultarExamenes extends javax.swing.JPanel {
                                 .addComponent(jButton2)
                                 .addGap(39, 39, 39)
                                 .addComponent(jButton3)))))
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void pasarControlVistaModificar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarControlVistaModificar
+        padre.mostrarVistaConEntidad(null, Vista.ModificarExamen);
+    }//GEN-LAST:event_pasarControlVistaModificar
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -174,4 +192,35 @@ public class ConsultarExamenes extends javax.swing.JPanel {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarVista(Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarEntidad(Object entidad) {
+        //Motrar Examen
+    }
+
+    @Override
+    public boolean confirmarCambio() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void limpiar() {
+        //Limpiar componentes
+    }
+
 }

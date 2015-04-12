@@ -29,7 +29,9 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
     private VistaRegistrarTema vistaRegistrarTema;
     private VistaConsultarTemas vistaConsultarTemas;
     private VistaModificarTema vistaModificarTema;
-    private RegistrarExamen vistaRegistrarExamen;
+    private VistaRegistrarExamen vistaRegistrarExamen;
+    private VistaConsultarExamenes vistaConsultarExamenes;
+    private VistaModificarExamen vistaModificarExamen;
     private VistaRegistrarCurso vistaRegistrarCurso;
     private VistaConsultarCursos vistaConsultarCursos;
     private VistaRegistrarGrupo vistaRegistrarGrupo;
@@ -65,8 +67,12 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaHome.setName(Vista.HOME.toString());
         vistaRegistrarTema = new VistaRegistrarTema();
         vistaRegistrarTema.setName(Vista.RegistrarTema.toString());
-        vistaRegistrarExamen = new RegistrarExamen();
+        vistaRegistrarExamen = new VistaRegistrarExamen();
         vistaRegistrarExamen.setName(Vista.RegistrarExamen.toString());
+        vistaConsultarExamenes = new VistaConsultarExamenes();
+        vistaConsultarExamenes.setName(Vista.ConsultarExamenes.toString());
+        vistaModificarExamen = new VistaModificarExamen();
+        vistaModificarExamen.setName(Vista.ModificarExamen.toString());
         vistaConsultarTemas = new VistaConsultarTemas();
         vistaConsultarTemas.setName(Vista.ConsultarTemas.toString());
         vistaModificarTema = new VistaModificarTema();
@@ -114,6 +120,9 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaRegistrarGrupo.setPadre(this);
         vistaConsultarGrupo.setPadre(this);
         vistaModificarGrupo.setPadre(this);
+        vistaRegistrarExamen.setPadre(this);
+        vistaConsultarExamenes.setPadre(this);
+        vistaModificarExamen.setPadre(this);
         vistaConsultarCalificaciones.setPadre(this);
         vistaConsultarCalificacionesExamen.setPadre(this);
         
@@ -123,12 +132,14 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistas.add(vistaRegistrarTema, Vista.RegistrarTema.toString());
         vistas.add(vistaConsultarTemas, Vista.ConsultarTemas.toString());
         vistas.add(vistaModificarTema, Vista.ModificarTema.toString());
-        vistas.add(vistaRegistrarExamen, Vista.RegistrarExamen.toString());
         vistas.add(vistaRegistrarCurso, Vista.RegistrarCurso.toString());
         vistas.add(vistaConsultarCursos, Vista.ConsultarCursos.toString());
         vistas.add(vistaRegistrarGrupo, Vista.RegistrarGrupo.toString());
         vistas.add(vistaConsultarGrupo, Vista.ConsultarGrupo.toString());
         vistas.add(vistaModificarGrupo, Vista.ModificarGrupo.toString());
+        vistas.add(vistaRegistrarExamen, Vista.RegistrarExamen.toString());
+        vistas.add(vistaConsultarExamenes, Vista.ConsultarExamenes.toString());
+        vistas.add(vistaModificarExamen, Vista.ModificarExamen.toString());
         vistas.add(vistaConsultarCalificaciones, Vista.ConsultarCalificaciones
                 .toString());
         vistas.add(vistaConsultarCalificacionesExamen, Vista
@@ -283,6 +294,11 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         jMenu5.add(jMenuItem9);
 
         jMenuItem10.setText("Consultar Exámenes");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItem10);
         jMenu5.add(jSeparator2);
 
@@ -478,6 +494,23 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
                     .toString());
         }
     }//GEN-LAST:event_jMenuItem15ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        //Mostrar vistaConsultarExamenes
+        JPanel actual = getVistaActual();
+        boolean ok = true;
+        
+        if(actual.getName().startsWith("Registrar") || actual.getName()
+                .startsWith("Modificar")) {
+            ok = ((InterfazVista)actual).confirmarCambio();
+        }
+        
+        if(ok) {
+            ((InterfazVista)actual).limpiar();
+            manejadorVista.show(vistas, Vista.ConsultarExamenes
+                    .toString());
+        }
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     /**
      * @param args the command line arguments

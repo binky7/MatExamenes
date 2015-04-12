@@ -46,7 +46,7 @@ implements InterfazVista{
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
-        setPreferredSize(new java.awt.Dimension(608, 601));
+        setPreferredSize(new java.awt.Dimension(800, 579));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Curso:");
@@ -87,7 +87,7 @@ implements InterfazVista{
                 .addGap(170, 170, 170)
                 .addComponent(jLabel3)
                 .addGap(32, 32, 32)
-                .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                .addComponent(jTextField2)
                 .addGap(178, 178, 178))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -111,7 +111,7 @@ implements InterfazVista{
                 .addGroup(layout.createSequentialGroup()
                     .addGap(20, 20, 20)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(622, Short.MAX_VALUE)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,14 +130,14 @@ implements InterfazVista{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jButton3)
-                .addGap(24, 24, 24))
+                .addContainerGap(89, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(157, 157, 157)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(182, Short.MAX_VALUE)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
