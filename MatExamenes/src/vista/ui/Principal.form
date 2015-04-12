@@ -162,8 +162,18 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu11">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Consultar Calificaciones"/>
+            <Property name="text" type="java.lang.String" value="Calificaciones"/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem15">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Consultar Calificaciones"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem15ActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu12">
           <Properties>
