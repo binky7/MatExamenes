@@ -61,7 +61,7 @@ public class VistaConsultarCalificacionesExamen extends javax.swing.JPanel imple
         jLabel1.setText("Consultar Calificacioes");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setText("Titulo:");
+        jLabel2.setText("Examen:");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("Calificacion:");
