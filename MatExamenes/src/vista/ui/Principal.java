@@ -81,12 +81,14 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaModificarGrupo = new VistaModificarGrupo();
         vistaModificarGrupo.setName(Vista.ModificarGrupo.toString());
         vistaConsultarCalificaciones = new VistaConsultarCalificaciones();
-        vistaConsultarCalificaciones.setName(Vista.ConsultarCalificaciones.toString());
+        vistaConsultarCalificaciones.setName(Vista.ConsultarCalificaciones
+                .toString());
         
         //Crear controladores vistas
         CVMantenerTemas cvMantenerTemas = new CVMantenerTemas();
         CVMantenerGrupos cvMantenerGrupos = new CVMantenerGrupos();
-        CVConsultarCalificaciones cvConsultarCalificaciones = new CVConsultarCalificaciones();
+        CVConsultarCalificaciones cvConsultarCalificaciones =
+                new CVConsultarCalificaciones();
         
         //Asignar controladores a vistas
         vistaRegistrarTema.setControlador(cvMantenerTemas);
@@ -119,7 +121,8 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistas.add(vistaRegistrarGrupo, Vista.RegistrarGrupo.toString());
         vistas.add(vistaConsultarGrupo, Vista.ConsultarGrupo.toString());
         vistas.add(vistaModificarGrupo, Vista.ModificarGrupo.toString());
-        vistas.add(vistaConsultarCalificaciones, Vista.ConsultarCalificaciones.toString());
+        vistas.add(vistaConsultarCalificaciones,
+                Vista.ConsultarCalificaciones.toString());
     }
     
     /**
@@ -461,7 +464,8 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         
         if(ok) {
             ((InterfazVista)actual).limpiar();
-            manejadorVista.show(vistas, Vista.ConsultarCalificaciones.toString());
+            manejadorVista.show(vistas, Vista.ConsultarCalificaciones
+                    .toString());
         }
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 

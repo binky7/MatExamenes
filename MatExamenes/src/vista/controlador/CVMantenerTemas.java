@@ -6,7 +6,6 @@
 package vista.controlador;
 
 import control.delegate.MantenerTemasDELEGATE;
-import java.util.Collections;
 import java.util.List;
 import modelo.dto.CursoDTO;
 import modelo.dto.TemaDTO;
