@@ -40,6 +40,7 @@ public class VistaModificarTema extends javax.swing.JPanel implements
     /**
      * Limpia la vista y la memoria asociada a esta vista
      */
+    @Override
     public void limpiar() {
         txtfNombre.setText("");
         controlVista.liberarMemoriaModificar();

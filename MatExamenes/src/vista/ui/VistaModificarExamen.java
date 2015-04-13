@@ -4,8 +4,10 @@
  */
 package vista.ui;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import modelo.dto.UsuarioDTO;
+import vista.interfaz.InterfazExamen;
 import vista.interfaz.InterfazVista;
 
 /**
@@ -13,18 +15,27 @@ import vista.interfaz.InterfazVista;
  * @author BoredmanDA
  */
 public class VistaModificarExamen extends javax.swing.JPanel
-implements InterfazVista {
+implements InterfazVista, InterfazExamen {
 
     private InterfazVista padre;
+    private VistaAgregarReactivos vistaAgregarReactivos;
     /**
      * Creates new form ModificarExamen
      */
     public VistaModificarExamen() {
         initComponents();
+        vistaAgregarReactivos = new VistaAgregarReactivos();
+        vistaAgregarReactivos.setPadre(this);
+        vistaAgregarReactivos.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     public void setPadre(InterfazVista padre) {
         this.padre = padre;
+    }
+    
+    @Override
+    public InterfazVista getPadre() {
+        return padre;
     }
     
     /**
@@ -100,6 +111,11 @@ implements InterfazVista {
         jRadioButton2.setText("Privado");
 
         jButton6.setText("Agregar Reactivos");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarReactivos(evt);
+            }
+        });
 
         jButton8.setText("Ver Reactivo");
 
@@ -403,6 +419,11 @@ implements InterfazVista {
         padre.mostrarVistaConEntidad(null, Vista.ConsultarExamenes);
         limpiar();
     }//GEN-LAST:event_modificarExamen
+
+    private void agregarReactivos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarReactivos
+        ((JFrame)padre).setEnabled(false);
+        vistaAgregarReactivos.setVisible(true);
+    }//GEN-LAST:event_agregarReactivos
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton10;
