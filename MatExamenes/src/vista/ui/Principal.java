@@ -12,6 +12,7 @@ import modelo.dto.UsuarioDTO;
 import vista.controlador.CVConsultarCalificaciones;
 import vista.controlador.CVMantenerGrupos;
 import vista.controlador.CVMantenerTemas;
+import vista.controlador.CVMantenerUsuarios;
 import vista.interfaz.InterfazVista;
 
 /**
@@ -39,6 +40,8 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
     private VistaModificarGrupo vistaModificarGrupo;
     private VistaConsultarCalificaciones vistaConsultarCalificaciones;
     private VistaConsultarCalificacionesExamen vistaConsultarCalificacionesExamen;
+    private VistaRegistrarUsuario vistaRegistrarUsuario;
+    private VistaConsultarUsuarios vistaConsultarUsuarios;
     
     /**
      * Creates new form Principal
@@ -94,12 +97,18 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
                 new VistaConsultarCalificacionesExamen();
         vistaConsultarCalificacionesExamen.setName(Vista
                 .ConsultarCalificacionesExamen.toString());
+        vistaRegistrarUsuario = new VistaRegistrarUsuario();
+        vistaRegistrarUsuario.setName(Vista.RegistrarUsuario.toString());
+        vistaConsultarUsuarios = new VistaConsultarUsuarios();
+        vistaConsultarUsuarios.setName(Vista.ConsultarUsuarios.toString());
         
         //Crear controladores vistas
         CVMantenerTemas cvMantenerTemas = new CVMantenerTemas();
         CVMantenerGrupos cvMantenerGrupos = new CVMantenerGrupos();
         CVConsultarCalificaciones cvConsultarCalificaciones =
                 new CVConsultarCalificaciones();
+        CVMantenerUsuarios cvMantenerUsuarios = new CVMantenerUsuarios();
+        
         
         //Asignar controladores a vistas
         vistaRegistrarTema.setControlador(cvMantenerTemas);
@@ -111,6 +120,8 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaConsultarCalificaciones.setControlador(cvConsultarCalificaciones);
         vistaConsultarCalificacionesExamen
                 .setControlador(cvConsultarCalificaciones);
+        vistaRegistrarUsuario.setControlador(cvMantenerUsuarios);
+        vistaConsultarUsuarios.setControlador(cvMantenerUsuarios);
         
         //Asignar padre a vistas
         vistaRegistrarTema.setPadre(this);
@@ -125,6 +136,8 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaModificarExamen.setPadre(this);
         vistaConsultarCalificaciones.setPadre(this);
         vistaConsultarCalificacionesExamen.setPadre(this);
+        vistaRegistrarUsuario.setPadre(this);
+        vistaConsultarUsuarios.setPadre(this);
         
         //Agregar un panel y su identificador. Para agregar mas identificadores
         //ir a vista.interfaz.InterfazVista y agregarlos al enum Vista
@@ -144,6 +157,8 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
                 .toString());
         vistas.add(vistaConsultarCalificacionesExamen, Vista
                 .ConsultarCalificacionesExamen.toString());
+        vistas.add(vistaRegistrarUsuario, Vista.RegistrarUsuario.toString());
+        vistas.add(vistaConsultarUsuarios, Vista.ConsultarUsuarios.toString());
     }
     
     /**
@@ -177,31 +192,31 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         jSeparator1 = new javax.swing.JSeparator();
         vistas = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
-        jMenuItem9 = new javax.swing.JMenuItem();
-        jMenuItem10 = new javax.swing.JMenuItem();
+        mTemas = new javax.swing.JMenu();
+        miRegistrarTema = new javax.swing.JMenuItem();
+        miConsultarTemas = new javax.swing.JMenuItem();
+        mCursos = new javax.swing.JMenu();
+        miRegistrarCurso = new javax.swing.JMenuItem();
+        miConsultarCursos = new javax.swing.JMenuItem();
+        mUsuarios = new javax.swing.JMenu();
+        miRegistrarUsuario = new javax.swing.JMenuItem();
+        miConsultarUsuarios = new javax.swing.JMenuItem();
+        mReactivos = new javax.swing.JMenu();
+        miRegistrarReactivo = new javax.swing.JMenuItem();
+        miConsultarReactivos = new javax.swing.JMenuItem();
+        mExamenes = new javax.swing.JMenu();
+        miRegistrarExamen = new javax.swing.JMenuItem();
+        miConsultarExamenes = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem11 = new javax.swing.JMenuItem();
-        jMenu6 = new javax.swing.JMenu();
-        jMenuItem12 = new javax.swing.JMenuItem();
-        jMenuItem13 = new javax.swing.JMenuItem();
-        jMenu7 = new javax.swing.JMenu();
-        jMenu11 = new javax.swing.JMenu();
-        jMenuItem15 = new javax.swing.JMenuItem();
-        jMenu12 = new javax.swing.JMenu();
-        jMenuItem14 = new javax.swing.JMenuItem();
+        miAsignarExamen = new javax.swing.JMenuItem();
+        mGrupos = new javax.swing.JMenu();
+        miRegistrarGrupo = new javax.swing.JMenuItem();
+        miConsultarGrupos = new javax.swing.JMenuItem();
+        mContestarExamen = new javax.swing.JMenu();
+        mCalificaciones = new javax.swing.JMenu();
+        miConsultarCalificaciones = new javax.swing.JMenuItem();
+        mEstadisticas = new javax.swing.JMenu();
+        miGenerarEstadisticas = new javax.swing.JMenuItem();
 
         jMenu9.setText("jMenu9");
 
@@ -222,132 +237,142 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
             .addGap(0, 579, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("Temas");
+        mTemas.setText("Temas");
 
-        jMenuItem1.setText("Registrar Tema");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        miRegistrarTema.setText("Registrar Tema");
+        miRegistrarTema.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                miRegistrarTemaActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        mTemas.add(miRegistrarTema);
 
-        jMenuItem2.setText("Consultar Temas");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        miConsultarTemas.setText("Consultar Temas");
+        miConsultarTemas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                miConsultarTemasActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        mTemas.add(miConsultarTemas);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(mTemas);
 
-        jMenu2.setText("Cursos");
+        mCursos.setText("Cursos");
 
-        jMenuItem3.setText("Registrar Curso");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        miRegistrarCurso.setText("Registrar Curso");
+        miRegistrarCurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                miRegistrarCursoActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem3);
+        mCursos.add(miRegistrarCurso);
 
-        jMenuItem4.setText("Consultar Cursos");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        miConsultarCursos.setText("Consultar Cursos");
+        miConsultarCursos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                miConsultarCursosActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem4);
+        mCursos.add(miConsultarCursos);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(mCursos);
 
-        jMenu3.setText("Usuarios");
+        mUsuarios.setText("Usuarios");
 
-        jMenuItem5.setText("Registrar Usuario");
-        jMenu3.add(jMenuItem5);
-
-        jMenuItem6.setText("Consultar Usuarios");
-        jMenu3.add(jMenuItem6);
-
-        jMenuBar1.add(jMenu3);
-
-        jMenu4.setText("Reactivos");
-        jMenu4.setToolTipText("");
-
-        jMenuItem7.setText("Registrar Reactivo");
-        jMenu4.add(jMenuItem7);
-
-        jMenuItem8.setText("Consultar Reactivos");
-        jMenu4.add(jMenuItem8);
-
-        jMenuBar1.add(jMenu4);
-
-        jMenu5.setText("Examenes");
-
-        jMenuItem9.setText("Registrar Examen");
-        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+        miRegistrarUsuario.setText("Registrar Usuario");
+        miRegistrarUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem9ActionPerformed(evt);
+                miRegistrarUsuarioActionPerformed(evt);
             }
         });
-        jMenu5.add(jMenuItem9);
+        mUsuarios.add(miRegistrarUsuario);
 
-        jMenuItem10.setText("Consultar Exámenes");
-        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+        miConsultarUsuarios.setText("Consultar Usuarios");
+        miConsultarUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem10ActionPerformed(evt);
+                miConsultarUsuariosActionPerformed(evt);
             }
         });
-        jMenu5.add(jMenuItem10);
-        jMenu5.add(jSeparator2);
+        mUsuarios.add(miConsultarUsuarios);
 
-        jMenuItem11.setText("Asignar Examen");
-        jMenu5.add(jMenuItem11);
+        jMenuBar1.add(mUsuarios);
 
-        jMenuBar1.add(jMenu5);
+        mReactivos.setText("Reactivos");
+        mReactivos.setToolTipText("");
 
-        jMenu6.setText("Grupos");
+        miRegistrarReactivo.setText("Registrar Reactivo");
+        mReactivos.add(miRegistrarReactivo);
 
-        jMenuItem12.setText("Registrar Grupo");
-        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+        miConsultarReactivos.setText("Consultar Reactivos");
+        mReactivos.add(miConsultarReactivos);
+
+        jMenuBar1.add(mReactivos);
+
+        mExamenes.setText("Examenes");
+
+        miRegistrarExamen.setText("Registrar Examen");
+        miRegistrarExamen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem12ActionPerformed(evt);
+                miRegistrarExamenActionPerformed(evt);
             }
         });
-        jMenu6.add(jMenuItem12);
+        mExamenes.add(miRegistrarExamen);
 
-        jMenuItem13.setText("Consultar Grupos");
-        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+        miConsultarExamenes.setText("Consultar Exámenes");
+        miConsultarExamenes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem13ActionPerformed(evt);
+                miConsultarExamenesActionPerformed(evt);
             }
         });
-        jMenu6.add(jMenuItem13);
+        mExamenes.add(miConsultarExamenes);
+        mExamenes.add(jSeparator2);
 
-        jMenuBar1.add(jMenu6);
+        miAsignarExamen.setText("Asignar Examen");
+        mExamenes.add(miAsignarExamen);
 
-        jMenu7.setText("Contestar Examen");
-        jMenuBar1.add(jMenu7);
+        jMenuBar1.add(mExamenes);
 
-        jMenu11.setText("Calificaciones");
+        mGrupos.setText("Grupos");
 
-        jMenuItem15.setText("Consultar Calificaciones");
-        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+        miRegistrarGrupo.setText("Registrar Grupo");
+        miRegistrarGrupo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem15ActionPerformed(evt);
+                miRegistrarGrupoActionPerformed(evt);
             }
         });
-        jMenu11.add(jMenuItem15);
+        mGrupos.add(miRegistrarGrupo);
 
-        jMenuBar1.add(jMenu11);
+        miConsultarGrupos.setText("Consultar Grupos");
+        miConsultarGrupos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miConsultarGruposActionPerformed(evt);
+            }
+        });
+        mGrupos.add(miConsultarGrupos);
 
-        jMenu12.setText("Estadísticas");
+        jMenuBar1.add(mGrupos);
 
-        jMenuItem14.setText("Generar Estadísticas");
-        jMenu12.add(jMenuItem14);
+        mContestarExamen.setText("Contestar Examen");
+        jMenuBar1.add(mContestarExamen);
 
-        jMenuBar1.add(jMenu12);
+        mCalificaciones.setText("Calificaciones");
+
+        miConsultarCalificaciones.setText("Consultar Calificaciones");
+        miConsultarCalificaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miConsultarCalificacionesActionPerformed(evt);
+            }
+        });
+        mCalificaciones.add(miConsultarCalificaciones);
+
+        jMenuBar1.add(mCalificaciones);
+
+        mEstadisticas.setText("Estadísticas");
+
+        miGenerarEstadisticas.setText("Generar Estadísticas");
+        mEstadisticas.add(miGenerarEstadisticas);
+
+        jMenuBar1.add(mEstadisticas);
 
         setJMenuBar(jMenuBar1);
 
@@ -365,7 +390,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void miRegistrarTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miRegistrarTemaActionPerformed
         //Mostrar vistaRegistrarTema
         JPanel actual = getVistaActual();
         boolean ok = true;
@@ -379,9 +404,9 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
             ((InterfazVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.RegistrarTema.toString());
         }
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_miRegistrarTemaActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void miConsultarTemasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miConsultarTemasActionPerformed
         //Mostrar vistaConsultarTemas
         JPanel actual = getVistaActual();
         boolean ok = true;
@@ -395,9 +420,9 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
             ((InterfazVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.ConsultarTemas.toString());
         }
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_miConsultarTemasActionPerformed
 
-    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+    private void miRegistrarExamenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miRegistrarExamenActionPerformed
         JPanel actual = getVistaActual();
         boolean ok = true;
         
@@ -411,9 +436,9 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
             ((InterfazVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.RegistrarExamen.toString());
         }
-    }//GEN-LAST:event_jMenuItem9ActionPerformed
+    }//GEN-LAST:event_miRegistrarExamenActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void miRegistrarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miRegistrarCursoActionPerformed
         // TODO add your handling code here:
          JPanel actual = getVistaActual();
         boolean ok = true;
@@ -428,9 +453,9 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
             ((InterfazVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.RegistrarCurso.toString());
         }
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_miRegistrarCursoActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void miConsultarCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miConsultarCursosActionPerformed
         //Mostrar vistaConsultarCursos
         JPanel actual = getVistaActual();
         boolean ok = true;
@@ -444,9 +469,9 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
             ((InterfazVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.ConsultarCursos.toString());
         }
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_miConsultarCursosActionPerformed
 
-    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+    private void miRegistrarGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miRegistrarGrupoActionPerformed
         //Mostrar vistaRegistrarGrupo
         JPanel actual = getVistaActual();
         boolean ok = true;
@@ -460,9 +485,9 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
             ((InterfazVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.RegistrarGrupo.toString());
         }
-    }//GEN-LAST:event_jMenuItem12ActionPerformed
+    }//GEN-LAST:event_miRegistrarGrupoActionPerformed
 
-    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+    private void miConsultarGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miConsultarGruposActionPerformed
          //Mostrar vistaConsultarGrupo
         JPanel actual = getVistaActual();
         boolean ok = true;
@@ -476,9 +501,9 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
             ((InterfazVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.ConsultarGrupo.toString());
         }
-    }//GEN-LAST:event_jMenuItem13ActionPerformed
+    }//GEN-LAST:event_miConsultarGruposActionPerformed
 
-    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+    private void miConsultarCalificacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miConsultarCalificacionesActionPerformed
          //Mostrar vistaConsultarCalificaciones
         JPanel actual = getVistaActual();
         boolean ok = true;
@@ -493,9 +518,9 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
             manejadorVista.show(vistas, Vista.ConsultarCalificaciones
                     .toString());
         }
-    }//GEN-LAST:event_jMenuItem15ActionPerformed
+    }//GEN-LAST:event_miConsultarCalificacionesActionPerformed
 
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+    private void miConsultarExamenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miConsultarExamenesActionPerformed
         //Mostrar vistaConsultarExamenes
         JPanel actual = getVistaActual();
         boolean ok = true;
@@ -510,7 +535,39 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
             manejadorVista.show(vistas, Vista.ConsultarExamenes
                     .toString());
         }
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
+    }//GEN-LAST:event_miConsultarExamenesActionPerformed
+
+    private void miRegistrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miRegistrarUsuarioActionPerformed
+        // TODO add your handling code here:
+        JPanel actual = getVistaActual();
+        boolean ok = true;
+        
+        if(actual.getName().startsWith("Registrar") || actual.getName()
+                .startsWith("Modificar")) {
+            ok = ((InterfazVista)actual).confirmarCambio();
+        }
+        
+        if(ok) {
+            ((InterfazVista)actual).limpiar();
+            manejadorVista.show(vistas, Vista.RegistrarUsuario.toString());
+        }
+    }//GEN-LAST:event_miRegistrarUsuarioActionPerformed
+
+    private void miConsultarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miConsultarUsuariosActionPerformed
+        // TODO add your handling code here:
+        JPanel actual = getVistaActual();
+        boolean ok = true;
+        
+        if(actual.getName().startsWith("Registrar") || actual.getName()
+                .startsWith("Modificar")) {
+            ok = ((InterfazVista)actual).confirmarCambio();
+        }
+        
+        if(ok) {
+            ((InterfazVista)actual).limpiar();
+            manejadorVista.show(vistas, Vista.ConsultarUsuarios.toString());
+        }
+    }//GEN-LAST:event_miConsultarUsuariosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -549,35 +606,35 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
-    private javax.swing.JMenu jMenu11;
-    private javax.swing.JMenu jMenu12;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
-    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
-    private javax.swing.JMenuItem jMenuItem14;
-    private javax.swing.JMenuItem jMenuItem15;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JMenu mCalificaciones;
+    private javax.swing.JMenu mContestarExamen;
+    private javax.swing.JMenu mCursos;
+    private javax.swing.JMenu mEstadisticas;
+    private javax.swing.JMenu mExamenes;
+    private javax.swing.JMenu mGrupos;
+    private javax.swing.JMenu mReactivos;
+    private javax.swing.JMenu mTemas;
+    private javax.swing.JMenu mUsuarios;
+    private javax.swing.JMenuItem miAsignarExamen;
+    private javax.swing.JMenuItem miConsultarCalificaciones;
+    private javax.swing.JMenuItem miConsultarCursos;
+    private javax.swing.JMenuItem miConsultarExamenes;
+    private javax.swing.JMenuItem miConsultarGrupos;
+    private javax.swing.JMenuItem miConsultarReactivos;
+    private javax.swing.JMenuItem miConsultarTemas;
+    private javax.swing.JMenuItem miConsultarUsuarios;
+    private javax.swing.JMenuItem miGenerarEstadisticas;
+    private javax.swing.JMenuItem miRegistrarCurso;
+    private javax.swing.JMenuItem miRegistrarExamen;
+    private javax.swing.JMenuItem miRegistrarGrupo;
+    private javax.swing.JMenuItem miRegistrarReactivo;
+    private javax.swing.JMenuItem miRegistrarTema;
+    private javax.swing.JMenuItem miRegistrarUsuario;
     private javax.swing.JPanel vistas;
     // End of variables declaration//GEN-END:variables
 

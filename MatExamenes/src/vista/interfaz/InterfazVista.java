@@ -22,7 +22,8 @@ public interface InterfazVista {
         HOME, RegistrarTema, ConsultarTemas, ModificarTema,
         RegistrarCurso, ConsultarCursos, ModificarCurso, RegistrarGrupo,
         ConsultarGrupo, ModificarGrupo, RegistrarExamen, ConsultarExamenes,
-        ModificarExamen, ConsultarCalificaciones, ConsultarCalificacionesExamen
+        ModificarExamen, ConsultarCalificaciones, ConsultarCalificacionesExamen,
+        RegistrarUsuario,ConsultarUsuarios
     }
     
     /**
