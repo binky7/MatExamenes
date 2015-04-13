@@ -68,14 +68,14 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "Apellido Paterno", "Apellido Materno", "Usuario", "Tipo Usuario", "[x]"
+                "[x]", "Nombre", "Apellido Paterno", "Apellido Materno", "Usuario", "Tipo Usuario"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true
+                true, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
