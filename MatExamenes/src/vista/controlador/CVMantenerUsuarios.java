@@ -15,6 +15,7 @@ import modelo.dto.UsuarioDTO;
  */
 public class CVMantenerUsuarios {
     private final MantenerUsuariosDELEGATE mantenerUsuariosDELEGATE;
+    private List<UsuarioDTO> usuarios;
     
     
     public CVMantenerUsuarios(){
@@ -27,8 +28,24 @@ public class CVMantenerUsuarios {
     }
     
     public List<UsuarioDTO> obtenerUsuariosPorApellido(String apellido){
-        List<UsuarioDTO> usuarios;
         usuarios = mantenerUsuariosDELEGATE.obtenerUsuariosPorApellido(apellido);
         return usuarios;
     }
+    
+    public boolean modificarUsuario(UsuarioDTO usuario){
+        boolean ok;
+        ok = mantenerUsuariosDELEGATE.modificarUsuario(usuario);
+        return ok;
+    }
+    
+    public boolean eliminarUsuario(UsuarioDTO usuario){
+        boolean ok;
+        ok = mantenerUsuariosDELEGATE.eliminarUsuario(usuario);
+        return ok;
+    }
+    
+    public List<UsuarioDTO> obtenerUsuariosBuscados(){
+        return usuarios;
+    }
+
 }

@@ -33,21 +33,6 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
         this.cvMantenerUsuarios = cvMantenerUsuarios;
     }
     
-    @Override
-    public void limpiar(){
-        txtfNombre.setText("");
-        txtfApellidoPaterno.setText("");
-        txtfApellidoMaterno.setText("");
-        txtpPassword.setText("");
-        txtfUsuario.setText("");
-        if(rbtnAlumno.isSelected()){
-            rbtnAlumno.setSelected(false);
-        } else {
-            rbtnMaestro.setSelected(false);
-        }
-        
-    }
-
     public UsuarioDTO encapsularUsuario(){
         UsuarioDTO usuario = new UsuarioDTO();
         
@@ -257,6 +242,21 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
     private javax.swing.JPasswordField txtpPassword;
     // End of variables declaration//GEN-END:variables
 
+    @Override
+    public void limpiar(){
+        txtfNombre.setText("");
+        txtfApellidoPaterno.setText("");
+        txtfApellidoMaterno.setText("");
+        txtpPassword.setText("");
+        txtfUsuario.setText("");
+        if(rbtnAlumno.isSelected()){
+            rbtnAlumno.setSelected(false);
+        } else {
+            rbtnMaestro.setSelected(false);
+        }
+        
+    }
+    
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

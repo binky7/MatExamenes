@@ -42,6 +42,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
     private VistaConsultarCalificacionesExamen vistaConsultarCalificacionesExamen;
     private VistaRegistrarUsuario vistaRegistrarUsuario;
     private VistaConsultarUsuarios vistaConsultarUsuarios;
+    private VistaModificarUsuario vistaModificarUsuario;
     
     /**
      * Creates new form Principal
@@ -101,6 +102,8 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaRegistrarUsuario.setName(Vista.RegistrarUsuario.toString());
         vistaConsultarUsuarios = new VistaConsultarUsuarios();
         vistaConsultarUsuarios.setName(Vista.ConsultarUsuarios.toString());
+        vistaModificarUsuario = new VistaModificarUsuario();
+        vistaModificarUsuario.setName(Vista.ModificarUsuario.toString());
         
         //Crear controladores vistas
         CVMantenerTemas cvMantenerTemas = new CVMantenerTemas();
@@ -122,6 +125,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
                 .setControlador(cvConsultarCalificaciones);
         vistaRegistrarUsuario.setControlador(cvMantenerUsuarios);
         vistaConsultarUsuarios.setControlador(cvMantenerUsuarios);
+        vistaModificarUsuario.setControlador(cvMantenerUsuarios);
         
         //Asignar padre a vistas
         vistaRegistrarTema.setPadre(this);
@@ -138,6 +142,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaConsultarCalificacionesExamen.setPadre(this);
         vistaRegistrarUsuario.setPadre(this);
         vistaConsultarUsuarios.setPadre(this);
+        vistaModificarUsuario.setPadre(this);
         
         //Agregar un panel y su identificador. Para agregar mas identificadores
         //ir a vista.interfaz.InterfazVista y agregarlos al enum Vista
@@ -159,6 +164,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
                 .ConsultarCalificacionesExamen.toString());
         vistas.add(vistaRegistrarUsuario, Vista.RegistrarUsuario.toString());
         vistas.add(vistaConsultarUsuarios, Vista.ConsultarUsuarios.toString());
+        vistas.add(vistaModificarUsuario, Vista.ModificarUsuario.toString());
     }
     
     /**
@@ -628,6 +634,9 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
     @Override
     public void mostrarVista(Vista vista) {
         //Muestra la vista consultar necesaria
+        if(vista.toString().compareTo(vista.ConsultarUsuarios.toString()) == 0){
+            vistaConsultarUsuarios.chicanada();
+        }
         manejadorVista.show(vistas, vista.toString());
     }
 
