@@ -15,12 +15,12 @@ import vista.interfaz.InterfazVista;
  * @author Alf
  */
 public class VistaModificarUsuario extends javax.swing.JPanel implements
-        InterfazVista{
+        InterfazVista {
 
     private CVMantenerUsuarios cvMantenerUsuarios;
     private InterfazVista padre;
     private UsuarioDTO usuario;
-    
+
     /**
      * Creates new form VistaModificarUsuario2
      */
@@ -28,24 +28,25 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         initComponents();
     }
 
-    public void setPadre(InterfazVista padre){
+    public void setPadre(InterfazVista padre) {
         this.padre = padre;
     }
-    
-    public void setControlador(CVMantenerUsuarios cvMantenerUsuarios){
+
+    public void setControlador(CVMantenerUsuarios cvMantenerUsuarios) {
         this.cvMantenerUsuarios = cvMantenerUsuarios;
     }
-    
-    public UsuarioDTO encapsularUsuario(){
-        
+
+    public UsuarioDTO encapsularUsuario() {
+
         usuario.setApellidoMaterno(txtfApellidoMaterno.getText());
         usuario.setApellidoPaterno(txtfApellidoPaterno.getText());
         usuario.setNombre(txtfNombre.getText());
         usuario.setUsuario(txtfUsuario.getText());
         usuario.setPassword(txtfPassword.getText());
-        
+
         return usuario;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -163,13 +164,16 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         boolean ok;
         encapsularUsuario();
         ok = cvMantenerUsuarios.modificarUsuario(usuario);
-        if(ok){
+        if (ok) {
             JOptionPane.showMessageDialog(this, "Usuario Modificado");
+            padre.mostrarVistaConEntidad(cvMantenerUsuarios.obtenerUsuariosBuscados(),
+                    Vista.ConsultarUsuarios);
+
         } else {
             JOptionPane.showMessageDialog(this, "Usuario No Modificado");
+            padre.mostrarVista(Vista.ConsultarUsuarios);
         }
-        
-        padre.mostrarVista(Vista.ConsultarUsuarios);
+
     }//GEN-LAST:event_btnModificiarActionPerformed
 
 
@@ -201,7 +205,7 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
     @Override
     public void mostrarEntidad(Object entidad) {
         usuario = (UsuarioDTO) entidad;
-        
+
         txtfApellidoMaterno.setText(usuario.getApellidoMaterno());
         txtfApellidoPaterno.setText(usuario.getApellidoPaterno());
         txtfNombre.setText(usuario.getNombre());
