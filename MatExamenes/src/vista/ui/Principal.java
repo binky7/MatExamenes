@@ -10,6 +10,7 @@ import java.awt.Component;
 import javax.swing.JPanel;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVConsultarCalificaciones;
+import vista.controlador.CVMantenerCursos;
 import vista.controlador.CVMantenerGrupos;
 import vista.controlador.CVMantenerTemas;
 import vista.controlador.CVMantenerUsuarios;
@@ -104,6 +105,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         
         //Crear controladores vistas
         CVMantenerTemas cvMantenerTemas = new CVMantenerTemas();
+        CVMantenerCursos cvMantenerCursos = new CVMantenerCursos();
         CVMantenerGrupos cvMantenerGrupos = new CVMantenerGrupos();
         CVConsultarCalificaciones cvConsultarCalificaciones =
                 new CVConsultarCalificaciones();
@@ -114,6 +116,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaRegistrarTema.setControlador(cvMantenerTemas);
         vistaModificarTema.setControlador(cvMantenerTemas);
         vistaConsultarTemas.setControlador(cvMantenerTemas);
+        vistaRegistrarCurso.setControlador(cvMantenerCursos);
         vistaRegistrarGrupo.setControlador(cvMantenerGrupos);
         vistaConsultarGrupo.setControlador(cvMantenerGrupos);
         vistaModificarGrupo.setControlador(cvMantenerGrupos);
@@ -126,6 +129,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         //Asignar padre a vistas
         vistaRegistrarTema.setPadre(this);
         vistaModificarTema.setPadre(this);
+        vistaRegistrarCurso.setPadre(this);
         vistaConsultarTemas.setPadre(this);
         vistaConsultarCursos.setPadre(this);
         vistaRegistrarGrupo.setPadre(this);
