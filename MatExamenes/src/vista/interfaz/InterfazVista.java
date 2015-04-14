@@ -23,7 +23,7 @@ public interface InterfazVista {
         RegistrarCurso, ConsultarCursos, ModificarCurso, RegistrarGrupo,
         ConsultarGrupo, ModificarGrupo, RegistrarExamen, ConsultarExamenes,
         ModificarExamen, ConsultarCalificaciones, ConsultarCalificacionesExamen,
-        RegistrarUsuario,ConsultarUsuarios
+        RegistrarUsuario,ConsultarUsuarios,ModificarUsuario
     }
     
     /**

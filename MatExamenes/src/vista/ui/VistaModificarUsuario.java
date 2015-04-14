@@ -5,12 +5,22 @@
  */
 package vista.ui;
 
+import javax.swing.JOptionPane;
+import modelo.dto.UsuarioDTO;
+import vista.controlador.CVMantenerUsuarios;
+import vista.interfaz.InterfazVista;
+
 /**
  *
  * @author Alf
  */
-public class VistaModificarUsuario extends javax.swing.JPanel {
+public class VistaModificarUsuario extends javax.swing.JPanel implements
+        InterfazVista{
 
+    private CVMantenerUsuarios cvMantenerUsuarios;
+    private InterfazVista padre;
+    private UsuarioDTO usuario;
+    
     /**
      * Creates new form VistaModificarUsuario2
      */
@@ -18,6 +28,24 @@ public class VistaModificarUsuario extends javax.swing.JPanel {
         initComponents();
     }
 
+    public void setPadre(InterfazVista padre){
+        this.padre = padre;
+    }
+    
+    public void setControlador(CVMantenerUsuarios cvMantenerUsuarios){
+        this.cvMantenerUsuarios = cvMantenerUsuarios;
+    }
+    
+    public UsuarioDTO encapsularUsuario(){
+        
+        usuario.setApellidoMaterno(txtfApellidoMaterno.getText());
+        usuario.setApellidoPaterno(txtfApellidoPaterno.getText());
+        usuario.setNombre(txtfNombre.getText());
+        usuario.setUsuario(txtfUsuario.getText());
+        usuario.setPassword(txtfPassword.getText());
+        
+        return usuario;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,12 +59,12 @@ public class VistaModificarUsuario extends javax.swing.JPanel {
         lblApellidoPaterno = new javax.swing.JLabel();
         lblApellidoMaterno = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
-        lblContrasena = new javax.swing.JLabel();
+        lblPassword = new javax.swing.JLabel();
         txtfNombre = new javax.swing.JTextField();
         txtfApellidoPaterno = new javax.swing.JTextField();
         txtfApellidoMaterno = new javax.swing.JTextField();
         txtfUsuario = new javax.swing.JTextField();
-        txtfContrasena = new javax.swing.JTextField();
+        txtfPassword = new javax.swing.JTextField();
         lblTitulo = new javax.swing.JLabel();
         btnModificiar = new javax.swing.JButton();
 
@@ -48,27 +76,27 @@ public class VistaModificarUsuario extends javax.swing.JPanel {
 
         lblUsuario.setText("Usuario:");
 
-        lblContrasena.setText("Contraseña:");
+        lblPassword.setText("Password:");
 
-        txtfNombre.setPreferredSize(new java.awt.Dimension(100, 20));
+        txtfNombre.setPreferredSize(new java.awt.Dimension(100, 25));
 
-        txtfApellidoPaterno.setPreferredSize(new java.awt.Dimension(100, 20));
+        txtfApellidoPaterno.setPreferredSize(new java.awt.Dimension(100, 25));
 
-        txtfApellidoMaterno.setPreferredSize(new java.awt.Dimension(100, 20));
-        txtfApellidoMaterno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtfApellidoMaternoActionPerformed(evt);
-            }
-        });
+        txtfApellidoMaterno.setPreferredSize(new java.awt.Dimension(100, 25));
 
-        txtfUsuario.setPreferredSize(new java.awt.Dimension(100, 20));
+        txtfUsuario.setPreferredSize(new java.awt.Dimension(100, 25));
 
-        txtfContrasena.setPreferredSize(new java.awt.Dimension(100, 20));
+        txtfPassword.setPreferredSize(new java.awt.Dimension(100, 25));
 
         lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         lblTitulo.setText("Modificar Usuario");
 
         btnModificiar.setText("Modificar");
+        btnModificiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificiarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -86,14 +114,14 @@ public class VistaModificarUsuario extends javax.swing.JPanel {
                                     .addComponent(lblApellidoPaterno)
                                     .addComponent(lblApellidoMaterno)
                                     .addComponent(lblUsuario)
-                                    .addComponent(lblContrasena))
+                                    .addComponent(lblPassword))
                                 .addGap(129, 129, 129)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtfNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtfUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtfContrasena, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(txtfPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(227, 227, 227))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(lblTitulo)
@@ -122,31 +150,81 @@ public class VistaModificarUsuario extends javax.swing.JPanel {
                     .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblContrasena)
-                    .addComponent(txtfContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblPassword)
+                    .addComponent(txtfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(76, 76, 76)
                 .addComponent(btnModificiar)
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtfApellidoMaternoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtfApellidoMaternoActionPerformed
+    private void btnModificiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificiarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtfApellidoMaternoActionPerformed
+        boolean ok;
+        encapsularUsuario();
+        ok = cvMantenerUsuarios.modificarUsuario(usuario);
+        if(ok){
+            JOptionPane.showMessageDialog(this, "Usuario Modificado");
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuario No Modificado");
+        }
+        
+        padre.mostrarVista(Vista.ConsultarUsuarios);
+    }//GEN-LAST:event_btnModificiarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnModificiar;
     private javax.swing.JLabel lblApellidoMaterno;
     private javax.swing.JLabel lblApellidoPaterno;
-    private javax.swing.JLabel lblContrasena;
     private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JTextField txtfApellidoMaterno;
     private javax.swing.JTextField txtfApellidoPaterno;
-    private javax.swing.JTextField txtfContrasena;
     private javax.swing.JTextField txtfNombre;
+    private javax.swing.JTextField txtfPassword;
     private javax.swing.JTextField txtfUsuario;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarVista(Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarEntidad(Object entidad) {
+        usuario = (UsuarioDTO) entidad;
+        
+        txtfApellidoMaterno.setText(usuario.getApellidoMaterno());
+        txtfApellidoPaterno.setText(usuario.getApellidoPaterno());
+        txtfNombre.setText(usuario.getNombre());
+        txtfPassword.setText(usuario.getPassword());
+        txtfUsuario.setText(usuario.getUsuario());
+    }
+
+    @Override
+    public boolean confirmarCambio() {
+        return true;
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void limpiar() {
+        txtfApellidoMaterno.setText("");
+        txtfApellidoPaterno.setText("");
+        txtfNombre.setText("");
+        txtfUsuario.setText("");
+        txtfPassword.setText("");
+    }
 }

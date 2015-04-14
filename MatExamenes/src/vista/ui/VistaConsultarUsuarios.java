@@ -6,6 +6,8 @@
 package vista.ui;
 
 import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerUsuarios;
 import vista.interfaz.InterfazVista;
@@ -14,24 +16,30 @@ import vista.interfaz.InterfazVista;
  *
  * @author Alf
  */
-public class VistaConsultarUsuarios extends javax.swing.JPanel implements InterfazVista{
+public class VistaConsultarUsuarios extends javax.swing.JPanel implements InterfazVista {
 
     private CVMantenerUsuarios cvMantenerUsuarios;
     private InterfazVista padre;
+    private DefaultTableModel dtm;
+    private boolean modificado;
+
     /**
      * Creates new form VistaConsultarUsuario2
      */
     public VistaConsultarUsuarios() {
         initComponents();
+        dtm = (DefaultTableModel) tblUsuarios.getModel();
+        modificado = false;
     }
 
-    public void setPadre(InterfazVista padre){
+    public void setPadre(InterfazVista padre) {
         this.padre = padre;
     }
-    
-    public void setControlador(CVMantenerUsuarios cvMantenerUsuarios){
+
+    public void setControlador(CVMantenerUsuarios cvMantenerUsuarios) {
         this.cvMantenerUsuarios = cvMantenerUsuarios;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,7 +51,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
 
         btnBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblCoincidenciasUsuarios = new javax.swing.JTable();
+        tblUsuarios = new javax.swing.JTable();
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
@@ -59,23 +67,19 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
             }
         });
 
-        tblCoincidenciasUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+        tblUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
-                "[x]", "Nombre", "Apellido Paterno", "Apellido Materno", "Usuario", "Tipo Usuario"
+                "Nombre", "Apellido Paterno", "Apellido Materno", "Usuario", "Tipo Usuario", "[x]"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false
+                false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -86,7 +90,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tblCoincidenciasUsuarios);
+        jScrollPane1.setViewportView(tblUsuarios);
 
         btnModificar.setText("Modificar");
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
@@ -96,6 +100,11 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         });
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         lblTitulo.setText("Consultar Usuario");
@@ -124,9 +133,9 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
                 .addContainerGap(138, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnModificar)
-                        .addGap(35, 35, 35)
-                        .addComponent(btnEliminar))
+                        .addComponent(btnEliminar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnModificar))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(117, 117, 117))
         );
@@ -152,19 +161,57 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
+        int i = tblUsuarios.getSelectedRow();
+        UsuarioDTO usuario = cvMantenerUsuarios.obtenerUsuariosBuscados().get(i);
+        padre.mostrarVistaConEntidad(usuario, Vista.ModificarUsuario);
+        modificado = true;
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
+        dtm.setRowCount(0);
         List<UsuarioDTO> usuarios;
-        usuarios = 
-                cvMantenerUsuarios.obtenerUsuariosPorApellido(txtfApellidoPaterno.getText());
-        UsuarioDTO prueba = usuarios.get(0);
-        System.out.println(prueba.getApellidoMaterno());
-        System.out.println(prueba.getPassword());
-        System.out.println(prueba.getUsuario());
-        
+        usuarios
+                = cvMantenerUsuarios.obtenerUsuariosPorApellido(txtfApellidoPaterno.getText());
+
+        Object datos[] = new Object[6];
+
+        for (UsuarioDTO usuario : usuarios) {
+            datos[0] = usuario.getNombre();
+            datos[1] = usuario.getApellidoPaterno();
+            datos[2] = usuario.getApellidoMaterno();
+            datos[3] = usuario.getUsuario();
+            datos[4] = usuario.getTipo().toString();
+            datos[5] = false;
+
+            dtm.addRow(datos);
+        }
+//        UsuarioDTO prueba = usuarios.get(0);
+//        System.out.println(prueba.getApellidoMaterno());
+//        System.out.println(prueba.getPassword());
+//        System.out.println(prueba.getUsuario());
+
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        int i = tblUsuarios.getSelectedRow();
+        UsuarioDTO usuario = cvMantenerUsuarios.obtenerUsuariosBuscados().get(i);
+
+        int opcion = JOptionPane.showConfirmDialog(this, "Seguro que desea eliminar al usuario: "
+                + usuario.getUsuario(), "Eliminar", JOptionPane.YES_NO_OPTION);
+        if (opcion == JOptionPane.YES_OPTION) {
+            boolean ok = cvMantenerUsuarios.eliminarUsuario(usuario);
+            if(ok){
+                JOptionPane.showMessageDialog(this, "Usuario Eliminado");
+                btnBuscar.doClick();
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario no Eliminado");
+            }
+        } else {
+
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -174,10 +221,17 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblApellidoPaterno;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JTable tblCoincidenciasUsuarios;
+    private javax.swing.JTable tblUsuarios;
     private javax.swing.JTextField txtfApellidoPaterno;
     // End of variables declaration//GEN-END:variables
 
+    public void chicanada(){
+        if(modificado){
+            btnBuscar.doClick();
+            modificado = false;
+        }
+    }
+    
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -195,7 +249,8 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
 
     @Override
     public boolean confirmarCambio() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        return true;
     }
 
     @Override
