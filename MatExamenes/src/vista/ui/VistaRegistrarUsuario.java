@@ -50,11 +50,14 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
 
     public UsuarioDTO encapsularUsuario(){
         UsuarioDTO usuario = new UsuarioDTO();
+        //Falta validar los camposs!!! Fijate en Validador en vista.controlador
+        char[] pass = txtpPassword.getPassword();
+        String password = new String(pass);
         
         usuario.setApellidoMaterno(txtfApellidoMaterno.getText());
         usuario.setApellidoPaterno(txtfApellidoPaterno.getText());
         usuario.setNombre(txtfNombre.getText());
-        usuario.setPassword(txtpPassword.getText());
+        usuario.setPassword(password);
         usuario.setUsuario(txtfUsuario.getText());
         
         if(rbtnAlumno.isSelected()){
