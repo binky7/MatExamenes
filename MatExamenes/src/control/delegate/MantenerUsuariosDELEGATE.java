@@ -40,4 +40,25 @@ public class MantenerUsuariosDELEGATE {
         return usuarios;
     }
     
+    public boolean modificarUsuario(UsuarioDTO usuario){
+        boolean ok = false;
+        try{
+            ok = Enlace.getPersistencia().modificarEntidad(usuario);
+        }catch(RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+        
+        return ok;
+    }
+    
+    public boolean eliminarUsuario(UsuarioDTO usuario){
+        boolean ok = false;
+        try{
+            ok = Enlace.getPersistencia().eliminarEntidad(usuario);
+        }catch(RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+        return ok;
+    }
+    
 }
