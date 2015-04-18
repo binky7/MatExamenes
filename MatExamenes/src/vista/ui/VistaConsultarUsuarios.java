@@ -169,11 +169,15 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
-        dtm.setRowCount(0);
         List<UsuarioDTO> usuarios;
         usuarios
                 = cvMantenerUsuarios.obtenerUsuariosPorApellido(txtfApellidoPaterno.getText());
 
+        mostrarDatosTabla(usuarios);
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void mostrarDatosTabla(List<UsuarioDTO> usuarios) {
+        dtm.setRowCount(0);
         Object datos[] = new Object[6];
 
         for (UsuarioDTO usuario : usuarios) {
@@ -186,12 +190,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
 
             dtm.addRow(datos);
         }
-//        UsuarioDTO prueba = usuarios.get(0);
-//        System.out.println(prueba.getApellidoMaterno());
-//        System.out.println(prueba.getPassword());
-//        System.out.println(prueba.getUsuario());
-
-    }//GEN-LAST:event_btnBuscarActionPerformed
+    }
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
@@ -202,7 +201,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
                 + usuario.getUsuario(), "Eliminar", JOptionPane.YES_NO_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {
             boolean ok = cvMantenerUsuarios.eliminarUsuario(usuario);
-            if(ok){
+            if (ok) {
                 JOptionPane.showMessageDialog(this, "Usuario Eliminado");
                 btnBuscar.doClick();
             } else {
@@ -225,16 +224,16 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
     private javax.swing.JTextField txtfApellidoPaterno;
     // End of variables declaration//GEN-END:variables
 
-    public void chicanada(){
-        if(modificado){
+    public void chicanada() {
+        if (modificado) {
             btnBuscar.doClick();
             modificado = false;
         }
     }
-    
+
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -244,12 +243,13 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
 
     @Override
     public void mostrarEntidad(Object entidad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<UsuarioDTO> usuarios = (List<UsuarioDTO>) entidad;
+        mostrarDatosTabla(usuarios);
     }
 
     @Override
     public boolean confirmarCambio() {
-        
+
         return true;
     }
 

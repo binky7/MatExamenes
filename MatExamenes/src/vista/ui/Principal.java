@@ -639,10 +639,6 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
 
     @Override
     public void mostrarVista(Vista vista) {
-        //Muestra la vista consultar necesaria
-        if(vista.toString().compareTo(vista.ConsultarUsuarios.toString()) == 0){
-            vistaConsultarUsuarios.chicanada();
-        }
         manejadorVista.show(vistas, vista.toString());
     }
 

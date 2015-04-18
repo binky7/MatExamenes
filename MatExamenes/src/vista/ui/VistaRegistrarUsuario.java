@@ -39,7 +39,8 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
         usuario.setApellidoMaterno(txtfApellidoMaterno.getText());
         usuario.setApellidoPaterno(txtfApellidoPaterno.getText());
         usuario.setNombre(txtfNombre.getText());
-        usuario.setPassword(txtpPassword.getText());
+        char pass[] = txtpPassword.getPassword();
+        usuario.setPassword(String.valueOf(pass));
         usuario.setUsuario(txtfUsuario.getText());
         
         if(rbtnAlumno.isSelected()){
