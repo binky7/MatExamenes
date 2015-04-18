@@ -71,7 +71,6 @@ implements AncestorListener, FocusListener, InterfazVista{
     }
     
     private void mostrarTemas(List<TemaDTO> temasSinAsignar) {
-        System.out.println("Estoy mostrando temas.");
         DefaultListModel listModelTemasSinAsignar = 
                 (DefaultListModel) lstTemasSinAsignar.getModel();
         
@@ -277,7 +276,7 @@ implements AncestorListener, FocusListener, InterfazVista{
         // TODO add your handling code here:
         CursoDTO curso = encapsularCurso();
         if(curso == null) {
-            JOptionPane.showMessageDialog(this, "Ingrese un nombre válido.");
+            JOptionPane.showMessageDialog(this, "Datos faltantes.");
         } else {
             Integer id = controlVista.guardarCurso(curso);
             if(id != null) {
@@ -368,11 +367,9 @@ implements AncestorListener, FocusListener, InterfazVista{
         JTextField src = (JTextField)e.getSource();
         
         String nombreCurso = src.getText();
-        System.out.println(nombreCurso);
         if(Validador.esCurso(nombreCurso)) {
             boolean ok = controlVista.verificarExistencia(nombreCurso);
-            System.out.println(ok);
-            
+
             if(ok) {
                 JOptionPane.showMessageDialog(this, "Ya existe un curso con ese nombre.");
             }

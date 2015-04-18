@@ -75,8 +75,10 @@ public class CVMantenerCursos {
     public Integer guardarCurso(CursoDTO objCurso) {
         Integer id = null;
         if(curso != null) {
-            curso.setNombre(objCurso.getNombre());
-            id = mantenerCursosDELEGATE.guardarCurso(curso);
+            if(curso.getTemas() != null && !curso.getTemas().isEmpty()) {
+                curso.setNombre(objCurso.getNombre());
+                id = mantenerCursosDELEGATE.guardarCurso(curso);
+            }
         }
         
         return id;
@@ -85,5 +87,12 @@ public class CVMantenerCursos {
     public void liberarMemoriaRegistrarModificar() {
         curso = null;
         temasSinAsignar = null;
+    }
+    
+    public List<CursoDTO> obtenerCursos() {
+        List<CursoDTO> listaCursos = mantenerCursosDELEGATE.obtenerCursos();
+        cursos = listaCursos;
+        
+        return listaCursos;
     }
 }

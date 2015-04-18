@@ -120,6 +120,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaModificarTema.setControlador(cvMantenerTemas);
         vistaConsultarTemas.setControlador(cvMantenerTemas);
         vistaRegistrarCurso.setControlador(cvMantenerCursos);
+        vistaConsultarCursos.setControlador(cvMantenerCursos);
         vistaRegistrarGrupo.setControlador(cvMantenerGrupos);
         vistaConsultarGrupo.setControlador(cvMantenerGrupos);
         vistaModificarGrupo.setControlador(cvMantenerGrupos);
@@ -134,6 +135,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaRegistrarTema.setPadre(this);
         vistaModificarTema.setPadre(this);
         vistaRegistrarCurso.setPadre(this);
+        vistaConsultarCursos.setPadre(this);
         vistaConsultarTemas.setPadre(this);
         vistaConsultarCursos.setPadre(this);
         vistaRegistrarGrupo.setPadre(this);

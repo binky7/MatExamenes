@@ -56,4 +56,16 @@ public class MantenerCursosDELEGATE {
         
         return id;
     }
+    
+    public List<CursoDTO> obtenerCursos() {
+        List<CursoDTO> cursos = null;
+        
+        try {
+            cursos = Enlace.getPersistencia().obtenerEntidades(CursoDTO.class);
+        } catch(RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+        
+        return cursos;
+    }
 }

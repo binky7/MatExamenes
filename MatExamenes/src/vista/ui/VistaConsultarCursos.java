@@ -12,6 +12,7 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import modelo.dto.CursoDTO;
 import modelo.dto.UsuarioDTO;
+import vista.controlador.CVMantenerCursos;
 import vista.interfaz.InterfazVista;
 
 /**
@@ -19,22 +20,50 @@ import vista.interfaz.InterfazVista;
  * @author Jesus Donaldo
  */
 public class VistaConsultarCursos extends javax.swing.JPanel implements 
-        InterfazVista{
+        AncestorListener, InterfazVista{
 
+    private CVMantenerCursos controlVista;
     private InterfazVista padre;
     /**
      * Creates new form ConsultarCursos
      */
     public VistaConsultarCursos() {
         initComponents();
+        this.addAncestorListener(this);
+        
+        lstCursos.setModel(new DefaultListModel());
+        
+        lstCursos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
         int x =0;
     }
     
+    @Override
     public void limpiar() {}
 
     public void setPadre(InterfazVista padre) {
         this.padre = padre;
+    }
+    
+    public void setControlador(CVMantenerCursos controlVista) {
+        this.controlVista = controlVista;
+    }
+    
+    public void consultarCursos() {
+        List<CursoDTO> cursos = controlVista.obtenerCursos();
+        
+        if(cursos != null && !cursos.isEmpty()) {
+            mostrarCursos(cursos);
+        }
+    }
+    
+    private void mostrarCursos(List<CursoDTO> cursos) {
+        DefaultListModel listModelCursos = 
+                (DefaultListModel) lstCursos.getModel();
+        
+        for(CursoDTO curso : cursos) {
+            listModelCursos.addElement(curso.getNombre());
+        }
     }
 
 
@@ -50,8 +79,8 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         jScrollPane3 = new javax.swing.JScrollPane();
         lstCursos = new javax.swing.JList();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
 
         lstCursos.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -61,30 +90,29 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         jScrollPane3.setViewportView(lstCursos);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel3.setText("Cursos");
+        jLabel3.setText("Consultar Cursos");
 
-        jButton1.setText("Modificar");
+        btnModificar.setText("Modificar");
 
-        jButton2.setText("Eliminar");
+        btnEliminar.setText("Eliminar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(324, 324, 324))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(302, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(293, 293, 293))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(359, 359, 359))))
+                .addGap(292, 292, 292)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnModificar)
+                        .addGap(66, 66, 66)
+                        .addComponent(btnEliminar))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -95,16 +123,16 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btnModificar)
+                    .addComponent(btnEliminar))
                 .addContainerGap(165, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList lstCursos;
@@ -134,5 +162,24 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
     @Override
     public UsuarioDTO obtenerUsuarioActual() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void ancestorAdded(AncestorEvent event) {
+        if(isShowing()) {
+            if(((DefaultListModel)lstCursos.getModel()).isEmpty()) {
+                consultarCursos();
+            }
+        }
+    }
+
+    @Override
+    public void ancestorRemoved(AncestorEvent event) {
+        //No implementado
+    }
+
+    @Override
+    public void ancestorMoved(AncestorEvent event) {
+        //No implementado
     }
 }
