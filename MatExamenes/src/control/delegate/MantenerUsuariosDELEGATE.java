@@ -61,4 +61,16 @@ public class MantenerUsuariosDELEGATE {
         return ok;
     }
     
+    public boolean obtenerUsuario(String usuario){
+        boolean ok = false;
+            try{
+            if(Enlace.getPersistencia().obtenerUsuario(usuario) == null){
+                ok = true;
+            }
+        }catch(RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+        return ok;
+    }
+    
 }

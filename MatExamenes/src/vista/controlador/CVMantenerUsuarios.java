@@ -47,5 +47,16 @@ public class CVMantenerUsuarios {
     public List<UsuarioDTO> obtenerUsuariosBuscados(){
         return usuarios;
     }
+    /**
+     * valida si el usuario esta registrado en la BD
+     * @param usuario
+     * @return 
+     * retorna verdadero si el usuario no exite
+     */
+    public boolean validarUsuario(String usuario){
+        boolean ok;
+        ok = mantenerUsuariosDELEGATE.obtenerUsuario(usuario);
+        return ok;
+    }
 
 }

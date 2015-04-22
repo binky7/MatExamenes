@@ -5,6 +5,16 @@
  */
 package vista.ui;
 
+import java.awt.Color;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.border.Border;
+import modelo.dto.UsuarioDTO;
+import vista.controlador.CVLogin;
+import vista.controlador.Validador;
+
+import static modelo.dto.UsuarioDTO.Tipo;
+
 /**
  *
  * @author Jesus Donaldo
@@ -12,12 +22,19 @@ package vista.ui;
 public class VistaLogin extends javax.swing.JFrame {
 
     Principal p;
+    private CVLogin cvLogin;
+    private final Border bordeOriginal;
+    private final Border bordeMal;
+
     /**
      * Creates new form VistaLogin
      */
     public VistaLogin() {
         initComponents();
         p = new Principal();
+        bordeOriginal = txtfUsuario.getBorder();
+        bordeMal = BorderFactory.createLineBorder(Color.red);
+        cvLogin = new CVLogin();
     }
 
     /**
@@ -29,43 +46,143 @@ public class VistaLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        btnLogin = new javax.swing.JButton();
+        txtfUsuario = new javax.swing.JTextField();
+        lblUsuario = new javax.swing.JLabel();
+        lblPassword = new javax.swing.JLabel();
+        txtpPassword = new javax.swing.JPasswordField();
+        lblTitulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Login");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnLogin.setText("Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                login(evt);
+                btnLogin(evt);
             }
         });
+
+        txtfUsuario.setPreferredSize(new java.awt.Dimension(100, 30));
+
+        lblUsuario.setText("Usuario:");
+
+        lblPassword.setText("Password:");
+
+        txtpPassword.setPreferredSize(new java.awt.Dimension(100, 25));
+
+        lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        lblTitulo.setText("Login");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(633, Short.MAX_VALUE)
-                .addComponent(jButton1)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(633, Short.MAX_VALUE)
+                        .addComponent(btnLogin))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(236, 236, 236)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblUsuario)
+                                    .addComponent(lblPassword))
+                                .addGap(90, 90, 90)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(324, 324, 324)
+                                .addComponent(lblTitulo)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(446, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addGap(69, 69, 69)
+                .addComponent(lblTitulo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblUsuario))
+                .addGap(53, 53, 53)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPassword)
+                    .addComponent(txtpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(173, 173, 173)
+                .addComponent(btnLogin)
                 .addGap(31, 31, 31))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void login(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login
-        p.setUsuarioActual(null);
-        p.setVistaAdmin();
-        p.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_login
+    private void btnLogin(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogin
+        UsuarioDTO usuario;
+        usuario = encapsularUsuario();
+        if (usuario == null) {
+            JOptionPane.showMessageDialog(this, "Datos incorrectos, porfavor "
+                    + "sólo ingresa números y letras");
+        } else {
+            int error = cvLogin.validarCredenciales(usuario);
+            if (error == -1) {
+                UsuarioDTO usuarioValido = cvLogin.obtenerUsuarioValidado();
+                JOptionPane.showMessageDialog(this, "Bienvenido "
+                        + usuarioValido.getNombre());
+                p.setUsuarioActual(usuarioValido);
+                Tipo tipo = usuarioValido.getTipo();
+                if (tipo == Tipo.Admin) {
+                    p.setVistaAdmin();
+                } else if (tipo == Tipo.Alumno) {
+                    p.setVistaAlumno();
+                } else if (tipo == Tipo.Maestro) {
+                    p.setVistaMaestro();
+                }
+                p.setVisible(true);
+                dispose();
+            } else if (error == 1) {
+                JOptionPane.showMessageDialog(this, "Password Incorrecto");
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario no existente");
+            }
+
+        }
+
+    }//GEN-LAST:event_btnLogin
+
+    private UsuarioDTO encapsularUsuario() {
+        UsuarioDTO usuario = new UsuarioDTO();
+
+        String pass = String.valueOf(txtpPassword.getPassword());
+        String usuari = txtfUsuario.getText();
+        boolean ok = true;
+
+        if (!Validador.esPassword(pass)) {
+            txtpPassword.setBorder(bordeMal);
+            ok = false;
+        } else {
+            txtpPassword.setBorder(bordeOriginal);
+        }
+
+        if (!Validador.esUsuario(usuari)) {
+            txtfUsuario.setBorder(bordeMal);
+            ok = false;
+        } else {
+            txtfUsuario.setBorder(bordeOriginal);
+        }
+
+        usuario.setPassword(pass);
+        usuario.setUsuario(usuari);
+
+        if (!ok) {
+            usuario = null;
+        }
+
+        return usuario;
+    }
 
     /**
      * @param args the command line arguments
@@ -103,6 +220,11 @@ public class VistaLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnLogin;
+    private javax.swing.JLabel lblPassword;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblUsuario;
+    private javax.swing.JTextField txtfUsuario;
+    private javax.swing.JPasswordField txtpPassword;
     // End of variables declaration//GEN-END:variables
 }

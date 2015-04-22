@@ -197,7 +197,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         jMenu10 = new javax.swing.JMenu();
         jSeparator1 = new javax.swing.JSeparator();
         vistas = new javax.swing.JPanel();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        mbPrincipal = new javax.swing.JMenuBar();
         mTemas = new javax.swing.JMenu();
         miRegistrarTema = new javax.swing.JMenuItem();
         miConsultarTemas = new javax.swing.JMenuItem();
@@ -261,7 +261,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         });
         mTemas.add(miConsultarTemas);
 
-        jMenuBar1.add(mTemas);
+        mbPrincipal.add(mTemas);
 
         mCursos.setText("Cursos");
 
@@ -281,7 +281,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         });
         mCursos.add(miConsultarCursos);
 
-        jMenuBar1.add(mCursos);
+        mbPrincipal.add(mCursos);
 
         mUsuarios.setText("Usuarios");
 
@@ -301,7 +301,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         });
         mUsuarios.add(miConsultarUsuarios);
 
-        jMenuBar1.add(mUsuarios);
+        mbPrincipal.add(mUsuarios);
 
         mReactivos.setText("Reactivos");
         mReactivos.setToolTipText("");
@@ -312,7 +312,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         miConsultarReactivos.setText("Consultar Reactivos");
         mReactivos.add(miConsultarReactivos);
 
-        jMenuBar1.add(mReactivos);
+        mbPrincipal.add(mReactivos);
 
         mExamenes.setText("Examenes");
 
@@ -336,7 +336,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         miAsignarExamen.setText("Asignar Examen");
         mExamenes.add(miAsignarExamen);
 
-        jMenuBar1.add(mExamenes);
+        mbPrincipal.add(mExamenes);
 
         mGrupos.setText("Grupos");
 
@@ -356,10 +356,10 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         });
         mGrupos.add(miConsultarGrupos);
 
-        jMenuBar1.add(mGrupos);
+        mbPrincipal.add(mGrupos);
 
         mContestarExamen.setText("Contestar Examen");
-        jMenuBar1.add(mContestarExamen);
+        mbPrincipal.add(mContestarExamen);
 
         mCalificaciones.setText("Calificaciones");
 
@@ -371,16 +371,16 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         });
         mCalificaciones.add(miConsultarCalificaciones);
 
-        jMenuBar1.add(mCalificaciones);
+        mbPrincipal.add(mCalificaciones);
 
         mEstadisticas.setText("Estadísticas");
 
         miGenerarEstadisticas.setText("Generar Estadísticas");
         mEstadisticas.add(miGenerarEstadisticas);
 
-        jMenuBar1.add(mEstadisticas);
+        mbPrincipal.add(mEstadisticas);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(mbPrincipal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -576,21 +576,39 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
     }//GEN-LAST:event_miConsultarUsuariosActionPerformed
 
     public void setVistaAlumno() {
-        //para ocultar los menus
+        ocultarTodos();
+        mContestarExamen.setVisible(true);
     }
     
     public void setVistaMaestro() {
-        //para ocultar los menus
+        ocultarTodos();
+        mCalificaciones.setVisible(true);
+        mExamenes.setVisible(true);
+        mReactivos.setVisible(true);
+        
     }
-
+    /**
+     * 
+     */
     public void setVistaAdmin() {
-        //para igual
+       //no se oculta ninguna opcion del menu 
+    }
+    
+    private void ocultarTodos(){
+        mCalificaciones.setVisible(false);
+        mContestarExamen.setVisible(false);
+        mCursos.setVisible(false);
+        mEstadisticas.setVisible(false);
+        mExamenes.setVisible(false);
+        mGrupos.setVisible(false);
+        mReactivos.setVisible(false);
+        mTemas.setVisible(false);
+        mUsuarios.setVisible(false);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu9;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JMenu mCalificaciones;
@@ -602,6 +620,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
     private javax.swing.JMenu mReactivos;
     private javax.swing.JMenu mTemas;
     private javax.swing.JMenu mUsuarios;
+    private javax.swing.JMenuBar mbPrincipal;
     private javax.swing.JMenuItem miAsignarExamen;
     private javax.swing.JMenuItem miConsultarCalificaciones;
     private javax.swing.JMenuItem miConsultarCursos;
@@ -648,7 +667,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
 
     @Override
     public UsuarioDTO obtenerUsuarioActual() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.usuarioActual;
     }
 
     @Override
