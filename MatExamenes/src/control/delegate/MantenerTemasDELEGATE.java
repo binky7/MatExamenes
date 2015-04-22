@@ -129,4 +129,28 @@ public class MantenerTemasDELEGATE {
         
         return ok;
     }
+    
+    public boolean actualizarCurso(CursoDTO curso) {
+        boolean ok = false;
+        
+        try {
+            ok = Enlace.getPersistencia().modificarEntidad(curso);
+        } catch(RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+        
+        return ok;
+    }
+    
+    public CursoDTO obtenerCursoPorTema(TemaDTO tema) {
+        CursoDTO objCurso = null;
+        
+        try {
+            objCurso = Enlace.getPersistencia().obtenerCursoPorTema(tema);
+        } catch(RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+        
+        return objCurso;
+    }
 }

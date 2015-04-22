@@ -7,6 +7,7 @@ package vista.ui;
 
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -93,26 +94,37 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         jLabel3.setText("Consultar Cursos");
 
         btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(324, 324, 324))
             .addGroup(layout.createSequentialGroup()
-                .addGap(292, 292, 292)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnModificar)
-                        .addGap(66, 66, 66)
-                        .addComponent(btnEliminar))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(292, 292, 292)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnModificar)
+                                .addGap(66, 66, 66)
+                                .addComponent(btnEliminar))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(329, 329, 329)
+                        .addComponent(jLabel3)))
+                .addContainerGap(298, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,6 +140,43 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
                 .addContainerGap(165, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        // TODO add your handling code here:
+        if(!lstCursos.isSelectionEmpty()) {
+            int indexCurso = lstCursos.getSelectedIndex();
+            CursoDTO curso = controlVista.obtenerCurso(indexCurso);
+            
+            if(curso != null) {
+                padre.mostrarVistaConEntidad(curso, Vista.ModificarCurso);
+            } else {
+                JOptionPane.showMessageDialog(this, "Ha ocurrido un error");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione un curso.");
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        if(!lstCursos.isSelectionEmpty()) {
+            int banEliminar = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+                + "quieres eliminar el curso?");
+            if(banEliminar == 0) {
+                int indexCurso = lstCursos.getSelectedIndex();
+                boolean ok = controlVista.eliminarCurso(indexCurso);
+
+                if(ok) {
+                    ((DefaultListModel)lstCursos.getModel()).remove(indexCurso);
+                    JOptionPane.showMessageDialog(this, "Curso eliminado.");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Ha ocurrido un error");
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione un curso");
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -151,7 +200,10 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
 
     @Override
     public void mostrarEntidad(Object entidad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int index = lstCursos.getSelectedIndex();
+        String nombreCurso = ((CursoDTO)entidad).getNombre();
+        
+        ((DefaultListModel)lstCursos.getModel()).setElementAt(nombreCurso, index);
     }
 
     @Override

@@ -20,46 +20,9 @@ public class CVMantenerCursos {
     private final MantenerCursosDELEGATE mantenerCursosDELEGATE;
     private List<CursoDTO> cursos;
     private CursoDTO curso;
-    private List<TemaDTO> temasSinAsignar;
     
     public CVMantenerCursos() {
         mantenerCursosDELEGATE = new MantenerCursosDELEGATE();
-    }
-    
-    public List<TemaDTO> obtenerTemasSinAsignar() {
-        List<TemaDTO> listaTemasSinAsignar = 
-                mantenerCursosDELEGATE.obtenerTemasSinAsignar();
-
-        temasSinAsignar = listaTemasSinAsignar;
-        return listaTemasSinAsignar;
-    }
-    
-    public void agregarTemaSeleccionado(int indexTema) {
-        TemaDTO tema = temasSinAsignar.get(indexTema);
-        temasSinAsignar.remove(indexTema);
-        agregarTema(tema);
-    }
-    
-    private void agregarTema(TemaDTO tema) {
-        if(curso == null) {
-            curso =  new CursoDTO();
-        }
-        List<TemaDTO> temas = curso.getTemas();
-        if(temas == null) {
-            temas = new ArrayList<TemaDTO>();
-        }
-        temas.add(tema);
-        curso.setTemas(temas);
-    }
-    
-    public void removerTemaSeleccionado(int indexTema) {
-        if(curso != null) {
-            List<TemaDTO> temas = curso.getTemas();
-            if(temas != null) {
-                TemaDTO tema = temas.remove(indexTema);
-                temasSinAsignar.add(tema);
-            }
-        }
     }
     
     public boolean verificarExistencia(String nombreCurso) {
@@ -74,19 +37,15 @@ public class CVMantenerCursos {
     
     public Integer guardarCurso(CursoDTO objCurso) {
         Integer id = null;
-        if(curso != null) {
-            if(curso.getTemas() != null && !curso.getTemas().isEmpty()) {
-                curso.setNombre(objCurso.getNombre());
-                id = mantenerCursosDELEGATE.guardarCurso(curso);
-            }
-        }
+        curso = new CursoDTO();
+        curso.setNombre(objCurso.getNombre());
+        id = mantenerCursosDELEGATE.guardarCurso(curso);
         
         return id;
     }
     
     public void liberarMemoriaRegistrarModificar() {
         curso = null;
-        temasSinAsignar = null;
     }
     
     public List<CursoDTO> obtenerCursos() {
@@ -94,5 +53,33 @@ public class CVMantenerCursos {
         cursos = listaCursos;
         
         return listaCursos;
+    }
+    
+    public CursoDTO obtenerCurso(int indexCurso) {
+        CursoDTO objCurso = null;
+        
+        if(cursos != null || !cursos.isEmpty()) {
+            objCurso = cursos.get(indexCurso);
+            curso = objCurso;
+        }
+        
+        return objCurso;
+    }
+    
+    public boolean modificarCurso(CursoDTO objCurso) {
+        curso.setNombre(objCurso.getNombre());
+        boolean ok = mantenerCursosDELEGATE.modificarCurso(curso);
+        
+        return ok;
+    }
+    
+    public boolean eliminarCurso(int indexCurso) {
+        CursoDTO objCurso = cursos.get(indexCurso);
+        boolean ok = mantenerCursosDELEGATE.eliminarCurso(objCurso);
+        if(ok) {
+            cursos.remove(indexCurso);
+        }
+        
+        return ok;
     }
 }

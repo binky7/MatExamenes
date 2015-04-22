@@ -68,4 +68,28 @@ public class MantenerCursosDELEGATE {
         
         return cursos;
     }
+    
+    public boolean modificarCurso(CursoDTO curso) {
+        boolean ok = false;
+        
+        try {
+            ok = Enlace.getPersistencia().modificarEntidad(curso);
+        } catch(RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+        
+        return ok;
+    }
+    
+    public boolean eliminarCurso(CursoDTO curso) {
+        boolean ok = false;
+        
+        try {
+            ok = Enlace.getPersistencia().eliminarEntidad(curso);
+        } catch(RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+        
+        return ok;
+    }
 }
