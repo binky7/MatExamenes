@@ -10,6 +10,7 @@ import java.awt.Component;
 import javax.swing.JPanel;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVConsultarCalificaciones;
+import vista.controlador.CVMantenerCursos;
 import vista.controlador.CVMantenerGrupos;
 import vista.controlador.CVMantenerTemas;
 import vista.controlador.CVMantenerUsuarios;
@@ -35,6 +36,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
     private VistaModificarExamen vistaModificarExamen;
     private VistaRegistrarCurso vistaRegistrarCurso;
     private VistaConsultarCursos vistaConsultarCursos;
+    private VistaModificarCurso vistaModificarCurso;
     private VistaRegistrarGrupo vistaRegistrarGrupo;
     private VistaConsultarGrupo vistaConsultarGrupo;
     private VistaModificarGrupo vistaModificarGrupo;
@@ -71,12 +73,6 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaHome.setName(Vista.HOME.toString());
         vistaRegistrarTema = new VistaRegistrarTema();
         vistaRegistrarTema.setName(Vista.RegistrarTema.toString());
-        vistaRegistrarExamen = new VistaRegistrarExamen();
-        vistaRegistrarExamen.setName(Vista.RegistrarExamen.toString());
-        vistaConsultarExamenes = new VistaConsultarExamenes();
-        vistaConsultarExamenes.setName(Vista.ConsultarExamenes.toString());
-        vistaModificarExamen = new VistaModificarExamen();
-        vistaModificarExamen.setName(Vista.ModificarExamen.toString());
         vistaConsultarTemas = new VistaConsultarTemas();
         vistaConsultarTemas.setName(Vista.ConsultarTemas.toString());
         vistaModificarTema = new VistaModificarTema();
@@ -85,6 +81,14 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaRegistrarCurso.setName(Vista.RegistrarCurso.toString());
         vistaConsultarCursos = new VistaConsultarCursos();
         vistaConsultarCursos.setName(Vista.ConsultarCursos.toString());
+        vistaModificarCurso = new VistaModificarCurso();
+        vistaModificarCurso.setName(Vista.ModificarCurso.toString());
+        vistaRegistrarExamen = new VistaRegistrarExamen();
+        vistaRegistrarExamen.setName(Vista.RegistrarExamen.toString());
+        vistaConsultarExamenes = new VistaConsultarExamenes();
+        vistaConsultarExamenes.setName(Vista.ConsultarExamenes.toString());
+        vistaModificarExamen = new VistaModificarExamen();
+        vistaModificarExamen.setName(Vista.ModificarExamen.toString());
         vistaRegistrarGrupo = new VistaRegistrarGrupo();
         vistaRegistrarGrupo.setName(Vista.RegistrarGrupo.toString());
         vistaConsultarGrupo = new VistaConsultarGrupo();
@@ -107,6 +111,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         
         //Crear controladores vistas
         CVMantenerTemas cvMantenerTemas = new CVMantenerTemas();
+        CVMantenerCursos cvMantenerCursos = new CVMantenerCursos();
         CVMantenerGrupos cvMantenerGrupos = new CVMantenerGrupos();
         CVConsultarCalificaciones cvConsultarCalificaciones =
                 new CVConsultarCalificaciones();
@@ -117,6 +122,9 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistaRegistrarTema.setControlador(cvMantenerTemas);
         vistaModificarTema.setControlador(cvMantenerTemas);
         vistaConsultarTemas.setControlador(cvMantenerTemas);
+        vistaRegistrarCurso.setControlador(cvMantenerCursos);
+        vistaModificarCurso.setControlador(cvMantenerCursos);
+        vistaConsultarCursos.setControlador(cvMantenerCursos);
         vistaRegistrarGrupo.setControlador(cvMantenerGrupos);
         vistaConsultarGrupo.setControlador(cvMantenerGrupos);
         vistaModificarGrupo.setControlador(cvMantenerGrupos);
@@ -130,6 +138,9 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         //Asignar padre a vistas
         vistaRegistrarTema.setPadre(this);
         vistaModificarTema.setPadre(this);
+        vistaRegistrarCurso.setPadre(this);
+        vistaConsultarCursos.setPadre(this);
+        vistaModificarCurso.setPadre(this);
         vistaConsultarTemas.setPadre(this);
         vistaConsultarCursos.setPadre(this);
         vistaRegistrarGrupo.setPadre(this);
@@ -152,6 +163,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         vistas.add(vistaModificarTema, Vista.ModificarTema.toString());
         vistas.add(vistaRegistrarCurso, Vista.RegistrarCurso.toString());
         vistas.add(vistaConsultarCursos, Vista.ConsultarCursos.toString());
+        vistas.add(vistaModificarCurso, Vista.ModificarCurso.toString());
         vistas.add(vistaRegistrarGrupo, Vista.RegistrarGrupo.toString());
         vistas.add(vistaConsultarGrupo, Vista.ConsultarGrupo.toString());
         vistas.add(vistaModificarGrupo, Vista.ModificarGrupo.toString());

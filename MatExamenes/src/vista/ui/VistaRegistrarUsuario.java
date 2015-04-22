@@ -35,7 +35,6 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
     
     public UsuarioDTO encapsularUsuario(){
         UsuarioDTO usuario = new UsuarioDTO();
-        //Falta validar los camposs!!! Fijate en Validador en vista.controlador
         
         usuario.setApellidoMaterno(txtfApellidoMaterno.getText());
         usuario.setApellidoPaterno(txtfApellidoPaterno.getText());

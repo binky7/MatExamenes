@@ -87,7 +87,6 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         if(cursos != null && !cursos.isEmpty()) {
             mostrarCursos(cursos);
         }
-        ((DefaultListModel)lstCursos.getModel()).addElement("Otros");
     }
     
     /**
@@ -258,13 +257,17 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         //Si se selecciono algo
         boolean ok;
         if (lstTemas.getSelectedIndex() != -1) {
-            ok = controlVista.eliminarTema(lstTemas.getSelectedIndex());
-            if (ok) {
-                JOptionPane.showMessageDialog(this, "Tema eliminado");
-                ((DefaultListModel) lstTemas.getModel())
-                        .remove(lstTemas.getSelectedIndex());
-            } else {
-                JOptionPane.showMessageDialog(this, "Ha ocurrido un error");
+            int banEliminar = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+                + "quieres eliminar el tema?");
+            if(banEliminar == 0) {
+                ok = controlVista.eliminarTema(lstTemas.getSelectedIndex());
+                if (ok) {
+                    JOptionPane.showMessageDialog(this, "Tema eliminado");
+                    ((DefaultListModel) lstTemas.getModel())
+                            .remove(lstTemas.getSelectedIndex());
+                } else {
+                    JOptionPane.showMessageDialog(this, "Ha ocurrido un error");
+                }
             }
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione un tema");
@@ -345,9 +348,12 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
 
     @Override
     public void mostrarEntidad(Object entidad) {
-        int index = lstTemas.getSelectedIndex();
-        String nombreTema = ((TemaDTO)entidad).getNombre();
-        ((DefaultListModel) lstTemas.getModel()).setElementAt(nombreTema, index);
+//        int index = lstTemas.getSelectedIndex();
+//        String nombreTema = ((TemaDTO)entidad).getNombre();
+//        ((DefaultListModel) lstTemas.getModel()).setElementAt(nombreTema, index);
+        ((DefaultListModel)lstCursos.getModel()).clear();
+        ((DefaultListModel)lstTemas.getModel()).clear();
+        
     }
 
     @Override

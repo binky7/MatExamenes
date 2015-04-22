@@ -6,6 +6,7 @@
 package vista.controlador;
 
 import control.delegate.MantenerTemasDELEGATE;
+import java.util.ArrayList;
 import java.util.List;
 import modelo.dto.CursoDTO;
 import modelo.dto.TemaDTO;
@@ -28,6 +29,7 @@ public class CVMantenerTemas {
     //Si se quiere modificar o eliminar dichos objetos, por eso la razon de este
     //atributo
     TemaDTO tema;
+    CursoDTO curso;
     
     public CVMantenerTemas() {
         mantenerTemasDELEGATE = new MantenerTemasDELEGATE();
@@ -38,8 +40,21 @@ public class CVMantenerTemas {
      * @param tema el objeto a persistir
      * @return el id generado por la inserción
      */
-    public Integer guardarTema(TemaDTO tema) {
+    public Integer guardarTema(TemaDTO tema, int indexCurso) {
         Integer id = mantenerTemasDELEGATE.guardarTema(tema);
+        
+        if(id != null) {
+            CursoDTO objCurso = cursos.get(indexCurso);
+            
+            List<TemaDTO> temasDeCurso = obtenerTemasDeCurso(indexCurso);
+            if(temasDeCurso == null || temasDeCurso.isEmpty()) {
+                temasDeCurso = new ArrayList<TemaDTO>();
+            }
+            tema.setId(id);
+            temasDeCurso.add(tema);
+            objCurso.setTemas(temasDeCurso);
+            mantenerTemasDELEGATE.actualizarCurso(objCurso);           
+        }
         return id;
     }
     
@@ -123,7 +138,7 @@ public class CVMantenerTemas {
      * en la base de datos correctamente
      * @return 
      */
-    public boolean modificarTema(TemaDTO tema) {
+    public boolean modificarTema(TemaDTO tema, int indexCurso) {
         //Pasar todos los atributos basicos que pudieron cambiar al atributo
         //tema para ser enviado
         boolean ok;
@@ -132,6 +147,33 @@ public class CVMantenerTemas {
             this.tema.setNombre(tema.getNombre());
 
             ok = mantenerTemasDELEGATE.modificarTema(this.tema);
+            if(ok) {
+                CursoDTO objCurso = cursos.get(indexCurso);
+                
+                if(objCurso.getId() != this.curso.getId()) {
+                    //Cambió el curso
+                    
+                    /*Eliminar la relación que existía entre el tema y el curso
+                    anterior*/
+                    List<TemaDTO> temasDeCurso = 
+                            obtenerTemasDeCurso(cursos.indexOf(this.curso));
+                    if(temasDeCurso != null && !temasDeCurso.isEmpty()) {
+                        temasDeCurso.remove(this.tema);
+                        this.curso.setTemas(temasDeCurso);
+                        mantenerTemasDELEGATE.actualizarCurso(this.curso);
+                    }
+                    
+                    /*Crear la relación entre el tema y el nuevo curso que
+                    se le asignó*/
+                    temasDeCurso = obtenerTemasDeCurso(indexCurso);
+                    if(temasDeCurso == null || temasDeCurso.isEmpty()) {
+                        temasDeCurso = new ArrayList<TemaDTO>();
+                    }
+                    temasDeCurso.add(this.tema);
+                    objCurso.setTemas(temasDeCurso);
+                    mantenerTemasDELEGATE.actualizarCurso(objCurso);
+                }
+            }
         }
         else {
             System.out.println("Error inesperado!");
@@ -160,6 +202,12 @@ public class CVMantenerTemas {
         }
 
         return ok;
+    }
+    
+    public CursoDTO obtenerCursoPorTema(TemaDTO tema) {
+        CursoDTO objCurso = mantenerTemasDELEGATE.obtenerCursoPorTema(tema);
+        this.curso = objCurso;
+        return objCurso;
     }
     
     

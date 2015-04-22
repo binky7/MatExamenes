@@ -5,10 +5,7 @@
  */
 package vista.ui;
 
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import modelo.dto.CursoDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerCursos;
@@ -17,26 +14,18 @@ import vista.interfaz.InterfazVista;
 
 /**
  *
- * @author Jesus Donaldo
+ * @author ivan
  */
-public class VistaRegistrarCurso extends javax.swing.JPanel 
-implements FocusListener, InterfazVista{
-
+public class VistaModificarCurso extends javax.swing.JPanel implements InterfazVista{
+    
     private CVMantenerCursos controlVista;
     private InterfazVista padre;
-    
+
     /**
-     * Creates new form RegistrarModificarCursos
+     * Creates new form VistaModificarCurso
      */
-    public VistaRegistrarCurso() {
+    public VistaModificarCurso() {
         initComponents();
-        txtfNombreCurso.addFocusListener(this);
-    }
-    
-    public void limpiar() {
-        txtfNombreCurso.setText("");
-        
-        controlVista.liberarMemoriaRegistrarModificar();
     }
     
     public void setControlador(CVMantenerCursos controlVista) {
@@ -46,7 +35,11 @@ implements FocusListener, InterfazVista{
     public void setPadre(InterfazVista padre) {
         this.padre = padre;
     }
-        
+    
+    public void mostrarDatos(CursoDTO curso) {
+        txtfNombreCurso.setText(curso.getNombre());
+    }
+    
     public CursoDTO encapsularCurso() {
         CursoDTO curso = null;
         
@@ -70,91 +63,91 @@ implements FocusListener, InterfazVista{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel3 = new javax.swing.JLabel();
-        txtfNombreCurso = new javax.swing.JTextField();
-        btnGuardar = new javax.swing.JButton();
-        btnRegresar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        txtfNombreCurso = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        btnRegresar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
 
-        setPreferredSize(new java.awt.Dimension(800, 579));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("Curso:");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setText("Curso:");
-
-        btnGuardar.setText("Guardar");
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
-            }
-        });
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel4.setText("Modificar Curso");
 
         btnRegresar.setText("Regresar");
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel1.setText("Registrar Curso");
+        btnModificar.setText("Guardar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(198, 198, 198)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(txtfNombreCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(164, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(223, 223, 223)
+                .addComponent(btnRegresar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnModificar)
+                .addGap(186, 186, 186))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(303, 303, 303))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(175, 175, 175)
-                        .addComponent(jLabel3)
-                        .addGap(30, 30, 30)
-                        .addComponent(txtfNombreCurso))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(228, 228, 228)
-                        .addComponent(btnRegresar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 249, Short.MAX_VALUE)
-                        .addComponent(btnGuardar)))
-                .addGap(175, 175, 175))
+                .addComponent(jLabel4)
+                .addGap(290, 290, 290))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
-                .addComponent(jLabel1)
-                .addGap(74, 74, 74)
+                .addComponent(jLabel4)
+                .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtfNombreCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(87, 87, 87)
+                    .addComponent(jLabel1)
+                    .addComponent(txtfNombreCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(101, 101, 101)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnRegresar))
-                .addContainerGap(300, Short.MAX_VALUE))
+                    .addComponent(btnRegresar)
+                    .addComponent(btnModificar))
+                .addContainerGap(331, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
         CursoDTO curso = encapsularCurso();
+        
         if(curso == null) {
             JOptionPane.showMessageDialog(this, "Datos faltantes.");
         } else {
-            Integer id = controlVista.guardarCurso(curso);
-            if(id != null) {
-                JOptionPane.showMessageDialog(this, "Registro completo.");
-                padre.mostrarVista(Vista.HOME);
+            boolean ok = controlVista.modificarCurso(curso);
+            
+            if(ok) {
+                JOptionPane.showMessageDialog(this, "Curso modificado.");
+                padre.mostrarVistaConEntidad(curso, Vista.ConsultarCursos);
                 limpiar();
+                
             } else {
-                JOptionPane.showMessageDialog(this, "No se pudo guardar el curso.");
+                JOptionPane.showMessageDialog(this, "Curso existente");
             }
         }
-    }//GEN-LAST:event_btnGuardarActionPerformed
+    }//GEN-LAST:event_btnModificarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField txtfNombreCurso;
     // End of variables declaration//GEN-END:variables
 
@@ -170,23 +163,18 @@ implements FocusListener, InterfazVista{
 
     @Override
     public void mostrarEntidad(Object entidad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        mostrarDatos((CursoDTO)entidad);
     }
 
     @Override
     public boolean confirmarCambio() {
         boolean cambiar = false;
-        if(!Validador.estaVacio(txtfNombreCurso.getText())) {
-           int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
                 + "quieres cambiar de pantalla?\nTodos los cambios no "
                 + "guardados se perderán");
-            if (ok == 0) {
-                cambiar = true;
-            } 
-        } else {
+        if (ok == 0) {
             cambiar = true;
-        }   
-        
+        }
         return cambiar;
     }
 
@@ -196,23 +184,9 @@ implements FocusListener, InterfazVista{
     }
 
     @Override
-    public void focusGained(FocusEvent e) {
-        //No implementado
-    }
-
-    @Override
-    public void focusLost(FocusEvent e) {
-        JTextField src = (JTextField)e.getSource();
+    public void limpiar() {
+        txtfNombreCurso.setText("");
         
-        String nombreCurso = src.getText();
-        if(Validador.esCurso(nombreCurso)) {
-            boolean ok = controlVista.verificarExistencia(nombreCurso);
-
-            if(ok) {
-                JOptionPane.showMessageDialog(this, "Ya existe un curso con ese nombre.");
-            }
-        } else {
-            //el curso no cumple con el formato.
-        }
+        controlVista.liberarMemoriaRegistrarModificar();
     }
 }
