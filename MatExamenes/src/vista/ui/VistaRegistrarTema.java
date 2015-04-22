@@ -5,7 +5,11 @@
  */
 package vista.ui;
 
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import modelo.dto.CursoDTO;
 import modelo.dto.TemaDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerTemas;
@@ -20,7 +24,7 @@ import vista.interfaz.InterfazVista;
 //Esto para que quede bien con el frame y los menus. No lo probe mas para ver
 //Si quedaba bien de lo ancho pero espero que no sea un mayor problema
 public class VistaRegistrarTema extends javax.swing.JPanel implements
-        InterfazVista {
+        AncestorListener, InterfazVista {
 
     private CVMantenerTemas controlVista;
     private InterfazVista padre;
@@ -30,6 +34,7 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
      */
     public VistaRegistrarTema() {
         initComponents();
+        this.addAncestorListener(this);
     }
     
     public void setPadre(InterfazVista padre) {
@@ -45,7 +50,7 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
      */
     @Override
     public void limpiar() {
-        txtfNombre.setText("");
+        txtfNombreTema.setText("");
     }
 
     /**
@@ -57,7 +62,7 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
         TemaDTO tema = null;
         
         //Validar campos
-        String txtNombre = txtfNombre.getText();
+        String txtNombre = txtfNombreTema.getText();
         if(Validador.esCurso(txtNombre)) {
             //Crear objeto tema
             tema = new TemaDTO();
@@ -65,6 +70,21 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
         }
         
         return tema;
+    }
+    
+    private void consultarCursos() {
+        List<CursoDTO> cursos = controlVista.obtenerCursos();
+        
+        if(cursos != null && !cursos.isEmpty()) {
+            mostrarCursos(cursos);
+        }
+    }
+    
+    private void mostrarCursos(List<CursoDTO> cursos) {
+        cbCursos.removeAllItems();
+        for(CursoDTO curso : cursos) {
+            cbCursos.addItem(curso.getNombre());
+        }
     }
     
     /**
@@ -77,9 +97,11 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
-        txtfNombre = new javax.swing.JTextField();
+        txtfNombreTema = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        cbCursos = new javax.swing.JComboBox();
 
         setPreferredSize(new java.awt.Dimension(800, 600));
 
@@ -93,8 +115,11 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Tema:");
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("Registrar Temas");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setText("Seleccione un curso:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -103,31 +128,41 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addGap(179, 179, 179))
+                .addGap(182, 182, 182))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(179, 179, 179)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(302, 302, 302)
+                        .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(327, 327, 327)
-                        .addComponent(jLabel1)))
-                .addContainerGap(226, Short.MAX_VALUE))
+                        .addGap(179, 179, 179)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(27, 27, 27)
+                                .addComponent(cbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtfNombreTema, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(164, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(75, 75, 75)
+                .addGap(71, 71, 71)
                 .addComponent(jLabel1)
-                .addGap(60, 60, 60)
+                .addGap(64, 64, 64)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(77, 77, 77)
+                    .addComponent(txtfNombreTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(80, 80, 80)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(cbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(61, 61, 61)
                 .addComponent(jButton1)
-                .addContainerGap(323, Short.MAX_VALUE))
+                .addContainerGap(211, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -147,24 +182,27 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
         //Persistir el objeto en la base de datos
         //Es necesario hacer un try catch en cada clase cuando se llame a
         //este metodo
-        Integer id = controlVista.guardarTema(tema);
+        int indexCurso = cbCursos.getSelectedIndex();
+        Integer id = controlVista.guardarTema(tema, indexCurso);
 
         if (id == null) {
             //No se pudo guardar porque habia un tema duplicado
             JOptionPane.showMessageDialog(this, "Tema existente");
         } else {
             JOptionPane.showMessageDialog(this, "Tema Registrado");
-            padre.mostrarVista(Vista.HOME);
+//            padre.mostrarVista(Vista.HOME);
             limpiar();
         }
     }//GEN-LAST:event_guardarTema
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox cbCursos;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField txtfNombre;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JTextField txtfNombreTema;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -186,17 +224,38 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
     public boolean confirmarCambio() {
         
        boolean cambiar = false;
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cambiar de pantalla?\nTodos los cambios no "
-                + "guardados se perderán");
-        if (ok == 0) {
-            cambiar = true;
-        }
+       if(!Validador.estaVacio(txtfNombreTema.getText())) {
+            int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+                    + "quieres cambiar de pantalla?\nTodos los cambios no "
+                    + "guardados se perderán");
+            if (ok == 0) {
+                cambiar = true;
+            }
+       } else {
+           cambiar = true;
+       }
         return cambiar;
     }
 
     @Override
     public UsuarioDTO obtenerUsuarioActual() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void ancestorAdded(AncestorEvent event) {
+        if(isShowing()) {
+            consultarCursos();
+        }
+    }
+
+    @Override
+    public void ancestorRemoved(AncestorEvent event) {
+        //No implementado
+    }
+
+    @Override
+    public void ancestorMoved(AncestorEvent event) {
+        //No implementado
     }
 }
