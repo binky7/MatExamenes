@@ -5,53 +5,121 @@
  */
 package vista.ui;
 
+import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import javax.swing.border.Border;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerUsuarios;
-import vista.interfaz.InterfazVista;
+import vista.controlador.Validador;
+import vista.interfaz.InterfaceVista;
 
 /**
  *
  * @author Alf
  */
-public class VistaRegistrarUsuario extends javax.swing.JPanel implements InterfazVista{
+public class VistaRegistrarUsuario extends javax.swing.JPanel implements InterfaceVista {
 
     private CVMantenerUsuarios cvMantenerUsuarios;
-    private InterfazVista padre;
+    private InterfaceVista padre;
+    private final Border bordeMal;
+    private final Border bordeOriginal;
+
     /**
-     * Creates new form VistaRegistrarUsuario2
+     * Creates new form VistaRegistrarUsuario
      */
     public VistaRegistrarUsuario() {
         initComponents();
+        bordeMal = BorderFactory.createLineBorder(Color.red,2);
+        bordeOriginal = txtfNombre.getBorder();
+        lblErrorNombre.setVisible(false);
+        lblErrorNombre.setText("Ingresar solo letras");
     }
-    
-    public void setPadre(InterfazVista padre){
+
+    public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
-    
-    public void setControlador(CVMantenerUsuarios cvMantenerUsuarios){
+
+    public void setControlador(CVMantenerUsuarios cvMantenerUsuarios) {
         this.cvMantenerUsuarios = cvMantenerUsuarios;
     }
-    
-    public UsuarioDTO encapsularUsuario(){
+
+    private boolean validarUsuario(String usuario){
+        boolean ok = true;
+        cvMantenerUsuarios.validarUsuario(usuario);
+        return ok;
+    }
+    private UsuarioDTO encapsularUsuario() {
         UsuarioDTO usuario = new UsuarioDTO();
-        
-        usuario.setApellidoMaterno(txtfApellidoMaterno.getText());
-        usuario.setApellidoPaterno(txtfApellidoPaterno.getText());
-        usuario.setNombre(txtfNombre.getText());
-        char pass[] = txtpPassword.getPassword();
-        usuario.setPassword(String.valueOf(pass));
-        usuario.setUsuario(txtfUsuario.getText());
-        
-        if(rbtnAlumno.isSelected()){
-            usuario.setTipo(UsuarioDTO.Tipo.Alumno);
-        } else if(rbtnMaestro.isSelected()){
-            usuario.setTipo(UsuarioDTO.Tipo.Maestro);
+
+        String aPaterno = txtfApellidoPaterno.getText();
+        String aMaterno = txtfApellidoMaterno.getText();
+        String nombre = txtfNombre.getText();
+        String pass = String.valueOf(txtpPassword.getPassword());
+        String usuari = txtfUsuario.getText();        
+
+        boolean ok = true;
+
+        if (!Validador.esNombre(nombre)) {
+            ok = false;
+            txtfNombre.setBorder(bordeMal);
+            lblErrorNombre.setVisible(true);
+            
+        } else {
+            txtfNombre.setBorder(bordeOriginal);
+            lblErrorNombre.setVisible(false);
         }
         
+        if (!Validador.esNombre(aPaterno)) {
+            txtfApellidoPaterno.setBorder(bordeMal);
+            ok = false;
+        } else {
+            txtfApellidoPaterno.setBorder(bordeOriginal);
+        } 
+        
+        if (!Validador.esNombre(aMaterno)) {
+            txtfApellidoMaterno.setBorder(bordeMal);
+            ok = false;
+        } else {
+            txtfApellidoMaterno.setBorder(bordeOriginal);
+        }
+               
+        
+        if (!Validador.esPassword(pass)) {
+            txtpPassword.setBorder(bordeMal);
+            ok = false;
+        } else {
+            txtpPassword.setBorder(bordeOriginal);
+        }
+        
+        if (!Validador.esUsuario(usuari)) {
+            txtfUsuario.setBorder(bordeMal);
+            ok = false;
+        } else {
+            txtfUsuario.setBorder(bordeOriginal);
+        }
+        
+        if (rbtnAlumno.isSelected()) {
+            usuario.setTipo(UsuarioDTO.Tipo.Alumno);
+        } else if (rbtnMaestro.isSelected()) {
+            usuario.setTipo(UsuarioDTO.Tipo.Maestro);
+        } else {
+            ok = false;
+        }
+
+        usuario.setApellidoMaterno(aMaterno);
+        usuario.setApellidoPaterno(aPaterno);
+        usuario.setNombre(nombre);
+        usuario.setPassword(pass);
+        usuario.setUsuario(usuari);
+
+        if(!ok){
+            usuario = null;
+        }
+
         return usuario;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -77,19 +145,36 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
         lblApellidoMaterno = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
         txtpPassword = new javax.swing.JPasswordField();
+        lblErrorNombre = new javax.swing.JLabel();
 
         lblPassword.setText("Password:");
 
         lblTipo.setText("Tipo de usuario");
 
         txtfNombre.setPreferredSize(new java.awt.Dimension(100, 25));
+        txtfNombre.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtfNombreFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtfNombreFocusLost(evt);
+            }
+        });
 
         lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         lblTitulo.setText("Registrar Usuario");
 
         txtfApellidoPaterno.setPreferredSize(new java.awt.Dimension(100, 25));
+        txtfApellidoPaterno.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtfApellidoPaternoFocusLost(evt);
+            }
+        });
 
         btnGuardar.setText("Guardar");
+        btnGuardar.setMaximumSize(new java.awt.Dimension(100, 23));
+        btnGuardar.setMinimumSize(new java.awt.Dimension(100, 23));
+        btnGuardar.setPreferredSize(new java.awt.Dimension(80, 30));
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
@@ -97,9 +182,9 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
         });
 
         txtfApellidoMaterno.setPreferredSize(new java.awt.Dimension(100, 25));
-        txtfApellidoMaterno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtfApellidoMaternoActionPerformed(evt);
+        txtfApellidoMaterno.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtfApellidoMaternoFocusLost(evt);
             }
         });
 
@@ -107,6 +192,11 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
         rbtnMaestro.setText("Maestro");
 
         txtfUsuario.setPreferredSize(new java.awt.Dimension(100, 25));
+        txtfUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtfUsuarioFocusLost(evt);
+            }
+        });
 
         buttonGroup1.add(rbtnAlumno);
         rbtnAlumno.setText("Alumno");
@@ -120,19 +210,26 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
         lblUsuario.setText("Usuario:");
 
         txtpPassword.setPreferredSize(new java.awt.Dimension(100, 25));
+        txtpPassword.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtpPasswordFocusLost(evt);
+            }
+        });
+
+        lblErrorNombre.setForeground(new java.awt.Color(255, 0, 0));
+        lblErrorNombre.setText(".");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(216, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lblTitulo)
-                        .addGap(163, 163, 163))
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(269, 269, 269)
+                        .addComponent(lblTitulo))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(192, 192, 192)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,24 +256,32 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(75, 75, 75)))
-                .addGap(143, 143, 143))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblErrorNombre)))))
+                        .addGap(18, 18, 18)))
+                .addContainerGap(203, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(190, 190, 190))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
+                .addGap(49, 49, 49)
                 .addComponent(lblTitulo)
-                .addGap(72, 72, 72)
+                .addGap(59, 59, 59)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNombre))
-                .addGap(35, 35, 35)
+                    .addComponent(lblNombre)
+                    .addComponent(lblErrorNombre))
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblApellidoPaterno))
-                .addGap(34, 34, 34)
+                .addGap(57, 57, 57)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblApellidoMaterno))
@@ -193,35 +298,94 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
                     .addComponent(lblTipo)
                     .addComponent(rbtnMaestro)
                     .addComponent(rbtnAlumno))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 51, Short.MAX_VALUE)
-                .addComponent(btnGuardar)
-                .addGap(52, 52, 52))
+                .addGap(28, 28, 28)
+                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(53, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtfApellidoMaternoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtfApellidoMaternoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtfApellidoMaternoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
         UsuarioDTO usuario = encapsularUsuario();
-        if(usuario == null) {
-            JOptionPane.showMessageDialog(this, "Datos incorrectos, porfavor " +
-                    "sólo ingresa números y letras");
+        if (usuario == null) {
+            JOptionPane.showMessageDialog(this, "Datos incorrectos, porfavor "
+                    + "sólo ingresa números y letras");
             return;
         }
         Integer id = cvMantenerUsuarios.guardarUsuario(usuario);
-        
+
         if (id == null) {
-            //No se pudo guardar porque habia un tema duplicado
+            //No se pudo guardar porque habia un usuario duplicado
             JOptionPane.showMessageDialog(this, "Usuario existente");
         } else {
             JOptionPane.showMessageDialog(this, "Usuario Registrado");
-            padre.mostrarVista(InterfazVista.Vista.HOME);
+            padre.mostrarVista(InterfaceVista.Vista.HOME);
             limpiar();
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void txtfNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfNombreFocusLost
+        // TODO add your handling code here:
+        String nombre = txtfNombre.getText();
+
+        if (!Validador.esNombre(nombre)) {
+            txtfNombre.setBorder(bordeMal);
+            lblErrorNombre.setVisible(true);
+
+        } else {
+            txtfNombre.setBorder(bordeOriginal);
+            lblErrorNombre.setVisible(false);
+        }
+    }//GEN-LAST:event_txtfNombreFocusLost
+
+    private void txtfApellidoPaternoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfApellidoPaternoFocusLost
+        // TODO add your handling code here:
+        String aPaterno = txtfApellidoPaterno.getText();
+
+        if (!Validador.esNombre(aPaterno)) {
+            txtfApellidoPaterno.setBorder(bordeMal);
+        } else {
+            txtfApellidoPaterno.setBorder(bordeOriginal);
+        }
+    }//GEN-LAST:event_txtfApellidoPaternoFocusLost
+
+    private void txtfApellidoMaternoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfApellidoMaternoFocusLost
+        // TODO add your handling code here:
+        String aMaterno = txtfApellidoMaterno.getText();
+
+        if (!Validador.esNombre(aMaterno)) {
+            txtfApellidoMaterno.setBorder(bordeMal);
+        } else {
+            txtfApellidoMaterno.setBorder(bordeOriginal);
+        }
+
+    }//GEN-LAST:event_txtfApellidoMaternoFocusLost
+
+    private void txtfUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfUsuarioFocusLost
+        // TODO add your handling code here:
+        String usuario = txtfUsuario.getText();
+
+        if (!Validador.esUsuario(usuario)) {
+            txtfUsuario.setBorder(bordeMal);
+        } else {
+            txtfUsuario.setBorder(bordeOriginal);
+        }
+    }//GEN-LAST:event_txtfUsuarioFocusLost
+
+    private void txtpPasswordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpPasswordFocusLost
+        // TODO add your handling code here:
+        String pass = String.valueOf(txtpPassword.getPassword());
+
+        if (!Validador.esPassword(pass)) {
+            txtpPassword.setBorder(bordeMal);
+        } else {
+            txtpPassword.setBorder(bordeOriginal);
+        }
+    }//GEN-LAST:event_txtpPasswordFocusLost
+
+    private void txtfNombreFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfNombreFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtfNombreFocusGained
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -229,6 +393,7 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel lblApellidoMaterno;
     private javax.swing.JLabel lblApellidoPaterno;
+    private javax.swing.JLabel lblErrorNombre;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblTipo;
@@ -244,20 +409,20 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void limpiar(){
+    public void limpiar() {
         txtfNombre.setText("");
         txtfApellidoPaterno.setText("");
         txtfApellidoMaterno.setText("");
         txtpPassword.setText("");
         txtfUsuario.setText("");
-        if(rbtnAlumno.isSelected()){
+        if (rbtnAlumno.isSelected()) {
             rbtnAlumno.setSelected(false);
         } else {
             rbtnMaestro.setSelected(false);
         }
-        
+
     }
-    
+
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

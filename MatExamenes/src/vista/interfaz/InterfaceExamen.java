@@ -9,7 +9,7 @@ package vista.interfaz;
  *
  * @author Jesus Donaldo
  */
-public interface InterfazExamen {
+public interface InterfaceExamen {
     
-    InterfazVista getPadre();
+    InterfaceVista getPadre();
 }

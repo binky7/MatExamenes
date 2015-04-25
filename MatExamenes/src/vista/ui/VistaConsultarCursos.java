@@ -14,17 +14,17 @@ import javax.swing.event.AncestorListener;
 import modelo.dto.CursoDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerCursos;
-import vista.interfaz.InterfazVista;
+import vista.interfaz.InterfaceVista;
 
 /**
  *
  * @author Jesus Donaldo
  */
 public class VistaConsultarCursos extends javax.swing.JPanel implements 
-        AncestorListener, InterfazVista{
+        AncestorListener, InterfaceVista{
 
     private CVMantenerCursos controlVista;
-    private InterfazVista padre;
+    private InterfaceVista padre;
     /**
      * Creates new form ConsultarCursos
      */
@@ -42,7 +42,7 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
     @Override
     public void limpiar() {}
 
-    public void setPadre(InterfazVista padre) {
+    public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
     

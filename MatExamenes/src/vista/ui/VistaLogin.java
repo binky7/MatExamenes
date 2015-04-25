@@ -5,19 +5,37 @@
  */
 package vista.ui;
 
+import java.awt.Color;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import modelo.dto.UsuarioDTO;
+import vista.controlador.CVLogin;
+import vista.controlador.Validador;
+
+import static modelo.dto.UsuarioDTO.Tipo;
+
 /**
  *
  * @author Jesus Donaldo
  */
 public class VistaLogin extends javax.swing.JFrame {
 
-    Principal p;
+    FrmPrincipal p;
+    private CVLogin cvLogin;
+    private final Border bordeOriginal;
+    private final Border bordeMal;
+
     /**
      * Creates new form VistaLogin
      */
     public VistaLogin() {
         initComponents();
-        p = new Principal();
+        p = new FrmPrincipal();
+        bordeOriginal = txtfUsuario.getBorder();
+        bordeMal = BorderFactory.createLineBorder(Color.red);
+        cvLogin = new CVLogin();
     }
 
     /**
@@ -29,71 +47,166 @@ public class VistaLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        btnLogin = new javax.swing.JButton();
+        txtfUsuario = new javax.swing.JTextField();
+        lblUsuario = new javax.swing.JLabel();
+        lblPassword = new javax.swing.JLabel();
+        txtpPassword = new javax.swing.JPasswordField();
+        lblTitulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(500, 350));
 
-        jButton1.setText("Login");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnLogin.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnLogin.setText("Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                login(evt);
+                btnLogin(evt);
             }
         });
+
+        txtfUsuario.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfUsuario.setPreferredSize(new java.awt.Dimension(100, 30));
+
+        lblUsuario.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        lblUsuario.setText("Usuario:");
+
+        lblPassword.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        lblPassword.setText("Password:");
+
+        txtpPassword.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtpPassword.setPreferredSize(new java.awt.Dimension(100, 25));
+
+        lblTitulo.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        lblTitulo.setText("Login");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(633, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(72, 130, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblUsuario)
+                            .addComponent(lblPassword))
+                        .addGap(90, 90, 90)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(119, 119, 119))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnLogin)
+                        .addGap(25, 25, 25))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(208, 208, 208)
+                .addComponent(lblTitulo)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(446, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(31, 31, 31))
+                .addGap(41, 41, 41)
+                .addComponent(lblTitulo)
+                .addGap(60, 60, 60)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblUsuario))
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPassword)
+                    .addComponent(txtpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
+                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void login(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login
-        p.setUsuarioActual(null);
-        p.setVistaAdmin();
-        p.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_login
+    private void btnLogin(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogin
+        UsuarioDTO usuario;
+        usuario = encapsularUsuario();
+        if (usuario == null) {
+            JOptionPane.showMessageDialog(this, "Datos incorrectos, porfavor "
+                    + "sólo ingresa números y letras");
+        } else {
+            int error = cvLogin.validarCredenciales(usuario);
+            if (error == -1) {
+                UsuarioDTO usuarioValido = cvLogin.obtenerUsuarioValidado();
+                JOptionPane.showMessageDialog(this, "Bienvenido "
+                        + usuarioValido.getNombre());
+                p.setUsuarioActual(usuarioValido);
+                Tipo tipo = usuarioValido.getTipo();
+                if (tipo == Tipo.Admin) {
+                    p.setVistaAdmin();
+                } else if (tipo == Tipo.Alumno) {
+                    p.setVistaAlumno();
+                } else if (tipo == Tipo.Maestro) {
+                    p.setVistaMaestro();
+                }
+                p.setVisible(true);
+                dispose();
+            } else if (error == 1) {
+                JOptionPane.showMessageDialog(this, "Password Incorrecto");
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario no existente");
+            }
+
+        }
+
+    }//GEN-LAST:event_btnLogin
+
+    private UsuarioDTO encapsularUsuario() {
+        UsuarioDTO usuario = new UsuarioDTO();
+
+        String pass = String.valueOf(txtpPassword.getPassword());
+        String usuari = txtfUsuario.getText();
+        boolean ok = true;
+
+        if (!Validador.esPassword(pass)) {
+            txtpPassword.setBorder(bordeMal);
+            ok = false;
+        } else {
+            txtpPassword.setBorder(bordeOriginal);
+        }
+
+        if (!Validador.esUsuario(usuari)) {
+            txtfUsuario.setBorder(bordeMal);
+            ok = false;
+        } else {
+            txtfUsuario.setBorder(bordeOriginal);
+        }
+
+        usuario.setPassword(pass);
+        usuario.setUsuario(usuari);
+
+        if (!ok) {
+            usuario = null;
+        }
+
+        return usuario;
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+            for(javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                
+                if("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
+                //UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VistaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VistaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VistaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VistaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -103,6 +216,11 @@ public class VistaLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnLogin;
+    private javax.swing.JLabel lblPassword;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblUsuario;
+    private javax.swing.JTextField txtfUsuario;
+    private javax.swing.JPasswordField txtpPassword;
     // End of variables declaration//GEN-END:variables
 }

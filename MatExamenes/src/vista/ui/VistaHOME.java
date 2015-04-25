@@ -6,14 +6,14 @@
 package vista.ui;
 
 import modelo.dto.UsuarioDTO;
-import vista.interfaz.InterfazVista;
+import vista.interfaz.InterfaceVista;
 
 
 /**
  *
  * @author Jesus Donaldo
  */
-public class VistaHOME extends javax.swing.JPanel implements InterfazVista {
+public class VistaHOME extends javax.swing.JPanel implements InterfaceVista {
 
     /**
      * Creates new form VistaPrimera

@@ -8,7 +8,7 @@ package vista.ui;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JFrame;
-import vista.interfaz.InterfazExamen;
+import vista.interfaz.InterfaceExamen;
 
 /**
  *
@@ -16,7 +16,7 @@ import vista.interfaz.InterfazExamen;
  */
 public class VistaAgregarReactivos extends javax.swing.JFrame {
 
-    InterfazExamen padre;
+    InterfaceExamen padre;
     
     /**
      * Creates new form VistaAgregarReactivos
@@ -65,7 +65,7 @@ public class VistaAgregarReactivos extends javax.swing.JFrame {
         });
     }
 
-    public void setPadre(InterfazExamen padre) {
+    public void setPadre(InterfaceExamen padre) {
         this.padre = padre;
     }
     

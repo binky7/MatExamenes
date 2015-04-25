@@ -12,15 +12,16 @@ import modelo.dto.UsuarioDTO;
 import vista.controlador.CVConsultarCalificaciones;
 import vista.controlador.CVMantenerCursos;
 import vista.controlador.CVMantenerGrupos;
+import vista.controlador.CVMantenerReactivos;
 import vista.controlador.CVMantenerTemas;
 import vista.controlador.CVMantenerUsuarios;
-import vista.interfaz.InterfazVista;
+import vista.interfaz.InterfaceVista;
 
 /**
  *
  * @author Jesus Donaldo
  */
-public class Principal extends javax.swing.JFrame implements InterfazVista {
+public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
 
     //Usuario que inicio sesion
     private UsuarioDTO usuarioActual;
@@ -45,11 +46,14 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
     private VistaRegistrarUsuario vistaRegistrarUsuario;
     private VistaConsultarUsuarios vistaConsultarUsuarios;
     private VistaModificarUsuario vistaModificarUsuario;
+    private VistaRegistrarReactivo vistaRegistrarReactivo;
+    private VistaConsultarReactivos vistaConsultarReactivos;
+    private VistaModificarReactivo vistaModificarReactivo;
     
     /**
      * Creates new form Principal
      */
-    public Principal() {
+    public FrmPrincipal() {
         initComponents();
         init();
         //manejadorVista.last(vistas);
@@ -71,30 +75,35 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         //Crear vistas
         vistaHome = new VistaHOME();
         vistaHome.setName(Vista.HOME.toString());
+        
         vistaRegistrarTema = new VistaRegistrarTema();
         vistaRegistrarTema.setName(Vista.RegistrarTema.toString());
         vistaConsultarTemas = new VistaConsultarTemas();
         vistaConsultarTemas.setName(Vista.ConsultarTemas.toString());
         vistaModificarTema = new VistaModificarTema();
         vistaModificarTema.setName(Vista.ModificarTema.toString());
+        
         vistaRegistrarCurso = new VistaRegistrarCurso();
         vistaRegistrarCurso.setName(Vista.RegistrarCurso.toString());
         vistaConsultarCursos = new VistaConsultarCursos();
         vistaConsultarCursos.setName(Vista.ConsultarCursos.toString());
         vistaModificarCurso = new VistaModificarCurso();
         vistaModificarCurso.setName(Vista.ModificarCurso.toString());
+        
         vistaRegistrarExamen = new VistaRegistrarExamen();
         vistaRegistrarExamen.setName(Vista.RegistrarExamen.toString());
         vistaConsultarExamenes = new VistaConsultarExamenes();
         vistaConsultarExamenes.setName(Vista.ConsultarExamenes.toString());
         vistaModificarExamen = new VistaModificarExamen();
         vistaModificarExamen.setName(Vista.ModificarExamen.toString());
+        
         vistaRegistrarGrupo = new VistaRegistrarGrupo();
         vistaRegistrarGrupo.setName(Vista.RegistrarGrupo.toString());
         vistaConsultarGrupo = new VistaConsultarGrupo();
         vistaConsultarGrupo.setName(Vista.ConsultarGrupo.toString());
         vistaModificarGrupo = new VistaModificarGrupo();
         vistaModificarGrupo.setName(Vista.ModificarGrupo.toString());
+        
         vistaConsultarCalificaciones = new VistaConsultarCalificaciones();
         vistaConsultarCalificaciones.setName(Vista
                 .ConsultarCalificaciones.toString());
@@ -102,12 +111,21 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
                 new VistaConsultarCalificacionesExamen();
         vistaConsultarCalificacionesExamen.setName(Vista
                 .ConsultarCalificacionesExamen.toString());
+        
         vistaRegistrarUsuario = new VistaRegistrarUsuario();
         vistaRegistrarUsuario.setName(Vista.RegistrarUsuario.toString());
         vistaConsultarUsuarios = new VistaConsultarUsuarios();
         vistaConsultarUsuarios.setName(Vista.ConsultarUsuarios.toString());
         vistaModificarUsuario = new VistaModificarUsuario();
         vistaModificarUsuario.setName(Vista.ModificarUsuario.toString());
+        
+        vistaRegistrarReactivo = new VistaRegistrarReactivo();
+        vistaRegistrarReactivo.setName(Vista.RegistrarReactivo.toString());
+        vistaConsultarReactivos = new VistaConsultarReactivos();
+        vistaConsultarReactivos.setName(Vista.ConsultarReactivos.toString());
+        vistaModificarReactivo = new VistaModificarReactivo();
+        vistaModificarReactivo.setName(Vista.ModificarReactivo.toString());
+        
         
         //Crear controladores vistas
         CVMantenerTemas cvMantenerTemas = new CVMantenerTemas();
@@ -116,67 +134,95 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         CVConsultarCalificaciones cvConsultarCalificaciones =
                 new CVConsultarCalificaciones();
         CVMantenerUsuarios cvMantenerUsuarios = new CVMantenerUsuarios();
+        CVMantenerReactivos cvMantenerReactivos = new CVMantenerReactivos();
         
         
         //Asignar controladores a vistas
         vistaRegistrarTema.setControlador(cvMantenerTemas);
         vistaModificarTema.setControlador(cvMantenerTemas);
         vistaConsultarTemas.setControlador(cvMantenerTemas);
+        
         vistaRegistrarCurso.setControlador(cvMantenerCursos);
         vistaModificarCurso.setControlador(cvMantenerCursos);
         vistaConsultarCursos.setControlador(cvMantenerCursos);
+        
         vistaRegistrarGrupo.setControlador(cvMantenerGrupos);
         vistaConsultarGrupo.setControlador(cvMantenerGrupos);
         vistaModificarGrupo.setControlador(cvMantenerGrupos);
+        
         vistaConsultarCalificaciones.setControlador(cvConsultarCalificaciones);
         vistaConsultarCalificacionesExamen
                 .setControlador(cvConsultarCalificaciones);
+        
         vistaRegistrarUsuario.setControlador(cvMantenerUsuarios);
         vistaConsultarUsuarios.setControlador(cvMantenerUsuarios);
         vistaModificarUsuario.setControlador(cvMantenerUsuarios);
         
+        vistaRegistrarReactivo.setControlador(cvMantenerReactivos);
+        vistaConsultarReactivos.setControlador(cvMantenerReactivos);
+        vistaModificarReactivo.setControlador(cvMantenerReactivos);
+        
         //Asignar padre a vistas
         vistaRegistrarTema.setPadre(this);
+        vistaConsultarTemas.setPadre(this);
         vistaModificarTema.setPadre(this);
+        
         vistaRegistrarCurso.setPadre(this);
         vistaConsultarCursos.setPadre(this);
         vistaModificarCurso.setPadre(this);
-        vistaConsultarTemas.setPadre(this);
-        vistaConsultarCursos.setPadre(this);
+        
         vistaRegistrarGrupo.setPadre(this);
         vistaConsultarGrupo.setPadre(this);
         vistaModificarGrupo.setPadre(this);
+        
         vistaRegistrarExamen.setPadre(this);
         vistaConsultarExamenes.setPadre(this);
         vistaModificarExamen.setPadre(this);
+        
         vistaConsultarCalificaciones.setPadre(this);
         vistaConsultarCalificacionesExamen.setPadre(this);
+        
         vistaRegistrarUsuario.setPadre(this);
         vistaConsultarUsuarios.setPadre(this);
         vistaModificarUsuario.setPadre(this);
         
+        vistaRegistrarReactivo.setPadre(this);
+        vistaConsultarReactivos.setPadre(this);
+        vistaModificarReactivo.setPadre(this);
+        
+        
         //Agregar un panel y su identificador. Para agregar mas identificadores
         //ir a vista.interfaz.InterfazVista y agregarlos al enum Vista
         vistas.add(vistaHome, Vista.HOME.toString());
+        
         vistas.add(vistaRegistrarTema, Vista.RegistrarTema.toString());
         vistas.add(vistaConsultarTemas, Vista.ConsultarTemas.toString());
         vistas.add(vistaModificarTema, Vista.ModificarTema.toString());
+        
         vistas.add(vistaRegistrarCurso, Vista.RegistrarCurso.toString());
         vistas.add(vistaConsultarCursos, Vista.ConsultarCursos.toString());
         vistas.add(vistaModificarCurso, Vista.ModificarCurso.toString());
+        
         vistas.add(vistaRegistrarGrupo, Vista.RegistrarGrupo.toString());
         vistas.add(vistaConsultarGrupo, Vista.ConsultarGrupo.toString());
         vistas.add(vistaModificarGrupo, Vista.ModificarGrupo.toString());
+        
         vistas.add(vistaRegistrarExamen, Vista.RegistrarExamen.toString());
         vistas.add(vistaConsultarExamenes, Vista.ConsultarExamenes.toString());
         vistas.add(vistaModificarExamen, Vista.ModificarExamen.toString());
+        
         vistas.add(vistaConsultarCalificaciones, Vista.ConsultarCalificaciones
                 .toString());
         vistas.add(vistaConsultarCalificacionesExamen, Vista
                 .ConsultarCalificacionesExamen.toString());
+        
         vistas.add(vistaRegistrarUsuario, Vista.RegistrarUsuario.toString());
         vistas.add(vistaConsultarUsuarios, Vista.ConsultarUsuarios.toString());
         vistas.add(vistaModificarUsuario, Vista.ModificarUsuario.toString());
+        
+        vistas.add(vistaRegistrarReactivo, Vista.RegistrarReactivo.toString());
+        vistas.add(vistaConsultarReactivos, Vista.ConsultarReactivos.toString());
+        vistas.add(vistaModificarReactivo, Vista.ModificarReactivo.toString());
     }
     
     /**
@@ -209,7 +255,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         jMenu10 = new javax.swing.JMenu();
         jSeparator1 = new javax.swing.JSeparator();
         vistas = new javax.swing.JPanel();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        mbPrincipal = new javax.swing.JMenuBar();
         mTemas = new javax.swing.JMenu();
         miRegistrarTema = new javax.swing.JMenuItem();
         miConsultarTemas = new javax.swing.JMenuItem();
@@ -257,6 +303,8 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
 
         mTemas.setText("Temas");
 
+        miRegistrarTema.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.ALT_MASK));
+        miRegistrarTema.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/menuRegistrar.png"))); // NOI18N
         miRegistrarTema.setText("Registrar Tema");
         miRegistrarTema.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -265,6 +313,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         });
         mTemas.add(miRegistrarTema);
 
+        miConsultarTemas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/menuConsultar.png"))); // NOI18N
         miConsultarTemas.setText("Consultar Temas");
         miConsultarTemas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -273,10 +322,12 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         });
         mTemas.add(miConsultarTemas);
 
-        jMenuBar1.add(mTemas);
+        mbPrincipal.add(mTemas);
 
         mCursos.setText("Cursos");
 
+        miRegistrarCurso.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
+        miRegistrarCurso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/menuRegistrar.png"))); // NOI18N
         miRegistrarCurso.setText("Registrar Curso");
         miRegistrarCurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -285,6 +336,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         });
         mCursos.add(miRegistrarCurso);
 
+        miConsultarCursos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/menuConsultar.png"))); // NOI18N
         miConsultarCursos.setText("Consultar Cursos");
         miConsultarCursos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -293,10 +345,11 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         });
         mCursos.add(miConsultarCursos);
 
-        jMenuBar1.add(mCursos);
+        mbPrincipal.add(mCursos);
 
         mUsuarios.setText("Usuarios");
 
+        miRegistrarUsuario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK));
         miRegistrarUsuario.setText("Registrar Usuario");
         miRegistrarUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -313,21 +366,33 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         });
         mUsuarios.add(miConsultarUsuarios);
 
-        jMenuBar1.add(mUsuarios);
+        mbPrincipal.add(mUsuarios);
 
         mReactivos.setText("Reactivos");
         mReactivos.setToolTipText("");
 
+        miRegistrarReactivo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
         miRegistrarReactivo.setText("Registrar Reactivo");
+        miRegistrarReactivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miRegistrarReactivoActionPerformed(evt);
+            }
+        });
         mReactivos.add(miRegistrarReactivo);
 
         miConsultarReactivos.setText("Consultar Reactivos");
+        miConsultarReactivos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miConsultarReactivosActionPerformed(evt);
+            }
+        });
         mReactivos.add(miConsultarReactivos);
 
-        jMenuBar1.add(mReactivos);
+        mbPrincipal.add(mReactivos);
 
         mExamenes.setText("Examenes");
 
+        miRegistrarExamen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK));
         miRegistrarExamen.setText("Registrar Examen");
         miRegistrarExamen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -345,13 +410,15 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         mExamenes.add(miConsultarExamenes);
         mExamenes.add(jSeparator2);
 
+        miAsignarExamen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
         miAsignarExamen.setText("Asignar Examen");
         mExamenes.add(miAsignarExamen);
 
-        jMenuBar1.add(mExamenes);
+        mbPrincipal.add(mExamenes);
 
         mGrupos.setText("Grupos");
 
+        miRegistrarGrupo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.ALT_MASK));
         miRegistrarGrupo.setText("Registrar Grupo");
         miRegistrarGrupo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -368,10 +435,10 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         });
         mGrupos.add(miConsultarGrupos);
 
-        jMenuBar1.add(mGrupos);
+        mbPrincipal.add(mGrupos);
 
         mContestarExamen.setText("Contestar Examen");
-        jMenuBar1.add(mContestarExamen);
+        mbPrincipal.add(mContestarExamen);
 
         mCalificaciones.setText("Calificaciones");
 
@@ -383,16 +450,16 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         });
         mCalificaciones.add(miConsultarCalificaciones);
 
-        jMenuBar1.add(mCalificaciones);
+        mbPrincipal.add(mCalificaciones);
 
         mEstadisticas.setText("Estadísticas");
 
         miGenerarEstadisticas.setText("Generar Estadísticas");
         mEstadisticas.add(miGenerarEstadisticas);
 
-        jMenuBar1.add(mEstadisticas);
+        mbPrincipal.add(mEstadisticas);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(mbPrincipal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -415,11 +482,11 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         
         if(actual.getName().startsWith("Registrar") || actual.getName()
                 .startsWith("Modificar")) {
-            ok = ((InterfazVista)actual).confirmarCambio();
+            ok = ((InterfaceVista)actual).confirmarCambio();
         }
         
         if(ok) {
-            ((InterfazVista)actual).limpiar();
+            ((InterfaceVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.RegistrarTema.toString());
         }
     }//GEN-LAST:event_miRegistrarTemaActionPerformed
@@ -431,44 +498,43 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         
         if(actual.getName().startsWith("Registrar") || actual.getName()
                 .startsWith("Modificar")) {
-            ok = ((InterfazVista)actual).confirmarCambio();
+            ok = ((InterfaceVista)actual).confirmarCambio();
         }
         
         if(ok) {
-            ((InterfazVista)actual).limpiar();
+            ((InterfaceVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.ConsultarTemas.toString());
         }
     }//GEN-LAST:event_miConsultarTemasActionPerformed
 
     private void miRegistrarExamenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miRegistrarExamenActionPerformed
+        //Mostrar Vista Registrar Examen
         JPanel actual = getVistaActual();
         boolean ok = true;
         
         if(actual.getName().startsWith("Registrar") || actual.getName()
                 .startsWith("Modificar")) {
-            ok = ((InterfazVista)actual).confirmarCambio();
+            ok = ((InterfaceVista)actual).confirmarCambio();
         }
         
         if(ok) {
-            //Mostrar vistaRegistrarExamen (Solo era una prueba)
-            ((InterfazVista)actual).limpiar();
+            ((InterfaceVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.RegistrarExamen.toString());
         }
     }//GEN-LAST:event_miRegistrarExamenActionPerformed
 
     private void miRegistrarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miRegistrarCursoActionPerformed
-        // TODO add your handling code here:
-         JPanel actual = getVistaActual();
+        //Mostrar Registrar Cursos
+        JPanel actual = getVistaActual();
         boolean ok = true;
         
         if(actual.getName().startsWith("Registrar") || actual.getName()
                 .startsWith("Modificar")) {
-            ok = ((InterfazVista)actual).confirmarCambio();
+            ok = ((InterfaceVista)actual).confirmarCambio();
         }
         
         if(ok) {
-            //Mostrar vistaRegistrarCurso (Solo era una prueba)
-            ((InterfazVista)actual).limpiar();
+            ((InterfaceVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.RegistrarCurso.toString());
         }
     }//GEN-LAST:event_miRegistrarCursoActionPerformed
@@ -480,11 +546,11 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         
         if(actual.getName().startsWith("Registrar") || actual.getName()
                 .startsWith("Modificar")) {
-            ok = ((InterfazVista)actual).confirmarCambio();
+            ok = ((InterfaceVista)actual).confirmarCambio();
         }
         
         if(ok) {
-            ((InterfazVista)actual).limpiar();
+            ((InterfaceVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.ConsultarCursos.toString());
         }
     }//GEN-LAST:event_miConsultarCursosActionPerformed
@@ -496,11 +562,11 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         
         if(actual.getName().startsWith("Registrar") || actual.getName()
                 .startsWith("Modificar")) {
-            ok = ((InterfazVista)actual).confirmarCambio();
+            ok = ((InterfaceVista)actual).confirmarCambio();
         }
         
         if(ok) {
-            ((InterfazVista)actual).limpiar();
+            ((InterfaceVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.RegistrarGrupo.toString());
         }
     }//GEN-LAST:event_miRegistrarGrupoActionPerformed
@@ -512,11 +578,11 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         
         if(actual.getName().startsWith("Registrar") || actual.getName()
                 .startsWith("Modificar")) {
-            ok = ((InterfazVista)actual).confirmarCambio();
+            ok = ((InterfaceVista)actual).confirmarCambio();
         }
         
         if(ok) {
-            ((InterfazVista)actual).limpiar();
+            ((InterfaceVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.ConsultarGrupo.toString());
         }
     }//GEN-LAST:event_miConsultarGruposActionPerformed
@@ -528,11 +594,11 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         
         if(actual.getName().startsWith("Registrar") || actual.getName()
                 .startsWith("Modificar")) {
-            ok = ((InterfazVista)actual).confirmarCambio();
+            ok = ((InterfaceVista)actual).confirmarCambio();
         }
         
         if(ok) {
-            ((InterfazVista)actual).limpiar();
+            ((InterfaceVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.ConsultarCalificaciones
                     .toString());
         }
@@ -545,13 +611,12 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         
         if(actual.getName().startsWith("Registrar") || actual.getName()
                 .startsWith("Modificar")) {
-            ok = ((InterfazVista)actual).confirmarCambio();
+            ok = ((InterfaceVista)actual).confirmarCambio();
         }
         
         if(ok) {
-            ((InterfazVista)actual).limpiar();
-            manejadorVista.show(vistas, Vista.ConsultarExamenes
-                    .toString());
+            ((InterfaceVista)actual).limpiar();
+            manejadorVista.show(vistas, Vista.ConsultarExamenes.toString());
         }
     }//GEN-LAST:event_miConsultarExamenesActionPerformed
 
@@ -562,11 +627,11 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         
         if(actual.getName().startsWith("Registrar") || actual.getName()
                 .startsWith("Modificar")) {
-            ok = ((InterfazVista)actual).confirmarCambio();
+            ok = ((InterfaceVista)actual).confirmarCambio();
         }
         
         if(ok) {
-            ((InterfazVista)actual).limpiar();
+            ((InterfaceVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.RegistrarUsuario.toString());
         }
     }//GEN-LAST:event_miRegistrarUsuarioActionPerformed
@@ -578,31 +643,81 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         
         if(actual.getName().startsWith("Registrar") || actual.getName()
                 .startsWith("Modificar")) {
-            ok = ((InterfazVista)actual).confirmarCambio();
+            ok = ((InterfaceVista)actual).confirmarCambio();
         }
         
         if(ok) {
-            ((InterfazVista)actual).limpiar();
+            ((InterfaceVista)actual).limpiar();
             manejadorVista.show(vistas, Vista.ConsultarUsuarios.toString());
         }
     }//GEN-LAST:event_miConsultarUsuariosActionPerformed
 
+    private void miRegistrarReactivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miRegistrarReactivoActionPerformed
+        // TODO add your handling code here:
+        JPanel actual = getVistaActual();
+        boolean ok = true;
+        
+        if(actual.getName().startsWith("Registrar") || actual.getName()
+                .startsWith("Modificar")) {
+            ok = ((InterfaceVista)actual).confirmarCambio();
+        }
+        
+        if(ok) {
+            ((InterfaceVista)actual).limpiar();
+            manejadorVista.show(vistas, Vista.RegistrarReactivo.toString());
+        }
+    }//GEN-LAST:event_miRegistrarReactivoActionPerformed
+
+    private void miConsultarReactivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miConsultarReactivosActionPerformed
+        // TODO add your handling code here:
+        JPanel actual = getVistaActual();
+        boolean ok = true;
+        
+        if(actual.getName().startsWith("Registrar") || actual.getName()
+                .startsWith("Modificar")) {
+            ok = ((InterfaceVista)actual).confirmarCambio();
+        }
+        
+        if(ok) {
+            ((InterfaceVista)actual).limpiar();
+            manejadorVista.show(vistas, Vista.ConsultarReactivos.toString());
+        }
+    }//GEN-LAST:event_miConsultarReactivosActionPerformed
+
     public void setVistaAlumno() {
-        //para ocultar los menus
+        ocultarTodos();
+        mContestarExamen.setVisible(true);
     }
     
     public void setVistaMaestro() {
-        //para ocultar los menus
+        ocultarTodos();
+        mCalificaciones.setVisible(true);
+        mExamenes.setVisible(true);
+        mReactivos.setVisible(true);
+        
     }
-
+    /**
+     * 
+     */
     public void setVistaAdmin() {
-        //para igual
+       //no se oculta ninguna opcion del menu 
+    }
+    
+    private void ocultarTodos(){
+        mCalificaciones.setVisible(false);
+        mContestarExamen.setVisible(false);
+        mCursos.setVisible(false);
+        mEstadisticas.setVisible(false);
+        mExamenes.setVisible(false);
+        mGrupos.setVisible(false);
+        mReactivos.setVisible(false);
+        mTemas.setVisible(false);
+        mUsuarios.setVisible(false);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu9;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JMenu mCalificaciones;
@@ -614,6 +729,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
     private javax.swing.JMenu mReactivos;
     private javax.swing.JMenu mTemas;
     private javax.swing.JMenu mUsuarios;
+    private javax.swing.JMenuBar mbPrincipal;
     private javax.swing.JMenuItem miAsignarExamen;
     private javax.swing.JMenuItem miConsultarCalificaciones;
     private javax.swing.JMenuItem miConsultarCursos;
@@ -640,7 +756,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
         //Obtener la vista que se acabo de mostrar.
         JPanel vistaModificar = getVistaActual();
         //Enviarle el objeto por medio de la interfaz.
-        ((InterfazVista)vistaModificar).mostrarEntidad(entidad);
+        ((InterfaceVista)vistaModificar).mostrarEntidad(entidad);
     }
 
     @Override
@@ -660,7 +776,7 @@ public class Principal extends javax.swing.JFrame implements InterfazVista {
 
     @Override
     public UsuarioDTO obtenerUsuarioActual() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.usuarioActual;
     }
 
     @Override

@@ -10,18 +10,18 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerUsuarios;
-import vista.interfaz.InterfazVista;
+import vista.controlador.Validador;
+import vista.interfaz.InterfaceVista;
 
 /**
  *
  * @author Alf
  */
-public class VistaConsultarUsuarios extends javax.swing.JPanel implements InterfazVista {
+public class VistaConsultarUsuarios extends javax.swing.JPanel implements InterfaceVista {
 
     private CVMantenerUsuarios cvMantenerUsuarios;
-    private InterfazVista padre;
+    private InterfaceVista padre;
     private DefaultTableModel dtm;
-    private boolean modificado;
 
     /**
      * Creates new form VistaConsultarUsuario2
@@ -29,10 +29,9 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
     public VistaConsultarUsuarios() {
         initComponents();
         dtm = (DefaultTableModel) tblUsuarios.getModel();
-        modificado = false;
     }
 
-    public void setPadre(InterfazVista padre) {
+    public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
 
@@ -72,19 +71,12 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
 
             },
             new String [] {
-                "Nombre", "Apellido Paterno", "Apellido Materno", "Usuario", "Tipo Usuario", "[x]"
+                "Nombre", "Apellido Paterno", "Apellido Materno", "Usuario", "Tipo Usuario"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true
+                false, false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -164,21 +156,33 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         int i = tblUsuarios.getSelectedRow();
         UsuarioDTO usuario = cvMantenerUsuarios.obtenerUsuariosBuscados().get(i);
         padre.mostrarVistaConEntidad(usuario, Vista.ModificarUsuario);
-        modificado = true;
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
-        List<UsuarioDTO> usuarios;
-        usuarios
-                = cvMantenerUsuarios.obtenerUsuariosPorApellido(txtfApellidoPaterno.getText());
+        String apellido = txtfApellidoPaterno.getText();
+        boolean ok;
+        if (Validador.estaVacio(apellido)) {
+            int opcion = JOptionPane.showConfirmDialog(this, "Realizar una consulta con"
+                    + " el campo vacio regresara todos los usuarios.\n¿Desea continuar?",
+                    "Busqueda", JOptionPane.YES_NO_OPTION);
+            ok = (opcion == JOptionPane.YES_OPTION);
+        } else {
+            ok = true;
+        }
+        if (ok) {
+            List<UsuarioDTO> usuarios;
+            usuarios
+                    = cvMantenerUsuarios.obtenerUsuariosPorApellido(apellido);
 
-        mostrarDatosTabla(usuarios);
+            mostrarDatosTabla(usuarios);
+        }
+
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void mostrarDatosTabla(List<UsuarioDTO> usuarios) {
         dtm.setRowCount(0);
-        Object datos[] = new Object[6];
+        Object datos[] = new Object[5];
 
         for (UsuarioDTO usuario : usuarios) {
             datos[0] = usuario.getNombre();
@@ -186,7 +190,6 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
             datos[2] = usuario.getApellidoMaterno();
             datos[3] = usuario.getUsuario();
             datos[4] = usuario.getTipo().toString();
-            datos[5] = false;
 
             dtm.addRow(datos);
         }
@@ -207,8 +210,6 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
             } else {
                 JOptionPane.showMessageDialog(this, "Usuario no Eliminado");
             }
-        } else {
-
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -224,16 +225,9 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
     private javax.swing.JTextField txtfApellidoPaterno;
     // End of variables declaration//GEN-END:variables
 
-    public void chicanada() {
-        if (modificado) {
-            btnBuscar.doClick();
-            modificado = false;
-        }
-    }
-
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -260,6 +254,6 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
 
     @Override
     public void limpiar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //
     }
 }

@@ -12,7 +12,7 @@ import modelo.dto.UsuarioDTO;
  *
  * @author Jesus Donaldo
  */
-public interface InterfazVista {
+public interface InterfaceVista {
     
     /**
      * Enumeracion necesaria para identificar a los paneles en el principal
@@ -21,8 +21,9 @@ public interface InterfazVista {
     enum Vista {
         HOME, RegistrarTema, ConsultarTemas, ModificarTema,
         RegistrarCurso, ConsultarCursos, ModificarCurso, RegistrarGrupo,
-        ConsultarGrupo, ModificarGrupo, RegistrarExamen, ConsultarExamenes,
-        ModificarExamen, ConsultarCalificaciones, ConsultarCalificacionesExamen,
+        ConsultarGrupo, ModificarGrupo, RegistrarReactivo, ConsultarReactivos,
+        ModificarReactivo, RegistrarExamen, ConsultarExamenes, ModificarExamen,
+        ConsultarCalificaciones, ConsultarCalificacionesExamen,
         RegistrarUsuario,ConsultarUsuarios,ModificarUsuario
     }
     

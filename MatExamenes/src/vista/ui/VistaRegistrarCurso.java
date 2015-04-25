@@ -13,17 +13,17 @@ import modelo.dto.CursoDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerCursos;
 import vista.controlador.Validador;
-import vista.interfaz.InterfazVista;
+import vista.interfaz.InterfaceVista;
 
 /**
  *
  * @author Jesus Donaldo
  */
 public class VistaRegistrarCurso extends javax.swing.JPanel 
-implements FocusListener, InterfazVista{
+implements FocusListener, InterfaceVista{
 
     private CVMantenerCursos controlVista;
-    private InterfazVista padre;
+    private InterfaceVista padre;
     
     /**
      * Creates new form RegistrarModificarCursos
@@ -43,7 +43,7 @@ implements FocusListener, InterfazVista{
         this.controlVista = controlVista;
     }
     
-    public void setPadre(InterfazVista padre) {
+    public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
         

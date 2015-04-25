@@ -8,15 +8,15 @@ package vista.ui;
 import javax.swing.JOptionPane;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVConsultarCalificaciones;
-import vista.interfaz.InterfazVista;
+import vista.interfaz.InterfaceVista;
 
 /**
  *
  * @author FernandoEnrique
  */
-public class VistaConsultarCalificaciones extends javax.swing.JPanel implements InterfazVista{
+public class VistaConsultarCalificaciones extends javax.swing.JPanel implements InterfaceVista{
     private CVConsultarCalificaciones controlVista;
-    private InterfazVista padre;
+    private InterfaceVista padre;
     
     /**
      * Creates new form VistaConsultarCalificaciones
@@ -29,7 +29,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements 
         this.controlVista = controlVista;
     }
     
-    public void setPadre(InterfazVista padre) {
+    public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
     /**

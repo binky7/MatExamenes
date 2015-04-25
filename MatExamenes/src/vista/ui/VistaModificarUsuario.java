@@ -5,20 +5,22 @@
  */
 package vista.ui;
 
+import java.awt.Color;
 import javax.swing.JOptionPane;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerUsuarios;
-import vista.interfaz.InterfazVista;
+import vista.controlador.Validador;
+import vista.interfaz.InterfaceVista;
 
 /**
  *
  * @author Alf
  */
 public class VistaModificarUsuario extends javax.swing.JPanel implements
-        InterfazVista {
+        InterfaceVista {
 
     private CVMantenerUsuarios cvMantenerUsuarios;
-    private InterfazVista padre;
+    private InterfaceVista padre;
     private UsuarioDTO usuario;
 
     /**
@@ -28,7 +30,7 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         initComponents();
     }
 
-    public void setPadre(InterfazVista padre) {
+    public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
 
@@ -38,11 +40,58 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
 
     public UsuarioDTO encapsularUsuario() {
 
+        String aPaterno = txtfApellidoPaterno.getText();
+        String aMaterno = txtfApellidoMaterno.getText();
+        String nombre = txtfNombre.getText();
+        String pass = txtfPassword.getText();
+        String usuari = txtfUsuario.getText();
+
+        boolean ok = true;
+
+        if (!Validador.esNombre(nombre)) {
+            ok = false;
+            txtfNombre.setBackground(Color.red);
+        } else {
+            txtfNombre.setBackground(Color.white);
+        }
+
+        if (!Validador.esNombre(aPaterno)) {
+            txtfApellidoPaterno.setBackground(Color.red);
+            ok = false;
+        } else {
+            txtfApellidoPaterno.setBackground(Color.white);
+        }
+
+        if (!Validador.esNombre(aMaterno)) {
+            txtfApellidoMaterno.setBackground(Color.red);
+            ok = false;
+        } else {
+            txtfApellidoMaterno.setBackground(Color.white);
+        }
+
+        if (!Validador.esPassword(pass)) {
+            txtfPassword.setBackground(Color.red);
+            ok = false;
+        } else {
+            txtfPassword.setBackground(Color.white);
+        }
+
+        if (!Validador.esUsuario(usuari)) {
+            txtfUsuario.setBackground(Color.red);
+            ok = false;
+        } else {
+            txtfUsuario.setBackground(Color.white);
+        }
+
         usuario.setApellidoMaterno(txtfApellidoMaterno.getText());
         usuario.setApellidoPaterno(txtfApellidoPaterno.getText());
         usuario.setNombre(txtfNombre.getText());
         usuario.setUsuario(txtfUsuario.getText());
         usuario.setPassword(txtfPassword.getText());
+
+        if (!ok) {
+            return null;
+        }
 
         return usuario;
     }
@@ -162,18 +211,23 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
     private void btnModificiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificiarActionPerformed
         // TODO add your handling code here:
         boolean ok;
-        encapsularUsuario();
-        ok = cvMantenerUsuarios.modificarUsuario(usuario);
-        if (ok) {
-            JOptionPane.showMessageDialog(this, "Usuario Modificado");
-            padre.mostrarVistaConEntidad(cvMantenerUsuarios.obtenerUsuariosBuscados(),
-                    Vista.ConsultarUsuarios);
+        if (encapsularUsuario() != null) {
+            ok = cvMantenerUsuarios.modificarUsuario(usuario);
+            if (ok) {
+                JOptionPane.showMessageDialog(this, "Usuario Modificado");
+                padre.mostrarVistaConEntidad(cvMantenerUsuarios.obtenerUsuariosBuscados(),
+                        Vista.ConsultarUsuarios);
 
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario No Modificado");
+                padre.mostrarVista(Vista.ConsultarUsuarios);
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "Usuario No Modificado");
-            padre.mostrarVista(Vista.ConsultarUsuarios);
+            JOptionPane.showMessageDialog(this, "Datos incorrectos, porfavor "
+                    + "sólo ingresa números y letras");
+            return;
         }
-
+        
     }//GEN-LAST:event_btnModificiarActionPerformed
 
 

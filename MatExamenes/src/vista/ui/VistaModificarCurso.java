@@ -10,16 +10,16 @@ import modelo.dto.CursoDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerCursos;
 import vista.controlador.Validador;
-import vista.interfaz.InterfazVista;
+import vista.interfaz.InterfaceVista;
 
 /**
  *
  * @author ivan
  */
-public class VistaModificarCurso extends javax.swing.JPanel implements InterfazVista{
+public class VistaModificarCurso extends javax.swing.JPanel implements InterfaceVista{
     
     private CVMantenerCursos controlVista;
-    private InterfazVista padre;
+    private InterfaceVista padre;
 
     /**
      * Creates new form VistaModificarCurso
@@ -32,7 +32,7 @@ public class VistaModificarCurso extends javax.swing.JPanel implements InterfazV
         this.controlVista = controlVista;
     }
     
-    public void setPadre(InterfazVista padre) {
+    public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
     

@@ -7,15 +7,15 @@ package vista.ui;
 import javax.swing.JOptionPane;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerGrupos;
-import vista.interfaz.InterfazVista;
+import vista.interfaz.InterfaceVista;
 
 /**
  *
  * @author BoredmanDA
  */
-public class VistaConsultarGrupo extends javax.swing.JPanel implements InterfazVista{
+public class VistaConsultarGrupo extends javax.swing.JPanel implements InterfaceVista{
     private CVMantenerGrupos controlVista;
-    private InterfazVista padre;
+    private InterfaceVista padre;
 
     /**
      * Creates new form CrearNuevoGrupo
@@ -28,7 +28,7 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements InterfazV
         this.controlVista = controlVista;
     }
     
-    public void setPadre(InterfazVista padre) {
+    public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
     

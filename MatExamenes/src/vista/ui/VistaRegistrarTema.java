@@ -14,7 +14,7 @@ import modelo.dto.TemaDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerTemas;
 import vista.controlador.Validador;
-import vista.interfaz.InterfazVista;
+import vista.interfaz.InterfaceVista;
 
 /**
  *
@@ -24,10 +24,10 @@ import vista.interfaz.InterfazVista;
 //Esto para que quede bien con el frame y los menus. No lo probe mas para ver
 //Si quedaba bien de lo ancho pero espero que no sea un mayor problema
 public class VistaRegistrarTema extends javax.swing.JPanel implements
-        AncestorListener, InterfazVista {
+        AncestorListener, InterfaceVista {
 
     private CVMantenerTemas controlVista;
-    private InterfazVista padre;
+    private InterfaceVista padre;
     
     /**
      * Creates new form VistaRegistrarTema
@@ -37,7 +37,7 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
         this.addAncestorListener(this);
     }
     
-    public void setPadre(InterfazVista padre) {
+    public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
     
