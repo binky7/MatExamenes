@@ -7,6 +7,7 @@ package vista.controlador;
 
 import control.delegate.MantenerReactivosDELEGATE;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import modelo.dto.CursoDTO;
 import modelo.dto.ReactivoDTO;
@@ -24,6 +25,7 @@ public class CVMantenerReactivos {
     private List<TemaDTO> temas;
     private TemaDTO temaReactivo;
     
+    private ReactivoDTO reactivo;
     
     public CVMantenerReactivos() {
         mantenerReactivosDELEGATE = new MantenerReactivosDELEGATE();
@@ -79,13 +81,21 @@ public class CVMantenerReactivos {
             reactivo = reactivos.get(indexReactivo);
             reactivo = mantenerReactivosDELEGATE
                     .obtenerReactivo(reactivo.getId());
+            this.reactivo = reactivo;
         }
         
         return reactivo;
     }
     
     public boolean modificarReactivo(ReactivoDTO reactivo) {
-        return mantenerReactivosDELEGATE.modificarReactivo(reactivo);
+        
+        this.reactivo.setNombre(reactivo.getNombre());
+        this.reactivo.setOpciones(reactivo.getOpciones());
+        this.reactivo.setRedaccion(reactivo.getRedaccion());
+        this.reactivo.setRespuesta(reactivo.getRespuesta());
+        this.reactivo.setFechaModificacion(reactivo.getFechaModificacion());
+
+        return mantenerReactivosDELEGATE.modificarReactivo(this.reactivo);
     }
     
     public boolean eliminarReactivos(List<Integer> indexesReactivo) {
@@ -99,8 +109,12 @@ public class CVMantenerReactivos {
             }
             ok = mantenerReactivosDELEGATE.eliminarReactivos(objsReactivo);
             if(ok) {
-                //Ver que pasa
-                reactivos.removeAll(objsReactivo);
+                //Ordenar los indices alrrevez para eliminarlos de la lista
+                Collections.sort(indexesReactivo, Collections.reverseOrder());
+                
+                for(int index : indexesReactivo) {
+                    reactivos.remove(index);
+                }
             }
         }
         
@@ -116,6 +130,11 @@ public class CVMantenerReactivos {
     public void liberarMemoriaRegistrar() {
         cursos = null;
         temas = null;
+        temaReactivo = null;
+    }
+    
+    public void liberarMemoriaModificar() {
+        reactivo = null;
     }
     
 }

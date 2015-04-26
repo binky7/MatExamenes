@@ -18,16 +18,16 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         InterfaceVista, InterfaceExamen {
 
     private InterfaceVista padre;
-    private VistaAgregarReactivos vistaAgregarReactivos;
+    private FrmAgregarReactivos frmAgregarReactivos;
     
     /**
      * Creates new form RegistrarExamen
      */
     public VistaRegistrarExamen() {
         initComponents();
-        vistaAgregarReactivos = new VistaAgregarReactivos();
-        vistaAgregarReactivos.setPadre(this);
-        vistaAgregarReactivos.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frmAgregarReactivos = new FrmAgregarReactivos();
+        frmAgregarReactivos.setPadre(this);
+        frmAgregarReactivos.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     public void setPadre(InterfaceVista padre) {
@@ -472,7 +472,7 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
 
     private void agregarReactivos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarReactivos
         ((JFrame)padre).setEnabled(false);
-        vistaAgregarReactivos.setVisible(true);
+        frmAgregarReactivos.setVisible(true);
     }//GEN-LAST:event_agregarReactivos
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

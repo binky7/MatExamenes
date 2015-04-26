@@ -5,9 +5,26 @@
  */
 package vista.ui;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.text.JTextComponent;
+import modelo.dto.ReactivoDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerReactivos;
+import vista.controlador.Validador;
 import vista.interfaz.InterfaceVista;
 
 /**
@@ -15,16 +32,59 @@ import vista.interfaz.InterfaceVista;
  * @author Jesus Donaldo
  */
 public class VistaModificarReactivo extends javax.swing.JPanel
-implements InterfaceVista {
+implements InterfaceVista, FocusListener {
 
     private InterfaceVista padre;
     private CVMantenerReactivos controlVista;
     
+    private final ButtonGroup opciones;
+    private final Border bordeMal;
+    private final Border bordeOriginal;
+    
+    private String mensajeDatosIncorrectos;
     /**
      * Creates new form ModificarReactivo
      */
     public VistaModificarReactivo() {
         initComponents();
+        
+        //Para igualar los radios con los textos
+        rbtnOpt1.setActionCommand("Opt1");
+        rbtnOpt2.setActionCommand("Opt2");
+        rbtnOpt3.setActionCommand("Opt3");
+        rbtnOpt4.setActionCommand("Opt4");
+        
+        txtfOpt1.setName("Opt1");
+        txtfOpt2.setName("Opt2");
+        txtfOpt3.setName("Opt3");
+        txtfOpt4.setName("Opt4");
+        
+        //Para asociar los labels con los text
+        txtfNombre.setName("lblErrorNombre");
+        txtaRedaccion.setName("lblErrorRedaccion");
+        
+        opciones = new ButtonGroup();
+        opciones.add(rbtnOpt1);
+        opciones.add(rbtnOpt2);
+        opciones.add(rbtnOpt4);
+        opciones.add(rbtnOpt3);
+        
+        bordeMal = BorderFactory.createLineBorder(Color.red,2);
+        bordeOriginal = txtfNombre.getBorder();
+        
+        //Agregar los listeners de cambio de foco
+        txtfNombre.addFocusListener(this);
+        txtaRedaccion.addFocusListener(this);
+        txtfOpt1.addFocusListener(this);
+        txtfOpt2.addFocusListener(this);
+        txtfOpt3.addFocusListener(this);
+        txtfOpt4.addFocusListener(this);
+        
+        //Ponerle nombre a los labels de error
+        lblErrorNombre.setVisible(false);
+        lblErrorNombre.setText("* Requerido");
+        lblErrorRedaccion.setVisible(false);
+        lblErrorRedaccion.setText("* Requerido");
     }
 
     public void setPadre(InterfaceVista padre) {
@@ -35,6 +95,112 @@ implements InterfaceVista {
         this.controlVista = controlVista;
     }
     
+    private ReactivoDTO encapsularReactivo() {
+        
+        ReactivoDTO reactivo = new ReactivoDTO();
+        mensajeDatosIncorrectos = "";
+        
+        String nombre = txtfNombre.getText();
+        String redaccion = txtaRedaccion.getText();
+        String respuesta = "";
+        List<String> opcionesReactivo = new ArrayList<>();
+        boolean ok = true;
+
+        if (Validador.estaVacio(nombre)) {
+            ok = false;
+            txtfNombre.setBorder(bordeMal);
+            lblErrorNombre.setVisible(true);
+            mensajeDatosIncorrectos = "* Nombre del Reactivo\n";
+        } else {
+            txtfNombre.setBorder(bordeOriginal);
+            lblErrorNombre.setVisible(false);
+        }
+        
+        if (Validador.estaVacio(redaccion)) {
+            txtaRedaccion.setBorder(bordeMal);
+            lblErrorRedaccion.setVisible(true);
+            ok = false;
+            mensajeDatosIncorrectos += "* Redacción del Reactivo\n";
+        } else {
+            txtaRedaccion.setBorder(bordeOriginal);
+            lblErrorRedaccion.setVisible(false);
+        } 
+        
+        if(!ok) {
+            mensajeDatosIncorrectos = "No se puede completar la operación, los "
+                + "siguientes campos necesitan ser corregidos:\n" +
+                    mensajeDatosIncorrectos;
+        }
+        
+        for (Component comp : pnlOpciones.getComponents()) {
+            if (comp.getClass() == JTextField.class) {
+                JTextField field = (JTextField) comp;
+
+                if (Validador.estaVacio(field.getText())) {
+                    field.setBorder(bordeMal);
+                    ok = false;
+                } else {
+                    field.setBorder(bordeOriginal);
+                }
+
+                if (opciones.getSelection() != null) {
+                    if (field.getName().equals(opciones.getSelection().getActionCommand())) {
+                        respuesta = field.getText();
+                    } else {
+                        opcionesReactivo.add(field.getText());
+                    }
+                }
+            }
+        }
+        
+        if (respuesta.isEmpty()) {
+            ok = false;
+            mensajeDatosIncorrectos += "Debes seleccionar una opción como "
+                    + "respuesta\n";
+        }
+        
+        reactivo.setNombre(nombre);
+        reactivo.setRedaccion(redaccion);
+        reactivo.setRespuesta(respuesta);
+        reactivo.setOpciones(opcionesReactivo);
+        reactivo.setFechaModificacion(new Date());
+        
+        if(!ok){
+            reactivo = null;
+        }
+
+        return reactivo;
+    }
+    
+    private void mostrarDatos(ReactivoDTO reactivo) {
+        txtfNombre.setText(reactivo.getNombre());
+        cmbTema.addItem(reactivo.getTema().getNombre());
+        txtaRedaccion.setText(reactivo.getRedaccion());
+        
+        int i = 0;
+        int size = reactivo.getOpciones().size();
+        
+        //Mostrar Opciones
+        for (Component comp : pnlOpciones.getComponents()) {
+            if (comp.getClass() == JTextField.class) {
+                JTextField field = (JTextField) comp;
+
+                if (i < size) {
+                    field.setText(reactivo.getOpciones().get(i));
+                } else {
+                    field.setText(reactivo.getRespuesta());
+                    try {
+                        Field fieldObj = getClass().getDeclaredField("rbtn" + field.getName());
+                        JRadioButton button = (JRadioButton) fieldObj.get(this);
+                        opciones.setSelected(button.getModel(), true);
+                    } catch (NoSuchFieldException | IllegalAccessException ex) {
+                        //System.out.println(ex);
+                    }
+                }
+                i++;
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -65,11 +231,13 @@ implements InterfaceVista {
         lblOpciones4 = new javax.swing.JLabel();
         rbtnOpt1 = new javax.swing.JRadioButton();
         rbtnOpt2 = new javax.swing.JRadioButton();
-        rbtnOpt3 = new javax.swing.JRadioButton();
         rbtnOpt4 = new javax.swing.JRadioButton();
+        rbtnOpt3 = new javax.swing.JRadioButton();
         lblCorrecta = new javax.swing.JLabel();
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        lblErrorNombre = new javax.swing.JLabel();
+        lblErrorRedaccion = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(790, 579));
 
@@ -95,7 +263,6 @@ implements InterfaceVista {
         lblCurso.setText("Curso:");
 
         cmbCurso.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        cmbCurso.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Español I" }));
         cmbCurso.setToolTipText("");
         cmbCurso.setEnabled(false);
         cmbCurso.setPreferredSize(new java.awt.Dimension(78, 25));
@@ -104,7 +271,6 @@ implements InterfaceVista {
         lblTema.setText("Tema:");
 
         cmbTema.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        cmbTema.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Mitos y Leyendas" }));
         cmbTema.setToolTipText("");
         cmbTema.setEnabled(false);
         cmbTema.setPreferredSize(new java.awt.Dimension(78, 25));
@@ -153,13 +319,13 @@ implements InterfaceVista {
                         .addGap(18, 18, 18)
                         .addComponent(txtfOpt1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createSequentialGroup()
-                        .addComponent(rbtnOpt3)
+                        .addComponent(rbtnOpt4)
                         .addGap(18, 18, 18)
                         .addComponent(lblOpciones4)
                         .addGap(18, 18, 18)
                         .addComponent(txtfOpt4, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createSequentialGroup()
-                        .addComponent(rbtnOpt4)
+                        .addComponent(rbtnOpt3)
                         .addGap(18, 18, 18)
                         .addComponent(lblOpciones3)
                         .addGap(18, 18, 18)
@@ -196,7 +362,7 @@ implements InterfaceVista {
                     .addComponent(rbtnOpt2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(rbtnOpt4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rbtnOpt3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtfOpt3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblOpciones3)))
@@ -205,7 +371,7 @@ implements InterfaceVista {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtfOpt4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblOpciones4))
-                    .addComponent(rbtnOpt3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(rbtnOpt4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -213,11 +379,27 @@ implements InterfaceVista {
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonGuardar.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.setPreferredSize(new java.awt.Dimension(77, 30));
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarReactivo(evt);
+            }
+        });
 
         btnCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonCancelar.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.setPreferredSize(new java.awt.Dimension(77, 30));
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pasarControlVistaConsultar(evt);
+            }
+        });
+
+        lblErrorNombre.setForeground(new java.awt.Color(255, 0, 0));
+        lblErrorNombre.setText(".");
+
+        lblErrorRedaccion.setForeground(new java.awt.Color(255, 0, 0));
+        lblErrorRedaccion.setText(".");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -236,7 +418,8 @@ implements InterfaceVista {
                             .addComponent(lblCurso)
                             .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblTema)
-                            .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblErrorNombre))
                         .addGap(51, 51, 51)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblTitulo)
@@ -246,7 +429,8 @@ implements InterfaceVista {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jScrollPane1)
-                                .addComponent(pnlOpciones, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                .addComponent(pnlOpciones, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lblErrorRedaccion))))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -263,7 +447,9 @@ implements InterfaceVista {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblErrorNombre)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblCurso)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -274,7 +460,9 @@ implements InterfaceVista {
                         .addGap(18, 18, 18)
                         .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
+                        .addGap(11, 11, 11)
+                        .addComponent(lblErrorRedaccion)
+                        .addGap(10, 10, 10)
                         .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -283,6 +471,41 @@ implements InterfaceVista {
                 .addContainerGap(38, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void pasarControlVistaConsultar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarControlVistaConsultar
+        // TODO add your handling code here:
+        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+                + "quieres cancelar la operación?\nTodos los cambios no "
+                + "guardados se perderán");
+        if (ok == 0) {
+            padre.mostrarVista(Vista.ConsultarReactivos);
+            limpiar();
+        }
+    }//GEN-LAST:event_pasarControlVistaConsultar
+
+    private void modificarReactivo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarReactivo
+        // TODO add your handling code here:
+        ReactivoDTO reactivo = encapsularReactivo();
+        
+        if(reactivo == null) {
+            if(mensajeDatosIncorrectos.isEmpty()) {
+                mensajeDatosIncorrectos = "Falta ingresar opciones";
+            }
+            JOptionPane.showMessageDialog(this, mensajeDatosIncorrectos);
+        }
+        else {
+            boolean ok = controlVista.modificarReactivo(reactivo);
+            if(ok) {
+                JOptionPane.showMessageDialog(this, "Reactivo Modificado");
+                padre.mostrarVistaConEntidad(reactivo, Vista.ConsultarReactivos);
+                limpiar();
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "No se pudo modificar el "
+                        + "reactivo");
+            }
+        }
+    }//GEN-LAST:event_modificarReactivo
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -293,6 +516,8 @@ implements InterfaceVista {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCorrecta;
     private javax.swing.JLabel lblCurso;
+    private javax.swing.JLabel lblErrorNombre;
+    private javax.swing.JLabel lblErrorRedaccion;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblOpciones1;
     private javax.swing.JLabel lblOpciones2;
@@ -327,6 +552,7 @@ implements InterfaceVista {
     @Override
     public void mostrarEntidad(Object entidad) {
         //Mostrar Datos
+        mostrarDatos((ReactivoDTO)entidad);
     }
 
     @Override
@@ -349,5 +575,61 @@ implements InterfaceVista {
     @Override
     public void limpiar() {
         //Limpiar
+        txtfNombre.setText("");
+        txtfNombre.setBorder(bordeOriginal);
+        lblErrorNombre.setVisible(false);
+        cmbCurso.removeAllItems();
+        cmbTema.removeAllItems();
+        txtaRedaccion.setText("");
+        txtaRedaccion.setBorder(bordeOriginal);
+        lblErrorRedaccion.setVisible(false);
+        for (Component comp : pnlOpciones.getComponents()) {
+            if (comp.getClass() == JTextField.class) {
+                JTextField field = (JTextField) comp;
+                
+                field.setText("");
+                field.setBorder(bordeOriginal);
+            }
+        }
+        opciones.clearSelection();
+        
+        controlVista.liberarMemoriaModificar();
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        //
+        JTextComponent text = (JTextComponent) e.getComponent();
+        
+        text.setBorder(bordeOriginal);
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        //Cuando cambia de componente
+        
+        JTextComponent text = (JTextComponent) e.getComponent();
+        
+        String valor = text.getText();
+        
+        if (Validador.estaVacio(valor)) {
+            text.setBorder(bordeMal);
+            try {
+                Field field = getClass().getDeclaredField(text.getName());
+                JLabel label = (JLabel) field.get(this);
+                label.setVisible(true);
+            } catch(NoSuchFieldException | IllegalAccessException ex) {
+                //System.out.println(ex);
+            }
+        } else {
+            text.setBorder(bordeOriginal);
+            try {
+                Field field = getClass().getDeclaredField(text.getName());
+                JLabel label = (JLabel) field.get(this);
+                label.setVisible(false);
+            } catch(NoSuchFieldException | IllegalAccessException ex) {
+                //System.out.println(ex);
+            }
+        }
     }
 }

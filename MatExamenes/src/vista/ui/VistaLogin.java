@@ -8,7 +8,6 @@ package vista.ui;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVLogin;
@@ -55,7 +54,7 @@ public class VistaLogin extends javax.swing.JFrame {
         lblTitulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(500, 350));
+        setResizable(false);
 
         btnLogin.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnLogin.setText("Login");
