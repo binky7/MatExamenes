@@ -18,13 +18,13 @@ public class VistaModificarExamen extends javax.swing.JPanel
 implements InterfaceVista, InterfaceExamen {
 
     private InterfaceVista padre;
-    private VistaAgregarReactivos vistaAgregarReactivos;
+    private FrmAgregarReactivos vistaAgregarReactivos;
     /**
      * Creates new form ModificarExamen
      */
     public VistaModificarExamen() {
         initComponents();
-        vistaAgregarReactivos = new VistaAgregarReactivos();
+        vistaAgregarReactivos = new FrmAgregarReactivos();
         vistaAgregarReactivos.setPadre(this);
         vistaAgregarReactivos.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }

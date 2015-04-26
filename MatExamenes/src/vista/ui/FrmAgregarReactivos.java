@@ -14,14 +14,14 @@ import vista.interfaz.InterfaceExamen;
  *
  * @author Jesus Donaldo
  */
-public class VistaAgregarReactivos extends javax.swing.JFrame {
+public class FrmAgregarReactivos extends javax.swing.JFrame {
 
     InterfaceExamen padre;
     
     /**
      * Creates new form VistaAgregarReactivos
      */
-    public VistaAgregarReactivos() {
+    public FrmAgregarReactivos() {
         initComponents();
         this.addWindowListener(new WindowListener() {
 
@@ -323,7 +323,6 @@ public class VistaAgregarReactivos extends javax.swing.JFrame {
         jButton1.setText("Aceptar");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(600, 500));
         setResizable(false);
 
         jTabbedPane2.setPreferredSize(new java.awt.Dimension(500, 300));

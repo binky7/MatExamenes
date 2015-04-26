@@ -5,8 +5,18 @@
  */
 package vista.ui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.table.DefaultTableModel;
 import modelo.dto.CursoDTO;
+import modelo.dto.ReactivoDTO;
+import modelo.dto.TemaDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerReactivos;
 import vista.interfaz.InterfaceVista;
@@ -16,15 +26,31 @@ import vista.interfaz.InterfaceVista;
  * @author Jesus Donaldo
  */
 public class VistaConsultarReactivos extends javax.swing.JPanel
-implements InterfaceVista {
+implements InterfaceVista, AncestorListener {
 
     private InterfaceVista padre;
     private CVMantenerReactivos controlVista;
+    private boolean noSelect;
+    
     /**
      * Creates new form ConsultarReactivos
      */
     public VistaConsultarReactivos() {
         initComponents();
+        
+        addAncestorListener(this);
+        
+        //Listener para el cmbCurso
+        cmbCurso.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!noSelect) {
+                    consultarTemasDeCurso();
+                }
+            }
+            
+        });
     }
 
     public void setPadre(InterfaceVista padre) {
@@ -33,6 +59,118 @@ implements InterfaceVista {
    
     public void setControlador(CVMantenerReactivos controlVista) {
         this.controlVista = controlVista;
+    }
+    
+    private void consultarCursos() {
+        List<CursoDTO> cursos = controlVista.obtenerCursos();
+        
+        if(cursos != null && !cursos.isEmpty()) {
+            mostrarCursos(cursos);
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "No hay cursos");
+            padre.mostrarVista(Vista.HOME);
+            limpiar();
+        }
+    }
+    
+    private void mostrarCursos(List<CursoDTO> cursos) {
+        
+        cmbCurso.removeAllItems();
+        
+        for(CursoDTO curso : cursos) {
+            System.out.println(cmbCurso.getSelectedIndex());
+            cmbCurso.addItem(curso.getNombre());
+        }
+        
+        cmbCurso.setSelectedIndex(-1);
+        noSelect = false;
+    }
+    
+    private void consultarTemasDeCurso() {
+        
+        if (cmbCurso.getSelectedIndex() != -1) {
+            List<TemaDTO> temas = controlVista.obtenerTemasDeCurso(cmbCurso
+                    .getSelectedIndex());
+
+            if (temas != null && !temas.isEmpty()) {
+                mostrarTemas(temas);
+            } else {
+                JOptionPane.showMessageDialog(this, "No hay temas");
+                cmbTema.removeAllItems();
+            }
+        }
+        else {
+            cmbTema.removeAllItems();
+        }
+    }
+    
+    private void mostrarTemas(List<TemaDTO> temas) {
+        
+        cmbTema.removeAllItems();
+        //Mostrar cada tema, no remover, si no buscar por medio del for
+        for(TemaDTO tema : temas) {
+            cmbTema.addItem(tema.getNombre());
+        }
+        
+        cmbTema.setSelectedIndex(-1);
+    }
+    
+    private void consultarReactivos() {
+        
+        if (cmbTema.getSelectedIndex() != -1) {
+            List<ReactivoDTO> reactivos = controlVista
+                    .obtenerReactivosPorTema(cmbTema
+                            .getSelectedItem().toString());
+
+            if (reactivos != null && !reactivos.isEmpty()) {
+                mostrarReactivos(reactivos);
+            } else {
+                JOptionPane.showMessageDialog(this, "No hay reactivos");
+                ((DefaultTableModel)tblReactivos.getModel()).setRowCount(0);
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Selecciona un Tema primero");
+        }
+    }
+    
+    private void mostrarReactivos(List<ReactivoDTO> reactivos) {
+        DefaultTableModel model = (DefaultTableModel) tblReactivos.getModel();
+        
+        model.setRowCount(0);
+        //Mostrar cada reactivo, no remover, si no buscar por medio del for
+        for(ReactivoDTO reactivo : reactivos) {
+            Object[] datos = new Object[6];
+            
+            datos[0] = false;
+            datos[1] = reactivo.getId();
+            datos[2] = reactivo.getNombre();
+            datos[3] = reactivo.getFechaCreacion();
+            datos[4] = reactivo.getFechaModificacion();
+            if(reactivo.getAutor() != null) {
+                datos[5] = reactivo.getAutor().getUsuario();
+            }
+            else {
+                datos[5] = "Sin autor";
+            }
+            
+            model.addRow(datos);
+        }
+        
+    }
+    
+    private List<Integer> getSelectedRows() {
+        List<Integer> selectedIndexes = new ArrayList<>();
+        
+        DefaultTableModel model = (DefaultTableModel) tblReactivos.getModel();
+        
+        for(int i = 0; i < model.getRowCount(); i++) {
+            if((boolean)model.getValueAt(i, 0) == true) {
+                selectedIndexes.add(i);
+            }
+        }
+        return selectedIndexes;
     }
     
     /**
@@ -44,6 +182,8 @@ implements InterfaceVista {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblReactivos = new javax.swing.JTable();
         lblCurso = new javax.swing.JLabel();
@@ -55,16 +195,22 @@ implements InterfaceVista {
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
 
-        setPreferredSize(new java.awt.Dimension(790, 579));
+        setPreferredSize(new java.awt.Dimension(790, 467));
+
+        jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setAutoscrolls(true);
+        jPanel1.setPreferredSize(new java.awt.Dimension(790, 579));
 
         tblReactivos.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         tblReactivos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "[X]", "Id", "Nombre", "Fecha Creación", "Fecha Modificación", "Autor"
@@ -85,6 +231,7 @@ implements InterfaceVista {
                 return canEdit [columnIndex];
             }
         });
+        tblReactivos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblReactivos.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblReactivos);
         if (tblReactivos.getColumnModel().getColumnCount() > 0) {
@@ -102,7 +249,6 @@ implements InterfaceVista {
         lblCurso.setText("Curso:");
 
         cmbCurso.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        cmbCurso.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Español I" }));
         cmbCurso.setToolTipText("");
         cmbCurso.setPreferredSize(new java.awt.Dimension(78, 25));
 
@@ -110,12 +256,11 @@ implements InterfaceVista {
         lblTema.setText("Tema:");
 
         cmbTema.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        cmbTema.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Mitos y Leyendas" }));
         cmbTema.setToolTipText("");
         cmbTema.setPreferredSize(new java.awt.Dimension(78, 25));
 
         lblReactivos.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        lblReactivos.setText("Reactivos");
+        lblReactivos.setText("Reactivos:");
 
         lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         lblTitulo.setText("Consultar Reactivos");
@@ -134,87 +279,205 @@ implements InterfaceVista {
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonEliminar.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
         btnEliminar.setPreferredSize(new java.awt.Dimension(77, 30));
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarReactivos(evt);
+            }
+        });
 
         btnCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonCancelar.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.setPreferredSize(new java.awt.Dimension(77, 30));
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        btnBuscar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonBuscar.png"))); // NOI18N
+        btnBuscar.setText("Buscar");
+        btnBuscar.setPreferredSize(new java.awt.Dimension(77, 30));
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarReactivos(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(28, 28, 28)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(lblReactivos)
+                                    .addGap(245, 245, 245))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(32, 32, 32)
+                                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(152, 152, 152))))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblCurso)
+                                .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblTema)
+                                .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(148, 148, 148)
+                                    .addComponent(lblTitulo)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 291, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGap(29, 29, 29)))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(18, 18, 18)
+                    .addComponent(lblTitulo)
+                    .addGap(33, 33, 33)
+                    .addComponent(lblReactivos)
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(lblCurso)
+                            .addGap(7, 7, 7)
+                            .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(53, 53, 53)
+                            .addComponent(lblTema)
+                            .addGap(18, 18, 18)
+                            .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(47, 47, 47)
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(30, 30, 30)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
+        jScrollPane2.setViewportView(jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lblReactivos)
-                        .addGap(266, 266, 266))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(173, 173, 173))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblCurso)
-                    .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTema)
-                    .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(148, 148, 148)
-                        .addComponent(lblTitulo)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(21, 21, 21))))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 790, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTitulo)
-                .addGap(33, 33, 33)
-                .addComponent(lblReactivos)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblCurso)
-                        .addGap(7, 7, 7)
-                        .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(53, 53, 53)
-                        .addComponent(lblTema)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void pasarControlVistaModificar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarControlVistaModificar
         // TODO add your handling code here:
-        padre.mostrarVista(Vista.ModificarReactivo);
+        if(tblReactivos.getSelectedRow() != -1) {
+            int indexReactivo = tblReactivos.getSelectedRow();
+            String autorReactivo = (String) tblReactivos.getValueAt(tblReactivos
+                    .getSelectedRow(), 5);
+            UsuarioDTO usuarioActual = padre.obtenerUsuarioActual();
+            
+            if((usuarioActual.getTipo() == UsuarioDTO.Tipo.Maestro && 
+                    autorReactivo.equals(usuarioActual.getUsuario())) ||
+                    (usuarioActual.getTipo() == UsuarioDTO.Tipo.Admin)) {
+                ReactivoDTO reactivo = controlVista
+                        .obtenerReactivo(indexReactivo);
+                
+                if(reactivo != null) {
+                    padre.mostrarVistaConEntidad(reactivo,
+                            Vista.ModificarReactivo);
+                }
+                else {
+                    JOptionPane.showMessageDialog(this, "Ha ocurrido un error");
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "No cuentas con los permisos "
+                        + "para realizar esta acción");
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Selecciona primero un reactivo");
+        }
     }//GEN-LAST:event_pasarControlVistaModificar
+
+    private void buscarReactivos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarReactivos
+        // TODO add your handling code here:
+        consultarReactivos();
+    }//GEN-LAST:event_buscarReactivos
+
+    private void eliminarReactivos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarReactivos
+        // TODO add your handling code here:
+        List<Integer> indexesReactivos = getSelectedRows();
+        
+        if(indexesReactivos.size() > 0) {
+            int q = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+                    + "quieres eliminar el(los) reactivo(s) seleccionado(s)?");
+            if (q != 0) {
+                return;
+            }
+            
+            boolean ok = controlVista.eliminarReactivos(indexesReactivos);
+            
+            if(ok) {
+                JOptionPane.showMessageDialog(this, "Reactivos Eliminados");
+                //Ordena los indices alrrevez para eliminar las filas selecc.
+                Collections.sort(indexesReactivos, Collections.reverseOrder());
+                
+                for(int index : indexesReactivos) {
+                    ((DefaultTableModel)tblReactivos.getModel())
+                            .removeRow(index);
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "No se pudieron eliminar "
+                        + "los reactivos");
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Selecciona un reactivo");
+        }
+    }//GEN-LAST:event_eliminarReactivos
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        padre.mostrarVista(Vista.HOME);
+        limpiar();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JComboBox cmbCurso;
     private javax.swing.JComboBox cmbTema;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblCurso;
     private javax.swing.JLabel lblReactivos;
     private javax.swing.JLabel lblTema;
@@ -235,6 +498,13 @@ implements InterfaceVista {
     @Override
     public void mostrarEntidad(Object entidad) {
         //Mostrar datos
+        ReactivoDTO reactivo = (ReactivoDTO) entidad;
+        int row = tblReactivos.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) tblReactivos.getModel();
+        
+        model.setValueAt(reactivo.getNombre(), row, 2);
+        model.setValueAt(reactivo.getFechaModificacion(), row, 4);
+        
     }
 
     @Override
@@ -250,5 +520,27 @@ implements InterfaceVista {
     @Override
     public void limpiar() {
         //Limpiar datos
+        cmbCurso.removeAllItems();
+        cmbTema.removeAllItems();
+        ((DefaultTableModel)tblReactivos.getModel()).setRowCount(0);
+        controlVista.liberarMemoriaConsultar();
+    }
+    
+    @Override
+    public void ancestorAdded(AncestorEvent event) {
+        if(isShowing()) {
+            noSelect = true;
+            consultarCursos();
+        }
+    }
+
+    @Override
+    public void ancestorRemoved(AncestorEvent event) {
+        //
+    }
+
+    @Override
+    public void ancestorMoved(AncestorEvent event) {
+        //
     }
 }

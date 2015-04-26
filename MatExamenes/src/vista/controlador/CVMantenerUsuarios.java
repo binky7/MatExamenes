@@ -32,7 +32,7 @@ public class CVMantenerUsuarios {
         return usuarios;
     }
     
-    public boolean modificarUsuario(UsuarioDTO usuario){
+    public boolean modificarUsuario(UsuarioDTO usuario) {
         boolean ok;
         ok = mantenerUsuariosDELEGATE.modificarUsuario(usuario);
         return ok;
