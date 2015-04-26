@@ -22,7 +22,7 @@ import static modelo.dto.UsuarioDTO.Tipo;
  */
 public class VistaLogin extends javax.swing.JFrame {
 
-    FrmPrincipal p;
+    Principal2 p;
     private CVLogin cvLogin;
     private final Border bordeOriginal;
     private final Border bordeMal;
@@ -32,7 +32,7 @@ public class VistaLogin extends javax.swing.JFrame {
      */
     public VistaLogin() {
         initComponents();
-        p = new FrmPrincipal();
+        p = new Principal2();
         bordeOriginal = txtfUsuario.getBorder();
         bordeMal = BorderFactory.createLineBorder(Color.red);
         cvLogin = new CVLogin();
@@ -194,18 +194,18 @@ public class VistaLogin extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
 
-        try {
-            for(javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                
-                if("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-                //UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            for(javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                
+//                if("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//                //UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

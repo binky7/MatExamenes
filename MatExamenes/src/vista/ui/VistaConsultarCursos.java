@@ -83,6 +83,8 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
+
         lstCursos.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
