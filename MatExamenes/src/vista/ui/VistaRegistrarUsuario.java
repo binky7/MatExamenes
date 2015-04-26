@@ -6,9 +6,18 @@
 package vista.ui;
 
 import java.awt.Color;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.lang.reflect.Field;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.text.JTextComponent;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerUsuarios;
 import vista.controlador.Validador;
@@ -18,22 +27,31 @@ import vista.interfaz.InterfaceVista;
  *
  * @author Alf
  */
-public class VistaRegistrarUsuario extends javax.swing.JPanel implements InterfaceVista {
+public class VistaRegistrarUsuario extends javax.swing.JPanel implements
+        InterfaceVista, FocusListener {
 
     private CVMantenerUsuarios cvMantenerUsuarios;
     private InterfaceVista padre;
-    private final Border bordeMal;
-    private final Border bordeOriginal;
+//    private final Border BORDE_MAL;
+//    private final Border BORDE_ORIGINAL;
+    private final ImageIcon ICONO_BIEN;
+    private final ImageIcon ICONO_MAL;
 
     /**
      * Creates new form VistaRegistrarUsuario
      */
     public VistaRegistrarUsuario() {
         initComponents();
-        bordeMal = BorderFactory.createLineBorder(Color.red, 2);
-        bordeOriginal = txtfNombre.getBorder();
-        lblErrorNombre.setVisible(false);
-        lblErrorNombre.setText("Ingresar solo letras");
+//        BORDE_MAL = BorderFactory.createLineBorder(Color.red, 2);
+//        BORDE_ORIGINAL = txtfNombre.getBorder();
+        ICONO_BIEN = new ImageIcon(getClass().getResource("/recursos/bien.png"));
+        ICONO_MAL = new ImageIcon(getClass().getResource("/recursos/mal.png"));
+//        lblEstadoNombre.setText("Ingresar solo letras");
+        lblEstadoAMaterno.setVisible(false);
+        lblEstadoAPaterno.setVisible(false);
+        lblEstadoNombre.setVisible(false);
+        lblEstadoPassword.setVisible(false);
+        lblEstadoUsuario.setVisible(false);
     }
 
     public void setPadre(InterfaceVista padre) {
@@ -95,46 +113,46 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
         boolean ok = false;
         if (!Validador.esNombre(datos[0])) {
             ok = false;
-            txtfNombre.setBorder(bordeMal);
-            lblErrorNombre.setVisible(true);
+//            txtfNombre.setBorder(BORDE_MAL);
+            lblEstadoNombre.setVisible(true);
 
         } else {
-            txtfNombre.setBorder(bordeOriginal);
-            lblErrorNombre.setVisible(false);
+//            txtfNombre.setBorder(BORDE_ORIGINAL);
+            lblEstadoNombre.setVisible(false);
         }
 
         if (!Validador.esNombre(datos[1])) {
-            txtfApellidoPaterno.setBorder(bordeMal);
+//            txtfApellidoPaterno.setBorder(BORDE_MAL);
             ok = false;
         } else {
-            txtfApellidoPaterno.setBorder(bordeOriginal);
+//            txtfApellidoPaterno.setBorder(BORDE_ORIGINAL);
         }
 
         if (!Validador.esNombre(datos[2])) {
-            txtfApellidoMaterno.setBorder(bordeMal);
+//            txtfApellidoMaterno.setBorder(BORDE_MAL);
             ok = false;
         } else {
-            txtfApellidoMaterno.setBorder(bordeOriginal);
+//            txtfApellidoMaterno.setBorder(BORDE_ORIGINAL);
         }
 
         if (!Validador.esUsuario(datos[3])) {
-            txtfUsuario.setBorder(bordeMal);
+//            txtfUsuario.setBorder(BORDE_MAL);
             ok = false;
         } else {
-            txtfUsuario.setBorder(bordeOriginal);
+//            txtfUsuario.setBorder(BORDE_ORIGINAL);
         }
 
         if (!Validador.esPassword(datos[4])) {
-            txtpPassword.setBorder(bordeMal);
+//            txtpPassword.setBorder(BORDE_MAL);
             ok = false;
         } else {
-            txtpPassword.setBorder(bordeOriginal);
+//            txtpPassword.setBorder(BORDE_ORIGINAL);
         }
 
         return ok;
     }
-    
-        @Override
+
+    @Override
     public void limpiar() {
         txtfNombre.setText("");
         txtfApellidoPaterno.setText("");
@@ -194,43 +212,46 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
         lblPassword = new javax.swing.JLabel();
         lblTipo = new javax.swing.JLabel();
         txtfNombre = new javax.swing.JTextField();
+        txtfNombre.addFocusListener(this);
+        txtfNombre.setName("lblEstadoNombre");
         lblTitulo = new javax.swing.JLabel();
         txtfApellidoPaterno = new javax.swing.JTextField();
+        txtfApellidoPaterno.addFocusListener(this);
+        txtfApellidoPaterno.setName("lblEstadoAPaterno");
         btnGuardar = new javax.swing.JButton();
         txtfApellidoMaterno = new javax.swing.JTextField();
+        txtfApellidoMaterno.addFocusListener(this);
+        txtfApellidoMaterno.setName("lblEstadoAMaterno");
         rbtnMaestro = new javax.swing.JRadioButton();
         txtfUsuario = new javax.swing.JTextField();
+        txtfUsuario.addFocusListener(this);
+        txtfUsuario.setName("lblEstadoUsuario");
         rbtnAlumno = new javax.swing.JRadioButton();
         lblNombre = new javax.swing.JLabel();
         lblApellidoPaterno = new javax.swing.JLabel();
         lblApellidoMaterno = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
         txtpPassword = new javax.swing.JPasswordField();
-        lblErrorNombre = new javax.swing.JLabel();
+        txtpPassword.addFocusListener(this);
+        txtpPassword.setName("lblEstadoPassword");
+        lblEstadoNombre = new javax.swing.JLabel();
+        lblEstadoAPaterno = new javax.swing.JLabel();
+        lblEstadoAMaterno = new javax.swing.JLabel();
+        lblEstadoUsuario = new javax.swing.JLabel();
+        lblEstadoPassword = new javax.swing.JLabel();
 
         lblPassword.setText("Password:");
 
         lblTipo.setText("Tipo de usuario");
 
+        txtfNombre.setToolTipText("Ingresar solo letras");
         txtfNombre.setPreferredSize(new java.awt.Dimension(100, 25));
-        txtfNombre.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtfNombreFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtfNombreFocusLost(evt);
-            }
-        });
 
         lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         lblTitulo.setText("Registrar Usuario");
 
+        txtfApellidoPaterno.setToolTipText("Ingresar solo letras");
         txtfApellidoPaterno.setPreferredSize(new java.awt.Dimension(100, 25));
-        txtfApellidoPaterno.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtfApellidoPaternoFocusLost(evt);
-            }
-        });
 
         btnGuardar.setText("Guardar");
         btnGuardar.setMaximumSize(new java.awt.Dimension(100, 23));
@@ -242,22 +263,14 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
             }
         });
 
+        txtfApellidoMaterno.setToolTipText("Ingresar solo letras");
         txtfApellidoMaterno.setPreferredSize(new java.awt.Dimension(100, 25));
-        txtfApellidoMaterno.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtfApellidoMaternoFocusLost(evt);
-            }
-        });
 
         buttonGroup1.add(rbtnMaestro);
         rbtnMaestro.setText("Maestro");
 
+        txtfUsuario.setToolTipText("Ingresar numeros y/o letras");
         txtfUsuario.setPreferredSize(new java.awt.Dimension(100, 25));
-        txtfUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtfUsuarioFocusLost(evt);
-            }
-        });
 
         buttonGroup1.add(rbtnAlumno);
         rbtnAlumno.setText("Alumno");
@@ -270,62 +283,72 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
 
         lblUsuario.setText("Usuario:");
 
+        txtpPassword.setToolTipText("No caracteres especiales\nmayor de 4 caracteres");
         txtpPassword.setPreferredSize(new java.awt.Dimension(100, 25));
-        txtpPassword.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtpPasswordFocusLost(evt);
-            }
-        });
 
-        lblErrorNombre.setForeground(new java.awt.Color(255, 0, 0));
-        lblErrorNombre.setText(".");
+        lblEstadoNombre.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+
+        lblEstadoAPaterno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+
+        lblEstadoAMaterno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+
+        lblEstadoUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+
+        lblEstadoPassword.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(269, 269, 269)
-                        .addComponent(lblTitulo))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(192, 192, 192)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblUsuario)
-                                    .addComponent(lblPassword)
-                                    .addComponent(lblTipo))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(rbtnMaestro)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(rbtnAlumno))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(193, 193, 193)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtpPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblNombre)
-                                    .addComponent(lblApellidoPaterno)
-                                    .addComponent(lblApellidoMaterno))
-                                .addGap(182, 182, 182)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lblErrorNombre)))))))
-                .addContainerGap(221, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(190, 190, 190))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(192, 192, 192)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblTipo)
+                                .addGap(149, 149, 149)
+                                .addComponent(rbtnMaestro)
+                                .addGap(18, 18, 18)
+                                .addComponent(rbtnAlumno))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblNombre)
+                                        .addGap(226, 226, 226)
+                                        .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblApellidoPaterno)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(lblPassword)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(txtpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                    .addComponent(lblUsuario)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                    .addComponent(lblApellidoMaterno)
+                                                    .addGap(182, 182, 182)
+                                                    .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblEstadoNombre)
+                                    .addComponent(lblEstadoAPaterno)
+                                    .addComponent(lblEstadoAMaterno)
+                                    .addComponent(lblEstadoUsuario)
+                                    .addComponent(lblEstadoPassword)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(269, 269, 269)
+                        .addComponent(lblTitulo)))
+                .addContainerGap(222, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -333,27 +356,32 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
                 .addGap(49, 49, 49)
                 .addComponent(lblTitulo)
                 .addGap(59, 59, 59)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNombre)
-                    .addComponent(lblErrorNombre))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblEstadoNombre, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblNombre)))
                 .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblApellidoPaterno))
-                .addGap(57, 57, 57)
+                    .addComponent(lblApellidoPaterno)
+                    .addComponent(lblEstadoAPaterno))
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblApellidoMaterno))
-                .addGap(35, 35, 35)
+                    .addComponent(lblApellidoMaterno)
+                    .addComponent(lblEstadoAMaterno))
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblUsuario))
-                .addGap(33, 33, 33)
+                    .addComponent(lblUsuario)
+                    .addComponent(lblEstadoUsuario))
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPassword)
-                    .addComponent(txtpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
+                    .addComponent(txtpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEstadoPassword))
+                .addGap(71, 71, 71)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTipo)
                     .addComponent(rbtnMaestro)
@@ -384,75 +412,53 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void txtfNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfNombreFocusLost
-        // TODO add your handling code here:
-        String nombre = txtfNombre.getText();
-
-        if (!Validador.esNombre(nombre)) {
-            txtfNombre.setBorder(bordeMal);
-            lblErrorNombre.setVisible(true);
-
-        } else {
-            txtfNombre.setBorder(bordeOriginal);
-            lblErrorNombre.setVisible(false);
+    private void mostrarLabelEstado(Object o, boolean estado) {
+        JTextField ob = (JTextField) o;
+        try {
+            Field field = getClass().getDeclaredField(ob.getName());
+            JLabel label = (JLabel) field.get(this);
+            if (!label.isVisible()) {
+                label.setVisible(true);
+            }
+            if (estado) {
+                label.setIcon(ICONO_BIEN);
+            } else {
+                label.setIcon(ICONO_MAL);
+            }
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(VistaRegistrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_txtfNombreFocusLost
+    }
 
-    private void txtfApellidoPaternoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfApellidoPaternoFocusLost
-        // TODO add your handling code here:
-        String aPaterno = txtfApellidoPaterno.getText();
+    @Override
+    public void focusGained(FocusEvent e) {
+//        ((JTextField) e.getSource()).setBorder(BORDE_ORIGINAL);
+    }
 
-        if (!Validador.esNombre(aPaterno)) {
-            txtfApellidoPaterno.setBorder(bordeMal);
+    @Override
+    public void focusLost(FocusEvent e) {
+        JTextField ob = (JTextField) e.getSource();
+
+        if (ob == txtfNombre || ob == txtfApellidoPaterno || ob == txtfApellidoMaterno) {
+            mostrarLabelEstado(ob, Validador.esNombre(ob.getText()));
+//            txtfNombre.setBorder(BORDE_MAL);
+
+        } else if (ob == txtfUsuario) {
+            mostrarLabelEstado(ob, Validador.esUsuario(ob.getText()));
         } else {
-            txtfApellidoPaterno.setBorder(bordeOriginal);
+            mostrarLabelEstado(ob, Validador.esPassword(ob.getText()));
         }
-    }//GEN-LAST:event_txtfApellidoPaternoFocusLost
-
-    private void txtfApellidoMaternoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfApellidoMaternoFocusLost
-        // TODO add your handling code here:
-        String aMaterno = txtfApellidoMaterno.getText();
-
-        if (!Validador.esNombre(aMaterno)) {
-            txtfApellidoMaterno.setBorder(bordeMal);
-        } else {
-            txtfApellidoMaterno.setBorder(bordeOriginal);
-        }
-
-    }//GEN-LAST:event_txtfApellidoMaternoFocusLost
-
-    private void txtfUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfUsuarioFocusLost
-        // TODO add your handling code here:
-        String usuario = txtfUsuario.getText();
-
-        if (!Validador.esUsuario(usuario)) {
-            txtfUsuario.setBorder(bordeMal);
-        } else {
-            txtfUsuario.setBorder(bordeOriginal);
-        }
-    }//GEN-LAST:event_txtfUsuarioFocusLost
-
-    private void txtpPasswordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpPasswordFocusLost
-        // TODO add your handling code here:
-        String pass = String.valueOf(txtpPassword.getPassword());
-
-        if (!Validador.esPassword(pass)) {
-            txtpPassword.setBorder(bordeMal);
-        } else {
-            txtpPassword.setBorder(bordeOriginal);
-        }
-    }//GEN-LAST:event_txtpPasswordFocusLost
-
-    private void txtfNombreFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfNombreFocusGained
-        
-    }//GEN-LAST:event_txtfNombreFocusGained
-
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel lblApellidoMaterno;
     private javax.swing.JLabel lblApellidoPaterno;
-    private javax.swing.JLabel lblErrorNombre;
+    private javax.swing.JLabel lblEstadoAMaterno;
+    private javax.swing.JLabel lblEstadoAPaterno;
+    private javax.swing.JLabel lblEstadoNombre;
+    private javax.swing.JLabel lblEstadoPassword;
+    private javax.swing.JLabel lblEstadoUsuario;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblTipo;
