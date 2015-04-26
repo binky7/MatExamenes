@@ -4,9 +4,15 @@
  */
 package vista.ui;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.dto.CursoDTO;
+import modelo.dto.GrupoDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerGrupos;
+import vista.controlador.Validador;
 import vista.interfaz.InterfazVista;
 
 /**
@@ -16,7 +22,8 @@ import vista.interfaz.InterfazVista;
 public class VistaRegistrarGrupo extends javax.swing.JPanel implements InterfazVista {
     private CVMantenerGrupos controlVista;
     private InterfazVista padre;
-
+    private Validador validador;
+    
     /**
      * Creates new form CrearNuevoGrupo
      */
@@ -35,8 +42,116 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements InterfazV
      * Limpia los campos de la vista
      */
     public void limpiar() {
-        
+        controlVista.liberarMemoriaRegistrar();
     }
+    
+    public void mostrarAlumnos(List<UsuarioDTO> alumnos){
+        int x = 0;
+        DefaultTableModel model = new DefaultTableModel(new String[] { "Select", 
+            "Id", "Nombre", "ApP", "ApM", "Curso"},0);
+        jTable6.setModel(model);
+        for (UsuarioDTO alumno : alumnos) {
+            alumno = alumnos.remove(x);
+            String[] fila = new String[5];
+            fila[0] = null;
+            fila[1] = String.valueOf(alumno.getId());
+            fila[2] = alumno.getNombre();
+            fila[3] = alumno.getApellidoPaterno();
+            fila[4] = alumno.getApellidoMaterno();
+            model.addRow(fila);
+            x++;
+        }
+    }
+    
+    public void mostrarMaestros(List<UsuarioDTO> maestros){
+        int x = 0;
+        DefaultTableModel model = new DefaultTableModel(new String[] { "Select", 
+            "Id", "Nombre", "ApP", "ApM"},0);
+        jTable7.setModel(model);
+        for (UsuarioDTO maestro : maestros) {
+            maestro = maestros.remove(x);
+            String[] fila = new String[5];
+            fila[0] = null;
+            fila[1] = String.valueOf(maestro.getId());
+            fila[2] = maestro.getNombre();
+            fila[3] = maestro.getApellidoPaterno();
+            fila[4] = maestro.getApellidoMaterno();
+            model.addRow(fila);
+            x++;
+        }
+    }
+    
+    public void agregarAlumnos(){
+        //vistaAgregarAlumnos.inicializar();
+    }
+    
+    public void agregarMaestro(){
+        //vistaAgregarMaestro.inicializar();
+    }
+    
+    public void removerAlumnos(){
+        if(jTable6.getSelectedRowCount() > 0){
+            int[] filas = jTable6.getSelectedRows();
+            List<Integer> indexesAlumno = new ArrayList<>();
+            for (int x = 0; x > filas.length; x++) {
+                indexesAlumno.add(filas[x]);
+            }
+            controlVista.removerAlumnos(indexesAlumno);
+            removerAlumnos(indexesAlumno);
+        }else{
+            //Selecciona al menos un alumno
+        }
+    }
+        
+    public void removerAlumnos(List<Integer> nosFilaAlumno){
+        for (int x = 0; x < nosFilaAlumno.size(); x++) {
+            int noFila = nosFilaAlumno.remove(x);
+            jTable6.remove(noFila);
+        }
+    }
+    
+    public void removerMaestro(){
+        DefaultTableModel model = new DefaultTableModel(new String[] { "Select", 
+            "Id", "Nombre", "ApP", "ApM", "Curso"},0);
+        jTable7.setModel(model);
+        if(jTable7.getSelectedRowCount() > 0){
+            String curso = String.valueOf(model.getValueAt(jTable7.getSelectedRow(), 4));
+            controlVista.removerMaestro(curso);
+            jTable7.remove(jTable7.getSelectedRow());
+        }else{
+            //Selecciona al menos un alumno
+        }
+    }
+    
+    public void guardarGrupo(){
+        GrupoDTO grupo = encapsularGrupo();
+        if(grupo == null){
+            //Datos faltantes
+        }else{
+            int id = controlVista.guardarGrupo(grupo);
+            if(id != -1){
+                //Registro completo
+                padre.mostrarVista(Vista.HOME);
+                limpiar();
+            }else{
+                //No se pudo agregar el grupo
+            }
+        }
+    }
+    
+    public GrupoDTO encapsularGrupo(){
+        GrupoDTO grupo = null;
+        String nombre = jTextField1.getText();
+        if(validador.esGrupo(nombre)){
+            grupo.setNombre(nombre);
+            grupo.setGrado(1);
+            grupo.setTurno(GrupoDTO.Turno.M);
+        }else{
+            grupo = null;
+        }
+        return grupo;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
