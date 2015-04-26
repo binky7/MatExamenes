@@ -168,6 +168,7 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(800, 579));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
