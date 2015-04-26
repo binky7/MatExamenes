@@ -13,7 +13,7 @@ import modelo.dto.UsuarioDTO;
  * @author Alf
  */
 public class CVLogin {
-    private LoginDELEGATE loginDELEGATE;
+    private final LoginDELEGATE loginDELEGATE;
     private UsuarioDTO usuario;
     
     

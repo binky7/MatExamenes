@@ -30,7 +30,7 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
      */
     public VistaRegistrarUsuario() {
         initComponents();
-        bordeMal = BorderFactory.createLineBorder(Color.red,2);
+        bordeMal = BorderFactory.createLineBorder(Color.red, 2);
         bordeOriginal = txtfNombre.getBorder();
         lblErrorNombre.setVisible(false);
         lblErrorNombre.setText("Ingresar solo letras");
@@ -44,11 +44,17 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
         this.cvMantenerUsuarios = cvMantenerUsuarios;
     }
 
-    private boolean validarUsuario(String usuario){
+    private boolean validarUsuario(String usuario) {
         boolean ok = true;
         cvMantenerUsuarios.validarUsuario(usuario);
         return ok;
     }
+
+    /**
+     *
+     * @return retorna un objeto de tipo usuario si los datos fueron validados.
+     * de otra forma retorna null.
+     */
     private UsuarioDTO encapsularUsuario() {
         UsuarioDTO usuario = new UsuarioDTO();
 
@@ -56,49 +62,10 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
         String aMaterno = txtfApellidoMaterno.getText();
         String nombre = txtfNombre.getText();
         String pass = String.valueOf(txtpPassword.getPassword());
-        String usuari = txtfUsuario.getText();        
+        String usuari = txtfUsuario.getText();
 
-        boolean ok = true;
+        boolean ok = validarCampos(nombre, aPaterno, aMaterno, usuari, pass);
 
-        if (!Validador.esNombre(nombre)) {
-            ok = false;
-            txtfNombre.setBorder(bordeMal);
-            lblErrorNombre.setVisible(true);
-            
-        } else {
-            txtfNombre.setBorder(bordeOriginal);
-            lblErrorNombre.setVisible(false);
-        }
-        
-        if (!Validador.esNombre(aPaterno)) {
-            txtfApellidoPaterno.setBorder(bordeMal);
-            ok = false;
-        } else {
-            txtfApellidoPaterno.setBorder(bordeOriginal);
-        } 
-        
-        if (!Validador.esNombre(aMaterno)) {
-            txtfApellidoMaterno.setBorder(bordeMal);
-            ok = false;
-        } else {
-            txtfApellidoMaterno.setBorder(bordeOriginal);
-        }
-               
-        
-        if (!Validador.esPassword(pass)) {
-            txtpPassword.setBorder(bordeMal);
-            ok = false;
-        } else {
-            txtpPassword.setBorder(bordeOriginal);
-        }
-        
-        if (!Validador.esUsuario(usuari)) {
-            txtfUsuario.setBorder(bordeMal);
-            ok = false;
-        } else {
-            txtfUsuario.setBorder(bordeOriginal);
-        }
-        
         if (rbtnAlumno.isSelected()) {
             usuario.setTipo(UsuarioDTO.Tipo.Alumno);
         } else if (rbtnMaestro.isSelected()) {
@@ -107,17 +74,111 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
             ok = false;
         }
 
-        usuario.setApellidoMaterno(aMaterno);
-        usuario.setApellidoPaterno(aPaterno);
-        usuario.setNombre(nombre);
-        usuario.setPassword(pass);
-        usuario.setUsuario(usuari);
-
-        if(!ok){
+        if (!ok) {
             usuario = null;
+        } else {
+            usuario.setApellidoMaterno(aMaterno);
+            usuario.setApellidoPaterno(aPaterno);
+            usuario.setNombre(nombre);
+            usuario.setPassword(pass);
+            usuario.setUsuario(usuari);
         }
 
         return usuario;
+    }
+
+    /**
+     *
+     * @return retorna verdadero si todos los campos son correctos
+     */
+    private boolean validarCampos(String... datos) {
+        boolean ok = false;
+        if (!Validador.esNombre(datos[0])) {
+            ok = false;
+            txtfNombre.setBorder(bordeMal);
+            lblErrorNombre.setVisible(true);
+
+        } else {
+            txtfNombre.setBorder(bordeOriginal);
+            lblErrorNombre.setVisible(false);
+        }
+
+        if (!Validador.esNombre(datos[1])) {
+            txtfApellidoPaterno.setBorder(bordeMal);
+            ok = false;
+        } else {
+            txtfApellidoPaterno.setBorder(bordeOriginal);
+        }
+
+        if (!Validador.esNombre(datos[2])) {
+            txtfApellidoMaterno.setBorder(bordeMal);
+            ok = false;
+        } else {
+            txtfApellidoMaterno.setBorder(bordeOriginal);
+        }
+
+        if (!Validador.esUsuario(datos[3])) {
+            txtfUsuario.setBorder(bordeMal);
+            ok = false;
+        } else {
+            txtfUsuario.setBorder(bordeOriginal);
+        }
+
+        if (!Validador.esPassword(datos[4])) {
+            txtpPassword.setBorder(bordeMal);
+            ok = false;
+        } else {
+            txtpPassword.setBorder(bordeOriginal);
+        }
+
+        return ok;
+    }
+    
+        @Override
+    public void limpiar() {
+        txtfNombre.setText("");
+        txtfApellidoPaterno.setText("");
+        txtfApellidoMaterno.setText("");
+        txtpPassword.setText("");
+        txtfUsuario.setText("");
+        if (rbtnAlumno.isSelected()) {
+            rbtnAlumno.setSelected(false);
+        } else {
+            rbtnMaestro.setSelected(false);
+        }
+
+    }
+
+    @Override
+    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarVista(Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarEntidad(Object entidad) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean confirmarCambio() {
+        boolean cambiar = false;
+        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+                + "quieres cambiar de pantalla?\nTodos los cambios no "
+                + "guardados se perderán");
+        if (ok == 0) {
+            cambiar = true;
+        }
+        return cambiar;
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -384,9 +445,8 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
     }//GEN-LAST:event_txtpPasswordFocusLost
 
     private void txtfNombreFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfNombreFocusGained
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtfNombreFocusGained
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
@@ -408,50 +468,4 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
     private javax.swing.JPasswordField txtpPassword;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void limpiar() {
-        txtfNombre.setText("");
-        txtfApellidoPaterno.setText("");
-        txtfApellidoMaterno.setText("");
-        txtpPassword.setText("");
-        txtfUsuario.setText("");
-        if (rbtnAlumno.isSelected()) {
-            rbtnAlumno.setSelected(false);
-        } else {
-            rbtnMaestro.setSelected(false);
-        }
-
-    }
-
-    @Override
-    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mostrarVista(Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mostrarEntidad(Object entidad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean confirmarCambio() {
-        boolean cambiar = false;
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cambiar de pantalla?\nTodos los cambios no "
-                + "guardados se perderán");
-        if (ok == 0) {
-            cambiar = true;
-        }
-        return cambiar;
-    }
-
-    @Override
-    public UsuarioDTO obtenerUsuarioActual() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

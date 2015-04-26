@@ -16,61 +16,59 @@ import remoteAccess.Enlace;
  * @author Alf
  */
 public class MantenerUsuariosDELEGATE {
- 
-    public Integer guardarUsuario(UsuarioDTO usuario){
+
+    public Integer guardarUsuario(UsuarioDTO usuario) {
         Integer id = null;
-        
-        try{
+
+        try {
             id = Enlace.getPersistencia().guardarEntidad(usuario);
-        }catch(RemoteException | NotBoundException ex) {
+        } catch (RemoteException | NotBoundException ex) {
             System.out.println(ex);
         }
-        
+
         return id;
     }
-    
-    public List<UsuarioDTO> obtenerUsuariosPorApellido(String apellido){
+
+    public List<UsuarioDTO> obtenerUsuariosPorApellido(String apellido) {
         List<UsuarioDTO> usuarios = null;
-        try{
+        try {
             usuarios = Enlace.getPersistencia().obtenerUsuariosPorApellido(apellido);
-        }catch(RemoteException | NotBoundException ex) {
+        } catch (RemoteException | NotBoundException ex) {
             System.out.println(ex);
         }
-        
+
         return usuarios;
     }
-    
-    public boolean modificarUsuario(UsuarioDTO usuario){
+
+    public boolean modificarUsuario(UsuarioDTO usuario) {
         boolean ok = false;
-        try{
+        try {
             ok = Enlace.getPersistencia().modificarEntidad(usuario);
-        }catch(RemoteException | NotBoundException ex) {
+        } catch (RemoteException | NotBoundException ex) {
             System.out.println(ex);
         }
-        
+
         return ok;
     }
-    
-    public boolean eliminarUsuario(UsuarioDTO usuario){
+
+    public boolean eliminarUsuario(UsuarioDTO usuario) {
         boolean ok = false;
-        try{
+        try {
             ok = Enlace.getPersistencia().eliminarEntidad(usuario);
-        }catch(RemoteException | NotBoundException ex) {
+        } catch (RemoteException | NotBoundException ex) {
             System.out.println(ex);
         }
         return ok;
     }
-    
-    public boolean obtenerUsuario(String usuario){
-        boolean ok = false;
-            try{
-            if(Enlace.getPersistencia().obtenerUsuario(usuario) == null){
-                ok = true;
-            }
-        }catch(RemoteException | NotBoundException ex) {
+
+    public UsuarioDTO obtenerUsuario(String usuario) {
+        UsuarioDTO _usuario = null;
+        try {
+            _usuario = Enlace.getPersistencia().obtenerUsuario(usuario);
+        } catch (RemoteException | NotBoundException ex) {
             System.out.println(ex);
         }
-        return ok;
+        return _usuario;
     }
-    
+
 }

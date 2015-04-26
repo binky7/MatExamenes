@@ -175,12 +175,12 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
             usuarios
                     = cvMantenerUsuarios.obtenerUsuariosPorApellido(apellido);
 
-            mostrarDatosTabla(usuarios);
+            mostrarUsuariosTabla(usuarios);
         }
 
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void mostrarDatosTabla(List<UsuarioDTO> usuarios) {
+    private void mostrarUsuariosTabla(List<UsuarioDTO> usuarios) {
         dtm.setRowCount(0);
         Object datos[] = new Object[5];
 
@@ -238,7 +238,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
     @Override
     public void mostrarEntidad(Object entidad) {
         List<UsuarioDTO> usuarios = (List<UsuarioDTO>) entidad;
-        mostrarDatosTabla(usuarios);
+        mostrarUsuariosTabla(usuarios);
     }
 
     @Override

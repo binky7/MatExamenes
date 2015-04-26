@@ -8,7 +8,6 @@ package vista.ui;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVLogin;
@@ -23,7 +22,7 @@ import static modelo.dto.UsuarioDTO.Tipo;
 public class VistaLogin extends javax.swing.JFrame {
 
     FrmPrincipal p;
-    private CVLogin cvLogin;
+    private final CVLogin cvLogin;
     private final Border bordeOriginal;
     private final Border bordeMal;
 

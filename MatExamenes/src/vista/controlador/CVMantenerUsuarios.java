@@ -54,8 +54,10 @@ public class CVMantenerUsuarios {
      * retorna verdadero si el usuario no exite
      */
     public boolean validarUsuario(String usuario){
-        boolean ok;
-        ok = mantenerUsuariosDELEGATE.obtenerUsuario(usuario);
+        boolean ok = false;
+        if(mantenerUsuariosDELEGATE.obtenerUsuario(usuario) == null){
+            ok = true;
+        }
         return ok;
     }
 

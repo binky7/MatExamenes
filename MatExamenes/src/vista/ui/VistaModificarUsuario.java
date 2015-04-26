@@ -46,54 +46,58 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         String pass = txtfPassword.getText();
         String usuari = txtfUsuario.getText();
 
-        boolean ok = true;
+        boolean ok = validarCampos(nombre, aPaterno, aMaterno, usuari, pass);
 
-        if (!Validador.esNombre(nombre)) {
+        if (!ok) {
+            return null;
+        } else {
+            usuario.setApellidoMaterno(txtfApellidoMaterno.getText());
+            usuario.setApellidoPaterno(txtfApellidoPaterno.getText());
+            usuario.setNombre(txtfNombre.getText());
+            usuario.setUsuario(txtfUsuario.getText());
+            usuario.setPassword(txtfPassword.getText());
+        }
+
+        return usuario;
+    }
+
+    private boolean validarCampos(String... datos) {
+        boolean ok = false;
+        if (!Validador.esNombre(datos[0])) {
             ok = false;
             txtfNombre.setBackground(Color.red);
         } else {
             txtfNombre.setBackground(Color.white);
         }
 
-        if (!Validador.esNombre(aPaterno)) {
+        if (!Validador.esNombre(datos[1])) {
             txtfApellidoPaterno.setBackground(Color.red);
             ok = false;
         } else {
             txtfApellidoPaterno.setBackground(Color.white);
         }
 
-        if (!Validador.esNombre(aMaterno)) {
+        if (!Validador.esNombre(datos[2])) {
             txtfApellidoMaterno.setBackground(Color.red);
             ok = false;
         } else {
             txtfApellidoMaterno.setBackground(Color.white);
         }
 
-        if (!Validador.esPassword(pass)) {
-            txtfPassword.setBackground(Color.red);
-            ok = false;
-        } else {
-            txtfPassword.setBackground(Color.white);
-        }
-
-        if (!Validador.esUsuario(usuari)) {
+        if (!Validador.esUsuario(datos[3])) {
             txtfUsuario.setBackground(Color.red);
             ok = false;
         } else {
             txtfUsuario.setBackground(Color.white);
         }
 
-        usuario.setApellidoMaterno(txtfApellidoMaterno.getText());
-        usuario.setApellidoPaterno(txtfApellidoPaterno.getText());
-        usuario.setNombre(txtfNombre.getText());
-        usuario.setUsuario(txtfUsuario.getText());
-        usuario.setPassword(txtfPassword.getText());
-
-        if (!ok) {
-            return null;
+        if (!Validador.esPassword(datos[4])) {
+            txtfPassword.setBackground(Color.red);
+            ok = false;
+        } else {
+            txtfPassword.setBackground(Color.white);
         }
-
-        return usuario;
+        return ok;
     }
 
     /**
@@ -225,26 +229,9 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         } else {
             JOptionPane.showMessageDialog(this, "Datos incorrectos, porfavor "
                     + "sólo ingresa números y letras");
-            return;
         }
-        
+
     }//GEN-LAST:event_btnModificiarActionPerformed
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnModificiar;
-    private javax.swing.JLabel lblApellidoMaterno;
-    private javax.swing.JLabel lblApellidoPaterno;
-    private javax.swing.JLabel lblNombre;
-    private javax.swing.JLabel lblPassword;
-    private javax.swing.JLabel lblTitulo;
-    private javax.swing.JLabel lblUsuario;
-    private javax.swing.JTextField txtfApellidoMaterno;
-    private javax.swing.JTextField txtfApellidoPaterno;
-    private javax.swing.JTextField txtfNombre;
-    private javax.swing.JTextField txtfPassword;
-    private javax.swing.JTextField txtfUsuario;
-    // End of variables declaration//GEN-END:variables
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
@@ -285,4 +272,19 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         txtfUsuario.setText("");
         txtfPassword.setText("");
     }
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnModificiar;
+    private javax.swing.JLabel lblApellidoMaterno;
+    private javax.swing.JLabel lblApellidoPaterno;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblPassword;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblUsuario;
+    private javax.swing.JTextField txtfApellidoMaterno;
+    private javax.swing.JTextField txtfApellidoPaterno;
+    private javax.swing.JTextField txtfNombre;
+    private javax.swing.JTextField txtfPassword;
+    private javax.swing.JTextField txtfUsuario;
+    // End of variables declaration//GEN-END:variables
+
 }
