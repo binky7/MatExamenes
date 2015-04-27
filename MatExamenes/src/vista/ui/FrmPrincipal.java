@@ -357,6 +357,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         mUsuarios.setText("Usuarios");
 
         miRegistrarUsuario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK));
+        miRegistrarUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/registrarUsuario2.png"))); // NOI18N
         miRegistrarUsuario.setText("Registrar Usuario");
         miRegistrarUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -365,6 +366,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         });
         mUsuarios.add(miRegistrarUsuario);
 
+        miConsultarUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/consultarUsuario2.png"))); // NOI18N
         miConsultarUsuarios.setText("Consultar Usuarios");
         miConsultarUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -480,6 +482,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void miRegistrarTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miRegistrarTemaActionPerformed

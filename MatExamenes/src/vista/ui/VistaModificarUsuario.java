@@ -6,7 +6,15 @@
 package vista.ui;
 
 import java.awt.Color;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.lang.reflect.Field;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerUsuarios;
 import vista.controlador.Validador;
@@ -17,17 +25,37 @@ import vista.interfaz.InterfaceVista;
  * @author Alf
  */
 public class VistaModificarUsuario extends javax.swing.JPanel implements
-        InterfaceVista {
+        InterfaceVista, FocusListener {
 
     private CVMantenerUsuarios cvMantenerUsuarios;
     private InterfaceVista padre;
     private UsuarioDTO usuario;
+    private final ImageIcon ICONO_BIEN;
+    private final ImageIcon ICONO_MAL;
+    private final int NOMBRE;
+    private final int APELLIDO_PATERNO;
+    private final int APELLIDO_MATERNO;
+    private final int USUARIO;
+    private final int PASSWORD;
+    private String mensajeDatosIncorrectos;
 
     /**
      * Creates new form VistaModificarUsuario2
      */
     public VistaModificarUsuario() {
         initComponents();
+        ICONO_BIEN = new ImageIcon(getClass().getResource("/recursos/bien.png"));
+        ICONO_MAL = new ImageIcon(getClass().getResource("/recursos/mal.png"));
+        lblEstadoNombre.setVisible(false);
+        lblEstadoAPaterno.setVisible(false);
+        lblEstadoAMaterno.setVisible(false);
+        lblEstadoUsuario.setVisible(false);
+        lblEstadoPassword.setVisible(false);
+        NOMBRE = 0;
+        APELLIDO_PATERNO = 1;
+        APELLIDO_MATERNO = 2;
+        USUARIO = 3;
+        PASSWORD = 4;
     }
 
     public void setPadre(InterfaceVista padre) {
@@ -39,16 +67,19 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
     }
 
     public UsuarioDTO encapsularUsuario() {
-
         String aPaterno = txtfApellidoPaterno.getText();
         String aMaterno = txtfApellidoMaterno.getText();
         String nombre = txtfNombre.getText();
         String pass = txtfPassword.getText();
         String usuari = txtfUsuario.getText();
+        mensajeDatosIncorrectos = "";
 
         boolean ok = validarCampos(nombre, aPaterno, aMaterno, usuari, pass);
 
         if (!ok) {
+            mensajeDatosIncorrectos = "No se puede completar la operación, los "
+                    + "siguientes campos necesitan ser corregidos:\n"
+                    + mensajeDatosIncorrectos;
             return null;
         } else {
             usuario.setApellidoMaterno(txtfApellidoMaterno.getText());
@@ -62,41 +93,32 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
     }
 
     private boolean validarCampos(String... datos) {
-        boolean ok = false;
-        if (!Validador.esNombre(datos[0])) {
+        boolean ok = true;
+        if (!Validador.esNombre(datos[NOMBRE])) {
+            mensajeDatosIncorrectos += "Nombre\n";
             ok = false;
-            txtfNombre.setBackground(Color.red);
-        } else {
-            txtfNombre.setBackground(Color.white);
         }
 
-        if (!Validador.esNombre(datos[1])) {
-            txtfApellidoPaterno.setBackground(Color.red);
+        if (!Validador.esNombre(datos[APELLIDO_PATERNO])) {
+            mensajeDatosIncorrectos += "Apellido Paterno\n";
             ok = false;
-        } else {
-            txtfApellidoPaterno.setBackground(Color.white);
         }
 
-        if (!Validador.esNombre(datos[2])) {
-            txtfApellidoMaterno.setBackground(Color.red);
+        if (!Validador.esNombre(datos[APELLIDO_MATERNO])) {
+            mensajeDatosIncorrectos += "Apellido Materno\n";
             ok = false;
-        } else {
-            txtfApellidoMaterno.setBackground(Color.white);
         }
 
-        if (!Validador.esUsuario(datos[3])) {
-            txtfUsuario.setBackground(Color.red);
+        if (!Validador.esUsuario(datos[USUARIO]) || !cvMantenerUsuarios.validarUsuario(datos[USUARIO])) {
+            mensajeDatosIncorrectos += "Usuario\n";
             ok = false;
-        } else {
-            txtfUsuario.setBackground(Color.white);
         }
 
-        if (!Validador.esPassword(datos[4])) {
-            txtfPassword.setBackground(Color.red);
+        if (!Validador.esPassword(datos[PASSWORD])) {
+            mensajeDatosIncorrectos += "Password\n";
             ok = false;
-        } else {
-            txtfPassword.setBackground(Color.white);
         }
+
         return ok;
     }
 
@@ -115,40 +137,94 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         lblUsuario = new javax.swing.JLabel();
         lblPassword = new javax.swing.JLabel();
         txtfNombre = new javax.swing.JTextField();
+        txtfNombre.addFocusListener(this);
+        txtfNombre.setName("lblEstadoNombre");
         txtfApellidoPaterno = new javax.swing.JTextField();
+        txtfApellidoPaterno.addFocusListener(this);
+        txtfApellidoPaterno.setName("lblEstadoAPaterno");
         txtfApellidoMaterno = new javax.swing.JTextField();
+        txtfApellidoMaterno.addFocusListener(this);
+        txtfApellidoMaterno.setName("lblEstadoAMaterno");
         txtfUsuario = new javax.swing.JTextField();
+        txtfUsuario.addFocusListener(this);
+        txtfUsuario.setName("lblEstadoUsuario");
         txtfPassword = new javax.swing.JTextField();
+        txtfPassword.addFocusListener(this);
+        txtfPassword.setName("lblEstadoPassword");
         lblTitulo = new javax.swing.JLabel();
         btnModificiar = new javax.swing.JButton();
+        lblEstadoNombre = new javax.swing.JLabel();
+        lblEstadoAPaterno = new javax.swing.JLabel();
+        lblEstadoAMaterno = new javax.swing.JLabel();
+        lblEstadoUsuario = new javax.swing.JLabel();
+        lblEstadoPassword = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
+        lblNombre.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblNombre.setText("Nombre:");
 
+        lblApellidoPaterno.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblApellidoPaterno.setText("Apellido Paterno:");
 
+        lblApellidoMaterno.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblApellidoMaterno.setText("Apellido Materno:");
 
+        lblUsuario.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblUsuario.setText("Usuario:");
 
+        lblPassword.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblPassword.setText("Password:");
 
-        txtfNombre.setPreferredSize(new java.awt.Dimension(100, 25));
+        txtfNombre.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfNombre.setPreferredSize(new java.awt.Dimension(100, 30));
 
-        txtfApellidoPaterno.setPreferredSize(new java.awt.Dimension(100, 25));
+        txtfApellidoPaterno.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfApellidoPaterno.setPreferredSize(new java.awt.Dimension(100, 30));
 
-        txtfApellidoMaterno.setPreferredSize(new java.awt.Dimension(100, 25));
+        txtfApellidoMaterno.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfApellidoMaterno.setPreferredSize(new java.awt.Dimension(100, 30));
 
-        txtfUsuario.setPreferredSize(new java.awt.Dimension(100, 25));
+        txtfUsuario.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfUsuario.setPreferredSize(new java.awt.Dimension(100, 30));
 
-        txtfPassword.setPreferredSize(new java.awt.Dimension(100, 25));
+        txtfPassword.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfPassword.setPreferredSize(new java.awt.Dimension(100, 30));
+        txtfPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfPasswordKeyTyped(evt);
+            }
+        });
 
-        lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        lblTitulo.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         lblTitulo.setText("Modificar Usuario");
 
+        btnModificiar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnModificiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/modificarUsuario2.png"))); // NOI18N
         btnModificiar.setText("Modificar");
+        btnModificiar.setPreferredSize(new java.awt.Dimension(75, 30));
         btnModificiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificiarActionPerformed(evt);
+            }
+        });
+
+        lblEstadoNombre.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+
+        lblEstadoAPaterno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+
+        lblEstadoAMaterno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+
+        lblEstadoUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+
+        lblEstadoPassword.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+
+        jButton1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonCancelar_1.png"))); // NOI18N
+        jButton1.setText("Cancelar");
+        jButton1.setPreferredSize(new java.awt.Dimension(75, 30));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -157,29 +233,39 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(0, 260, Short.MAX_VALUE)
+                .addGap(0, 264, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnModificiar)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(lblNombre)
-                                    .addComponent(lblApellidoPaterno)
-                                    .addComponent(lblApellidoMaterno)
-                                    .addComponent(lblUsuario)
-                                    .addComponent(lblPassword))
-                                .addGap(129, 129, 129)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtfNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtfUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtfPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(227, 227, 227))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblNombre)
+                            .addComponent(lblApellidoPaterno)
+                            .addComponent(lblApellidoMaterno)
+                            .addComponent(lblUsuario)
+                            .addComponent(lblPassword))
+                        .addGap(129, 129, 129)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtfNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtfUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtfPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblEstadoNombre)
+                            .addComponent(lblEstadoAPaterno)
+                            .addComponent(lblEstadoAMaterno)
+                            .addComponent(lblEstadoUsuario)
+                            .addComponent(lblEstadoPassword))
+                        .addGap(189, 189, 189))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(lblTitulo)
                         .addGap(283, 283, 283))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnModificiar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(170, 170, 170))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,26 +275,34 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
                 .addGap(74, 74, 74)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblNombre)
-                    .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblEstadoNombre)))
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblApellidoPaterno)
-                    .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEstadoAPaterno))
                 .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblApellidoMaterno)
-                    .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEstadoAMaterno))
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblUsuario)
-                    .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEstadoUsuario))
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPassword)
-                    .addComponent(txtfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(76, 76, 76)
-                .addComponent(btnModificiar)
-                .addContainerGap(59, Short.MAX_VALUE))
+                    .addComponent(txtfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEstadoPassword))
+                .addGap(71, 71, 71)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnModificiar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -218,20 +312,43 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         if (encapsularUsuario() != null) {
             ok = cvMantenerUsuarios.modificarUsuario(usuario);
             if (ok) {
-                JOptionPane.showMessageDialog(this, "Usuario Modificado");
+                JOptionPane.showMessageDialog(this, "Usuario Modificado", "Modificación",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    new ImageIcon(getClass().getResource("/recursos/usuarioModificado.png")));
                 padre.mostrarVistaConEntidad(cvMantenerUsuarios.obtenerUsuariosBuscados(),
                         Vista.ConsultarUsuarios);
 
             } else {
-                JOptionPane.showMessageDialog(this, "Usuario No Modificado");
+                JOptionPane.showMessageDialog(this, "Usuario no Modiicado", "Modificación",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    new ImageIcon(getClass().getResource("/recursos/incorrecto.png")));
                 padre.mostrarVista(Vista.ConsultarUsuarios);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Datos incorrectos, porfavor "
-                    + "sólo ingresa números y letras");
+            JOptionPane.showMessageDialog(this, mensajeDatosIncorrectos, "Modificación",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    new ImageIcon(getClass().getResource("/recursos/incorrecto.png")));
         }
 
     }//GEN-LAST:event_btnModificiarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+                + "quieres cancelar la operación?\nTodos los cambios no "
+                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
+        if (ok == JOptionPane.YES_OPTION) {
+            padre.mostrarVista(Vista.HOME);
+            limpiar();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtfPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfPasswordKeyTyped
+        // TODO add your handling code here:
+        if(evt.getKeyChar() == '\n'){
+            btnModificiar.doClick();
+        }
+    }//GEN-LAST:event_txtfPasswordKeyTyped
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
@@ -260,22 +377,74 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
     }
 
     @Override
-    public UsuarioDTO obtenerUsuarioActual() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void limpiar() {
         txtfApellidoMaterno.setText("");
         txtfApellidoPaterno.setText("");
         txtfNombre.setText("");
         txtfUsuario.setText("");
         txtfPassword.setText("");
+        lblEstadoAMaterno.setVisible(false);
+        lblEstadoAPaterno.setVisible(false);
+        lblEstadoNombre.setVisible(false);
+        lblEstadoPassword.setVisible(false);
+        lblEstadoUsuario.setVisible(false);
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void mostrarLabelEstado(Object o, boolean estado) {
+        JTextField ob = (JTextField) o;
+        try {
+            Field field = getClass().getDeclaredField(ob.getName());
+            JLabel label = (JLabel) field.get(this);
+            if (!label.isVisible()) {
+                label.setVisible(true);
+            }
+            if (estado) {
+                label.setIcon(ICONO_BIEN);
+            } else {
+                label.setIcon(ICONO_MAL);
+            }
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(VistaRegistrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        JTextField ob = (JTextField) e.getSource();
+
+        if (ob == txtfNombre || ob == txtfApellidoPaterno || ob == txtfApellidoMaterno) {
+            mostrarLabelEstado(ob, Validador.esNombre(ob.getText()));
+        } else if (ob == txtfUsuario) {
+            boolean ok = cvMantenerUsuarios.validarUsuario(ob.getText());
+            if (ok) {
+                mostrarLabelEstado(ob, Validador.esUsuario(ob.getText()));
+            } else {
+                mostrarLabelEstado(ob, false);
+            }
+        } else {
+            mostrarLabelEstado(ob, Validador.esPassword(ob.getText()));
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnModificiar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lblApellidoMaterno;
     private javax.swing.JLabel lblApellidoPaterno;
+    private javax.swing.JLabel lblEstadoAMaterno;
+    private javax.swing.JLabel lblEstadoAPaterno;
+    private javax.swing.JLabel lblEstadoNombre;
+    private javax.swing.JLabel lblEstadoPassword;
+    private javax.swing.JLabel lblEstadoUsuario;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblTitulo;

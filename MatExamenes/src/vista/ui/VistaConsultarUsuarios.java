@@ -6,6 +6,7 @@
 package vista.ui;
 
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.dto.UsuarioDTO;
@@ -22,6 +23,8 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
     private CVMantenerUsuarios cvMantenerUsuarios;
     private InterfaceVista padre;
     private DefaultTableModel dtm;
+    private final ImageIcon ICONO_BIEN;
+    private final ImageIcon ICONO_MAL;
 
     /**
      * Creates new form VistaConsultarUsuario2
@@ -29,6 +32,9 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
     public VistaConsultarUsuarios() {
         initComponents();
         dtm = (DefaultTableModel) tblUsuarios.getModel();
+        ICONO_BIEN = new ImageIcon(getClass().getResource("/recursos/bien.png"));
+        ICONO_MAL = new ImageIcon(getClass().getResource("/recursos/mal.png"));
+        lblEstadoAPaterno.setVisible(false);
     }
 
     public void setPadre(InterfaceVista padre) {
@@ -56,9 +62,13 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         lblTitulo = new javax.swing.JLabel();
         lblApellidoPaterno = new javax.swing.JLabel();
         txtfApellidoPaterno = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        lblEstadoAPaterno = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(800, 600));
 
+        btnBuscar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/consultarUsuario24.png"))); // NOI18N
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,26 +94,51 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         });
         jScrollPane1.setViewportView(tblUsuarios);
 
+        btnModificar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/modificarUsuario2.png"))); // NOI18N
         btnModificar.setText("Modificar");
+        btnModificar.setPreferredSize(new java.awt.Dimension(81, 30));
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
             }
         });
 
+        btnEliminar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/eliminarUsuario24.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
+        btnEliminar.setPreferredSize(new java.awt.Dimension(79, 30));
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
             }
         });
 
-        lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        lblTitulo.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         lblTitulo.setText("Consultar Usuario");
 
+        lblApellidoPaterno.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblApellidoPaterno.setText("Apellido Paterno:");
 
+        txtfApellidoPaterno.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtfApellidoPaterno.setPreferredSize(new java.awt.Dimension(100, 25));
+        txtfApellidoPaterno.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtfApellidoPaternoFocusLost(evt);
+            }
+        });
+        txtfApellidoPaterno.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfApellidoPaternoKeyTyped(evt);
+            }
+        });
+
+        jButton1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonCancelar_1.png"))); // NOI18N
+        jButton1.setText("Cancelar");
+        jButton1.setPreferredSize(new java.awt.Dimension(77, 30));
+
+        lblEstadoAPaterno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -112,10 +147,12 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblApellidoPaterno)
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(133, 133, 133)
-                .addComponent(btnBuscar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblEstadoAPaterno)
+                .addGap(86, 86, 86)
+                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -125,9 +162,11 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
                 .addContainerGap(138, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnEliminar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnModificar))
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(117, 117, 117))
         );
@@ -140,14 +179,16 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblApellidoPaterno)
                     .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                    .addComponent(btnBuscar)
+                    .addComponent(lblEstadoAPaterno))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25)
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnModificar)
-                    .addComponent(btnEliminar))
-                .addGap(51, 51, 51))
+                    .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(48, 48, 48))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -165,7 +206,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         if (Validador.estaVacio(apellido)) {
             int opcion = JOptionPane.showConfirmDialog(this, "Realizar una consulta con"
                     + " el campo vacio regresara todos los usuarios.\n¿Desea continuar?",
-                    "Busqueda", JOptionPane.YES_NO_OPTION);
+                    "Busqueda", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             ok = (opcion == JOptionPane.YES_OPTION);
         } else {
             ok = true;
@@ -213,17 +254,24 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void txtfApellidoPaternoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfApellidoPaternoFocusLost
+        // TODO add your handling code here:
+        if (!lblEstadoAPaterno.isVisible()) {
+            lblEstadoAPaterno.setVisible(true);
+        }
+        if (Validador.esNombre(txtfApellidoPaterno.getText())) {
+            lblEstadoAPaterno.setIcon(ICONO_BIEN);
+        } else {
+            lblEstadoAPaterno.setIcon(ICONO_MAL);
+        }
+    }//GEN-LAST:event_txtfApellidoPaternoFocusLost
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnModificar;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblApellidoPaterno;
-    private javax.swing.JLabel lblTitulo;
-    private javax.swing.JTable tblUsuarios;
-    private javax.swing.JTextField txtfApellidoPaterno;
-    // End of variables declaration//GEN-END:variables
+    private void txtfApellidoPaternoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfApellidoPaternoKeyTyped
+        // TODO add your handling code here:
+        if(evt.getKeyChar() == '\n'){
+            btnBuscar.doClick();
+        }
+    }//GEN-LAST:event_txtfApellidoPaternoKeyTyped
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
@@ -254,6 +302,21 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
 
     @Override
     public void limpiar() {
-        //
+        dtm.setRowCount(0);
+        txtfApellidoPaterno.setText("");
     }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnModificar;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblApellidoPaterno;
+    private javax.swing.JLabel lblEstadoAPaterno;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JTable tblUsuarios;
+    private javax.swing.JTextField txtfApellidoPaterno;
+    // End of variables declaration//GEN-END:variables
+
 }

@@ -5,26 +5,20 @@
  */
 package vista.ui;
 
-import java.awt.Color;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import javax.swing.BorderFactory;
-import javax.swing.JTextField;
-import javax.swing.border.Border;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import modelo.dto.UsuarioDTO;
+import modelo.dto.UsuarioDTO.Tipo;
 import vista.controlador.CVLogin;
-import vista.controlador.Validador;
 
 /**
  *
  * @author Jesus Donaldo
  */
-public class VistaLogin extends javax.swing.JFrame implements FocusListener {
+public class VistaLogin extends javax.swing.JFrame {
 
-    FrmPrincipal p;
-    private CVLogin cvLogin;
-    private final Border BORDE_ORIGINAL;
-    private final Border BORDE_MAL;
+    private final FrmPrincipal p;
+    private final CVLogin cvLogin;
 
     /**
      * Creates new form VistaLogin
@@ -32,8 +26,6 @@ public class VistaLogin extends javax.swing.JFrame implements FocusListener {
     public VistaLogin() {
         initComponents();
         p = new FrmPrincipal();
-        BORDE_ORIGINAL = txtfUsuario.getBorder();
-        BORDE_MAL = BorderFactory.createLineBorder(Color.red);
         cvLogin = new CVLogin();
     }
 
@@ -48,19 +40,17 @@ public class VistaLogin extends javax.swing.JFrame implements FocusListener {
 
         btnLogin = new javax.swing.JButton();
         txtfUsuario = new javax.swing.JTextField();
-        txtfUsuario.addFocusListener(this);
         lblUsuario = new javax.swing.JLabel();
         lblPassword = new javax.swing.JLabel();
         txtpPassword = new javax.swing.JPasswordField();
-        txtpPassword.addFocusListener(this);
         lblTitulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(500, 370));
         setResizable(false);
-        setSize(new java.awt.Dimension(500, 370));
 
         btnLogin.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/usuarios.png"))); // NOI18N
         btnLogin.setText("Login");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -79,6 +69,11 @@ public class VistaLogin extends javax.swing.JFrame implements FocusListener {
 
         txtpPassword.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtpPassword.setPreferredSize(new java.awt.Dimension(100, 25));
+        txtpPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtpPasswordKeyTyped(evt);
+            }
+        });
 
         lblTitulo.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         lblTitulo.setText("Login");
@@ -88,21 +83,25 @@ public class VistaLogin extends javax.swing.JFrame implements FocusListener {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(208, 208, 208)
-                .addComponent(lblTitulo))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(208, 208, 208)
+                        .addComponent(lblTitulo))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(130, 130, 130)
+                        .addComponent(lblUsuario)
+                        .addGap(104, 104, 104)
+                        .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(130, 130, 130)
+                        .addComponent(lblPassword)
+                        .addGap(90, 90, 90)
+                        .addComponent(txtpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(142, 162, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(130, 130, 130)
-                .addComponent(lblUsuario)
-                .addGap(104, 104, 104)
-                .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(130, 130, 130)
-                .addComponent(lblPassword)
-                .addGap(90, 90, 90)
-                .addComponent(txtpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(412, 412, 412)
-                .addComponent(btnLogin))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnLogin)
+                .addGap(44, 44, 44))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,8 +120,9 @@ public class VistaLogin extends javax.swing.JFrame implements FocusListener {
                         .addGap(7, 7, 7)
                         .addComponent(lblPassword))
                     .addComponent(txtpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(87, 87, 87)
-                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
 
         pack();
@@ -130,90 +130,56 @@ public class VistaLogin extends javax.swing.JFrame implements FocusListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLogin(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogin
-//        UsuarioDTO usuario;
-//        usuario = encapsularUsuario();
-//        if (usuario == null) {
-//            JOptionPane.showMessageDialog(this, "Datos incorrectos, porfavor "
-//                    + "sólo ingresa números y letras");
-//        } else {
-//            int error = cvLogin.validarCredenciales(usuario);
-//            if (error == -1) {
-//                UsuarioDTO usuarioValido = cvLogin.obtenerUsuarioValidado();
-//                JOptionPane.showMessageDialog(this, "Bienvenido "
-//                        + usuarioValido.getNombre());
-//                p.setUsuarioActual(usuarioValido);
-//                Tipo tipo = usuarioValido.getTipo();
-//                if (tipo == Tipo.Admin) {
-        p.setVistaAdmin();
-//                } else if (tipo == Tipo.Alumno) {
-//                    p.setVistaAlumno();
-//                } else if (tipo == Tipo.Maestro) {
-//                    p.setVistaMaestro();
-//                }
-        p.setVisible(true);
-        dispose();
-//            } else if (error == 1) {
-//                JOptionPane.showMessageDialog(this, "Password Incorrecto");
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Usuario no existente");
-//            }
-//
-//        }
+        UsuarioDTO usuario;
+        usuario = encapsularUsuario();
+
+        int error = cvLogin.validarCredenciales(usuario);
+        if (error == -1) {
+            UsuarioDTO usuarioValido = cvLogin.obtenerUsuarioValidado();
+            JOptionPane.showMessageDialog(this, "Bienvenido "
+                    + usuarioValido.getNombre(), "Login", JOptionPane.INFORMATION_MESSAGE,
+                    new ImageIcon(getClass().getResource("/recursos/usuario.png")));
+            p.setUsuarioActual(usuarioValido);
+            Tipo tipo = usuarioValido.getTipo();
+            if (tipo == Tipo.Admin) {
+                p.setVistaAdmin();
+            } else if (tipo == Tipo.Alumno) {
+                p.setVistaAlumno();
+            } else if (tipo == Tipo.Maestro) {
+                p.setVistaMaestro();
+            }
+            p.setVisible(true);
+            dispose();
+        } else if (error == 1) {
+            JOptionPane.showMessageDialog(this, "Password Incorrecto",
+                    "Login", JOptionPane.INFORMATION_MESSAGE,
+                    new ImageIcon(getClass().getResource("/recursos/incorrecto.png")));
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuario no existente",
+                    "Login", JOptionPane.INFORMATION_MESSAGE,
+                    new ImageIcon(getClass().getResource("/recursos/usuarioIncorrecto.png")));
+        }
+
 
     }//GEN-LAST:event_btnLogin
+
+    private void txtpPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpPasswordKeyTyped
+        // TODO add your handling code here:
+        if(evt.getKeyChar() == '\n'){
+            btnLogin.doClick();
+        }
+    }//GEN-LAST:event_txtpPasswordKeyTyped
 
     private UsuarioDTO encapsularUsuario() {
         UsuarioDTO usuario = new UsuarioDTO();
 
         String pass = String.valueOf(txtpPassword.getPassword());
         String usuari = txtfUsuario.getText();
-        boolean ok = true;
-
-        if (!Validador.esPassword(pass)) {
-            txtpPassword.setBorder(BORDE_MAL);
-            ok = false;
-        } else {
-            txtpPassword.setBorder(BORDE_ORIGINAL);
-        }
-
-        if (!Validador.esUsuario(usuari)) {
-            txtfUsuario.setBorder(BORDE_MAL);
-            ok = false;
-        } else {
-            txtfUsuario.setBorder(BORDE_ORIGINAL);
-        }
 
         usuario.setPassword(pass);
         usuario.setUsuario(usuari);
 
-        if (!ok) {
-            usuario = null;
-        }
-
         return usuario;
-    }
-
-    @Override
-    public void focusGained(FocusEvent e) {
-        ((JTextField) e.getSource()).setBorder(BORDE_ORIGINAL);
-    }
-
-    @Override
-    public void focusLost(FocusEvent e) {
-        if (e.getSource() == txtfUsuario) {
-            if (!Validador.esUsuario(txtfUsuario.getText())) {
-                txtfUsuario.setBorder(BORDE_MAL);
-            } else {
-                txtfUsuario.setBorder(BORDE_ORIGINAL);
-            }
-        } else if(e.getSource() == txtpPassword){
-            if (!Validador.esPassword(String.valueOf(txtpPassword.getPassword()))) {
-                txtpPassword.setBorder(BORDE_MAL);
-            } else {
-                txtpPassword.setBorder(BORDE_ORIGINAL);
-
-            }
-        }
     }
 
     /**
@@ -222,9 +188,9 @@ public class VistaLogin extends javax.swing.JFrame implements FocusListener {
     public static void main(String args[]) {
 
         try {
-            for(javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                
-                if("Nimbus".equals(info.getName())) {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+
+                if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

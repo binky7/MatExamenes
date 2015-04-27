@@ -98,6 +98,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Alt+U"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/recursos/registrarUsuario2.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Registrar Usuario"/>
               </Properties>
               <Events>
@@ -106,6 +109,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miConsultarUsuarios">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/recursos/consultarUsuario2.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Consultar Usuarios"/>
               </Properties>
               <Events>
@@ -248,7 +254,7 @@
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="mbPrincipal"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
