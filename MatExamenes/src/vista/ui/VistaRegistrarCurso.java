@@ -76,7 +76,6 @@ implements FocusListener, InterfaceVista{
         btnRegresar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(800, 579));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N

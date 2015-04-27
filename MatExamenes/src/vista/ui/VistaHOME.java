@@ -33,7 +33,6 @@ public class VistaHOME extends javax.swing.JPanel implements InterfaceVista {
 
         jLabel1 = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(800, 600));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N

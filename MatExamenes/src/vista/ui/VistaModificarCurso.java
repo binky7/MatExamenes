@@ -69,8 +69,6 @@ public class VistaModificarCurso extends javax.swing.JPanel implements Interface
         btnRegresar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(255, 255, 255));
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Curso:");
 
