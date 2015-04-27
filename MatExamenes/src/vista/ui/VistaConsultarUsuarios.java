@@ -11,16 +11,16 @@ import javax.swing.table.DefaultTableModel;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerUsuarios;
 import vista.controlador.Validador;
-import vista.interfaz.InterfazVista;
+import vista.interfaz.InterfaceVista;
 
 /**
  *
  * @author Alf
  */
-public class VistaConsultarUsuarios extends javax.swing.JPanel implements InterfazVista {
+public class VistaConsultarUsuarios extends javax.swing.JPanel implements InterfaceVista {
 
     private CVMantenerUsuarios cvMantenerUsuarios;
-    private InterfazVista padre;
+    private InterfaceVista padre;
     private DefaultTableModel dtm;
 
     /**
@@ -31,7 +31,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         dtm = (DefaultTableModel) tblUsuarios.getModel();
     }
 
-    public void setPadre(InterfazVista padre) {
+    public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
 

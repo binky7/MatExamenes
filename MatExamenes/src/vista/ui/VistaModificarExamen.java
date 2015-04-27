@@ -7,34 +7,34 @@ package vista.ui;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import modelo.dto.UsuarioDTO;
-import vista.interfaz.InterfazExamen;
-import vista.interfaz.InterfazVista;
+import vista.interfaz.InterfaceExamen;
+import vista.interfaz.InterfaceVista;
 
 /**
  *
  * @author BoredmanDA
  */
 public class VistaModificarExamen extends javax.swing.JPanel
-implements InterfazVista, InterfazExamen {
+implements InterfaceVista, InterfaceExamen {
 
-    private InterfazVista padre;
-    private VistaAgregarReactivos vistaAgregarReactivos;
+    private InterfaceVista padre;
+    private FrmAgregarReactivos vistaAgregarReactivos;
     /**
      * Creates new form ModificarExamen
      */
     public VistaModificarExamen() {
         initComponents();
-        vistaAgregarReactivos = new VistaAgregarReactivos();
+        vistaAgregarReactivos = new FrmAgregarReactivos();
         vistaAgregarReactivos.setPadre(this);
         vistaAgregarReactivos.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    public void setPadre(InterfazVista padre) {
+    public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
     
     @Override
-    public InterfazVista getPadre() {
+    public InterfaceVista getPadre() {
         return padre;
     }
     

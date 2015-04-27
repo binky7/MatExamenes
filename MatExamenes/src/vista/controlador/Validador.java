@@ -138,9 +138,10 @@ public class Validador {
      */
     public static boolean esGrupo(String campo) {
         boolean ok = true;
-        
-        if(estaVacio(campo) || !StringUtils.isAlpha(campo) ||
-                campo.length() > 3) {
+        String numero = String.valueOf(campo.toCharArray()[0]);
+        String nombre = campo.toCharArray()[1]+""+campo.toCharArray()[2];
+        if(estaVacio(campo) || !StringUtils.isAlpha(nombre) ||
+                StringUtils.isAlpha(numero) || campo.length() > 3) {
             ok = false;
         }
         

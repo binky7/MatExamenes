@@ -6,7 +6,9 @@
 package vista.controlador;
 
 import control.delegate.MantenerGruposDELEGATE;
+import control.delegate.MantenerUsuariosDELEGATE;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import modelo.dto.CursoDTO;
@@ -20,7 +22,7 @@ import modelo.dto.UsuarioDTO;
 public class CVMantenerGrupos {
 
     private MantenerGruposDELEGATE mantenerGruposDELEGATE;
-    //private MantenerExamenesDELEGATE mantenerExamenesDELEGATE;
+    private MantenerUsuariosDELEGATE mantenerUsuariosDELEGATE;
 
     //Listas de dto necesarios
     //dtos para consultar
@@ -33,11 +35,18 @@ public class CVMantenerGrupos {
     private GrupoDTO grupo;
 
     //Lista de dto necesarios para agregar maestro
-    private List<CursoDTO> cursos;
-    private List<UsuarioDTO> maestros;
+    public List<CursoDTO> cursos;
+    public List<UsuarioDTO> maestros;
+    private HashMap<CursoDTO, UsuarioDTO> maestrosMap;
 
     //Lista de dto necesarios para agregar alumnos
     private List<UsuarioDTO> alumnos;
+
+    public CVMantenerGrupos() {
+        mantenerGruposDELEGATE = new MantenerGruposDELEGATE();
+        mantenerUsuariosDELEGATE = new MantenerUsuariosDELEGATE();
+        cursos = new ArrayList<>();
+    }
 
     public List<CursoDTO> obtenerCursos() {
         List<CursoDTO> listaCursos = mantenerGruposDELEGATE.obtenerCursos();
@@ -51,6 +60,8 @@ public class CVMantenerGrupos {
             this.grupo.setNombre(objGrupo.getNombre());
             this.grupo.setGrado(objGrupo.getGrado());
             this.grupo.setTurno(objGrupo.getTurno());
+            this.grupo.setAlumnos(this.alumnos);
+            this.grupo.setMaestros(this.maestrosMap);
         }
         id = mantenerGruposDELEGATE.guardarGrupo(this.grupo);
         return id;
@@ -69,6 +80,20 @@ public class CVMantenerGrupos {
             objGrupo = mantenerGruposDELEGATE.obtenerGrupo(objGrupo.getId());
         }
         this.grupo = objGrupo;
+        HashMap<CursoDTO, UsuarioDTO> mapa = new HashMap<>();
+        for (CursoDTO curso : grupo.getMaestros().keySet()) {
+            UsuarioDTO maestro = grupo.getMaestros().get(curso);
+            mapa.put(curso, maestro);
+            Object[] fila = new Object[6];
+            fila[0] = false;
+            fila[1] = String.valueOf(maestro.getId());
+            fila[2] = maestro.getNombre();
+            fila[3] = maestro.getApellidoPaterno();
+            fila[4] = maestro.getApellidoMaterno();
+            fila[5] = curso.getNombre();
+        }
+        this.maestrosMap = mapa;
+        this.grupo.setMaestros(mapa);
         return objGrupo;
     }
 
@@ -96,21 +121,22 @@ public class CVMantenerGrupos {
     }
 
     public List<UsuarioDTO> obtenerAlumnosPorApellido(String apellidoPaterno) {
-        List<UsuarioDTO> listaAlumnos = null;
+        List<UsuarioDTO> listaAlumnos = mantenerUsuariosDELEGATE.obtenerUsuariosPorApellido(apellidoPaterno);
         this.alumnos = listaAlumnos;
         return listaAlumnos;
     }
 
     public List<UsuarioDTO> obtenerMaestrosPorApellido(String apellidoPaterno) {
-        List<UsuarioDTO> listaMaestros = null;
+        List<UsuarioDTO> listaMaestros = mantenerUsuariosDELEGATE.obtenerUsuariosPorApellido(apellidoPaterno);
         this.maestros = listaMaestros;
         return listaMaestros;
     }
 
     public List<UsuarioDTO> agregarAlumnos(List<Integer> indexesAlumnos) {
-        List<UsuarioDTO> listaAlumnos = null;
-        for (int x = 0; x < indexesAlumnos.size(); x++) {
-            int index = indexesAlumnos.remove(x);
+        List<UsuarioDTO> listaAlumnos = new ArrayList<>();
+        int cont = indexesAlumnos.size();
+        for (int x = 0; x < cont; x++) {
+            int index = indexesAlumnos.get(x);
             if (this.alumnos != null && !this.alumnos.isEmpty()) {
                 UsuarioDTO alumno = this.alumnos.get(index);
                 listaAlumnos.add(alumno);
@@ -128,67 +154,83 @@ public class CVMantenerGrupos {
         if (this.alumnos == null) {
             this.alumnos = new ArrayList<>();
         }
-        //Verificar que los alumnos agregados no se repitan en el grupo
+        int cont = listaAlumnos.size();
+        List<UsuarioDTO> repetidos = new ArrayList<>();
+        for (int x = 0; x < cont; x++) {
+            boolean ban = false;
+            for (int i = 0; i < alumnos.size(); i++) {
+                if (alumnos.get(i).getId() == listaAlumnos.get(x).getId()) {
+                    ban = true;
+                }
+            }
+            if (ban) {
+                repetidos.add(listaAlumnos.get(x));
+            }
+        }
+        listaAlumnos.removeAll(repetidos);
         this.alumnos.addAll(listaAlumnos);
         this.grupo.setAlumnos(this.alumnos); //Lista de alumnos no repetidos
         return this.grupo.getAlumnos();
     }
 
-    public Map<CursoDTO, UsuarioDTO> agregarMaestro(int indexCurso, int indexMaestro) {
-//        if (this.maestros != null && !this.maestros.isEmpty()
-//                && this.cursos != null && !this.cursos.isEmpty()) {
-//            UsuarioDTO maestro = this.maestros.get(indexMaestro);
-//            CursoDTO curso = this.cursos.get(indexCurso);
-//        }
-//        Map<CursoDTO, UsuarioDTO> mapaMaestro = agregarMaestro(curso, maestro);
-        return null;
+    public HashMap<CursoDTO, UsuarioDTO> agregarMaestro(int indexCurso, int indexMaestro) {
+        UsuarioDTO maestro = null;
+        CursoDTO curso = null;
+        if (this.maestros != null && !this.maestros.isEmpty()
+                && this.cursos != null && !this.cursos.isEmpty()) {
+            maestro = this.maestros.get(indexMaestro);
+            curso = this.cursos.get(indexCurso);
+        }
+        HashMap<CursoDTO, UsuarioDTO> mapaMaestro = agregarMaestro(curso, maestro);
+        return mapaMaestro;
     }
 
-    public Map<CursoDTO, UsuarioDTO> agregarMaestro(CursoDTO curso, UsuarioDTO maestro) {
+    public HashMap<CursoDTO, UsuarioDTO> agregarMaestro(CursoDTO curso, UsuarioDTO maestro) {
         if (this.grupo == null) {
-            GrupoDTO grupo;
+            this.grupo = new GrupoDTO();
         }
-        Map<CursoDTO, UsuarioDTO> maestros = grupo.getMaestros();
-        if (maestros == null) {
+        this.maestrosMap = (HashMap<CursoDTO, UsuarioDTO>) this.grupo.getMaestros();
+        if (this.maestrosMap == null || this.maestrosMap.isEmpty()) {
+            Map<CursoDTO, UsuarioDTO> maestrosMap;
+        }
+        maestrosMap.put(curso, maestro);
+        grupo.setMaestros(maestrosMap);
+        return (HashMap<CursoDTO, UsuarioDTO>) grupo.getMaestros();
+    }
 
+    public void removerAlumnos(List<Integer> indexesAlumnos) {
+        List<UsuarioDTO> listaRemover = new ArrayList<>();
+        if (this.grupo != null) {
+            this.alumnos = grupo.getAlumnos();
+            if (alumnos != null) {
+                int cont = indexesAlumnos.size();
+                for (int x = 0; x < cont; x++) {
+                    listaRemover.add(this.alumnos.get(indexesAlumnos.get(x)));
+                }
+                this.alumnos.removeAll(listaRemover);
+            }
         }
-        return null;
+    }
+
+    public void removerMaestro(String nombreCurso) {
+        if (grupo != null) {
+            this.maestrosMap = (HashMap<CursoDTO, UsuarioDTO>) this.grupo.getMaestros();
+            if (this.maestrosMap != null) {
+                for (CursoDTO curso : this.maestrosMap.keySet()) {
+                    if (curso.getNombre().equals(nombreCurso)) {
+                        maestrosMap.remove(curso);
+                    }
+                }
+            }
+        }
     }
 
     public void liberarMemoriaRegistrar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void removerAlumnos(List<Integer> indexesAlumno) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void liberarMemoriaConsultar() {
     }
 
-    public void removerMaestro(String curso) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void liberarMemoriaModificar() {
     }
-
-    /**
-     * Persiste el tema en la base de datos
-     *
-     * @param grupo
-     * @return el id generado por la inserción
-     */
-//    public int guardarGrupo(GrupoDTO grupo) {
-//        int id = grupoDAO.insertar(grupo);
-//        return id;
-//    }
-    /**
-     * Obtener todos los cursos
-     *
-     * @return lista de todos los cursos
-     */
-//    public List<GrupoDTO> obtenerGrupos() {
-//        List<GrupoDTO> listaGrupos;
-//        
-//        //Asigna los cursos obtenidos en la lista.
-//        listaGrupos = grupoDAO.obtenerTodos(GrupoDTO.class);
-//        grupos = listaGrupos;
-//        
-//        return listaGrupos;
-//    }
 }

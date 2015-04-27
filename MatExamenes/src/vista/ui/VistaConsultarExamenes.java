@@ -6,16 +6,16 @@
 package vista.ui;
 
 import modelo.dto.UsuarioDTO;
-import vista.interfaz.InterfazVista;
+import vista.interfaz.InterfaceVista;
 
 /**
  *
  * @author Jesus Donaldo
  */
 public class VistaConsultarExamenes extends javax.swing.JPanel
-implements InterfazVista {
+implements InterfaceVista {
 
-    private InterfazVista padre;
+    private InterfaceVista padre;
     /**
      * Creates new form ConsultarExamenes
      */
@@ -23,7 +23,7 @@ implements InterfazVista {
         initComponents();
     }
 
-    public void setPadre(InterfazVista padre) {
+    public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
         

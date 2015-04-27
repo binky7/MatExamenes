@@ -17,19 +17,19 @@ import modelo.dto.CursoDTO;
 import modelo.dto.TemaDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerTemas;
-import vista.interfaz.InterfazVista;
-import vista.interfaz.InterfazVista.Vista;
+import vista.interfaz.InterfaceVista;
+import vista.interfaz.InterfaceVista.Vista;
 
 /**
  *
  * @author Jesus Donaldo
  */
 public class VistaConsultarTemas extends javax.swing.JPanel implements 
-        AncestorListener, InterfazVista {
+        AncestorListener, InterfaceVista {
 
     private CVMantenerTemas controlVista;
     //Para poder mostrar vista Modificar
-    private InterfazVista padre;
+    private InterfaceVista padre;
     
     /**
      * Creates new form VistaConsultarTemas
@@ -58,7 +58,7 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         });
     }
 
-    public void setPadre(InterfazVista padre) {
+    public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
     
@@ -69,6 +69,7 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
     /**
      * Limpia los componentes y libera las listas dtos utilizadas
      */
+    @Override
     public void limpiar() {
         //Limpiar las listas
         ((DefaultListModel)lstCursos.getModel()).clear();
@@ -167,6 +168,7 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(800, 579));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N

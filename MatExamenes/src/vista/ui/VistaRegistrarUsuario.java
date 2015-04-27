@@ -12,16 +12,16 @@ import javax.swing.border.Border;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerUsuarios;
 import vista.controlador.Validador;
-import vista.interfaz.InterfazVista;
+import vista.interfaz.InterfaceVista;
 
 /**
  *
  * @author Alf
  */
-public class VistaRegistrarUsuario extends javax.swing.JPanel implements InterfazVista {
+public class VistaRegistrarUsuario extends javax.swing.JPanel implements InterfaceVista {
 
     private CVMantenerUsuarios cvMantenerUsuarios;
-    private InterfazVista padre;
+    private InterfaceVista padre;
     private final Border bordeMal;
     private final Border bordeOriginal;
 
@@ -36,7 +36,7 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
         lblErrorNombre.setText("Ingresar solo letras");
     }
 
-    public void setPadre(InterfazVista padre) {
+    public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
 
@@ -259,9 +259,8 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(lblErrorNombre)))))
-                        .addGap(18, 18, 18)))
-                .addContainerGap(203, Short.MAX_VALUE))
+                                        .addComponent(lblErrorNombre)))))))
+                .addContainerGap(221, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -319,7 +318,7 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements Interfa
             JOptionPane.showMessageDialog(this, "Usuario existente");
         } else {
             JOptionPane.showMessageDialog(this, "Usuario Registrado");
-            padre.mostrarVista(InterfazVista.Vista.HOME);
+            padre.mostrarVista(InterfaceVista.Vista.HOME);
             limpiar();
         }
     }//GEN-LAST:event_btnGuardarActionPerformed

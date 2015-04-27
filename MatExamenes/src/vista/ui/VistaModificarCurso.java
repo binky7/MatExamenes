@@ -10,16 +10,16 @@ import modelo.dto.CursoDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerCursos;
 import vista.controlador.Validador;
-import vista.interfaz.InterfazVista;
+import vista.interfaz.InterfaceVista;
 
 /**
  *
  * @author ivan
  */
-public class VistaModificarCurso extends javax.swing.JPanel implements InterfazVista{
+public class VistaModificarCurso extends javax.swing.JPanel implements InterfaceVista{
     
     private CVMantenerCursos controlVista;
-    private InterfazVista padre;
+    private InterfaceVista padre;
 
     /**
      * Creates new form VistaModificarCurso
@@ -32,7 +32,7 @@ public class VistaModificarCurso extends javax.swing.JPanel implements InterfazV
         this.controlVista = controlVista;
     }
     
-    public void setPadre(InterfazVista padre) {
+    public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
     
@@ -68,6 +68,8 @@ public class VistaModificarCurso extends javax.swing.JPanel implements InterfazV
         jLabel4 = new javax.swing.JLabel();
         btnRegresar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Curso:");

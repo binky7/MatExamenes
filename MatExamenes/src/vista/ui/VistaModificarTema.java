@@ -12,17 +12,17 @@ import modelo.dto.TemaDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerTemas;
 import vista.controlador.Validador;
-import vista.interfaz.InterfazVista;
+import vista.interfaz.InterfaceVista;
 
 /**
  *
  * @author Jesus Donaldo
  */
 public class VistaModificarTema extends javax.swing.JPanel implements
-        InterfazVista {
+        InterfaceVista {
 
     private CVMantenerTemas controlVista;
-    private InterfazVista padre;
+    private InterfaceVista padre;
     
     /**
      * Creates new form VistaModificarTema
@@ -31,7 +31,7 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         initComponents();
     }
 
-    public void setPadre(InterfazVista padre) {
+    public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
     
