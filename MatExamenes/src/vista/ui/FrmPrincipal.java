@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVConsultarCalificaciones;
 import vista.controlador.CVMantenerCursos;
+import vista.controlador.CVMantenerExamenes;
 import vista.controlador.CVMantenerGrupos;
 import vista.controlador.CVMantenerReactivos;
 import vista.controlador.CVMantenerTemas;
@@ -135,6 +136,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
                 new CVConsultarCalificaciones();
         CVMantenerUsuarios cvMantenerUsuarios = new CVMantenerUsuarios();
         CVMantenerReactivos cvMantenerReactivos = new CVMantenerReactivos();
+        CVMantenerExamenes cvMantenerExamenes = new CVMantenerExamenes();
         
         
         //Asignar controladores a vistas
@@ -161,6 +163,11 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         vistaRegistrarReactivo.setControlador(cvMantenerReactivos);
         vistaConsultarReactivos.setControlador(cvMantenerReactivos);
         vistaModificarReactivo.setControlador(cvMantenerReactivos);
+        
+        vistaRegistrarExamen.setControlador(cvMantenerExamenes);
+        vistaConsultarExamenes.setControlador(cvMantenerExamenes);
+        vistaModificarExamen.setControlador(cvMantenerExamenes);
+        
         
         //Asignar padre a vistas
         vistaRegistrarTema.setPadre(this);
@@ -189,7 +196,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         vistaRegistrarReactivo.setPadre(this);
         vistaConsultarReactivos.setPadre(this);
         vistaModificarReactivo.setPadre(this);
-        
+
         
         //Agregar un panel y su identificador. Para agregar mas identificadores
         //ir a vista.interfaz.InterfazVista y agregarlos al enum Vista

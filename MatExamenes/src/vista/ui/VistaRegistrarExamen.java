@@ -4,9 +4,25 @@
  */
 package vista.ui;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.Date;
+import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.border.Border;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import modelo.dto.CursoDTO;
+import modelo.dto.ExamenDTO;
+import modelo.dto.ExamenDTO.Permiso;
 import modelo.dto.UsuarioDTO;
+import vista.controlador.CVMantenerExamenes;
+import vista.controlador.Validador;
 import vista.interfaz.InterfaceExamen;
 import vista.interfaz.InterfaceVista;
 
@@ -15,10 +31,17 @@ import vista.interfaz.InterfaceVista;
  * @author BoredmanDA
  */
 public class VistaRegistrarExamen extends javax.swing.JPanel implements
-        InterfaceVista, InterfaceExamen {
+        InterfaceVista, InterfaceExamen, FocusListener, AncestorListener {
 
+    private CVMantenerExamenes controlVista;
     private InterfaceVista padre;
-    private FrmAgregarReactivos frmAgregarReactivos;
+    private final FrmAgregarReactivos frmAgregarReactivos;
+    
+    private final ButtonGroup permiso;
+    private final Border bordeMal;
+    private final Border bordeOriginal;
+    
+    private String mensajeDatosIncorrectos;
     
     /**
      * Creates new form RegistrarExamen
@@ -28,10 +51,147 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         frmAgregarReactivos = new FrmAgregarReactivos();
         frmAgregarReactivos.setPadre(this);
         frmAgregarReactivos.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        //Para asociar los labels con los text
+        txtfTitulo.setName("lblErrorTitulo");
+        txtaInstrucciones.setName("lblErrorInstrucciones");
+        
+        permiso = new ButtonGroup();
+        permiso.add(rbtnPublico);
+        permiso.add(rbtnPrivado);
+        
+        bordeMal = BorderFactory.createLineBorder(Color.red,2);
+        bordeOriginal = txtfTitulo.getBorder();
+        
+        //Agregar los listeners de cambio de foco
+        txtfTitulo.addFocusListener(this);
+        txtaInstrucciones.addFocusListener(this);
+        
+        //Ponerle nombre a los labels de error
+//        lblErrorTitulo.setVisible(false);
+//        lblErrorTitulo.setText("* Requerido");
+//        lblErrorInstrucciones.setVisible(false);
+//        lblErrorInstrucciones.setText("* Requerido");
+        
+        tbpClaves.add("Clave 1", new PnlReactivosTab());
+        addAncestorListener(this);
     }
 
     public void setPadre(InterfaceVista padre) {
         this.padre = padre;
+    }
+    
+    public void setControlador(CVMantenerExamenes controlVista) {
+        this.controlVista = controlVista;
+    }
+    
+    private void consultarCursos() {
+        List<CursoDTO> cursos = controlVista.obtenerCursos();
+        
+        if(cursos != null && !cursos.isEmpty()) {
+            mostrarCursos(cursos);
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "No hay cursos");
+            padre.mostrarVista(Vista.HOME);
+            limpiar();
+        }
+    }
+    
+    private void mostrarCursos(List<CursoDTO> cursos) {
+        
+        cmbCurso.removeAllItems();
+        
+        for(CursoDTO curso : cursos) {
+            //System.out.println(cmbCurso.getSelectedIndex());
+            cmbCurso.addItem(curso.getNombre());
+        }
+        
+        cmbCurso.setSelectedIndex(-1);
+    }
+
+    private ExamenDTO encapsularExamen() {
+        
+        ExamenDTO examen = new ExamenDTO();
+        mensajeDatosIncorrectos = "";
+        
+        String titulo = txtfTitulo.getText();
+        String instrucciones = txtaInstrucciones.getText();
+        Permiso opPermiso = null;
+        
+        boolean ok = true;
+
+        if (Validador.estaVacio(titulo)) {
+            ok = false;
+            txtfTitulo.setBorder(bordeMal);
+            //lblErrorTitulo.setVisible(true);
+            mensajeDatosIncorrectos = "* Título del Examen\n";
+        } else {
+            txtfTitulo.setBorder(bordeOriginal);
+            //lblErrorTitulo.setVisible(false);
+        }
+        
+        if (Validador.estaVacio(instrucciones)) {
+            txtaInstrucciones.setBorder(bordeMal);
+            //lblErrorInstrucciones.setVisible(true);
+            ok = false;
+            mensajeDatosIncorrectos += "* Instrucciones del examen\n";
+        } else {
+            txtaInstrucciones.setBorder(bordeOriginal);
+            //lblErrorInstrucciones.setVisible(false);
+        } 
+        
+        if(!ok) {
+            mensajeDatosIncorrectos = "No se puede completar la operación, los "
+                + "siguientes campos necesitan ser corregidos:\n" +
+                    mensajeDatosIncorrectos;
+        }
+        
+        if(permiso.getSelection() == rbtnPublico.getModel()) {
+            opPermiso = Permiso.Publico;
+        }
+        else if(permiso.getSelection() == rbtnPrivado.getModel()) {
+            opPermiso = Permiso.Privado;
+        }
+        else {
+            //selection == null
+            ok = false;
+            mensajeDatosIncorrectos += "Debes seleccionar un permiso para el "
+                    + "examen\n";
+        }
+        
+        if(cmbCurso.getSelectedIndex() == -1) {
+            ok = false;
+            mensajeDatosIncorrectos += "Debes seleccionar un curso para el "
+                    + "examen\n";
+        }
+        
+        for(Component comp : tbpClaves.getComponents()) {
+            PnlReactivosTab reactivosTab = (PnlReactivosTab) comp;
+            
+            if(reactivosTab.sinReactivos()) {
+                ok = false;
+                mensajeDatosIncorrectos += "No puede haber claves de examen sin "
+                    + "reactivos\n";
+                break;
+            }
+        }
+        
+        examen.setInstrucciones(instrucciones);
+        examen.setPermiso(opPermiso);
+        examen.setTitulo(titulo);
+        examen.setAutor(padre.obtenerUsuarioActual());
+        examen.setFechaCreacion(new Date());
+        examen.setFechaModificacion(new Date());
+        
+        if(!ok){
+            examen = null;
+        }
+        else {
+            controlVista.setCurso(cmbCurso.getSelectedIndex());
+        }
+
+        return examen;
     }
     
     @Override
@@ -55,40 +215,27 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
 
         jScrollPane5 = new javax.swing.JScrollPane();
         jPanel4 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        lblReactivos1 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel14 = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tbpClaves = new javax.swing.JTabbedPane();
+        lblTitulo1 = new javax.swing.JLabel();
         lblTitulo = new javax.swing.JLabel();
-        lblNombre = new javax.swing.JLabel();
-        txtfNombre = new javax.swing.JTextField();
-        lblRedaccion = new javax.swing.JLabel();
+        txtfTitulo = new javax.swing.JTextField();
+        lblInstrucciones = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        txtaRedaccion = new javax.swing.JTextArea();
-        pnlOpciones = new javax.swing.JPanel();
-        rbtnOpt1 = new javax.swing.JRadioButton();
-        rbtnOpt2 = new javax.swing.JRadioButton();
-        lblNombre1 = new javax.swing.JLabel();
+        txtaInstrucciones = new javax.swing.JTextArea();
+        pnlPermiso = new javax.swing.JPanel();
+        rbtnPrivado = new javax.swing.JRadioButton();
+        rbtnPublico = new javax.swing.JRadioButton();
+        lblCurso = new javax.swing.JLabel();
         cmbCurso = new javax.swing.JComboBox();
-        btnCancelar = new javax.swing.JButton();
-        lblReactivos = new javax.swing.JLabel();
+        btnRemoverClave = new javax.swing.JButton();
+        lblClaves = new javax.swing.JLabel();
         btnGuardar = new javax.swing.JButton();
-        btnCancelar1 = new javax.swing.JButton();
-        btnGuardar1 = new javax.swing.JButton();
-        btnGuardar2 = new javax.swing.JButton();
-        btnGuardar3 = new javax.swing.JButton();
-        btnCancelar2 = new javax.swing.JButton();
-        btnCancelar3 = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnRemover = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
+        btnVer = new javax.swing.JButton();
+        btnDesbloquear = new javax.swing.JButton();
+        btnAgregarClave = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(790, 579));
 
@@ -99,266 +246,75 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         jPanel4.setAutoscrolls(true);
         jPanel4.setPreferredSize(new java.awt.Dimension(790, 579));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        lblTitulo1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblTitulo1.setText("Registrar Examen");
 
-        jTable1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "[X]", "Id", "Nombre", "Fecha Creación", "Fecha Modificación", "Autor"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
+        lblTitulo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblTitulo.setText("Título del Examen:");
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
+        txtfTitulo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfTitulo.setPreferredSize(new java.awt.Dimension(6, 30));
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(20);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(20);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
-            jTable1.getColumnModel().getColumn(5).setResizable(false);
-        }
+        lblInstrucciones.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblInstrucciones.setText("Instrucciones del Examen:");
 
-        lblReactivos1.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        lblReactivos1.setText("Reactivos:");
+        txtaInstrucciones.setColumns(20);
+        txtaInstrucciones.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtaInstrucciones.setLineWrap(true);
+        txtaInstrucciones.setRows(5);
+        jScrollPane2.setViewportView(txtaInstrucciones);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblReactivos1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblReactivos1)
-                .addGap(14, 14, 14)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        pnlPermiso.setBackground(new java.awt.Color(255, 255, 255));
+        pnlPermiso.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Permiso:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
+        pnlPermiso.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
 
-        jTabbedPane1.addTab("clave 1", jPanel1);
+        rbtnPrivado.setBackground(new java.awt.Color(255, 255, 255));
+        rbtnPrivado.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        rbtnPrivado.setText("Privado");
 
-        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel14.setText("Reactivos:");
+        rbtnPublico.setBackground(new java.awt.Color(255, 255, 255));
+        rbtnPublico.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        rbtnPublico.setText("Público");
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Id", "Nombre", "Fecha Creación", "Fecha Modificación", "Autor"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane4.setViewportView(jTable3);
-        if (jTable3.getColumnModel().getColumnCount() > 0) {
-            jTable3.getColumnModel().getColumn(0).setResizable(false);
-            jTable3.getColumnModel().getColumn(1).setResizable(false);
-            jTable3.getColumnModel().getColumn(2).setResizable(false);
-            jTable3.getColumnModel().getColumn(3).setResizable(false);
-            jTable3.getColumnModel().getColumn(4).setResizable(false);
-        }
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel14)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel14)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("clave 3", jPanel3);
-
-        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel13.setText("Reactivos:");
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Id", "Nombre", "Fecha Creación", "Fecha Modificación", "Autor"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane3.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setResizable(false);
-            jTable2.getColumnModel().getColumn(1).setResizable(false);
-            jTable2.getColumnModel().getColumn(2).setResizable(false);
-            jTable2.getColumnModel().getColumn(3).setResizable(false);
-            jTable2.getColumnModel().getColumn(4).setResizable(false);
-        }
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel13)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel13)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("clave 2", jPanel2);
-
-        lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        lblTitulo.setText("Registrar Examen");
-
-        lblNombre.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblNombre.setText("Título del Examen:");
-
-        txtfNombre.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        txtfNombre.setPreferredSize(new java.awt.Dimension(6, 30));
-
-        lblRedaccion.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblRedaccion.setText("Instrucciones del Examen:");
-
-        txtaRedaccion.setColumns(20);
-        txtaRedaccion.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        txtaRedaccion.setLineWrap(true);
-        txtaRedaccion.setRows(5);
-        jScrollPane2.setViewportView(txtaRedaccion);
-
-        pnlOpciones.setBackground(new java.awt.Color(255, 255, 255));
-        pnlOpciones.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Permiso:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
-        pnlOpciones.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-
-        rbtnOpt1.setBackground(new java.awt.Color(255, 255, 255));
-        rbtnOpt1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        rbtnOpt1.setText("Privado");
-
-        rbtnOpt2.setBackground(new java.awt.Color(255, 255, 255));
-        rbtnOpt2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        rbtnOpt2.setText("Público");
-
-        javax.swing.GroupLayout pnlOpcionesLayout = new javax.swing.GroupLayout(pnlOpciones);
-        pnlOpciones.setLayout(pnlOpcionesLayout);
-        pnlOpcionesLayout.setHorizontalGroup(
-            pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlPermisoLayout = new javax.swing.GroupLayout(pnlPermiso);
+        pnlPermiso.setLayout(pnlPermisoLayout);
+        pnlPermisoLayout.setHorizontalGroup(
+            pnlPermisoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPermisoLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(rbtnOpt2)
+                .addComponent(rbtnPublico)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(rbtnOpt1)
+                .addComponent(rbtnPrivado)
                 .addGap(27, 27, 27))
         );
-        pnlOpcionesLayout.setVerticalGroup(
-            pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlOpcionesLayout.createSequentialGroup()
+        pnlPermisoLayout.setVerticalGroup(
+            pnlPermisoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPermisoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rbtnOpt2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rbtnOpt1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(pnlPermisoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbtnPublico, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rbtnPrivado, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        lblNombre1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblNombre1.setText("Curso:");
+        lblCurso.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblCurso.setText("Curso:");
 
         cmbCurso.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         cmbCurso.setToolTipText("");
         cmbCurso.setPreferredSize(new java.awt.Dimension(78, 25));
 
-        btnCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnCancelar.setText("Remover Clave");
-        btnCancelar.setPreferredSize(new java.awt.Dimension(77, 30));
-        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+        btnRemoverClave.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnRemoverClave.setText("Remover Clave");
+        btnRemoverClave.setPreferredSize(new java.awt.Dimension(77, 30));
+        btnRemoverClave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarpasarControlVistaConsultar(evt);
+                btnRemoverClavepasarControlVistaConsultar(evt);
             }
         });
 
-        lblReactivos.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        lblReactivos.setText("Claves:");
+        lblClaves.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        lblClaves.setText("Claves:");
 
         btnGuardar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonGuardar_1.png"))); // NOI18N
@@ -370,58 +326,58 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
             }
         });
 
-        btnCancelar1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnCancelar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonCancelar_1.png"))); // NOI18N
-        btnCancelar1.setText("Cancelar");
-        btnCancelar1.setPreferredSize(new java.awt.Dimension(77, 30));
-        btnCancelar1.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonCancelar_1.png"))); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.setPreferredSize(new java.awt.Dimension(77, 30));
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelar1pasarControlVistaConsultar(evt);
+                btnCancelarpasarControlVistaConsultar(evt);
             }
         });
 
-        btnGuardar1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnGuardar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonRemover.png"))); // NOI18N
-        btnGuardar1.setPreferredSize(new java.awt.Dimension(77, 30));
-        btnGuardar1.addActionListener(new java.awt.event.ActionListener() {
+        btnRemover.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnRemover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonRemover.png"))); // NOI18N
+        btnRemover.setPreferredSize(new java.awt.Dimension(77, 30));
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardar1modificarReactivo(evt);
+                btnRemovermodificarReactivo(evt);
             }
         });
 
-        btnGuardar2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnGuardar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonAgregar.png"))); // NOI18N
-        btnGuardar2.setPreferredSize(new java.awt.Dimension(77, 30));
-        btnGuardar2.addActionListener(new java.awt.event.ActionListener() {
+        btnAgregar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonAgregar.png"))); // NOI18N
+        btnAgregar.setPreferredSize(new java.awt.Dimension(77, 30));
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardar2modificarReactivo(evt);
+                btnAgregarmodificarReactivo(evt);
             }
         });
 
-        btnGuardar3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnGuardar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonVer.png"))); // NOI18N
-        btnGuardar3.setPreferredSize(new java.awt.Dimension(77, 30));
-        btnGuardar3.addActionListener(new java.awt.event.ActionListener() {
+        btnVer.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnVer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonVer.png"))); // NOI18N
+        btnVer.setPreferredSize(new java.awt.Dimension(77, 30));
+        btnVer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardar3modificarReactivo(evt);
+                btnVermodificarReactivo(evt);
             }
         });
 
-        btnCancelar2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnCancelar2.setText("Desbloquear");
-        btnCancelar2.setPreferredSize(new java.awt.Dimension(77, 30));
-        btnCancelar2.addActionListener(new java.awt.event.ActionListener() {
+        btnDesbloquear.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnDesbloquear.setText("Desbloquear");
+        btnDesbloquear.setPreferredSize(new java.awt.Dimension(77, 30));
+        btnDesbloquear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelar2pasarControlVistaConsultar(evt);
+                btnDesbloquearpasarControlVistaConsultar(evt);
             }
         });
 
-        btnCancelar3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnCancelar3.setText("Agregar Clave");
-        btnCancelar3.setPreferredSize(new java.awt.Dimension(118, 30));
-        btnCancelar3.addActionListener(new java.awt.event.ActionListener() {
+        btnAgregarClave.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnAgregarClave.setText("Agregar Clave");
+        btnAgregarClave.setPreferredSize(new java.awt.Dimension(118, 30));
+        btnAgregarClave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelar3pasarControlVistaConsultar(evt);
+                btnAgregarClavepasarControlVistaConsultar(evt);
             }
         });
 
@@ -430,108 +386,100 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(497, Short.MAX_VALUE)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnCancelar1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
                     .addGap(5, 5, 5)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addGap(217, 217, 217)
-                            .addComponent(jLabel4)
-                            .addGap(98, 98, 98))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                            .addGap(27, 27, 27)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblCurso)
                                 .addGroup(jPanel4Layout.createSequentialGroup()
-                                    .addGap(27, 27, 27)
-                                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lblNombre1)
-                                        .addGroup(jPanel4Layout.createSequentialGroup()
-                                            .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(btnCancelar2, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblNombre)
-                                    .addComponent(txtfNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel4Layout.createSequentialGroup()
-                                    .addGap(57, 57, 57)
-                                    .addComponent(lblRedaccion))
-                                .addGroup(jPanel4Layout.createSequentialGroup()
-                                    .addGap(49, 49, 49)
-                                    .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblTitulo)
+                                    .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnDesbloquear, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTitulo)
+                            .addComponent(txtfTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(57, 57, 57)
+                            .addComponent(lblInstrucciones))
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addGap(49, 49, 49)
+                            .addComponent(pnlPermiso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblTitulo1)
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addComponent(tbpClaves, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(btnGuardar2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnGuardar3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(lblReactivos)
+                                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblClaves)
                         .addGroup(jPanel4Layout.createSequentialGroup()
                             .addGap(84, 84, 84)
-                            .addComponent(btnCancelar3, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAgregarClave, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(31, 31, 31)
-                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnRemoverClave, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(515, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCancelar1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
                     .addGap(13, 13, 13)
-                    .addComponent(lblTitulo)
+                    .addComponent(lblTitulo1)
                     .addGap(42, 42, 42)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel4Layout.createSequentialGroup()
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel4Layout.createSequentialGroup()
-                                    .addComponent(lblReactivos)
+                                    .addComponent(lblClaves)
                                     .addGap(38, 38, 38)
-                                    .addComponent(btnGuardar2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
-                                    .addComponent(btnGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
-                                    .addComponent(btnGuardar3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel4Layout.createSequentialGroup()
                                     .addGap(37, 37, 37)
-                                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(tbpClaves, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnCancelar3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnRemoverClave, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnAgregarClave, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                            .addComponent(lblNombre)
+                            .addComponent(lblTitulo)
                             .addGap(13, 13, 13)
-                            .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtfTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(lblRedaccion)
+                            .addComponent(lblInstrucciones)
                             .addGap(18, 18, 18)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pnlPermiso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(lblNombre1)
+                            .addComponent(lblCurso)
                             .addGap(18, 18, 18)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnCancelar2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnDesbloquear, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGap(14, 14, 14)))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4)
-                    .addGap(14, 14, 14)))
+                    .addContainerGap(85, Short.MAX_VALUE)))
         );
 
         jScrollPane5.setViewportView(jPanel4);
@@ -550,6 +498,21 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnRemoverClavepasarControlVistaConsultar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverClavepasarControlVistaConsultar
+        // TODO add your handling code here:
+        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+            + "quieres cancelar la operación?\nTodos los cambios no "
+            + "guardados se perderán");
+        if (ok == 0) {
+            padre.mostrarVista(Vista.ConsultarReactivos);
+            limpiar();
+        }
+    }//GEN-LAST:event_btnRemoverClavepasarControlVistaConsultar
+
+    private void btnGuardarmodificarReactivo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarmodificarReactivo
+        
+    }//GEN-LAST:event_btnGuardarmodificarReactivo
+
     private void btnCancelarpasarControlVistaConsultar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarpasarControlVistaConsultar
         // TODO add your handling code here:
         int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
@@ -561,78 +524,50 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         }
     }//GEN-LAST:event_btnCancelarpasarControlVistaConsultar
 
-    private void btnGuardarmodificarReactivo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarmodificarReactivo
-        
-    }//GEN-LAST:event_btnGuardarmodificarReactivo
-
-    private void btnCancelar1pasarControlVistaConsultar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelar1pasarControlVistaConsultar
+    private void btnRemovermodificarReactivo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemovermodificarReactivo
         // TODO add your handling code here:
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-            + "quieres cancelar la operación?\nTodos los cambios no "
-            + "guardados se perderán");
-        if (ok == 0) {
-            padre.mostrarVista(Vista.ConsultarReactivos);
-            limpiar();
-        }
-    }//GEN-LAST:event_btnCancelar1pasarControlVistaConsultar
+    }//GEN-LAST:event_btnRemovermodificarReactivo
 
-    private void btnGuardar1modificarReactivo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar1modificarReactivo
+    private void btnAgregarmodificarReactivo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarmodificarReactivo
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnGuardar1modificarReactivo
+    }//GEN-LAST:event_btnAgregarmodificarReactivo
 
-    private void btnGuardar2modificarReactivo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar2modificarReactivo
+    private void btnVermodificarReactivo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVermodificarReactivo
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnGuardar2modificarReactivo
+    }//GEN-LAST:event_btnVermodificarReactivo
 
-    private void btnGuardar3modificarReactivo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar3modificarReactivo
+    private void btnDesbloquearpasarControlVistaConsultar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesbloquearpasarControlVistaConsultar
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnGuardar3modificarReactivo
+    }//GEN-LAST:event_btnDesbloquearpasarControlVistaConsultar
 
-    private void btnCancelar2pasarControlVistaConsultar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelar2pasarControlVistaConsultar
+    private void btnAgregarClavepasarControlVistaConsultar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarClavepasarControlVistaConsultar
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnCancelar2pasarControlVistaConsultar
-
-    private void btnCancelar3pasarControlVistaConsultar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelar3pasarControlVistaConsultar
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCancelar3pasarControlVistaConsultar
+    }//GEN-LAST:event_btnAgregarClavepasarControlVistaConsultar
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnAgregarClave;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnCancelar1;
-    private javax.swing.JButton btnCancelar2;
-    private javax.swing.JButton btnCancelar3;
+    private javax.swing.JButton btnDesbloquear;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnGuardar1;
-    private javax.swing.JButton btnGuardar2;
-    private javax.swing.JButton btnGuardar3;
+    private javax.swing.JButton btnRemover;
+    private javax.swing.JButton btnRemoverClave;
+    private javax.swing.JButton btnVer;
     private javax.swing.JComboBox cmbCurso;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JLabel lblNombre;
-    private javax.swing.JLabel lblNombre1;
-    private javax.swing.JLabel lblReactivos;
-    private javax.swing.JLabel lblReactivos1;
-    private javax.swing.JLabel lblRedaccion;
+    private javax.swing.JLabel lblClaves;
+    private javax.swing.JLabel lblCurso;
+    private javax.swing.JLabel lblInstrucciones;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JPanel pnlOpciones;
-    private javax.swing.JRadioButton rbtnOpt1;
-    private javax.swing.JRadioButton rbtnOpt2;
-    private javax.swing.JTextArea txtaRedaccion;
-    private javax.swing.JTextField txtfNombre;
+    private javax.swing.JLabel lblTitulo1;
+    private javax.swing.JPanel pnlPermiso;
+    private javax.swing.JRadioButton rbtnPrivado;
+    private javax.swing.JRadioButton rbtnPublico;
+    private javax.swing.JTabbedPane tbpClaves;
+    private javax.swing.JTextArea txtaInstrucciones;
+    private javax.swing.JTextField txtfTitulo;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -665,5 +600,32 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
     @Override
     public UsuarioDTO obtenerUsuarioActual() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        //
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        //
+    }
+
+    @Override
+    public void ancestorAdded(AncestorEvent event) {
+        if(isShowing()) {
+            consultarCursos();
+        }
+    }
+
+    @Override
+    public void ancestorRemoved(AncestorEvent event) {
+        //
+    }
+
+    @Override
+    public void ancestorMoved(AncestorEvent event) {
+        //
     }
 }
