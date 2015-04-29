@@ -35,6 +35,16 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
         this.setTitle("MatExamenes/Agregar Alumnos");
     }
 
+    private void limpiar() {
+        txtFApellido.setText("");
+        DefaultTableModel model = (DefaultTableModel) tblMaestros.getModel();
+        for (int i = model.getRowCount() - 1; i > -1; i--) {
+            model.removeRow(i);
+        }
+        tblMaestros.setModel(model);
+        lstCursos.setModel(new DefaultListModel());
+    }
+
     private void mostrarCursos() {
         lstCursos.setModel(new DefaultListModel());
         this.listaCursos = controladorVista.obtenerCursos();
@@ -59,27 +69,25 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txtFApellidoPaterno = new javax.swing.JTextField();
+        lblTitulo = new javax.swing.JLabel();
+        lblApellido = new javax.swing.JLabel();
+        txtFApellido = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblMaestros = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstCursos = new javax.swing.JList();
-        jLabel3 = new javax.swing.JLabel();
+        lblCursos = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblTitulo.setText("Agregar Maestro");
 
-        jLabel1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel1.setText("Agregar Maestro");
-
-        jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel2.setText("Apellido Paterno:");
+        lblApellido.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblApellido.setText("Apellido Paterno:");
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonBuscar.png"))); // NOI18N
         btnBuscar.setText("Buscar");
@@ -109,8 +117,8 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(lstCursos);
 
-        jLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel3.setText("Curso:");
+        lblCursos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblCursos.setText("Cursos:");
 
         btnAgregar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonAgregar.png"))); // NOI18N
@@ -138,17 +146,17 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(157, 157, 157)
-                        .addComponent(jLabel1))
+                        .addComponent(lblTitulo))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(37, 37, 37)
-                        .addComponent(jLabel2)
+                        .addComponent(lblApellido)
                         .addGap(18, 18, 18)
-                        .addComponent(txtFApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtFApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)
                         .addComponent(btnBuscar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(102, 102, 102)
-                        .addComponent(jLabel3)
+                        .addComponent(lblCursos)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -166,17 +174,17 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(lblTitulo)
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtFApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblApellido)
+                    .addComponent(txtFApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
+                    .addComponent(lblCursos)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -206,7 +214,7 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        listaMaestros = controladorVista.obtenerMaestrosPorApellido(txtFApellidoPaterno.getText());
+        listaMaestros = controladorVista.obtenerMaestrosPorApellido(txtFApellido.getText());
         if (listaMaestros == null || listaMaestros.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No se encontraron alumnos!", "Mensaje", 1);
         } else {
@@ -294,23 +302,20 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblApellido;
+    private javax.swing.JLabel lblCursos;
+    private javax.swing.JLabel lblTitulo;
     private javax.swing.JList lstCursos;
     private javax.swing.JTable tblMaestros;
-    private javax.swing.JTextField txtFApellidoPaterno;
+    private javax.swing.JTextField txtFApellido;
     // End of variables declaration//GEN-END:variables
     void inicializar(CVMantenerGrupos controladorVista, InterfaceGrupo padre) {
         this.setVisible(true);
         this.controladorVista = controladorVista;
         this.padre = padre;
         mostrarCursos();
-    }
-
-    private void limpiar() {
     }
 }
