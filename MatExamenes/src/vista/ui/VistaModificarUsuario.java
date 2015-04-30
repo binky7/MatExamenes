@@ -199,7 +199,7 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         lblTitulo.setText("Modificar Usuario");
 
         btnModificiar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnModificiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/modificarUsuario2.png"))); // NOI18N
+        btnModificiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/modificar24.png"))); // NOI18N
         btnModificiar.setText("Modificar");
         btnModificiar.setPreferredSize(new java.awt.Dimension(75, 30));
         btnModificiar.addActionListener(new java.awt.event.ActionListener() {
@@ -219,7 +219,7 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         lblEstadoPassword.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
 
         jButton1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonCancelar_1.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
         jButton1.setText("Cancelar");
         jButton1.setPreferredSize(new java.awt.Dimension(75, 30));
         jButton1.addActionListener(new java.awt.event.ActionListener() {

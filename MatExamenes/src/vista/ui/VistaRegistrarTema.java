@@ -107,7 +107,7 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
         setPreferredSize(new java.awt.Dimension(800, 600));
 
         jButton1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonGuardar_1.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/guardar24.png"))); // NOI18N
         jButton1.setText("Guardar");
         jButton1.setPreferredSize(new java.awt.Dimension(115, 30));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -132,7 +132,7 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
         cbCursos.setPreferredSize(new java.awt.Dimension(160, 30));
 
         jButton2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonCancelar_1.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
         jButton2.setText("Cancelar");
         jButton2.setPreferredSize(new java.awt.Dimension(115, 30));
 

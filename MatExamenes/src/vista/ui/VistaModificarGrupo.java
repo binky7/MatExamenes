@@ -264,7 +264,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
         txtfNombre.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         btnAgrAlumnos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnAgrAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonAgregar.png"))); // NOI18N
+        btnAgrAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/agregar24.png"))); // NOI18N
         btnAgrAlumnos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgrAlumnosActionPerformed(evt);
@@ -272,7 +272,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
         });
 
         btnRmvAlumnos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnRmvAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonRemover.png"))); // NOI18N
+        btnRmvAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/remover24.png"))); // NOI18N
         btnRmvAlumnos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRmvAlumnosActionPerformed(evt);
@@ -280,7 +280,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
         });
 
         btnGuardar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonGuardar_1.png"))); // NOI18N
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/guardar24.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -323,7 +323,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
         lblMaestros.setText("Maestros");
 
         btnRmvMaestro.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnRmvMaestro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonRemover.png"))); // NOI18N
+        btnRmvMaestro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/remover24.png"))); // NOI18N
         btnRmvMaestro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRmvMaestroActionPerformed(evt);
@@ -331,7 +331,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
         });
 
         btnAgrMaestros.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnAgrMaestros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonAgregar.png"))); // NOI18N
+        btnAgrMaestros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/agregar24.png"))); // NOI18N
         btnAgrMaestros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgrMaestrosActionPerformed(evt);
@@ -339,7 +339,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
         });
 
         btnCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonCancelar_1.png"))); // NOI18N
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

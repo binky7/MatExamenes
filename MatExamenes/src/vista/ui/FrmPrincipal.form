@@ -35,7 +35,7 @@
                   <KeyStroke key="Alt+T"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/recursos/menuRegistrar.png"/>
+                  <Image iconType="3" name="/recursos/nuevo24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Registrar Tema"/>
               </Properties>
@@ -46,7 +46,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="miConsultarTemas">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/recursos/menuConsultar.png"/>
+                  <Image iconType="3" name="/recursos/consulta24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Consultar Temas"/>
               </Properties>
@@ -67,7 +67,7 @@
                   <KeyStroke key="Alt+C"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/recursos/menuRegistrar.png"/>
+                  <Image iconType="3" name="/recursos/nuevo24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Registrar Curso"/>
               </Properties>
@@ -78,7 +78,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="miConsultarCursos">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/recursos/menuConsultar.png"/>
+                  <Image iconType="3" name="/recursos/consulta24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Consultar Cursos"/>
               </Properties>
@@ -99,7 +99,7 @@
                   <KeyStroke key="Alt+U"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/recursos/registrarUsuario2.png"/>
+                  <Image iconType="3" name="/recursos/nuevo24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Registrar Usuario"/>
               </Properties>
@@ -110,7 +110,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="miConsultarUsuarios">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/recursos/consultarUsuario2.png"/>
+                  <Image iconType="3" name="/recursos/consulta24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Consultar Usuarios"/>
               </Properties>
@@ -131,6 +131,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Alt+R"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/recursos/nuevo24.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Registrar Reactivo"/>
               </Properties>
               <Events>
@@ -139,6 +142,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miConsultarReactivos">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/recursos/consulta24.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Consultar Reactivos"/>
               </Properties>
               <Events>
@@ -157,6 +163,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Alt+E"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/recursos/nuevo24.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Registrar Examen"/>
               </Properties>
               <Events>
@@ -165,6 +174,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miConsultarExamenes">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/recursos/consulta24.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Consultar Ex&#xe1;menes"/>
               </Properties>
               <Events>
@@ -193,6 +205,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Alt+G"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/recursos/nuevo24.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Registrar Grupo"/>
               </Properties>
               <Events>
@@ -201,6 +216,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miConsultarGrupos">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/recursos/consulta24.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Consultar Grupos"/>
               </Properties>
               <Events>

@@ -68,7 +68,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         setPreferredSize(new java.awt.Dimension(800, 600));
 
         btnBuscar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/consultarUsuario24.png"))); // NOI18N
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/buscar24.png"))); // NOI18N
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -95,7 +95,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         jScrollPane1.setViewportView(tblUsuarios);
 
         btnModificar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/modificarUsuario2.png"))); // NOI18N
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/modificar24.png"))); // NOI18N
         btnModificar.setText("Modificar");
         btnModificar.setPreferredSize(new java.awt.Dimension(81, 30));
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
@@ -105,7 +105,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         });
 
         btnEliminar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/eliminarUsuario24.png"))); // NOI18N
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/eliminar24.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
         btnEliminar.setPreferredSize(new java.awt.Dimension(79, 30));
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -134,7 +134,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         });
 
         jButton1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonCancelar_1.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
         jButton1.setText("Cancelar");
         jButton1.setPreferredSize(new java.awt.Dimension(77, 30));
 
