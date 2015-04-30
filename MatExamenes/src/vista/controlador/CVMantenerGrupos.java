@@ -14,6 +14,7 @@ import java.util.Map;
 import modelo.dto.CursoDTO;
 import modelo.dto.GrupoDTO;
 import modelo.dto.UsuarioDTO;
+import modelo.dto.UsuarioDTO.Tipo;
 
 /**
  *
@@ -119,12 +120,12 @@ public class CVMantenerGrupos {
     }
 
     public List<UsuarioDTO> obtenerAlumnosPorApellido(String apellidoPaterno) {
-        this.listaAlumnos = usuariosDELEGATE.obtenerUsuariosPorApellido(apellidoPaterno);
+        this.listaAlumnos = usuariosDELEGATE.obtenerAlumnosPorApellido(apellidoPaterno);
         return listaAlumnos;
     }
 
-    public List<UsuarioDTO> obtenerMaestrosPorApellido(String apellidoPaterno) {
-        this.listaMaestros = usuariosDELEGATE.obtenerUsuariosPorApellido(apellidoPaterno);
+    public List<UsuarioDTO> obtenerMaestrosPorApellido(String apellidoPaterno, Tipo tipo) {
+        this.listaMaestros = usuariosDELEGATE.obtenerUsuariosPorApellido(apellidoPaterno, tipo);
         return listaMaestros;
     }
 

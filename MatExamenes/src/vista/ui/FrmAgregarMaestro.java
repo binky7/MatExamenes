@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.dto.CursoDTO;
 import modelo.dto.UsuarioDTO;
+import modelo.dto.UsuarioDTO.Tipo;
 import vista.controlador.CVMantenerGrupos;
 import vista.interfaz.InterfaceGrupo;
 
@@ -214,9 +215,9 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        listaMaestros = controladorVista.obtenerMaestrosPorApellido(txtFApellido.getText());
+        listaMaestros = controladorVista.obtenerMaestrosPorApellido(txtFApellido.getText(), Tipo.Maestro);
         if (listaMaestros == null || listaMaestros.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No se encontraron alumnos!", "Mensaje", 1);
+            JOptionPane.showMessageDialog(this, "No se encontraron maestros!", "Mensaje", 1);
         } else {
             DefaultTableModel model = (DefaultTableModel) tblMaestros.getModel();
             for (int x = model.getRowCount() - 1; x > -1; x--) {
@@ -233,7 +234,7 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
                 model.addRow(fila);
             }
             tblMaestros.setModel(model);
-        }
+        }  
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
