@@ -207,13 +207,13 @@ public class FrmAgregarAlumnos extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         listaAlumnos = controladorVista.obtenerAlumnosPorApellido(txtFApellido.getText());
+        DefaultTableModel model = (DefaultTableModel) tblAlumnos.getModel();
+        for (int i = model.getRowCount() - 1; i > -1; i--) {
+            model.removeRow(i);
+        }
         if (listaAlumnos == null || listaAlumnos.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No se encontraron alumnos!", "Mensaje", 1);
         } else {
-            DefaultTableModel model = (DefaultTableModel) tblAlumnos.getModel();
-            for (int i = model.getRowCount() - 1; i > -1; i--) {
-                model.removeRow(i);
-            }
             for (int i = 0; i < listaAlumnos.size(); i++) {
                 UsuarioDTO alumno = listaAlumnos.get(i);
                 Object[] fila = new Object[5];

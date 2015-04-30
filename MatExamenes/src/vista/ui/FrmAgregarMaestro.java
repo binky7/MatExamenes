@@ -217,13 +217,13 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         listaMaestros = controladorVista.obtenerMaestrosPorApellido(txtFApellido.getText(), Tipo.Maestro);
+        DefaultTableModel model = (DefaultTableModel) tblMaestros.getModel();
+        for (int x = model.getRowCount() - 1; x > -1; x--) {
+            model.removeRow(x);
+        }
         if (listaMaestros == null || listaMaestros.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No se encontraron maestros!", "Mensaje", 1);
         } else {
-            DefaultTableModel model = (DefaultTableModel) tblMaestros.getModel();
-            for (int x = model.getRowCount() - 1; x > -1; x--) {
-                model.removeRow(x);
-            }
             for (int x = 0; x < listaMaestros.size(); x++) {
                 UsuarioDTO alumno = listaMaestros.get(x);
                 Object[] fila = new Object[5];
@@ -231,11 +231,11 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
                 fila[1] = String.valueOf(alumno.getId());
                 fila[2] = alumno.getApellidoPaterno();
                 fila[3] = alumno.getApellidoMaterno();
-                fila[4] = alumno.getNombre();           
+                fila[4] = alumno.getNombre();
                 model.addRow(fila);
             }
             tblMaestros.setModel(model);
-        }  
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
