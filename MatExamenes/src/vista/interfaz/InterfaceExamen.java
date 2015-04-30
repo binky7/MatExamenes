@@ -5,6 +5,9 @@
  */
 package vista.interfaz;
 
+import java.util.List;
+import modelo.dto.ReactivoDTO;
+
 /**
  *
  * @author Jesus Donaldo
@@ -12,4 +15,7 @@ package vista.interfaz;
 public interface InterfaceExamen {
     
     InterfaceVista getPadre();
+    
+    void mostrarReactivos(List<ReactivoDTO> reactivos, int clave);
+    
 }

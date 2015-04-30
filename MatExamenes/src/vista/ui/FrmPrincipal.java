@@ -311,7 +311,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         mTemas.setText("Temas");
 
         miRegistrarTema.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.ALT_MASK));
-        miRegistrarTema.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/menuRegistrar.png"))); // NOI18N
+        miRegistrarTema.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/nuevo24.png"))); // NOI18N
         miRegistrarTema.setText("Registrar Tema");
         miRegistrarTema.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -320,7 +320,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         });
         mTemas.add(miRegistrarTema);
 
-        miConsultarTemas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/menuConsultar.png"))); // NOI18N
+        miConsultarTemas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/consulta24.png"))); // NOI18N
         miConsultarTemas.setText("Consultar Temas");
         miConsultarTemas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -334,7 +334,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         mCursos.setText("Cursos");
 
         miRegistrarCurso.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
-        miRegistrarCurso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/menuRegistrar.png"))); // NOI18N
+        miRegistrarCurso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/nuevo24.png"))); // NOI18N
         miRegistrarCurso.setText("Registrar Curso");
         miRegistrarCurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -343,7 +343,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         });
         mCursos.add(miRegistrarCurso);
 
-        miConsultarCursos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/menuConsultar.png"))); // NOI18N
+        miConsultarCursos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/consulta24.png"))); // NOI18N
         miConsultarCursos.setText("Consultar Cursos");
         miConsultarCursos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -357,7 +357,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         mUsuarios.setText("Usuarios");
 
         miRegistrarUsuario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK));
-        miRegistrarUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/registrarUsuario2.png"))); // NOI18N
+        miRegistrarUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/nuevo24.png"))); // NOI18N
         miRegistrarUsuario.setText("Registrar Usuario");
         miRegistrarUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -366,7 +366,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         });
         mUsuarios.add(miRegistrarUsuario);
 
-        miConsultarUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/consultarUsuario2.png"))); // NOI18N
+        miConsultarUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/consulta24.png"))); // NOI18N
         miConsultarUsuarios.setText("Consultar Usuarios");
         miConsultarUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -381,6 +381,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         mReactivos.setToolTipText("");
 
         miRegistrarReactivo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
+        miRegistrarReactivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/nuevo24.png"))); // NOI18N
         miRegistrarReactivo.setText("Registrar Reactivo");
         miRegistrarReactivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -389,6 +390,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         });
         mReactivos.add(miRegistrarReactivo);
 
+        miConsultarReactivos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/consulta24.png"))); // NOI18N
         miConsultarReactivos.setText("Consultar Reactivos");
         miConsultarReactivos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -402,6 +404,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         mExamenes.setText("Examenes");
 
         miRegistrarExamen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK));
+        miRegistrarExamen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/nuevo24.png"))); // NOI18N
         miRegistrarExamen.setText("Registrar Examen");
         miRegistrarExamen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -410,6 +413,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         });
         mExamenes.add(miRegistrarExamen);
 
+        miConsultarExamenes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/consulta24.png"))); // NOI18N
         miConsultarExamenes.setText("Consultar Exámenes");
         miConsultarExamenes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -428,6 +432,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         mGrupos.setText("Grupos");
 
         miRegistrarGrupo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.ALT_MASK));
+        miRegistrarGrupo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/nuevo24.png"))); // NOI18N
         miRegistrarGrupo.setText("Registrar Grupo");
         miRegistrarGrupo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -436,6 +441,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         });
         mGrupos.add(miRegistrarGrupo);
 
+        miConsultarGrupos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/consulta24.png"))); // NOI18N
         miConsultarGrupos.setText("Consultar Grupos");
         miConsultarGrupos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

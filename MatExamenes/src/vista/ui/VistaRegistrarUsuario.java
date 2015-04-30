@@ -249,7 +249,7 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
         txtfApellidoPaterno.setPreferredSize(new java.awt.Dimension(100, 30));
 
         btnGuardar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonGuardar_1.png"))); // NOI18N
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/guardar24.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.setPreferredSize(new java.awt.Dimension(80, 30));
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -304,7 +304,7 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
         lblEstadoPassword.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
 
         btnCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonCancelar_1.png"))); // NOI18N
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.setPreferredSize(new java.awt.Dimension(83, 30));
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {

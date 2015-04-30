@@ -5,6 +5,8 @@
  */
 package vista.ui;
 
+import javax.swing.JTable;
+
 /**
  *
  * @author Jesus Donaldo
@@ -30,8 +32,6 @@ public class PnlReactivosTab extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         lblReactivos = new javax.swing.JLabel();
-
-        setBackground(new java.awt.Color(255, 255, 255));
 
         tabla.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         tabla.setModel(new javax.swing.table.DefaultTableModel(
@@ -92,6 +92,14 @@ public class PnlReactivosTab extends javax.swing.JPanel {
 
     public boolean sinReactivos() {
         return tabla.getRowCount() == 0;
+    }
+    
+    public int getSelectedIndex() {
+        return tabla.getSelectedRow();
+    }
+    
+    public JTable getTabla() {
+        return tabla;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

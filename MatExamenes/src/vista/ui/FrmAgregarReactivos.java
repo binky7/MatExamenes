@@ -7,7 +7,16 @@ package vista.ui;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.dto.ReactivoDTO;
+import modelo.dto.TemaDTO;
+import vista.controlador.CVMantenerExamenes;
 import vista.interfaz.InterfaceExamen;
 
 /**
@@ -16,7 +25,12 @@ import vista.interfaz.InterfaceExamen;
  */
 public class FrmAgregarReactivos extends javax.swing.JFrame {
 
-    InterfaceExamen padre;
+    private CVMantenerExamenes controlVista;
+    private InterfaceExamen padre;
+    private int indexCurso;
+    private int clave;
+    
+    private final FrmVerReactivo frmVerReactivo;
     
     /**
      * Creates new form VistaAgregarReactivos
@@ -34,12 +48,14 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
             public void windowClosing(WindowEvent e) {
                 ((JFrame)padre.getPadre()).setEnabled(true);
                 limpiar();
+                dispose();
             }
 
             @Override
             public void windowClosed(WindowEvent e) {
                 ((JFrame)padre.getPadre()).setEnabled(true);
                 limpiar();
+                dispose();
             }
 
             @Override
@@ -63,14 +79,133 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
             }
             
         });
+        
+        frmVerReactivo = new FrmVerReactivo();
+        frmVerReactivo.setPadre(this);
+        frmVerReactivo.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        this.setTitle("Agregar Reactivos");
+        
+        lstTemasAuto.setModel(new DefaultListModel());
+        lstTemasManual.setModel(new DefaultListModel());
     }
 
+    public void inicializar(int indexCurso, int clave) {
+        
+        ((JFrame)padre.getPadre()).setEnabled(false);
+        this.indexCurso = indexCurso;
+        this.clave = clave;
+        setVisible(true);
+        consultarTemas();
+    }
+    
+    private void mostrarTemas(List<TemaDTO> temas, JList lista) {
+        
+        DefaultListModel listModel = (DefaultListModel) lista.getModel();
+        
+        listModel.clear();
+        //Mostrar cada tema, no remover, si no buscar por medio del for
+        for(TemaDTO tema : temas) {
+            listModel.addElement(tema.getNombre());
+        }
+    }
+    
+    private void mostrarReactivo(ReactivoDTO reactivo) {
+        frmVerReactivo.inicializar(reactivo);
+    }
+    
+    private void mostrarReactivos(List<ReactivoDTO> reactivos) {
+        DefaultTableModel model = (DefaultTableModel) tblReactivos.getModel();
+        
+        model.setRowCount(0);
+        //Mostrar cada reactivo, no remover, si no buscar por medio del for
+        for(ReactivoDTO reactivo : reactivos) {
+            Object[] datos = new Object[6];
+            
+            datos[0] = false;
+            datos[1] = reactivo.getId();
+            datos[2] = reactivo.getNombre();
+            datos[3] = reactivo.getFechaCreacion();
+            datos[4] = reactivo.getFechaModificacion();
+            if(reactivo.getAutor() != null) {
+                datos[5] = reactivo.getAutor().getUsuario();
+            }
+            else {
+                datos[5] = "Sin autor";
+            }
+            
+            model.addRow(datos);
+        }
+    }
+    
+    private void consultarTemas() {
+        List<TemaDTO> temas;
+        
+        if(indexCurso != -1) {
+            temas = controlVista.obtenerTemasDeCurso(indexCurso);
+        }
+        else {
+            temas = controlVista.obtenerTemasDeCurso();
+        }
+        
+        if (temas != null && !temas.isEmpty()) {
+            mostrarTemas(temas, lstTemasManual);
+            mostrarTemas(temas, lstTemasAuto);
+        } else {
+            JOptionPane.showMessageDialog(this, "No hay temas");
+            ((JFrame)padre.getPadre()).setEnabled(true);
+            dispose();
+            limpiar();
+        }
+        
+    }
+
+    private List<Integer> getSelectedRows() {
+        List<Integer> selectedIndexes = new ArrayList<>();
+        
+        DefaultTableModel model = (DefaultTableModel) tblReactivos.getModel();
+        
+        for(int i = 0; i < model.getRowCount(); i++) {
+            if((boolean)model.getValueAt(i, 0) == true) {
+                selectedIndexes.add(i);
+            }
+        }
+        return selectedIndexes;
+    }
+    
+    private void consultarReactivosAleatorios() {
+        List<ReactivoDTO> reactivos = controlVista
+                .obtenerReactivosAleatorios(clave);
+
+        if (reactivos != null) {
+            padre.mostrarReactivos(reactivos, clave);
+            ((JFrame) padre.getPadre()).setEnabled(true);
+            limpiar();
+            dispose();
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "No hay reactivos suficientes "
+                    + "para los temas seleccionados");
+        }
+    }
+    
+    public void setControlador(CVMantenerExamenes controlVista) {
+        this.controlVista = controlVista;
+    }
+    
     public void setPadre(InterfaceExamen padre) {
         this.padre = padre;
     }
     
     public void limpiar() {
         
+        ((DefaultListModel)lstTemasAuto.getModel()).clear();
+        ((DefaultListModel)lstTemasManual.getModel()).clear();
+        ((DefaultTableModel)tblReactivos.getModel()).setRowCount(0);
+        ((DefaultTableModel)tblSeleccion.getModel()).setRowCount(0);
+        spnCantidad.setValue(0);
+        
+        controlVista.liberarMemoriaAgregarReactivos();
     }
     
     /**
@@ -104,28 +239,28 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jTabbedPane2 = new javax.swing.JTabbedPane();
+        tbpSeleccion = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
-        jLabel5 = new javax.swing.JLabel();
+        tblReactivos = new javax.swing.JTable();
+        lblReactivos = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
-        jList3 = new javax.swing.JList();
-        jLabel6 = new javax.swing.JLabel();
-        jButton8 = new javax.swing.JButton();
+        lstTemasManual = new javax.swing.JList();
+        lblTemasManual = new javax.swing.JLabel();
+        btnVer = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        jSpinner2 = new javax.swing.JSpinner();
-        jLabel7 = new javax.swing.JLabel();
+        spnCantidad = new javax.swing.JSpinner();
+        lblTemasAuto = new javax.swing.JLabel();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jList4 = new javax.swing.JList();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        lstTemasAuto = new javax.swing.JList();
+        lblCantidad = new javax.swing.JLabel();
+        lblSeleccion = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
+        tblSeleccion = new javax.swing.JTable();
+        btnAgregarSeleccion = new javax.swing.JButton();
+        btnRemoverSeleccion = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnAceptar = new javax.swing.JButton();
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -325,14 +460,12 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-        jTabbedPane2.setPreferredSize(new java.awt.Dimension(500, 300));
+        tbpSeleccion.setPreferredSize(new java.awt.Dimension(500, 300));
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tblReactivos.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        tblReactivos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "[x]", "Id", "Nombre", "Fecha Creación", "Fecha Modificación", "Autor"
@@ -353,42 +486,52 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTable3);
+        tblReactivos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblReactivos.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(tblReactivos);
+        if (tblReactivos.getColumnModel().getColumnCount() > 0) {
+            tblReactivos.getColumnModel().getColumn(0).setPreferredWidth(20);
+            tblReactivos.getColumnModel().getColumn(1).setPreferredWidth(20);
+        }
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel5.setText("Reactivos:");
+        lblReactivos.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        lblReactivos.setText("Reactivos:");
 
-        jList3.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
+        lstTemasManual.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        lstTemasManual.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane7.setViewportView(lstTemasManual);
+
+        lblTemasManual.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        lblTemasManual.setText("Temas:");
+
+        btnVer.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnVer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/ver24.png"))); // NOI18N
+        btnVer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verReactivo(evt);
+            }
         });
-        jScrollPane7.setViewportView(jList3);
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel6.setText("Temas:");
-
-        jButton8.setText("Ver");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
-                        .addComponent(jLabel6)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                        .addComponent(lblTemasManual)))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
+                        .addComponent(lblReactivos)
                         .addGap(162, 162, 162))
-                    .addComponent(jButton8, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -396,42 +539,40 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
+                        .addComponent(lblReactivos)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton8))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel6))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblTemasManual))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("Selección Manual", jPanel3);
+        tbpSeleccion.addTab("Selección Manual", jPanel3);
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel7.setText("Temas:");
+        spnCantidad.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        spnCantidad.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 
-        jList4.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane8.setViewportView(jList4);
+        lblTemasAuto.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        lblTemasAuto.setText("Temas:");
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel9.setText("Cantidad:");
+        lstTemasAuto.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        lstTemasAuto.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane8.setViewportView(lstTemasAuto);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel10.setText("Selección:");
+        lblCantidad.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblCantidad.setText("Cantidad:");
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        lblSeleccion.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        lblSeleccion.setText("Selección:");
+
+        tblSeleccion.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        tblSeleccion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "Tema", "Cantidad"
@@ -452,11 +593,29 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane4.setViewportView(jTable4);
+        tblSeleccion.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblSeleccion.getTableHeader().setReorderingAllowed(false);
+        jScrollPane4.setViewportView(tblSeleccion);
+        if (tblSeleccion.getColumnModel().getColumnCount() > 0) {
+            tblSeleccion.getColumnModel().getColumn(0).setResizable(false);
+            tblSeleccion.getColumnModel().getColumn(1).setResizable(false);
+        }
 
-        jButton5.setText("Agregar Seleccion");
+        btnAgregarSeleccion.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnAgregarSeleccion.setText("Agregar Seleccion");
+        btnAgregarSeleccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarSeleccion(evt);
+            }
+        });
 
-        jButton6.setText("Remover Seleccion");
+        btnRemoverSeleccion.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnRemoverSeleccion.setText("Remover Seleccion");
+        btnRemoverSeleccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removerSeleccion(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -468,24 +627,25 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
                         .addGap(30, 30, 30)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
+                                .addComponent(lblCantidad)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jSpinner2))
+                                .addComponent(spnCantidad))
                             .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(52, 52, 52)
-                        .addComponent(jLabel7)))
+                        .addComponent(lblTemasAuto)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
+                        .addComponent(lblSeleccion)
                         .addGap(194, 194, 194))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jButton5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton6))
+                                .addComponent(btnAgregarSeleccion)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnRemoverSeleccion)
+                                .addGap(47, 47, 47))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(34, 34, 34))))
         );
@@ -494,35 +654,39 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel10))
+                    .addComponent(lblTemasAuto)
+                    .addComponent(lblSeleccion))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9)
-                            .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(lblCantidad)
+                            .addComponent(spnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton6)
-                    .addComponent(jButton5))
+                    .addComponent(btnRemoverSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAgregarSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("Selección Automática", jPanel4);
+        tbpSeleccion.addTab("Selección Automática", jPanel4);
 
-        jButton9.setText("Cancelar");
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelarAgregarReactivos(evt);
             }
         });
 
-        jButton10.setText("Aceptar");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
+        btnAceptar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnAceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/aceptar24.png"))); // NOI18N
+        btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aceptarAgregarReactivos(evt);
             }
@@ -533,23 +697,23 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton10)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAceptar)
+                .addGap(18, 18, 18)
+                .addComponent(btnCancelar)
+                .addGap(20, 20, 20))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tbpSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tbpSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton10)
-                    .addComponent(jButton9))
+                    .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -557,43 +721,129 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void aceptarAgregarReactivos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarAgregarReactivos
-        ((JFrame)padre.getPadre()).setEnabled(true);
-        limpiar();
-        dispose();
+
+        if (tbpSeleccion.getSelectedIndex() == 0) {
+            //Seleccion Manual
+            List<Integer> indexesReactivo = getSelectedRows();
+            if (indexesReactivo.size() > 0) {
+                List<ReactivoDTO> reactivos = controlVista
+                        .agregarReactivosSeleccionados(indexesReactivo, clave);
+
+                padre.mostrarReactivos(reactivos, clave);
+                ((JFrame) padre.getPadre()).setEnabled(true);
+                limpiar();
+                dispose();
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Selecciona reactivos");
+            }
+        }
+        else {
+            //Seleccion Aleatoria
+            if(tblSeleccion.getRowCount() > 0) {
+                consultarReactivosAleatorios();
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Agrega alguna selección");
+            }
+        }
     }//GEN-LAST:event_aceptarAgregarReactivos
 
     private void cancelarAgregarReactivos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarAgregarReactivos
-        ((JFrame)padre.getPadre()).setEnabled(true);
-        limpiar();
-        dispose();
+        
+        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+                + "quieres cancelar la operación?\nTodo el progreso "
+                + "se perderá");
+        if (ok == 0) {
+            ((JFrame) padre.getPadre()).setEnabled(true);
+            limpiar();
+            dispose();
+        }
     }//GEN-LAST:event_cancelarAgregarReactivos
+
+    private void verReactivo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verReactivo
+        // TODO add your handling code here:
+        if(tblReactivos.getSelectedRow() != -1) {
+            ReactivoDTO reactivo = controlVista.obtenerReactivo(tblReactivos
+                    .getSelectedRow());
+            
+            mostrarReactivo(reactivo);
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Selecciona un reactivo");
+        }
+    }//GEN-LAST:event_verReactivo
+
+    private void agregarSeleccion(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarSeleccion
+        // TODO add your handling code here:
+        if(lstTemasAuto.getSelectedIndex() != -1) {
+            DefaultListModel model = (DefaultListModel) lstTemasAuto.getModel();
+            
+            int cantidad = (int) spnCantidad.getValue();
+            
+            if(cantidad > 0) {
+                DefaultTableModel tblModel = (DefaultTableModel) tblSeleccion
+                        .getModel();
+                
+                String nombreTema = (String) model.remove(lstTemasAuto
+                        .getSelectedIndex());
+                controlVista.agregarSeleccion(nombreTema, cantidad);
+                Object[] seleccion = new Object[2];
+                
+                seleccion[0] = nombreTema;
+                seleccion[1] = cantidad;
+                
+                tblModel.addRow(seleccion);
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Debes seleccionar una "
+                        + "cantidad mayor a 0");
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Selecciona primero un tema");
+        }
+    }//GEN-LAST:event_agregarSeleccion
+
+    private void removerSeleccion(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerSeleccion
+        // TODO add your handling code here:
+        if(tblSeleccion.getSelectedRow() != -1) {
+            DefaultListModel model = (DefaultListModel) lstTemasAuto.getModel();
+            DefaultTableModel tblModel = (DefaultTableModel) tblSeleccion
+                    .getModel();
+            
+            String nombreTema = (String) tblModel.getValueAt(tblSeleccion
+                    .getSelectedRow(), 0);
+            
+            controlVista.removerSeleccion(tblSeleccion.getSelectedRow());
+            
+            tblModel.removeRow(tblSeleccion.getSelectedRow());
+            model.addElement(nombreTema);
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Selecciona primero una fila");
+        }
+    }//GEN-LAST:event_removerSeleccion
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAceptar;
+    private javax.swing.JButton btnAgregarSeleccion;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnRemoverSeleccion;
+    private javax.swing.JButton btnVer;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JList jList1;
     private javax.swing.JList jList2;
-    private javax.swing.JList jList3;
-    private javax.swing.JList jList4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -607,12 +857,19 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
+    private javax.swing.JLabel lblCantidad;
+    private javax.swing.JLabel lblReactivos;
+    private javax.swing.JLabel lblSeleccion;
+    private javax.swing.JLabel lblTemasAuto;
+    private javax.swing.JLabel lblTemasManual;
+    private javax.swing.JList lstTemasAuto;
+    private javax.swing.JList lstTemasManual;
+    private javax.swing.JSpinner spnCantidad;
+    private javax.swing.JTable tblReactivos;
+    private javax.swing.JTable tblSeleccion;
+    private javax.swing.JTabbedPane tbpSeleccion;
     // End of variables declaration//GEN-END:variables
 }
