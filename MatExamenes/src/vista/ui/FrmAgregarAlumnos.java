@@ -10,7 +10,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.dto.UsuarioDTO;
-import modelo.dto.UsuarioDTO.Tipo;
 import vista.controlador.CVMantenerGrupos;
 import vista.interfaz.InterfaceGrupo;
 
@@ -32,6 +31,7 @@ public class FrmAgregarAlumnos extends javax.swing.JFrame {
         initComponents();
         setVisible(false);
         this.setTitle("MatExamenes/Agregar Alumnos");
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     private void limpiar() {
@@ -196,7 +196,7 @@ public class FrmAgregarAlumnos extends javax.swing.JFrame {
                 indexes.add(i);
             }
         }
-        if (cont == 0 || indexes.size() == 0) {
+        if (cont == 0 || indexes.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Selecciona al menos un alumno", "Advertencia", 1);
         } else {
             listaAlumnos = controladorVista.agregarAlumnos(indexes);
@@ -219,9 +219,9 @@ public class FrmAgregarAlumnos extends javax.swing.JFrame {
                 Object[] fila = new Object[5];
                 fila[0] = false;
                 fila[1] = String.valueOf(alumno.getId());
-                fila[2] = alumno.getNombre();
-                fila[3] = alumno.getApellidoPaterno();
-                fila[4] = alumno.getApellidoMaterno();
+                fila[2] = alumno.getApellidoPaterno();
+                fila[3] = alumno.getApellidoMaterno();
+                fila[4] = alumno.getNombre();
                 model.addRow(fila);
             }
             tblAlumnos.setModel(model);

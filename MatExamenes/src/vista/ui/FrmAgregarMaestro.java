@@ -34,6 +34,7 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
         controladorVista = new CVMantenerGrupos();
         initComponents();
         this.setTitle("MatExamenes/Agregar Alumnos");
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     private void limpiar() {
@@ -228,9 +229,9 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
                 Object[] fila = new Object[5];
                 fila[0] = false;
                 fila[1] = String.valueOf(alumno.getId());
-                fila[2] = alumno.getNombre();
-                fila[3] = alumno.getApellidoPaterno();
-                fila[4] = alumno.getApellidoMaterno();
+                fila[2] = alumno.getApellidoPaterno();
+                fila[3] = alumno.getApellidoMaterno();
+                fila[4] = alumno.getNombre();           
                 model.addRow(fila);
             }
             tblMaestros.setModel(model);
