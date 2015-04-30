@@ -19,7 +19,7 @@ import vista.interfaz.InterfaceVista;
  * @author BoredmanDA
  */
 public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorListener, InterfaceVista {
-
+    
     private CVMantenerGrupos controladorVista;
     private InterfaceVista padre;
     private List<GrupoDTO> listaGrupos;
@@ -55,6 +55,11 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
      */
     @Override
     public void limpiar() {
+        DefaultTableModel modelo = (DefaultTableModel) tblGrupos.getModel();
+        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
+            modelo.removeRow(i);
+        }
+        tblGrupos.setModel(modelo);
         controladorVista.liberarMemoriaConsultar();
     }
 
@@ -108,6 +113,7 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
         btnEliminar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
+        btnCancelar = new javax.swing.JButton();
 
         lblGrupos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblGrupos.setText("Grupos");
@@ -152,6 +158,14 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
         lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         lblTitulo.setText("Consultar Grupos");
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonCancelar_1.png"))); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -163,12 +177,14 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
                         .addComponent(lblTitulo))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(106, 106, 106)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnModificar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnEliminar))))
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEliminar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCancelar))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(356, 356, 356)
                         .addComponent(lblGrupos)))
@@ -186,8 +202,9 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
                 .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnModificar)
-                    .addComponent(btnEliminar))
-                .addContainerGap(108, Short.MAX_VALUE))
+                    .addComponent(btnEliminar)
+                    .addComponent(btnCancelar))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -257,7 +274,13 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        padre.mostrarVista(Vista.HOME);
+        limpiar();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JScrollPane jScrollPane3;
@@ -270,12 +293,12 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
         //No implementado.
     }
-
+    
     @Override
     public void mostrarVista(Vista vista) {
         //No implementado.
     }
-
+    
     @Override
     public void mostrarEntidad(Object entidad) {
         //No implementado.
@@ -298,25 +321,25 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
         }
         return cambiar;
     }
-
+    
     @Override
     public UsuarioDTO obtenerUsuarioActual() {
         //No implementado.
         return null;
     }
-
+    
     @Override
     public void ancestorAdded(AncestorEvent event) {
         if (isShowing()) {
             consultarGrupos();
         }
     }
-
+    
     @Override
     public void ancestorRemoved(AncestorEvent event) {
         //No implementado.
     }
-
+    
     @Override
     public void ancestorMoved(AncestorEvent event) {
         //No implementado.

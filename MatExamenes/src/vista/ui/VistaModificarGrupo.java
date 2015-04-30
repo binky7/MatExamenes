@@ -60,6 +60,19 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
      */
     @Override
     public void limpiar() {
+        txtfNombre.setText("");
+        cbGrado.setSelectedIndex(0);
+        cbTurno.setSelectedIndex(0);
+        DefaultTableModel modelo = (DefaultTableModel) tblAlumnos.getModel();
+        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
+            modelo.removeRow(i);
+        }
+        tblAlumnos.setModel(modelo);
+        modelo = (DefaultTableModel) tblMaestros.getModel();
+        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
+            modelo.removeRow(i);
+        }
+        tblMaestros.setModel(modelo);
         controlVista.liberarMemoriaModificar();
     }
 
@@ -449,7 +462,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
                 + "quieres cancelar la operación?\nTodos los cambios no "
                 + "guardados se perderán");
         if (ok == 0) {
-            padre.mostrarVista(Vista.HOME);
+            padre.mostrarVista(Vista.ConsultarGrupo);
             limpiar();
         }
     }//GEN-LAST:event_btnCancelarActionPerformed

@@ -9,6 +9,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
 import modelo.dto.UsuarioDTO;
+import modelo.dto.UsuarioDTO.Tipo;
 import remoteAccess.Enlace;
 
 /**
@@ -39,7 +40,29 @@ public class MantenerUsuariosDELEGATE {
 
         return usuarios;
     }
+    
+    public List<UsuarioDTO> obtenerAlumnosPorApellido(String apellido) {
+        List<UsuarioDTO> usuarios = null;
+        try {
+            usuarios = Enlace.getPersistencia().obtenerAlumnosPorApellido(apellido);
+        } catch (RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
 
+        return usuarios;
+    }
+
+    public List<UsuarioDTO> obtenerUsuariosPorApellido(String apellido, Tipo tipo) {
+        List<UsuarioDTO> usuarios = null;
+        try { 
+            usuarios = Enlace.getPersistencia().obtenerUsuariosPorApellido(apellido, tipo);
+        } catch (RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+
+        return usuarios;
+    }
+    
     public boolean modificarUsuario(UsuarioDTO usuario) {
         boolean ok = false;
         try {

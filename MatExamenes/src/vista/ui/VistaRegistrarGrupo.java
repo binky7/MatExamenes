@@ -58,6 +58,19 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
      */
     @Override
     public void limpiar() {
+        txtfNombre.setText("");
+        cbGrado.setSelectedIndex(0);
+        cbTurno.setSelectedIndex(0);
+        DefaultTableModel modelo = (DefaultTableModel) tblAlumnos.getModel();
+        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
+            modelo.removeRow(i);
+        }
+        tblAlumnos.setModel(modelo);
+        modelo = (DefaultTableModel) tblMaestros.getModel();
+        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
+            modelo.removeRow(i);
+        }
+        tblMaestros.setModel(modelo);
         controlVista.liberarMemoriaRegistrar();
     }
 
@@ -139,6 +152,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
         for (int i = 0; i < cont; i++) {
             if (String.valueOf(modelo.getValueAt(i, 5)).equals(nombreCurso)) {
                 modelo.removeRow(i);
+                break;
             }
         }
         tblMaestros.setModel(modelo);
