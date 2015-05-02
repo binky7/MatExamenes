@@ -5,7 +5,6 @@
  */
 package vista.ui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -13,13 +12,14 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.swing.BorderFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 import javax.swing.text.JTextComponent;
 import modelo.dto.ReactivoDTO;
 import modelo.dto.UsuarioDTO;
@@ -38,8 +38,9 @@ implements InterfaceVista, FocusListener {
     private CVMantenerReactivos controlVista;
     
     private final ButtonGroup opciones;
-    private final Border bordeMal;
-    private final Border bordeOriginal;
+    
+    private final ImageIcon ICONO_BIEN;
+    private final ImageIcon ICONO_MAL;
     
     private String mensajeDatosIncorrectos;
     /**
@@ -47,6 +48,16 @@ implements InterfaceVista, FocusListener {
      */
     public VistaModificarReactivo() {
         initComponents();
+        
+        ICONO_BIEN = new ImageIcon(getClass().getResource("/recursos/bien.png"));
+        ICONO_MAL = new ImageIcon(getClass().getResource("/recursos/mal.png"));
+        
+        lblEstadoNombre.setVisible(false);
+        lblEstadoRedaccion.setVisible(false);
+        lblEstadoOpt1.setVisible(false);
+        lblEstadoOpt2.setVisible(false);
+        lblEstadoOpt3.setVisible(false);
+        lblEstadoOpt4.setVisible(false);
         
         //Para igualar los radios con los textos
         rbtnOpt1.setActionCommand("Opt1");
@@ -59,32 +70,18 @@ implements InterfaceVista, FocusListener {
         txtfOpt3.setName("Opt3");
         txtfOpt4.setName("Opt4");
         
-        //Para asociar los labels con los text
-        txtfNombre.setName("lblErrorNombre");
-        txtaRedaccion.setName("lblErrorRedaccion");
-        
         opciones = new ButtonGroup();
         opciones.add(rbtnOpt1);
         opciones.add(rbtnOpt2);
         opciones.add(rbtnOpt4);
         opciones.add(rbtnOpt3);
         
-        bordeMal = BorderFactory.createLineBorder(Color.red,2);
-        bordeOriginal = txtfNombre.getBorder();
-        
         //Agregar los listeners de cambio de foco
-        txtfNombre.addFocusListener(this);
-        txtaRedaccion.addFocusListener(this);
         txtfOpt1.addFocusListener(this);
         txtfOpt2.addFocusListener(this);
         txtfOpt3.addFocusListener(this);
         txtfOpt4.addFocusListener(this);
-        
-        //Ponerle nombre a los labels de error
-        lblErrorNombre.setVisible(false);
-        lblErrorNombre.setText("* Requerido");
-        lblErrorRedaccion.setVisible(false);
-        lblErrorRedaccion.setText("* Requerido");
+
     }
 
     public void setPadre(InterfaceVista padre) {
@@ -108,22 +105,18 @@ implements InterfaceVista, FocusListener {
 
         if (Validador.estaVacio(nombre)) {
             ok = false;
-            txtfNombre.setBorder(bordeMal);
-            lblErrorNombre.setVisible(true);
             mensajeDatosIncorrectos = "* Nombre del Reactivo\n";
+            mostrarLabelEstado(txtfNombre, false, "");
         } else {
-            txtfNombre.setBorder(bordeOriginal);
-            lblErrorNombre.setVisible(false);
+            mostrarLabelEstado(txtfNombre, true, "");
         }
         
         if (Validador.estaVacio(redaccion)) {
-            txtaRedaccion.setBorder(bordeMal);
-            lblErrorRedaccion.setVisible(true);
             ok = false;
             mensajeDatosIncorrectos += "* Redacción del Reactivo\n";
+            mostrarLabelEstado(txtaRedaccion, false, "");
         } else {
-            txtaRedaccion.setBorder(bordeOriginal);
-            lblErrorRedaccion.setVisible(false);
+            mostrarLabelEstado(txtaRedaccion, true, "");
         } 
         
         if(!ok) {
@@ -137,10 +130,10 @@ implements InterfaceVista, FocusListener {
                 JTextField field = (JTextField) comp;
 
                 if (Validador.estaVacio(field.getText())) {
-                    field.setBorder(bordeMal);
+                    mostrarLabelEstado(field, false, "lblEstado");
                     ok = false;
                 } else {
-                    field.setBorder(bordeOriginal);
+                    mostrarLabelEstado(field, true, "lblEstado");
                 }
 
                 if (opciones.getSelection() != null) {
@@ -214,30 +207,42 @@ implements InterfaceVista, FocusListener {
         lblNombre = new javax.swing.JLabel();
         lblRedaccion = new javax.swing.JLabel();
         txtfNombre = new javax.swing.JTextField();
+        txtfNombre.addFocusListener(this);
+        txtfNombre.setName("lblEstadoNombre");
         jScrollPane1 = new javax.swing.JScrollPane();
         txtaRedaccion = new javax.swing.JTextArea();
+        txtaRedaccion.addFocusListener(this);
+        txtaRedaccion.setName("lblEstadoRedaccion");
         cmbCurso = new javax.swing.JComboBox();
         lblCurso = new javax.swing.JLabel();
         lblTema = new javax.swing.JLabel();
         cmbTema = new javax.swing.JComboBox();
         pnlOpciones = new javax.swing.JPanel();
         txtfOpt1 = new javax.swing.JTextField();
+        txtfOpt1.addFocusListener(this);
         txtfOpt2 = new javax.swing.JTextField();
+        txtfOpt2.addFocusListener(this);
         txtfOpt3 = new javax.swing.JTextField();
+        txtfOpt3.addFocusListener(this);
         lblOpciones1 = new javax.swing.JLabel();
         lblOpciones2 = new javax.swing.JLabel();
         lblOpciones3 = new javax.swing.JLabel();
         txtfOpt4 = new javax.swing.JTextField();
+        txtfOpt4.addFocusListener(this);
         lblOpciones4 = new javax.swing.JLabel();
         rbtnOpt1 = new javax.swing.JRadioButton();
         rbtnOpt2 = new javax.swing.JRadioButton();
         rbtnOpt4 = new javax.swing.JRadioButton();
         rbtnOpt3 = new javax.swing.JRadioButton();
         lblRespuesta = new javax.swing.JLabel();
+        lblEstadoOpt1 = new javax.swing.JLabel();
+        lblEstadoOpt2 = new javax.swing.JLabel();
+        lblEstadoOpt3 = new javax.swing.JLabel();
+        lblEstadoOpt4 = new javax.swing.JLabel();
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        lblErrorRedaccion = new javax.swing.JLabel();
-        lblErrorNombre = new javax.swing.JLabel();
+        lblEstadoNombre = new javax.swing.JLabel();
+        lblEstadoRedaccion = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(790, 579));
 
@@ -271,7 +276,7 @@ implements InterfaceVista, FocusListener {
         lblTema.setText("Tema:");
 
         cmbTema.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        cmbTema.setToolTipText("");
+        cmbTema.setToolTipText("tema al que pertenece el reactivo");
         cmbTema.setEnabled(false);
         cmbTema.setPreferredSize(new java.awt.Dimension(78, 25));
 
@@ -302,45 +307,73 @@ implements InterfaceVista, FocusListener {
         lblOpciones4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblOpciones4.setText("Opción 4:");
 
+        rbtnOpt1.setToolTipText("indica cual opción es la respuesta correcta");
+
+        rbtnOpt2.setToolTipText("indica cual opción es la respuesta correcta");
+
+        rbtnOpt4.setToolTipText("indica cual opción es la respuesta correcta");
+
+        rbtnOpt3.setToolTipText("indica cual opción es la respuesta correcta");
+
         lblRespuesta.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
         lblRespuesta.setText("Respuesta");
+
+        lblEstadoOpt1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+        lblEstadoOpt1.setToolTipText("No ingresar datos vacios");
+
+        lblEstadoOpt2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+        lblEstadoOpt2.setToolTipText("No ingresar datos vacios");
+
+        lblEstadoOpt3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+        lblEstadoOpt3.setToolTipText("No ingresar datos vacios");
+
+        lblEstadoOpt4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+        lblEstadoOpt4.setToolTipText("No ingresar datos vacios");
 
         javax.swing.GroupLayout pnlOpcionesLayout = new javax.swing.GroupLayout(pnlOpciones);
         pnlOpciones.setLayout(pnlOpcionesLayout);
         pnlOpcionesLayout.setHorizontalGroup(
             pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createSequentialGroup()
-                .addContainerGap(34, Short.MAX_VALUE)
-                .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createSequentialGroup()
-                        .addComponent(rbtnOpt4)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblOpciones4)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtfOpt4, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createSequentialGroup()
-                        .addComponent(rbtnOpt3)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblOpciones3)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtfOpt3, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createSequentialGroup()
-                        .addComponent(rbtnOpt2)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblOpciones2)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtfOpt2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createSequentialGroup()
-                        .addComponent(rbtnOpt1)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblOpciones1)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtfOpt1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
             .addGroup(pnlOpcionesLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(lblRespuesta)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlOpcionesLayout.createSequentialGroup()
+                        .addComponent(lblRespuesta)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createSequentialGroup()
+                                .addComponent(rbtnOpt4)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblOpciones4)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtfOpt4, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createSequentialGroup()
+                                .addComponent(rbtnOpt3)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblOpciones3)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtfOpt3, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createSequentialGroup()
+                                .addComponent(rbtnOpt2)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblOpciones2)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtfOpt2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createSequentialGroup()
+                                .addComponent(rbtnOpt1)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblOpciones1)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtfOpt1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblEstadoOpt1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblEstadoOpt2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblEstadoOpt3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblEstadoOpt4, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         pnlOpcionesLayout.setVerticalGroup(
             pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,24 +387,31 @@ implements InterfaceVista, FocusListener {
                             .addComponent(rbtnOpt1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(txtfOpt1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblOpciones1)))
+                                .addComponent(lblOpciones1))
+                            .addComponent(lblEstadoOpt1))
                         .addGap(18, 18, 18)
-                        .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtfOpt2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblOpciones2)))
+                        .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblEstadoOpt2)
+                            .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtfOpt2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblOpciones2))))
                     .addComponent(rbtnOpt2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(rbtnOpt3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtfOpt3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblOpciones3)))
+                .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(rbtnOpt3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtfOpt3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblOpciones3)))
+                    .addComponent(lblEstadoOpt3))
                 .addGap(18, 18, 18)
                 .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtfOpt4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblOpciones4))
-                    .addComponent(rbtnOpt4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtfOpt4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblOpciones4))
+                        .addComponent(rbtnOpt4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblEstadoOpt4))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -395,11 +435,11 @@ implements InterfaceVista, FocusListener {
             }
         });
 
-        lblErrorRedaccion.setForeground(new java.awt.Color(255, 0, 0));
-        lblErrorRedaccion.setText(".");
+        lblEstadoNombre.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+        lblEstadoNombre.setToolTipText("No ingresar datos vacios");
 
-        lblErrorNombre.setForeground(new java.awt.Color(255, 0, 0));
-        lblErrorNombre.setText(".");
+        lblEstadoRedaccion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+        lblEstadoRedaccion.setToolTipText("No ingresar datos vacios");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -408,30 +448,36 @@ implements InterfaceVista, FocusListener {
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNombre)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblNombre)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblEstadoNombre))
                     .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblCurso)
                     .addComponent(lblTema)
                     .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblErrorNombre))
+                    .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
+                        .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTitulo)
-                            .addComponent(lblErrorRedaccion)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pnlOpciones, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(51, 51, 51)
+                                .addComponent(lblTitulo))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addContainerGap(47, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblRedaccion)
-                        .addGap(160, 160, 160))))
+                        .addGap(18, 18, 18)
+                        .addComponent(lblEstadoRedaccion)
+                        .addGap(142, 142, 142))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -439,16 +485,17 @@ implements InterfaceVista, FocusListener {
                 .addContainerGap()
                 .addComponent(lblTitulo)
                 .addGap(47, 47, 47)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNombre)
-                    .addComponent(lblRedaccion))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblNombre)
+                        .addComponent(lblRedaccion))
+                    .addComponent(lblEstadoNombre)
+                    .addComponent(lblEstadoRedaccion))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblErrorNombre)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblCurso)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -460,15 +507,13 @@ implements InterfaceVista, FocusListener {
                         .addGap(18, 18, 18)
                         .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addComponent(lblErrorRedaccion)
-                        .addGap(18, 18, 18)
+                        .addGap(43, 43, 43)
                         .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -480,7 +525,8 @@ implements InterfaceVista, FocusListener {
             if(mensajeDatosIncorrectos.isEmpty()) {
                 mensajeDatosIncorrectos = "Falta ingresar opciones";
             }
-            JOptionPane.showMessageDialog(this, mensajeDatosIncorrectos);
+            JOptionPane.showMessageDialog(this, mensajeDatosIncorrectos, "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
         }
         else {
             boolean ok = controlVista.modificarReactivo(reactivo);
@@ -492,7 +538,7 @@ implements InterfaceVista, FocusListener {
             }
             else {
                 JOptionPane.showMessageDialog(this, "No se pudo modificar "
-                    + "el reactivo");
+                    + "el reactivo", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 
@@ -502,7 +548,7 @@ implements InterfaceVista, FocusListener {
         // TODO add your handling code here:
         int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
             + "quieres cancelar la operación?\nTodos los cambios no "
-            + "guardados se perderán");
+            + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
             padre.mostrarVista(Vista.ConsultarReactivos);
             limpiar();
@@ -517,8 +563,12 @@ implements InterfaceVista, FocusListener {
     private javax.swing.JComboBox cmbTema;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCurso;
-    private javax.swing.JLabel lblErrorNombre;
-    private javax.swing.JLabel lblErrorRedaccion;
+    private javax.swing.JLabel lblEstadoNombre;
+    private javax.swing.JLabel lblEstadoOpt1;
+    private javax.swing.JLabel lblEstadoOpt2;
+    private javax.swing.JLabel lblEstadoOpt3;
+    private javax.swing.JLabel lblEstadoOpt4;
+    private javax.swing.JLabel lblEstadoRedaccion;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblOpciones1;
     private javax.swing.JLabel lblOpciones2;
@@ -562,7 +612,7 @@ implements InterfaceVista, FocusListener {
         boolean cambiar = false;
         int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
                 + "quieres cambiar de pantalla?\nTodos los cambios no "
-                + "guardados se perderán");
+                + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
             cambiar = true;
         }
@@ -578,60 +628,61 @@ implements InterfaceVista, FocusListener {
     public void limpiar() {
         //Limpiar
         txtfNombre.setText("");
-        txtfNombre.setBorder(bordeOriginal);
-        lblErrorNombre.setVisible(false);
         cmbCurso.removeAllItems();
         cmbTema.removeAllItems();
         txtaRedaccion.setText("");
-        txtaRedaccion.setBorder(bordeOriginal);
-        lblErrorRedaccion.setVisible(false);
         for (Component comp : pnlOpciones.getComponents()) {
             if (comp.getClass() == JTextField.class) {
                 JTextField field = (JTextField) comp;
                 
                 field.setText("");
-                field.setBorder(bordeOriginal);
             }
         }
         opciones.clearSelection();
+        
+        lblEstadoNombre.setVisible(false);
+        lblEstadoRedaccion.setVisible(false);
+        lblEstadoOpt1.setVisible(false);
+        lblEstadoOpt2.setVisible(false);
+        lblEstadoOpt3.setVisible(false);
+        lblEstadoOpt4.setVisible(false);
         
         controlVista.liberarMemoriaModificar();
     }
 
     @Override
     public void focusGained(FocusEvent e) {
-        //
-        JTextComponent text = (JTextComponent) e.getComponent();
-        
-        text.setBorder(bordeOriginal);
     }
 
     @Override
     public void focusLost(FocusEvent e) {
         //Cuando cambia de componente
+        JTextComponent ob = (JTextComponent) e.getComponent();
         
-        JTextComponent text = (JTextComponent) e.getComponent();
+        if(ob.getName().startsWith("Opt")) {
+            mostrarLabelEstado(ob, !Validador.estaVacio(ob.getText()), "lblEstado");
+        }
+        else {
+            mostrarLabelEstado(ob, !Validador.estaVacio(ob.getText()), "");
+        }
+    }
+    
+    private void mostrarLabelEstado(Object o, boolean estado, String prefix) {
+        JTextComponent ob = (JTextComponent) o;
         
-        String valor = text.getText();
-        
-        if (Validador.estaVacio(valor)) {
-            text.setBorder(bordeMal);
-            try {
-                Field field = getClass().getDeclaredField(text.getName());
-                JLabel label = (JLabel) field.get(this);
+        try {
+            Field field = getClass().getDeclaredField(prefix + ob.getName());
+            JLabel label = (JLabel) field.get(this);
+            if (!label.isVisible()) {
                 label.setVisible(true);
-            } catch(NoSuchFieldException | IllegalAccessException ex) {
-                //System.out.println(ex);
             }
-        } else {
-            text.setBorder(bordeOriginal);
-            try {
-                Field field = getClass().getDeclaredField(text.getName());
-                JLabel label = (JLabel) field.get(this);
-                label.setVisible(false);
-            } catch(NoSuchFieldException | IllegalAccessException ex) {
-                //System.out.println(ex);
+            if (estado) {
+                label.setIcon(ICONO_BIEN);
+            } else {
+                label.setIcon(ICONO_MAL);
             }
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(VistaRegistrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

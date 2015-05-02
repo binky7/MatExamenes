@@ -5,8 +5,16 @@
  */
 package vista.ui;
 
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.table.DefaultTableModel;
+import modelo.dto.CursoDTO;
+import modelo.dto.ExamenDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerExamenes;
+import vista.controlador.Validador;
 import vista.interfaz.InterfaceVista;
 
 /**
@@ -14,7 +22,7 @@ import vista.interfaz.InterfaceVista;
  * @author Jesus Donaldo
  */
 public class VistaConsultarExamenes extends javax.swing.JPanel
-implements InterfaceVista {
+implements InterfaceVista, AncestorListener {
 
     private CVMantenerExamenes controlVista;
     private InterfaceVista padre;
@@ -23,6 +31,8 @@ implements InterfaceVista {
      */
     public VistaConsultarExamenes() {
         initComponents();
+        
+        addAncestorListener(this);
     }
 
     public void setPadre(InterfaceVista padre) {
@@ -31,6 +41,31 @@ implements InterfaceVista {
     
     public void setControlador(CVMantenerExamenes controlVista) {
         this.controlVista = controlVista;
+    }
+    
+    private void consultarCursos() {
+        List<CursoDTO> cursos = controlVista.obtenerCursos();
+        
+        if(cursos != null && !cursos.isEmpty()) {
+            mostrarCursos(cursos);
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "No hay cursos");
+            padre.mostrarVista(Vista.HOME);
+            limpiar();
+        }
+    }
+    
+    private void mostrarCursos(List<CursoDTO> cursos) {
+        
+        cmbCurso.removeAllItems();
+        
+        for(CursoDTO curso : cursos) {
+            //System.out.println(cmbCurso.getSelectedIndex());
+            cmbCurso.addItem(curso.getNombre());
+        }
+        
+        cmbCurso.setSelectedIndex(-1);
     }
     
     /**
@@ -64,10 +99,7 @@ implements InterfaceVista {
         tblExamenes.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         tblExamenes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Id", "Título", "Fecha Creación", "Fecha Modificación", "Autor"
@@ -103,13 +135,14 @@ implements InterfaceVista {
         lblCurso.setText("Curso:");
 
         cmbCurso.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        cmbCurso.setToolTipText("");
+        cmbCurso.setToolTipText("filtrar la búsqueda por curso");
         cmbCurso.setPreferredSize(new java.awt.Dimension(78, 25));
 
         lblTitulo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblTitulo.setText("Título del Examen:");
 
         txtfTitulo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfTitulo.setToolTipText("filtrar la búsqueda por título del examen");
         txtfTitulo.setPreferredSize(new java.awt.Dimension(6, 30));
 
         btnBuscar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -118,7 +151,7 @@ implements InterfaceVista {
         btnBuscar.setPreferredSize(new java.awt.Dimension(77, 30));
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarmodificarReactivo(evt);
+                consultarExamenes(evt);
             }
         });
 
@@ -134,7 +167,7 @@ implements InterfaceVista {
         btnModificar.setPreferredSize(new java.awt.Dimension(77, 30));
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarpasarControlVistaModificar(evt);
+                pasarControlVistaModificar(evt);
             }
         });
 
@@ -144,7 +177,7 @@ implements InterfaceVista {
         btnEliminar.setPreferredSize(new java.awt.Dimension(77, 30));
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminareliminarReactivos(evt);
+                eliminarExamen(evt);
             }
         });
 
@@ -246,18 +279,152 @@ implements InterfaceVista {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnBuscarmodificarReactivo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarmodificarReactivo
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBuscarmodificarReactivo
+    private void consultarExamenes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarExamenes
+        //Para comprobar que se hizo una consulta
+        boolean ok = true;
+        UsuarioDTO usuarioActual = padre.obtenerUsuarioActual();
+        List<ExamenDTO> examenes = null;
+        //Para validar que se haya seleccionado un curso
+        int seleccionado = cmbCurso.getSelectedIndex();
+        //Obtener el valor de lo ingresado en el titulo
+        String titulo = txtfTitulo.getText();
+        //El curso seleccionado si ubiera...
+        String curso = "";
+        
+        //Parametro para la cosulta, null si es administrador
+        UsuarioDTO usuario = null;
+        //Parametro para la consulta, true si es administrador
+        boolean todos = true;
 
-    private void btnModificarpasarControlVistaModificar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarpasarControlVistaModificar
+        //Para diferenciar entre una consulta a los examenes publicos o a todos
+        if (usuarioActual.getTipo() == UsuarioDTO.Tipo.Maestro) {
+            //Si usuario actual es maestro....
+            usuario = usuarioActual;
+            todos = false;
+        }
 
-        padre.mostrarVista(Vista.ModificarExamen);
-    }//GEN-LAST:event_btnModificarpasarControlVistaModificar
+        if(seleccionado != -1) {
+            curso = cmbCurso.getSelectedItem().toString();
+        }
+        
+        if (seleccionado != -1 && !Validador.estaVacio(titulo)) {
 
-    private void btnEliminareliminarReactivos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminareliminarReactivos
+            examenes = controlVista.obtenerExamenesPorCursoYTitulo(curso, titulo,
+                    todos, usuario);
+            
+        } else if (seleccionado != -1 && Validador.estaVacio(titulo)) {
 
-    }//GEN-LAST:event_btnEliminareliminarReactivos
+            //Solo obtener los examenes por curso
+            examenes = controlVista.obtenerExamenesPorCurso(curso, todos, usuario);
+            
+        } else if (!Validador.estaVacio(titulo) && seleccionado == -1) {
+
+            //Obtener examenes por titulo
+            examenes = controlVista.obtenerExamenesPorTitulo(titulo, todos,
+                    usuario);
+        } else {
+            //No selecciono curso ni titulo
+            JOptionPane.showMessageDialog(this, "Selecciona por lo menos "
+                    + "un curso o ingresa un título");
+            ok = false;
+        }
+        
+        if (ok) {
+            if (examenes != null && !examenes.isEmpty()) {
+                mostrarExamenes(examenes);
+            } else {
+                JOptionPane.showMessageDialog(this, "No hay examenes");
+                ((DefaultTableModel)tblExamenes.getModel()).setRowCount(0);
+            }
+        }
+        
+    }//GEN-LAST:event_consultarExamenes
+
+    private void mostrarExamenes(List<ExamenDTO> examenes) {
+        DefaultTableModel model = (DefaultTableModel) tblExamenes.getModel();
+        
+        model.setRowCount(0);
+        //Mostrar cada reactivo, no remover, si no buscar por medio del for
+        for(ExamenDTO examen : examenes) {
+            Object[] datos = new Object[5];
+            
+            datos[0] = examen.getId();
+            datos[1] = examen.getTitulo();
+            datos[2] = examen.getFechaCreacion();
+            datos[3] = examen.getFechaModificacion();
+            if(examen.getAutor() != null) {
+                datos[4] = examen.getAutor().getUsuario();
+            }
+            else {
+                datos[4] = "Sin autor";
+            }
+            
+            model.addRow(datos);
+        }
+    }
+    
+    private void pasarControlVistaModificar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarControlVistaModificar
+        
+        if(tblExamenes.getSelectedRow() != -1) {
+            int indexExamen = tblExamenes.getSelectedRow();
+            String autorExamen = (String) tblExamenes.getValueAt(tblExamenes
+                    .getSelectedRow(), 4);
+            
+            UsuarioDTO usuarioActual = padre.obtenerUsuarioActual();
+            
+            if((usuarioActual.getTipo() == UsuarioDTO.Tipo.Maestro && 
+                    autorExamen.equals(usuarioActual.getUsuario())) ||
+                    (usuarioActual.getTipo() == UsuarioDTO.Tipo.Admin)) {
+                
+                ExamenDTO examen = controlVista
+                        .obtenerExamen(indexExamen);
+                
+                if(examen != null) {
+                    padre.mostrarVistaConEntidad(examen, Vista.ModificarExamen);
+                }
+                else {
+                    JOptionPane.showMessageDialog(this, "Ha ocurrido un error",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "No cuentas con los permisos "
+                        + "para realizar esta acción");
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Selecciona primero un examen");
+        }
+    }//GEN-LAST:event_pasarControlVistaModificar
+
+    private void eliminarExamen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarExamen
+
+        if(tblExamenes.getSelectedRow() != -1) {
+            
+            int q = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+                    + "quieres eliminar el examen seleccionado?",
+                    "Confirmación", JOptionPane.YES_NO_OPTION);
+            if (q != 0) {
+                return;
+            }
+            
+            boolean ok = controlVista.eliminarExamen(tblExamenes
+                    .getSelectedRow());
+            
+            if(ok) {
+                JOptionPane.showMessageDialog(this, "Examen eliminado");
+                ((DefaultTableModel)tblExamenes.getModel())
+                        .removeRow(tblExamenes.getSelectedRow());
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "No se pudo eliminar "
+                        + "el examen", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Selecciona un examen");
+        }
+    }//GEN-LAST:event_eliminarExamen
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
@@ -294,7 +461,14 @@ implements InterfaceVista {
 
     @Override
     public void mostrarEntidad(Object entidad) {
-        //Motrar Examen
+        //Mostrar los datos del examen en la vista
+        ExamenDTO examen = (ExamenDTO) entidad;
+        
+        int row = tblExamenes.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) tblExamenes.getModel();
+        
+        model.setValueAt(examen.getTitulo(), row, 1);
+        model.setValueAt(examen.getFechaModificacion(), row, 3);
     }
 
     @Override
@@ -310,6 +484,28 @@ implements InterfaceVista {
     @Override
     public void limpiar() {
         //Limpiar componentes
+        cmbCurso.removeAllItems();
+        txtfTitulo.setText("");
+        ((DefaultTableModel)tblExamenes.getModel()).setRowCount(0);
+        
+        controlVista.liberarMemoriaConsultar();
+    }
+
+    @Override
+    public void ancestorAdded(AncestorEvent event) {
+        if(isShowing()) {
+            consultarCursos();
+        }
+    }
+
+    @Override
+    public void ancestorRemoved(AncestorEvent event) {
+        //
+    }
+
+    @Override
+    public void ancestorMoved(AncestorEvent event) {
+        //
     }
 
 }

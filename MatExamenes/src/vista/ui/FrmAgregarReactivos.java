@@ -13,6 +13,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import modelo.dto.ReactivoDTO;
 import modelo.dto.TemaDTO;
@@ -31,6 +33,8 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
     private int clave;
     
     private final FrmVerReactivo frmVerReactivo;
+    
+    private boolean noSelect;
     
     /**
      * Creates new form VistaAgregarReactivos
@@ -88,6 +92,21 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         
         lstTemasAuto.setModel(new DefaultListModel());
         lstTemasManual.setModel(new DefaultListModel());
+        
+        lstTemasManual.addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                //Para saber si se hizo click a la lista
+                if(!e.getValueIsAdjusting()) {
+                    if (!noSelect) {
+                        //consultar reactivos
+                        consultarReactivos();
+                    }
+                }
+            }
+            
+        });
     }
 
     public void inicializar(int indexCurso, int clave) {
@@ -108,10 +127,25 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         for(TemaDTO tema : temas) {
             listModel.addElement(tema.getNombre());
         }
+        noSelect = false;
     }
     
     private void mostrarReactivo(ReactivoDTO reactivo) {
         frmVerReactivo.inicializar(reactivo);
+    }
+    
+    private void consultarReactivos() {
+        List<ReactivoDTO> reactivos = controlVista
+                .obtenerReactivosPorTema((String)lstTemasManual
+                        .getSelectedValue());
+        
+        if(reactivos != null && !reactivos.isEmpty()) {
+            mostrarReactivos(reactivos);
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "No hay reactivos");
+            ((DefaultTableModel)tblReactivos.getModel()).setRowCount(0);
+        }
     }
     
     private void mostrarReactivos(List<ReactivoDTO> reactivos) {
@@ -199,6 +233,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
     
     public void limpiar() {
         
+        noSelect = true;
         ((DefaultListModel)lstTemasAuto.getModel()).clear();
         ((DefaultListModel)lstTemasManual.getModel()).clear();
         ((DefaultTableModel)tblReactivos.getModel()).setRowCount(0);
@@ -499,6 +534,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
 
         lstTemasManual.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         lstTemasManual.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        lstTemasManual.setToolTipText("selecciona un tema para la búsqueda");
         jScrollPane7.setViewportView(lstTemasManual);
 
         lblTemasManual.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -506,6 +542,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
 
         btnVer.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnVer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/ver24.png"))); // NOI18N
+        btnVer.setToolTipText("ver reactivo");
         btnVer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 verReactivo(evt);
@@ -555,12 +592,14 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
 
         spnCantidad.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         spnCantidad.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+        spnCantidad.setToolTipText("cantidad de reactivos a seleccionar del tema");
 
         lblTemasAuto.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         lblTemasAuto.setText("Temas:");
 
         lstTemasAuto.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         lstTemasAuto.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        lstTemasAuto.setToolTipText("tema a agregar");
         jScrollPane8.setViewportView(lstTemasAuto);
 
         lblCantidad.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -593,6 +632,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblSeleccion.setToolTipText("temas a agregar y cantidad de reactivos por tema a seleccionar");
         tblSeleccion.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblSeleccion.getTableHeader().setReorderingAllowed(false);
         jScrollPane4.setViewportView(tblSeleccion);
@@ -603,6 +643,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
 
         btnAgregarSeleccion.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnAgregarSeleccion.setText("Agregar Seleccion");
+        btnAgregarSeleccion.setToolTipText("agrega una nueva selección del tema y cantidad seleccionados");
         btnAgregarSeleccion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 agregarSeleccion(evt);
@@ -611,6 +652,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
 
         btnRemoverSeleccion.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnRemoverSeleccion.setText("Remover Seleccion");
+        btnRemoverSeleccion.setToolTipText("Remueve la fila seleccionada de la tabla selecciones");
         btnRemoverSeleccion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 removerSeleccion(evt);
@@ -686,6 +728,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         btnAceptar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnAceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/aceptar24.png"))); // NOI18N
         btnAceptar.setText("Aceptar");
+        btnAceptar.setToolTipText("agregar los reactivos automática o manualmente al examen");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aceptarAgregarReactivos(evt);

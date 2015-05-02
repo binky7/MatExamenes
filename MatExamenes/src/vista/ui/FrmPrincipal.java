@@ -710,7 +710,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista {
         mCalificaciones.setVisible(true);
         mExamenes.setVisible(true);
         mReactivos.setVisible(true);
-        
+        vistaConsultarReactivos.deshabilitarBtnEliminar();
     }
     /**
      * 

@@ -4,22 +4,27 @@
  */
 package vista.ui;
 
-import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import javax.swing.BorderFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.border.Border;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.JTextComponent;
 import modelo.dto.CursoDTO;
 import modelo.dto.ExamenDTO;
 import modelo.dto.ExamenDTO.Permiso;
@@ -43,16 +48,26 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
     private final FrmVerReactivo frmVerReactivo;
     
     private final ButtonGroup permiso;
-    private final Border bordeMal;
-    private final Border bordeOriginal;
+    
+    private final ImageIcon ICONO_BIEN;
+    private final ImageIcon ICONO_MAL;
     
     private String mensajeDatosIncorrectos;
+    
+    private boolean noSelect;
     
     /**
      * Creates new form RegistrarExamen
      */
     public VistaRegistrarExamen() {
         initComponents();
+        
+        ICONO_BIEN = new ImageIcon(getClass().getResource("/recursos/bien.png"));
+        ICONO_MAL = new ImageIcon(getClass().getResource("/recursos/mal.png"));
+        
+        lblEstadoTitulo.setVisible(false);
+        lblEstadoInstrucciones.setVisible(false);
+        
         frmAgregarReactivos = new FrmAgregarReactivos();
         frmAgregarReactivos.setPadre(this);
         frmAgregarReactivos.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -60,28 +75,23 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         frmVerReactivo = new FrmVerReactivo();
         frmVerReactivo.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
-        //Para asociar los labels con los text
-        txtfTitulo.setName("lblErrorTitulo");
-        txtaInstrucciones.setName("lblErrorInstrucciones");
-        
         permiso = new ButtonGroup();
         permiso.add(rbtnPublico);
         permiso.add(rbtnPrivado);
         
-        bordeMal = BorderFactory.createLineBorder(Color.red,2);
-        bordeOriginal = txtfTitulo.getBorder();
-        
-        //Agregar los listeners de cambio de foco
-        txtfTitulo.addFocusListener(this);
-        txtaInstrucciones.addFocusListener(this);
-        
-        //Ponerle nombre a los labels de error
-//        lblErrorTitulo.setVisible(false);
-//        lblErrorTitulo.setText("* Requerido");
-//        lblErrorInstrucciones.setVisible(false);
-//        lblErrorInstrucciones.setText("* Requerido");
-        
         addAncestorListener(this);
+        
+        cmbCurso.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!noSelect) {
+                    cmbCurso.setEnabled(false);
+                    btnDesbloquear.setEnabled(true);
+                }
+            }
+            
+        });
     }
 
     public void setPadre(InterfaceVista padre) {
@@ -92,8 +102,6 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
     public void setControlador(CVMantenerExamenes controlVista) {
         this.controlVista = controlVista;
         frmAgregarReactivos.setControlador(controlVista);
-        tbpClaves.add("Clave 1", new PnlReactivosTab());
-        controlVista.agregarClave(0);
     }
     
     private void consultarCursos() {
@@ -119,6 +127,7 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         }
         
         cmbCurso.setSelectedIndex(-1);
+        noSelect = false;
     }
 
     private ExamenDTO encapsularExamen() {
@@ -134,22 +143,18 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
 
         if (Validador.estaVacio(titulo)) {
             ok = false;
-            txtfTitulo.setBorder(bordeMal);
-            //lblErrorTitulo.setVisible(true);
             mensajeDatosIncorrectos = "* Título del Examen\n";
+            mostrarLabelEstado(txtfTitulo, false);
         } else {
-            txtfTitulo.setBorder(bordeOriginal);
-            //lblErrorTitulo.setVisible(false);
+            mostrarLabelEstado(txtfTitulo, true);
         }
         
         if (Validador.estaVacio(instrucciones)) {
-            txtaInstrucciones.setBorder(bordeMal);
-            //lblErrorInstrucciones.setVisible(true);
             ok = false;
             mensajeDatosIncorrectos += "* Instrucciones del examen\n";
+            mostrarLabelEstado(txtaInstrucciones, false);
         } else {
-            txtaInstrucciones.setBorder(bordeOriginal);
-            //lblErrorInstrucciones.setVisible(false);
+            mostrarLabelEstado(txtaInstrucciones, true);
         } 
         
         if(!ok) {
@@ -177,17 +182,22 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
                     + "examen\n";
         }
         
-        for(Component comp : tbpClaves.getComponents()) {
-            PnlReactivosTab reactivosTab = (PnlReactivosTab) comp;
-            
-            if(reactivosTab.sinReactivos()) {
-                ok = false;
-                mensajeDatosIncorrectos += "No puede haber claves de examen sin "
-                    + "reactivos\n";
-                break;
+        if (tbpClaves.getTabCount() == 0) {
+            ok = false;
+            mensajeDatosIncorrectos += "El examen debe contener por lo menos "
+                    + "una clave";
+        } else {
+            for (Component comp : tbpClaves.getComponents()) {
+                PnlReactivosTab reactivosTab = (PnlReactivosTab) comp;
+
+                if (reactivosTab.sinReactivos()) {
+                    ok = false;
+                    mensajeDatosIncorrectos += "No puede haber claves de examen sin "
+                            + "reactivos\n";
+                    break;
+                }
             }
         }
-        
         examen.setInstrucciones(instrucciones);
         examen.setPermiso(opPermiso);
         examen.setTitulo(titulo);
@@ -249,7 +259,18 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
     
     @Override
     public void limpiar() {
+        txtfTitulo.setText("");
+        txtaInstrucciones.setText("");
+        permiso.clearSelection();
+        cmbCurso.removeAllItems();
+        cmbCurso.setEnabled(true);
+        btnDesbloquear.setEnabled(false);
+        tbpClaves.removeAll();
         
+        lblEstadoTitulo.setVisible(false);
+        lblEstadoInstrucciones.setVisible(false);
+        
+        controlVista.liberarMemoriaRegistrar();
     }
     
     /**
@@ -266,9 +287,13 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         lblTitulo1 = new javax.swing.JLabel();
         lblTitulo = new javax.swing.JLabel();
         txtfTitulo = new javax.swing.JTextField();
+        txtfTitulo.addFocusListener(this);
+        txtfTitulo.setName("lblEstadoTitulo");
         lblInstrucciones = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtaInstrucciones = new javax.swing.JTextArea();
+        txtaInstrucciones.addFocusListener(this);
+        txtaInstrucciones.setName("lblEstadoInstrucciones");
         pnlPermiso = new javax.swing.JPanel();
         rbtnPrivado = new javax.swing.JRadioButton();
         rbtnPublico = new javax.swing.JRadioButton();
@@ -283,6 +308,8 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         btnVer = new javax.swing.JButton();
         btnDesbloquear = new javax.swing.JButton();
         btnAgregarClave = new javax.swing.JButton();
+        lblEstadoTitulo = new javax.swing.JLabel();
+        lblEstadoInstrucciones = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(790, 579));
 
@@ -296,6 +323,7 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         lblTitulo.setText("Título del Examen:");
 
         txtfTitulo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfTitulo.setToolTipText("");
         txtfTitulo.setPreferredSize(new java.awt.Dimension(6, 30));
 
         lblInstrucciones.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -308,13 +336,16 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         jScrollPane2.setViewportView(txtaInstrucciones);
 
         pnlPermiso.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Permiso:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
+        pnlPermiso.setToolTipText("");
         pnlPermiso.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
 
         rbtnPrivado.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         rbtnPrivado.setText("Privado");
+        rbtnPrivado.setToolTipText("El examen solo puede ser utilizado por el autor y ningún maestro lo puede ver");
 
         rbtnPublico.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         rbtnPublico.setText("Público");
+        rbtnPublico.setToolTipText("El examen puede ser visto y utilizado por todos los maestros");
 
         javax.swing.GroupLayout pnlPermisoLayout = new javax.swing.GroupLayout(pnlPermiso);
         pnlPermiso.setLayout(pnlPermisoLayout);
@@ -341,11 +372,12 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         lblCurso.setText("Curso:");
 
         cmbCurso.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        cmbCurso.setToolTipText("");
+        cmbCurso.setToolTipText("el curso al que pertence el examen");
         cmbCurso.setPreferredSize(new java.awt.Dimension(78, 25));
 
         btnRemoverClave.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnRemoverClave.setText("Remover Clave");
+        btnRemoverClave.setToolTipText("remueve la clave seleccionada");
         btnRemoverClave.setPreferredSize(new java.awt.Dimension(77, 30));
         btnRemoverClave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -359,6 +391,7 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         btnGuardar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/guardar24.png"))); // NOI18N
         btnGuardar.setText("Guardar");
+        btnGuardar.setToolTipText("");
         btnGuardar.setPreferredSize(new java.awt.Dimension(77, 30));
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -378,6 +411,7 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
 
         btnRemover.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnRemover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/remover24.png"))); // NOI18N
+        btnRemover.setToolTipText("remover reactivos");
         btnRemover.setPreferredSize(new java.awt.Dimension(77, 30));
         btnRemover.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -387,6 +421,7 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
 
         btnAgregar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/agregar24.png"))); // NOI18N
+        btnAgregar.setToolTipText("agregar reactivos");
         btnAgregar.setPreferredSize(new java.awt.Dimension(77, 30));
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -396,6 +431,7 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
 
         btnVer.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnVer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/ver24.png"))); // NOI18N
+        btnVer.setToolTipText("ver reactivo");
         btnVer.setPreferredSize(new java.awt.Dimension(77, 30));
         btnVer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -405,6 +441,8 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
 
         btnDesbloquear.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnDesbloquear.setText("Desbloquear");
+        btnDesbloquear.setToolTipText("habilita la selección de cursos. Esto también remueve todas las claves de examen");
+        btnDesbloquear.setEnabled(false);
         btnDesbloquear.setPreferredSize(new java.awt.Dimension(77, 30));
         btnDesbloquear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -414,12 +452,19 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
 
         btnAgregarClave.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnAgregarClave.setText("Agregar Clave");
+        btnAgregarClave.setToolTipText("agrega una nueva clave sin reactivos al examen");
         btnAgregarClave.setPreferredSize(new java.awt.Dimension(118, 30));
         btnAgregarClave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 agregarClave(evt);
             }
         });
+
+        lblEstadoTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+        lblEstadoTitulo.setToolTipText("No ingresar datos vacios");
+
+        lblEstadoInstrucciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+        lblEstadoInstrucciones.setToolTipText("No ingresar datos vacios");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -431,6 +476,15 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
                 .addGap(18, 18, 18)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(166, 166, 166)
+                        .addComponent(lblEstadoTitulo))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(265, 265, 265)
+                        .addComponent(lblEstadoInstrucciones)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
                     .addGap(5, 5, 5)
@@ -443,17 +497,17 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
                                     .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
                                     .addComponent(btnDesbloquear, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTitulo)
-                            .addComponent(txtfTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblTitulo)
                         .addGroup(jPanel4Layout.createSequentialGroup()
                             .addGap(57, 57, 57)
                             .addComponent(lblInstrucciones))
                         .addGroup(jPanel4Layout.createSequentialGroup()
                             .addGap(49, 49, 49)
-                            .addComponent(pnlPermiso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(pnlPermiso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
+                            .addComponent(txtfTitulo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)))
+                    .addGap(25, 25, 25)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(lblTitulo1)
                         .addGroup(jPanel4Layout.createSequentialGroup()
@@ -474,7 +528,11 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(515, Short.MAX_VALUE)
+                .addGap(75, 75, 75)
+                .addComponent(lblEstadoTitulo)
+                .addGap(63, 63, 63)
+                .addComponent(lblEstadoInstrucciones)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 345, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -542,12 +600,12 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
 
     private void removerClave(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerClave
         // TODO add your handling code here:
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-            + "quieres cancelar la operación?\nTodos los cambios no "
-            + "guardados se perderán");
-        if (ok == 0) {
-            padre.mostrarVista(Vista.ConsultarReactivos);
-            limpiar();
+        if(tbpClaves.getSelectedIndex() != -1) {
+            controlVista.removerClave(tbpClaves.getSelectedIndex());
+            tbpClaves.remove(tbpClaves.getSelectedIndex());
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Selecciona una clave");
         }
     }//GEN-LAST:event_removerClave
 
@@ -556,7 +614,8 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         ExamenDTO examen = encapsularExamen();
         
         if(examen == null) {
-            JOptionPane.showMessageDialog(this, mensajeDatosIncorrectos);
+            JOptionPane.showMessageDialog(this, mensajeDatosIncorrectos, "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
         }
         else {
             Integer id = controlVista.guardarExamen(examen);
@@ -568,7 +627,7 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
             }
             else {
                 JOptionPane.showMessageDialog(this, "No se pudo guardar "
-                        + "el examen");
+                        + "el examen", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_guardarExamen
@@ -577,7 +636,7 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         // TODO add your handling code here:
         int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
             + "quieres cancelar la operación?\nTodos los cambios no "
-            + "guardados se perderán");
+            + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
             padre.mostrarVista(Vista.ConsultarReactivos);
             limpiar();
@@ -586,6 +645,25 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
 
     private void removerReactivos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerReactivos
         
+        if(tbpClaves.getSelectedIndex() != -1) {
+            PnlReactivosTab tab = (PnlReactivosTab) tbpClaves.getComponentAt(
+                    tbpClaves.getSelectedIndex());
+            
+            List<Integer> indexesReactivo = tab.getSelectedRows();
+            
+            if(indexesReactivo.size() > 0) {
+                
+                controlVista.removerReactivos(indexesReactivo, tbpClaves
+                        .getSelectedIndex());
+                removerReactivos(indexesReactivo, tab.getTabla());
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Selecciona un reactivo");
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Selecciona una clave");
+        }
         
     }//GEN-LAST:event_removerReactivos
 
@@ -630,10 +708,39 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
 
     private void desbloquearCurso(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desbloquearCurso
         // TODO add your handling code here:
+        
+        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+            + "quieres desbloquear los cursos?\nTodas las claves del examen "
+            + "se eliminarán", "Confirmación", JOptionPane.YES_NO_OPTION);
+        
+        if (ok == 0) {
+            noSelect = true;
+            
+            cmbCurso.setEnabled(true);
+            btnDesbloquear.setEnabled(false);
+            tbpClaves.removeAll();
+            controlVista.removerTodasLasClaves();
+            cmbCurso.setSelectedIndex(-1);
+            
+            noSelect = false;
+        }
     }//GEN-LAST:event_desbloquearCurso
 
     private void agregarClave(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarClave
         // TODO add your handling code here:
+        int nuevo = tbpClaves.getTabCount();
+
+        //Obtiene el numero de la ultima tab
+        int ultimaTab;
+        if (nuevo > 0) {
+            ultimaTab = Integer.parseInt(tbpClaves.getTitleAt(nuevo - 1)
+                    .substring(6));
+        }
+        else {
+            ultimaTab = 0;
+        }
+            tbpClaves.add("Clave " + (ultimaTab + 1), new PnlReactivosTab());
+            controlVista.agregarClave(ultimaTab + 1);
     }//GEN-LAST:event_agregarClave
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -650,6 +757,8 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblClaves;
     private javax.swing.JLabel lblCurso;
+    private javax.swing.JLabel lblEstadoInstrucciones;
+    private javax.swing.JLabel lblEstadoTitulo;
     private javax.swing.JLabel lblInstrucciones;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel lblTitulo1;
@@ -681,7 +790,7 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
         boolean cambiar = false;
         int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
                 + "quieres cambiar de pantalla?\nTodos los cambios no "
-                + "guardados se perderán");
+                + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
             cambiar = true;
         }
@@ -700,12 +809,37 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
 
     @Override
     public void focusLost(FocusEvent e) {
-        //
+        JTextComponent ob = (JTextComponent) e.getSource();
+
+        mostrarLabelEstado(ob, !Validador.estaVacio(ob.getText()));
+        
     }
 
+    private void mostrarLabelEstado(Object o, boolean estado) {
+        JTextComponent ob = (JTextComponent) o;
+        
+        try {
+            Field field = getClass().getDeclaredField(ob.getName());
+            JLabel label = (JLabel) field.get(this);
+            if (!label.isVisible()) {
+                label.setVisible(true);
+            }
+            if (estado) {
+                label.setIcon(ICONO_BIEN);
+            } else {
+                label.setIcon(ICONO_MAL);
+            }
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(VistaRegistrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @Override
     public void ancestorAdded(AncestorEvent event) {
         if(isShowing()) {
+            noSelect = true;
+            tbpClaves.add("Clave 1", new PnlReactivosTab());
+            controlVista.agregarClave(1);
             consultarCursos();
         }
     }

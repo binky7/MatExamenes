@@ -528,6 +528,7 @@
                       <StringArray count="0"/>
                     </Property>
                     <Property name="selectionMode" type="int" value="0"/>
+                    <Property name="toolTipText" type="java.lang.String" value="selecciona un tema para la b&#xfa;squeda"/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -548,6 +549,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/recursos/ver24.png"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="ver reactivo"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="verReactivo"/>
@@ -646,6 +648,7 @@
                 <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
                   <SpinnerModel initial="0" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="cantidad de reactivos a seleccionar del tema"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblTemasAuto">
@@ -672,6 +675,7 @@
                       <StringArray count="0"/>
                     </Property>
                     <Property name="selectionMode" type="int" value="0"/>
+                    <Property name="toolTipText" type="java.lang.String" value="tema a agregar"/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -710,6 +714,7 @@
                         <Column editable="false" title="Cantidad" type="java.lang.Integer"/>
                       </Table>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="temas a agregar y cantidad de reactivos por tema a seleccionar"/>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
@@ -740,6 +745,7 @@
                   <Font name="Arial" size="12" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Agregar Seleccion"/>
+                <Property name="toolTipText" type="java.lang.String" value="agrega una nueva selecci&#xf3;n del tema y cantidad seleccionados"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="agregarSeleccion"/>
@@ -751,6 +757,7 @@
                   <Font name="Arial" size="12" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Remover Seleccion"/>
+                <Property name="toolTipText" type="java.lang.String" value="Remueve la fila seleccionada de la tabla selecciones"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removerSeleccion"/>
@@ -783,6 +790,7 @@
           <Image iconType="3" name="/recursos/aceptar24.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Aceptar"/>
+        <Property name="toolTipText" type="java.lang.String" value="agregar los reactivos autom&#xe1;tica o manualmente al examen"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aceptarAgregarReactivos"/>

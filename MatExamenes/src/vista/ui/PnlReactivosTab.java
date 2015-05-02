@@ -5,7 +5,10 @@
  */
 package vista.ui;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -46,7 +49,7 @@ public class PnlReactivosTab extends javax.swing.JPanel {
                 java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                true, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -60,6 +63,10 @@ public class PnlReactivosTab extends javax.swing.JPanel {
         tabla.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tabla.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tabla);
+        if (tabla.getColumnModel().getColumnCount() > 0) {
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(20);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(20);
+        }
 
         lblReactivos.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         lblReactivos.setText("Reactivos:");
@@ -100,6 +107,19 @@ public class PnlReactivosTab extends javax.swing.JPanel {
     
     public JTable getTabla() {
         return tabla;
+    }
+    
+    public List<Integer> getSelectedRows() {
+        List<Integer> selectedIndexes = new ArrayList<>();
+        
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        
+        for(int i = 0; i < model.getRowCount(); i++) {
+            if((boolean)model.getValueAt(i, 0) == true) {
+                selectedIndexes.add(i);
+            }
+        }
+        return selectedIndexes;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

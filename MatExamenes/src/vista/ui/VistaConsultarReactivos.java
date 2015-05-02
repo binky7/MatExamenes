@@ -60,6 +60,10 @@ implements InterfaceVista, AncestorListener {
     public void setControlador(CVMantenerReactivos controlVista) {
         this.controlVista = controlVista;
     }
+
+    public void deshabilitarBtnEliminar() {
+        btnEliminar.setEnabled(false);
+    }
     
     private void consultarCursos() {
         List<CursoDTO> cursos = controlVista.obtenerCursos();
@@ -243,14 +247,14 @@ implements InterfaceVista, AncestorListener {
         lblCurso.setText("Curso:");
 
         cmbCurso.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        cmbCurso.setToolTipText("");
+        cmbCurso.setToolTipText("Selección de un curso existente");
         cmbCurso.setPreferredSize(new java.awt.Dimension(78, 25));
 
         lblTema.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblTema.setText("Tema:");
 
         cmbTema.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        cmbTema.setToolTipText("");
+        cmbTema.setToolTipText("Selección del tema al que pertenecen los reactivos a buscar");
         cmbTema.setPreferredSize(new java.awt.Dimension(78, 25));
 
         lblReactivos.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -290,7 +294,7 @@ implements InterfaceVista, AncestorListener {
         });
 
         btnBuscar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/buscar24.png"))); // NOI18N
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/buscar24_2.png"))); // NOI18N
         btnBuscar.setText("Buscar");
         btnBuscar.setPreferredSize(new java.awt.Dimension(77, 30));
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -323,15 +327,15 @@ implements InterfaceVista, AncestorListener {
                             .addGap(245, 245, 245))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(28, 28, 28)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(lblCurso)
-                                .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(lblTema)
-                                .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cmbCurso, 0, 156, Short.MAX_VALUE)
+                                .addComponent(cmbTema, 0, 156, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(148, 148, 148)
+                                    .addGap(110, 110, 110)
                                     .addComponent(lblTitulo)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 291, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -408,7 +412,8 @@ implements InterfaceVista, AncestorListener {
                             Vista.ModificarReactivo);
                 }
                 else {
-                    JOptionPane.showMessageDialog(this, "Ha ocurrido un error");
+                    JOptionPane.showMessageDialog(this, "Ha ocurrido un error",
+                            "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
             else {
@@ -432,7 +437,8 @@ implements InterfaceVista, AncestorListener {
         
         if(indexesReactivos.size() > 0) {
             int q = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                    + "quieres eliminar el(los) reactivo(s) seleccionado(s)?");
+                    + "quieres eliminar el(los) reactivo(s) seleccionado(s)?",
+                    "Confirmación", JOptionPane.YES_NO_OPTION);
             if (q != 0) {
                 return;
             }
@@ -451,7 +457,7 @@ implements InterfaceVista, AncestorListener {
             }
             else {
                 JOptionPane.showMessageDialog(this, "No se pudieron eliminar "
-                        + "los reactivos");
+                        + "los reactivos", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         else {

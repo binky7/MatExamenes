@@ -290,7 +290,7 @@ public class CVMantenerExamenes {
         ClaveExamenDTO objClave = new ClaveExamenDTO();
         ClaveExamenPK clavePK = new ClaveExamenPK();
 
-        clavePK.setClave(clave + 1);
+        clavePK.setClave(clave);
         objClave.setId(clavePK);
         examen.addClave(objClave);
     }
@@ -309,7 +309,7 @@ public class CVMantenerExamenes {
     public void removerTodasLasClaves() {
         
         if(examen != null) {
-            examen.setClaves(null);
+            examen.setClaves(new ArrayList<ClaveExamenDTO>());
         }
     }
     
