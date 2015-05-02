@@ -336,6 +336,17 @@ public class CVMantenerExamenes {
         
         return listaReactivos;
     }
+
+    public int obtenerTotalReactivos(String nombreTema) {
+        List<ReactivoDTO> reactivos = obtenerReactivosPorTema(nombreTema);
+        int total = 0;
+        
+        if(reactivos != null) {
+            total = reactivos.size();
+        }
+        
+        return total;
+    }
     
     public void liberarMemoriaConsultar() {
         examenes = null;
