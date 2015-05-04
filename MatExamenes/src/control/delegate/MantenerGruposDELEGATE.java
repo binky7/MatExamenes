@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 import modelo.dto.CursoDTO;
 import modelo.dto.GrupoDTO;
 import remoteAccess.Enlace;
-import remoteAccess.Persistencia;
 
 /**
  *

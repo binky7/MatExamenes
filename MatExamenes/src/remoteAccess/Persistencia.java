@@ -109,4 +109,13 @@ public interface Persistencia extends Remote {
     
     CursoDTO obtenerCursoPorTema(TemaDTO tema)
             throws RemoteException;
+
+    List<CursoDTO> obtenerCursosPorMaestro(UsuarioDTO maestro) 
+            throws RemoteException;
+
+    List<GrupoDTO> obtenerGrupos(CursoDTO curso)
+            throws RemoteException;
+
+    List<GrupoDTO> obtenerGrupos(CursoDTO curso, UsuarioDTO usuarioActual)
+            throws RemoteException;
 }

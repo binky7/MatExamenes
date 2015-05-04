@@ -55,15 +55,15 @@ public class CVMantenerGrupos {
     }
 
     public Integer guardarGrupo(GrupoDTO objGrupo) {
-        Integer id;
+        Integer id = null;
         if (grupo != null) {
             this.grupo.setNombre(objGrupo.getNombre());
             this.grupo.setGrado(objGrupo.getGrado());
             this.grupo.setTurno(objGrupo.getTurno());
             this.grupo.setAlumnos(this.listaAlumnos);
             this.grupo.setMaestros(this.mapaMaestros);
+            id = gruposDELEGATE.guardarGrupo(this.grupo);
         }
-        id = gruposDELEGATE.guardarGrupo(this.grupo);
         return id;
     }
 
@@ -143,7 +143,7 @@ public class CVMantenerGrupos {
         return alumnos;
     }
 
-    public List<UsuarioDTO> agregarAlumnosLista(List<UsuarioDTO> listaAlumnos) {
+    public List<UsuarioDTO> agregarAlumnosLista(List<UsuarioDTO> alumnos) {
         if (this.grupo == null) {
             this.grupo = new GrupoDTO();
         }
@@ -151,21 +151,21 @@ public class CVMantenerGrupos {
         if (this.listaAlumnos == null) {
             this.listaAlumnos = new ArrayList<>();
         }
-        int cont = listaAlumnos.size();
+        int cont = alumnos.size();
         List<UsuarioDTO> repetidos = new ArrayList<>();
         for (int i = 0; i < cont; i++) {
             boolean ban = false;
             for (int j = 0; j < this.listaAlumnos.size(); j++) {
-                if (this.listaAlumnos.get(j).getId() == listaAlumnos.get(j).getId()) {
+                if (this.listaAlumnos.get(j).getId() == alumnos.get(i).getId()) {
                     ban = true;
                 }
             }
             if (ban) {
-                repetidos.add(listaAlumnos.get(i));
+                repetidos.add(alumnos.get(i));
             }
         }
-        listaAlumnos.removeAll(repetidos);
-        this.listaAlumnos.addAll(listaAlumnos);
+        alumnos.removeAll(repetidos);
+        this.listaAlumnos.addAll(alumnos);
         this.grupo.setAlumnos(this.listaAlumnos); //Lista de alumnos no repetidos
         return this.grupo.getAlumnos();
     }
