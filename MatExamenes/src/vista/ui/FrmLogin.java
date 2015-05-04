@@ -15,7 +15,7 @@ import vista.controlador.CVLogin;
  *
  * @author Jesus Donaldo
  */
-public class VistaLogin extends javax.swing.JFrame {
+public class FrmLogin extends javax.swing.JFrame {
 
     private final FrmPrincipal p;
     private final CVLogin cvLogin;
@@ -23,7 +23,7 @@ public class VistaLogin extends javax.swing.JFrame {
     /**
      * Creates new form VistaLogin
      */
-    public VistaLogin() {
+    public FrmLogin() {
         initComponents();
         p = new FrmPrincipal();
         cvLogin = new CVLogin();
@@ -202,7 +202,7 @@ public class VistaLogin extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VistaLogin().setVisible(true);
+                new FrmLogin().setVisible(true);
             }
         });
     }

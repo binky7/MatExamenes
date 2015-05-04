@@ -24,7 +24,7 @@ public interface InterfaceVista {
         ConsultarGrupo, ModificarGrupo, RegistrarReactivo, ConsultarReactivos,
         ModificarReactivo, RegistrarExamen, ConsultarExamenes, ModificarExamen,
         ConsultarCalificaciones, ConsultarCalificacionesExamen,
-        RegistrarUsuario,ConsultarUsuarios,ModificarUsuario
+        RegistrarUsuario,ConsultarUsuarios,ModificarUsuario, GenerarEstadisticas
     }
     
     /**
