@@ -18,7 +18,6 @@ import remoteAccess.Persistencia;
  * @author ivan
  */
 public class MantenerCursosDELEGATE {
-    private Persistencia persistencia;
     
     public List<TemaDTO> obtenerTemasSinAsignar() {
         List<TemaDTO> listaTemasSinAsignar = null;

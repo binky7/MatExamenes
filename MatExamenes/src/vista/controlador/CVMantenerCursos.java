@@ -6,10 +6,8 @@
 package vista.controlador;
 
 import control.delegate.MantenerCursosDELEGATE;
-import java.util.ArrayList;
 import java.util.List;
 import modelo.dto.CursoDTO;
-import modelo.dto.TemaDTO;
 
 /**
  *

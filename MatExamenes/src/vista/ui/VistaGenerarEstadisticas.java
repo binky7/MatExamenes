@@ -21,7 +21,7 @@ import modelo.dto.TablaEstadisticas;
  *
  * @author BoredmanDA
  */
-public class GenerarEstadisticasGrupo extends javax.swing.JPanel {
+public class VistaGenerarEstadisticas extends javax.swing.JPanel {
 
     /**
      * Creates new form GenerarEstadisticasAlumno
@@ -31,7 +31,7 @@ public class GenerarEstadisticasGrupo extends javax.swing.JPanel {
     private TablaEstadisticas tableModel;
     private Chart chart;
     
-    public GenerarEstadisticasGrupo() {
+    public VistaGenerarEstadisticas() {
         initComponents();
         createDataTable();
         
@@ -69,7 +69,7 @@ public class GenerarEstadisticasGrupo extends javax.swing.JPanel {
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GenerarEstadisticasGrupo();
+                new VistaGenerarEstadisticas();
             }
         });
         
