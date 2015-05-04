@@ -38,10 +38,8 @@
                   <Image iconType="3" name="/recursos/nuevo24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Registrar Tema"/>
+                <Property name="name" type="java.lang.String" value="RegistrarTema" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miRegistrarTemaActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miConsultarTemas">
               <Properties>
@@ -49,10 +47,8 @@
                   <Image iconType="3" name="/recursos/consulta24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Consultar Temas"/>
+                <Property name="name" type="java.lang.String" value="ConsultarTemas" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miConsultarTemasActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -70,10 +66,8 @@
                   <Image iconType="3" name="/recursos/nuevo24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Registrar Curso"/>
+                <Property name="name" type="java.lang.String" value="RegistrarCurso" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miRegistrarCursoActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miConsultarCursos">
               <Properties>
@@ -81,10 +75,8 @@
                   <Image iconType="3" name="/recursos/consulta24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Consultar Cursos"/>
+                <Property name="name" type="java.lang.String" value="ConsultarCursos" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miConsultarCursosActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -102,10 +94,8 @@
                   <Image iconType="3" name="/recursos/nuevo24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Registrar Usuario"/>
+                <Property name="name" type="java.lang.String" value="RegistrarUsuario" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miRegistrarUsuarioActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miConsultarUsuarios">
               <Properties>
@@ -113,10 +103,8 @@
                   <Image iconType="3" name="/recursos/consulta24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Consultar Usuarios"/>
+                <Property name="name" type="java.lang.String" value="ConsultarUsuarios" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miConsultarUsuariosActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -135,10 +123,8 @@
                   <Image iconType="3" name="/recursos/nuevo24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Registrar Reactivo"/>
+                <Property name="name" type="java.lang.String" value="RegistrarReactivo" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miRegistrarReactivoActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miConsultarReactivos">
               <Properties>
@@ -146,10 +132,8 @@
                   <Image iconType="3" name="/recursos/consulta24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Consultar Reactivos"/>
+                <Property name="name" type="java.lang.String" value="ConsultarReactivos" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miConsultarReactivosActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -167,10 +151,8 @@
                   <Image iconType="3" name="/recursos/nuevo24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Registrar Examen"/>
+                <Property name="name" type="java.lang.String" value="RegistrarExamen" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miRegistrarExamenActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miConsultarExamenes">
               <Properties>
@@ -178,10 +160,8 @@
                   <Image iconType="3" name="/recursos/consulta24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Consultar Ex&#xe1;menes"/>
+                <Property name="name" type="java.lang.String" value="ConsultarExamenes" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miConsultarExamenesActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
             </MenuItem>
@@ -191,6 +171,7 @@
                   <KeyStroke key="Alt+A"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Asignar Examen"/>
+                <Property name="name" type="java.lang.String" value="AsignarExamen" noResource="true"/>
               </Properties>
             </MenuItem>
           </SubComponents>
@@ -209,10 +190,8 @@
                   <Image iconType="3" name="/recursos/nuevo24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Registrar Grupo"/>
+                <Property name="name" type="java.lang.String" value="RegistrarGrupo" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miRegistrarGrupoActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miConsultarGrupos">
               <Properties>
@@ -220,10 +199,8 @@
                   <Image iconType="3" name="/recursos/consulta24.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Consultar Grupos"/>
+                <Property name="name" type="java.lang.String" value="ConsultarGrupo" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miConsultarGruposActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -240,10 +217,8 @@
             <MenuItem class="javax.swing.JMenuItem" name="miConsultarCalificaciones">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Consultar Calificaciones"/>
+                <Property name="name" type="java.lang.String" value="ConsultarCalificaciones" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miConsultarCalificacionesActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -255,6 +230,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="miGenerarEstadisticas">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Generar Estad&#xed;sticas"/>
+                <Property name="name" type="java.lang.String" value="GenerarEstadisticas" noResource="true"/>
               </Properties>
             </MenuItem>
           </SubComponents>
