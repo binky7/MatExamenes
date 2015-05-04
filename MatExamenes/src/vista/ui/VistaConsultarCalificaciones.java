@@ -102,7 +102,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
     public void consultarAlumnos(Integer indexGrupo) {
         List<UsuarioDTO> alumnos = controlVista.obtenerAlumnos(indexGrupo);
         if (alumnos == null || alumnos.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No hay grupos para este curso!", "Advertencia", 1);
+            JOptionPane.showMessageDialog(this, "No hay alumnos en este grupo!", "Advertencia", 1);
             limpiar();
         } else {
             mostrarAlumnos(alumnos);
@@ -115,7 +115,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
             modelo.removeRow(i);
         }
         for (UsuarioDTO alumno : alumnos) {
-            Object[] fila = new Object[4];
+            Object[] fila = new Object[5];
             fila[0] = false;
             fila[1] = alumno.getId();
             fila[2] = alumno.getApellidoPaterno();
@@ -129,7 +129,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
     public void consultarExamenes(Integer indexAlumno) {
         List<ExamenAsignadoDTO> examenes = controlVista.obtenerExamenes(indexAlumno);
         if (examenes == null || examenes.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No hay grupos para este curso!", "Advertencia", 1);
+            JOptionPane.showMessageDialog(this, "No hay examenes contestados por este alumno!", "Advertencia", 1);
             limpiar();
         } else {
             mostrarExamenes(examenes);
@@ -523,7 +523,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
                     "Advertencia", 1);
         } else {
             padre.mostrarVista(Vista.ConsultarCalificacionesExamen);
-        }       
+        }
     }//GEN-LAST:event_btnSiguienteExamenesActionPerformed
 
     private void btnSiguienteCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteCursosActionPerformed

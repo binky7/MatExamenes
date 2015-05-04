@@ -62,11 +62,10 @@ public class CVConsultarCalificaciones {
 
     public List<UsuarioDTO> obtenerAlumnos(Integer indexGrupo) {
         this.grupo = this.listaGrupos.get(indexGrupo);
-        this.listaAlumnos = this.grupo.getAlumnos();
-        return this.listaAlumnos;
+        return consultarCalificacionesDELEGATE.obtenerAlumnosDeGrupo(grupo);
     }
 
     public List<ExamenAsignadoDTO> obtenerExamenes(Integer indexAlumno) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 }

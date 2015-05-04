@@ -34,7 +34,7 @@ public class ConsultarCalificacionesDELEGATE {
     public List<CursoDTO> obtenerCursosPorMaestro(UsuarioDTO maestro) {
         List<CursoDTO> cursos = null;
         try {
-            cursos = Enlace.getPersistencia().obtenerCursosPorMaestro(maestro);
+            cursos = Enlace.getPersistencia().obtenerCursosDeGrupo(maestro);
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -44,7 +44,7 @@ public class ConsultarCalificacionesDELEGATE {
     public List<GrupoDTO> obtenerGruposPorCurso(CursoDTO curso) {
         List<GrupoDTO> grupos = null;
         try {
-            grupos = Enlace.getPersistencia().obtenerGrupos(curso);
+            grupos = Enlace.getPersistencia().obtenerGruposPorCurso(curso, null);
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -54,10 +54,20 @@ public class ConsultarCalificacionesDELEGATE {
     public List<GrupoDTO> obtenerGruposPorCurso(CursoDTO curso, UsuarioDTO usuarioActual) {
         List<GrupoDTO> grupos = null;
         try {
-            grupos = Enlace.getPersistencia().obtenerGrupos(curso, usuarioActual);
+            grupos = Enlace.getPersistencia().obtenerGruposPorCurso(curso, usuarioActual);
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName()).log(Level.SEVERE, null, ex);
         }
         return grupos;
+    }
+
+    public List<UsuarioDTO> obtenerAlumnosDeGrupo(GrupoDTO grupo) {
+        List<UsuarioDTO> alumnos = null;
+        try {
+            alumnos = Enlace.getPersistencia().obtenerAlumnosDeGrupo(grupo);
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return alumnos;
     }
 }
