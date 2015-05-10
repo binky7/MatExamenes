@@ -151,13 +151,12 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
         }
         for (CursoDTO curso : mapaMaestros.keySet()) {
             UsuarioDTO maestro = mapaMaestros.get(curso);
-            Object[] fila = new Object[6];
-            fila[0] = false;
-            fila[1] = String.valueOf(maestro.getId());
-            fila[2] = maestro.getNombre();
-            fila[3] = maestro.getApellidoPaterno();
-            fila[4] = maestro.getApellidoMaterno();
-            fila[5] = curso.getNombre();
+            Object[] fila = new Object[5];
+            fila[0] = String.valueOf(maestro.getId());
+            fila[1] = maestro.getNombre();
+            fila[2] = maestro.getApellidoPaterno();
+            fila[3] = maestro.getApellidoMaterno();
+            fila[4] = curso.getNombre();
             modelo.addRow(fila);
         }
         tblMaestros.setModel(modelo);
@@ -188,7 +187,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
         DefaultTableModel modelo = (DefaultTableModel) tblMaestros.getModel();
         int cont = modelo.getRowCount();
         for (int i = 0; i < cont; i++) {
-            if (String.valueOf(modelo.getValueAt(i, 5)).equals(nombreCurso)) {
+            if (String.valueOf(modelo.getValueAt(i, 4)).equals(nombreCurso)) {
                 modelo.removeRow(i);
                 break;
             }
@@ -320,11 +319,11 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
 
             },
             new String [] {
-                "[x]", "Id", "A.P.", "A.M.", "Nom", "Curso"
+                "Id", "A.P.", "A.M.", "Nom", "Curso"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -533,19 +532,15 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
      * @param evt Recibe el evento del boton que lo activo.
      */
     private void btnRmvMaestroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRmvMaestroActionPerformed
-        String curso = null;
-        int cont = tblMaestros.getRowCount();
-        for (int x = 0; x < cont; x++) {
-            if (tblMaestros.getValueAt(x, 0).equals(true)) {
-                DefaultTableModel model = (DefaultTableModel) tblMaestros.getModel();
-                curso = String.valueOf(model.getValueAt(x, 5));
-            }
-        }
-        if (cont == 0 || curso == null) {
-            JOptionPane.showMessageDialog(this, "Selecciona al menos un maestro", "Advertencia", 1);
+        String nombreCurso = null;
+        int index = tblMaestros.getSelectedRow();
+        if (index != -1) {
+            DefaultTableModel model = (DefaultTableModel) tblMaestros.getModel();
+            nombreCurso = String.valueOf(model.getValueAt(index, 4));
+            controlVista.removerMaestro(nombreCurso);
+            removerMaestro(nombreCurso);
         } else {
-            controlVista.removerMaestro(curso);
-            removerMaestro(curso);
+            JOptionPane.showMessageDialog(this, "Selecciona al menos un maestro", "Advertencia", 1);
         }
     }//GEN-LAST:event_btnRmvMaestroActionPerformed
 

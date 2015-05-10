@@ -40,7 +40,7 @@ public class MantenerUsuariosDELEGATE {
 
         return usuarios;
     }
-    
+
     public List<UsuarioDTO> obtenerAlumnosPorApellido(String apellido) {
         List<UsuarioDTO> usuarios = null;
         try {
@@ -54,7 +54,7 @@ public class MantenerUsuariosDELEGATE {
 
     public List<UsuarioDTO> obtenerUsuariosPorApellido(String apellido, Tipo tipo) {
         List<UsuarioDTO> usuarios = null;
-        try { 
+        try {
             usuarios = Enlace.getPersistencia().obtenerUsuariosPorApellido(apellido, tipo);
         } catch (RemoteException | NotBoundException ex) {
             System.out.println(ex);
@@ -62,7 +62,29 @@ public class MantenerUsuariosDELEGATE {
 
         return usuarios;
     }
-    
+
+    public List<UsuarioDTO> obtenerUsuariosPorApellidoM(String apellidoMaterno, Tipo tipo) {
+        List<UsuarioDTO> usuarios = null;
+        try {
+            usuarios = Enlace.getPersistencia().obtenerUsuariosPorApellidoM(apellidoMaterno, tipo);
+        } catch (RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+
+        return usuarios;
+    }
+
+    public List<UsuarioDTO> obtenerUsuariosPorNombre(String nombre, Tipo tipo) {
+        List<UsuarioDTO> usuarios = null;
+        try {
+            usuarios = Enlace.getPersistencia().obtenerUsuariosPorNombre(nombre, tipo);
+        } catch (RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+
+        return usuarios;
+    }
+
     public boolean modificarUsuario(UsuarioDTO usuario) {
         boolean ok = false;
         try {

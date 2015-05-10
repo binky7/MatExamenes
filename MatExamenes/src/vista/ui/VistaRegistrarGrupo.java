@@ -116,13 +116,12 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
         }
         for (CursoDTO curso : mapaMaestros.keySet()) {
             UsuarioDTO maestro = mapaMaestros.get(curso);
-            Object[] fila = new Object[6];
-            fila[0] = false;
-            fila[1] = String.valueOf(maestro.getId());
-            fila[2] = maestro.getNombre();
-            fila[3] = maestro.getApellidoPaterno();
-            fila[4] = maestro.getApellidoMaterno();
-            fila[5] = curso.getNombre();
+            Object[] fila = new Object[5];
+            fila[0] = String.valueOf(maestro.getId());
+            fila[1] = maestro.getNombre();
+            fila[2] = maestro.getApellidoPaterno();
+            fila[3] = maestro.getApellidoMaterno();
+            fila[4] = curso.getNombre();
             modelo.addRow(fila);
         }
         tblMaestros.setModel(modelo);
@@ -153,7 +152,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
         DefaultTableModel modelo = (DefaultTableModel) tblMaestros.getModel();
         int cont = modelo.getRowCount();
         for (int i = 0; i < cont; i++) {
-            if (String.valueOf(modelo.getValueAt(i, 5)).equals(nombreCurso)) {
+            if (String.valueOf(modelo.getValueAt(i, 4)).equals(nombreCurso)) {
                 modelo.removeRow(i);
                 break;
             }
@@ -311,17 +310,18 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
 
             },
             new String [] {
-                "[x]", "Id", "Nom", "Apellido P.", "Apellido M.", "Curso"
+                "Id", "Nom", "Apellido P.", "Apellido M.", "Curso"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
+        tblMaestros.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane7.setViewportView(tblMaestros);
 
         lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -511,18 +511,14 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
      */
     private void btnRmvMaestroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRmvMaestroActionPerformed
         String nombreCurso = null;
-        int contador = tblMaestros.getRowCount();
-        for (int i = 0; i < contador; i++) {
-            if (tblMaestros.getValueAt(i, 0).equals(true)) {
-                DefaultTableModel model = (DefaultTableModel) tblMaestros.getModel();
-                nombreCurso = String.valueOf(model.getValueAt(i, 5));
-            }
-        }
-        if (contador == 0 || nombreCurso == null) {
-            JOptionPane.showMessageDialog(this, "Selecciona al menos un maestro", "Advertencia", 1);
-        } else {
+        int index = tblMaestros.getSelectedRow();
+        if (index != -1) {
+            DefaultTableModel model = (DefaultTableModel) tblMaestros.getModel();
+            nombreCurso = String.valueOf(model.getValueAt(index, 4));
             controlVista.removerMaestro(nombreCurso);
             removerMaestro(nombreCurso);
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecciona al menos un maestro", "Advertencia", 1);
         }
     }//GEN-LAST:event_btnRmvMaestroActionPerformed
 

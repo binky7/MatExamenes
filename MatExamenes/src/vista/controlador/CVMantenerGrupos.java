@@ -47,11 +47,21 @@ public class CVMantenerGrupos {
         gruposDELEGATE = new MantenerGruposDELEGATE();
         usuariosDELEGATE = new MantenerUsuariosDELEGATE();
         listaCursos = new ArrayList<>();
+        mapaMaestros = null;
     }
 
-    public List<CursoDTO> obtenerCursos() {
+    public List<CursoDTO> obtenerCursos(int indexMaestro) {
         this.listaCursos = gruposDELEGATE.obtenerCursos();
-        return listaCursos;
+        UsuarioDTO maestro = this.listaMaestros.get(indexMaestro);
+        if (this.mapaMaestros != null) {
+            HashMap<CursoDTO, UsuarioDTO> mapaMaestro = this.mapaMaestros;
+            for (CursoDTO curso : mapaMaestro.keySet()) {
+                if (maestro.getId() == mapaMaestro.get(curso).getId()) {
+                    this.listaCursos.remove(curso);
+                }
+            }
+        }
+        return this.listaCursos;
     }
 
     public Integer guardarGrupo(GrupoDTO objGrupo) {
@@ -124,8 +134,28 @@ public class CVMantenerGrupos {
         return listaAlumnos;
     }
 
+    public List<UsuarioDTO> obtenerAlumnosPorApellidoM(String apellidoMaterno) {
+        this.listaAlumnos = usuariosDELEGATE.obtenerUsuariosPorApellidoM(apellidoMaterno, Tipo.Alumno);
+        return listaAlumnos;
+    }
+
+    public List<UsuarioDTO> obtenerAlumnosPorNombre(String nombre) {
+        this.listaAlumnos = usuariosDELEGATE.obtenerUsuariosPorNombre(nombre, Tipo.Alumno);
+        return listaAlumnos;
+    }
+
     public List<UsuarioDTO> obtenerMaestrosPorApellido(String apellidoPaterno, Tipo tipo) {
         this.listaMaestros = usuariosDELEGATE.obtenerUsuariosPorApellido(apellidoPaterno, tipo);
+        return listaMaestros;
+    }
+
+    public List<UsuarioDTO> obtenerMaestrosPorApellidoM(String apellidoMaterno, Tipo tipo) {
+        this.listaMaestros = usuariosDELEGATE.obtenerUsuariosPorApellidoM(apellidoMaterno, tipo);
+        return listaMaestros;
+    }
+
+    public List<UsuarioDTO> obtenerMaestrosPorNombre(String nombre, Tipo tipo) {
+        this.listaMaestros = usuariosDELEGATE.obtenerUsuariosPorNombre(nombre, tipo);
         return listaMaestros;
     }
 
@@ -170,15 +200,18 @@ public class CVMantenerGrupos {
         return this.grupo.getAlumnos();
     }
 
-    public HashMap<CursoDTO, UsuarioDTO> agregarMaestro(int indexCurso, int indexMaestro) {
+    public HashMap<CursoDTO, UsuarioDTO> agregarMaestro(List indexesCursos, int indexMaestro) {
         UsuarioDTO maestro = null;
         CursoDTO curso = null;
+        HashMap<CursoDTO, UsuarioDTO> mapaMaestro = null;
         if (this.listaMaestros != null && !this.listaMaestros.isEmpty()
                 && this.listaCursos != null && !this.listaCursos.isEmpty()) {
-            maestro = this.listaMaestros.get(indexMaestro);
-            curso = this.listaCursos.get(indexCurso);
+            for (Object indexCurso : indexesCursos) {
+                maestro = this.listaMaestros.get(indexMaestro);
+                curso = this.listaCursos.get((int) indexCurso);
+                mapaMaestro = agregarMaestro(curso, maestro);
+            }
         }
-        HashMap<CursoDTO, UsuarioDTO> mapaMaestro = agregarMaestro(curso, maestro);
         return mapaMaestro;
     }
 
