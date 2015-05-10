@@ -33,6 +33,9 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
      */
     public VistaRegistrarGrupo() {
         initComponents();
+        cbGrado.setSelectedIndex(-1);
+        cbNombre.setSelectedIndex(-1);
+        cbTurno.setSelectedIndex(-1);
     }
 
     /**
@@ -58,9 +61,9 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
      */
     @Override
     public void limpiar() {
-        txtfNombre.setText("");
-        cbGrado.setSelectedIndex(0);
-        cbTurno.setSelectedIndex(0);
+        cbGrado.setSelectedIndex(-1);
+        cbNombre.setSelectedIndex(-1);
+        cbTurno.setSelectedIndex(-1);
         DefaultTableModel modelo = (DefaultTableModel) tblAlumnos.getModel();
         for (int i = modelo.getRowCount() - 1; i > -1; i--) {
             modelo.removeRow(i);
@@ -166,7 +169,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
      */
     public GrupoDTO encapsularGrupo() {
         GrupoDTO grupo = new GrupoDTO();
-        String nombre = txtfNombre.getText();
+        String nombre = String.valueOf(cbNombre.getSelectedItem());
         if (Validador.esGrupo(nombre)) {
             grupo.setNombre(nombre);
             grupo.setGrado(cbGrado.getSelectedIndex() + 1);
@@ -175,7 +178,6 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
             } else {
                 grupo.setTurno(GrupoDTO.Turno.V);
             }
-            //Guardar alumnos y maestros
         } else {
             grupo = null;
         }
@@ -193,7 +195,6 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
 
         lblNombre = new javax.swing.JLabel();
         lblAlumnos = new javax.swing.JLabel();
-        txtfNombre = new javax.swing.JTextField();
         btnAgrAlumnos = new javax.swing.JButton();
         btnRmvAlumnos = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
@@ -210,16 +211,15 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
         jScrollPane7 = new javax.swing.JScrollPane();
         tblMaestros = new javax.swing.JTable();
         lblTitulo = new javax.swing.JLabel();
+        cbNombre = new javax.swing.JComboBox();
 
         setPreferredSize(new java.awt.Dimension(800, 600));
 
         lblNombre.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblNombre.setText("Nombre del Grupo:");
+        lblNombre.setText("Nombre:");
 
         lblAlumnos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblAlumnos.setText("Alumnos");
-
-        txtfNombre.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         btnAgrAlumnos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnAgrAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/agregar24.png"))); // NOI18N
@@ -296,13 +296,13 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
         lblGrado.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblGrado.setText("Grado:");
 
-        cbGrado.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cbGrado.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         cbGrado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1ro", "2do", "3ro" }));
 
         lblTurno.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblTurno.setText("Turno:");
 
-        cbTurno.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cbTurno.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         cbTurno.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Matutino", "Vespertino" }));
 
         tblMaestros.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -328,19 +328,33 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("Registrar Grupo");
 
+        cbNombre.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cbNombre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "C", "D", "E" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(321, 321, 321)
-                .addComponent(lblTitulo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(244, 244, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblTitulo)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblNombre)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(71, 71, 71)
+                        .addComponent(lblTurno)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(225, 225, 225))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(51, Short.MAX_VALUE)
+                .addGap(0, 51, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(478, 478, 478)
+                        .addGap(217, 217, 217)
                         .addComponent(btnGuardar)
                         .addGap(18, 18, 18)
                         .addComponent(btnCancelar))
@@ -355,20 +369,12 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
                             .addComponent(lblMaestros)
                             .addComponent(lblAlumnos)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(lblNombre)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(28, 28, 28)
                                         .addComponent(lblGrado)
                                         .addGap(18, 18, 18)
-                                        .addComponent(cbGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lblTurno)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(cbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(cbGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnAgrMaestro, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -379,17 +385,17 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(27, Short.MAX_VALUE)
+                .addContainerGap(21, Short.MAX_VALUE)
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNombre)
                     .addComponent(lblGrado)
                     .addComponent(cbGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTurno)
-                    .addComponent(cbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
+                    .addComponent(cbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNombre)
+                    .addComponent(cbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
                 .addComponent(lblMaestros)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -528,6 +534,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
     private javax.swing.JButton btnRmvAlumnos;
     private javax.swing.JButton btnRmvMaestro;
     private javax.swing.JComboBox cbGrado;
+    private javax.swing.JComboBox cbNombre;
     private javax.swing.JComboBox cbTurno;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
@@ -539,7 +546,6 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
     private javax.swing.JLabel lblTurno;
     private javax.swing.JTable tblAlumnos;
     private javax.swing.JTable tblMaestros;
-    private javax.swing.JTextField txtfNombre;
     // End of variables declaration//GEN-END:variables
 
     @Override

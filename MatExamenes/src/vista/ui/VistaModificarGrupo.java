@@ -35,6 +35,9 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
      */
     public VistaModificarGrupo() {
         initComponents();
+        cbGrado.setSelectedIndex(-1);
+        cbNombre.setSelectedIndex(-1);
+        cbTurno.setSelectedIndex(-1);
     }
 
     /**
@@ -60,9 +63,9 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
      */
     @Override
     public void limpiar() {
-        txtfNombre.setText("");
-        cbGrado.setSelectedIndex(0);
-        cbTurno.setSelectedIndex(0);
+        cbGrado.setSelectedIndex(-1);
+        cbNombre.setSelectedIndex(-1);
+        cbTurno.setSelectedIndex(-1);
         DefaultTableModel modelo = (DefaultTableModel) tblAlumnos.getModel();
         for (int i = modelo.getRowCount() - 1; i > -1; i--) {
             modelo.removeRow(i);
@@ -82,7 +85,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
      * @param grupo Recibe un objeto de tipo GrupoDTO.
      */
     private void mostrarDatos(GrupoDTO grupo) {
-        txtfNombre.setText(grupo.getNombre());
+        cbNombre.setSelectedItem(grupo.getNombre());
         cbGrado.setSelectedIndex(grupo.getGrado() - 1);
         if (grupo.getTurno() == Turno.M) {
             cbTurno.setSelectedIndex(0);
@@ -201,7 +204,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
      */
     public GrupoDTO encapsularGrupo() {
         GrupoDTO grupo = new GrupoDTO();
-        String nombre = txtfNombre.getText();
+        String nombre = String.valueOf(cbNombre.getSelectedItem());
         if (Validador.esGrupo(nombre)) {
             grupo.setNombre(nombre);
             grupo.setGrado(cbGrado.getSelectedIndex() + 1);
@@ -231,7 +234,6 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
         lblAlumnos = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblAlumnos = new javax.swing.JTable();
-        txtfNombre = new javax.swing.JTextField();
         btnAgrAlumnos = new javax.swing.JButton();
         btnRmvAlumnos = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
@@ -245,9 +247,10 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
         btnRmvMaestro = new javax.swing.JButton();
         btnAgrMaestros = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        cbNombre = new javax.swing.JComboBox();
 
         lblNombre.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblNombre.setText("Nombre del Grupo:");
+        lblNombre.setText("Nombre:");
 
         lblGrado.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblGrado.setText("Grado:");
@@ -273,8 +276,6 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
             }
         });
         jScrollPane3.setViewportView(tblAlumnos);
-
-        txtfNombre.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         btnAgrAlumnos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnAgrAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/agregar24.png"))); // NOI18N
@@ -360,6 +361,8 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
             }
         });
 
+        cbNombre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "C", "D", "E" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -380,17 +383,17 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
                             .addComponent(btnAgrMaestros, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(lblMaestros)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(lblGrado)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(79, 79, 79)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblTitulo)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblNombre)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(40, 40, 40)
-                                .addComponent(lblGrado)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cbGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(43, 43, 43)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(41, 41, 41)
                         .addComponent(lblTurno)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -409,12 +412,12 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
                 .addComponent(lblTitulo)
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblNombre)
                     .addComponent(lblGrado)
                     .addComponent(cbGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTurno)
-                    .addComponent(cbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(lblMaestros)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -554,6 +557,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
     private javax.swing.JButton btnRmvAlumnos;
     private javax.swing.JButton btnRmvMaestro;
     private javax.swing.JComboBox cbGrado;
+    private javax.swing.JComboBox cbNombre;
     private javax.swing.JComboBox cbTurno;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane6;
@@ -565,7 +569,6 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
     private javax.swing.JLabel lblTurno;
     private javax.swing.JTable tblAlumnos;
     private javax.swing.JTable tblMaestros;
-    private javax.swing.JTextField txtfNombre;
     // End of variables declaration//GEN-END:variables
 
     @Override

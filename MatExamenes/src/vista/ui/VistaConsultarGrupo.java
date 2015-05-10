@@ -19,7 +19,7 @@ import vista.interfaz.InterfaceVista;
  * @author BoredmanDA
  */
 public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorListener, InterfaceVista {
-    
+
     private CVMantenerGrupos controladorVista;
     private InterfaceVista padre;
     private List<GrupoDTO> listaGrupos;
@@ -88,11 +88,10 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
             modelo.removeRow(i);
         }
         for (GrupoDTO grupo : listaGrupos) {
-            Object[] fila = new Object[4];
-            fila[0] = false;
+            Object[] fila = new Object[3];
+            fila[0] = grupo.getGrado();
             fila[1] = grupo.getNombre();
-            fila[2] = grupo.getGrado();
-            fila[3] = grupo.getTurno();
+            fila[2] = grupo.getTurno();
             modelo.addRow(fila);
         }
         tblGrupos.setModel(modelo);
@@ -124,17 +123,19 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
 
             },
             new String [] {
-                "[x]", "Nombre", "Grado", "Turno"
+                "Grado", "Nombre", "Turno"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
+        tblGrupos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblGrupos.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(tblGrupos);
 
         btnEliminar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -217,13 +218,8 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
      */
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         int index = -1;
-        int contador = tblGrupos.getRowCount();
-        for (int i = 0; i < contador; i++) {
-            if (tblGrupos.getValueAt(i, 0).equals(true)) {
-                index = i;
-            }
-        }
-        if (contador == 0 || index == -1) {
+        index = tblGrupos.getSelectedRow();
+        if (index == -1) {
             JOptionPane.showMessageDialog(this, "Selecciona al menos un grupo",
                     "Advertencia", 1);
         } else {
@@ -246,13 +242,8 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
      */
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int index = -1;
-        int contador = tblGrupos.getRowCount();
-        for (int i = 0; i < contador; i++) {
-            if (tblGrupos.getValueAt(i, 0).equals(true)) {
-                index = i;
-            }
-        }
-        if (contador == 0 || index == -1) {
+        index = tblGrupos.getSelectedRow();
+        if (index == -1) {
             JOptionPane.showMessageDialog(this, "Selecciona al menos un grupo",
                     "Advertencia", 1);
         } else {
@@ -293,12 +284,12 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
         //No implementado.
     }
-    
+
     @Override
     public void mostrarVista(Vista vista) {
         //No implementado.
     }
-    
+
     @Override
     public void mostrarEntidad(Object entidad) {
         //No implementado.
@@ -321,25 +312,25 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
         }
         return cambiar;
     }
-    
+
     @Override
     public UsuarioDTO obtenerUsuarioActual() {
         //No implementado.
         return null;
     }
-    
+
     @Override
     public void ancestorAdded(AncestorEvent event) {
         if (isShowing()) {
             consultarGrupos();
         }
     }
-    
+
     @Override
     public void ancestorRemoved(AncestorEvent event) {
         //No implementado.
     }
-    
+
     @Override
     public void ancestorMoved(AncestorEvent event) {
         //No implementado.

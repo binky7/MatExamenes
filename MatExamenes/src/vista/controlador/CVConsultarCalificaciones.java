@@ -26,6 +26,9 @@ public class CVConsultarCalificaciones {
     private List<GrupoDTO> listaGrupos;
     private GrupoDTO grupo;
     private List<UsuarioDTO> listaAlumnos;
+    private UsuarioDTO alumno;
+    private List<ExamenAsignadoDTO> listaExamenes;
+    private ExamenAsignadoDTO examen;
 
     public CVConsultarCalificaciones() {
         consultarCalificacionesDELEGATE = new ConsultarCalificacionesDELEGATE();
@@ -62,10 +65,19 @@ public class CVConsultarCalificaciones {
 
     public List<UsuarioDTO> obtenerAlumnos(Integer indexGrupo) {
         this.grupo = this.listaGrupos.get(indexGrupo);
-        return consultarCalificacionesDELEGATE.obtenerAlumnosDeGrupo(grupo);
+        this.listaAlumnos = consultarCalificacionesDELEGATE.obtenerAlumnosDeGrupo(grupo);
+        return this.listaAlumnos;
     }
 
     public List<ExamenAsignadoDTO> obtenerExamenes(Integer indexAlumno) {
-        return null;
+        this.alumno = this.listaAlumnos.get(indexAlumno);
+        this.listaExamenes = consultarCalificacionesDELEGATE.obtenerExamenes(this.alumno);
+        return this.listaExamenes;
+    }
+
+    public ExamenAsignadoDTO obtenerExamen(Integer indexExamen) {
+        this.examen = this.listaExamenes.get(indexExamen);
+        this.examen = consultarCalificacionesDELEGATE.obtenerExamen(this.examen.getId());
+        return examen;
     }
 }

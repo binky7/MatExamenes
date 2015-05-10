@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.dto.CursoDTO;
+import modelo.dto.ExamenAsignadoDTO;
+import modelo.dto.ExamenAsignadoPK;
 import modelo.dto.GrupoDTO;
 import modelo.dto.UsuarioDTO;
 import remoteAccess.Enlace;
@@ -69,5 +71,25 @@ public class ConsultarCalificacionesDELEGATE {
             Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName()).log(Level.SEVERE, null, ex);
         }
         return alumnos;
+    }
+
+    public List<ExamenAsignadoDTO> obtenerExamenes(UsuarioDTO alumno) {
+        List<ExamenAsignadoDTO> examenes = null;
+        try {
+            examenes = Enlace.getPersistencia().obtenerExamenesAsignados(alumno);
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return examenes;
+    }
+
+    public ExamenAsignadoDTO obtenerExamen(ExamenAsignadoPK id) {
+        ExamenAsignadoDTO examen = null;
+        try {
+            examen = Enlace.getPersistencia().obtenerExamenContestado(id);
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return examen;
     }
 }

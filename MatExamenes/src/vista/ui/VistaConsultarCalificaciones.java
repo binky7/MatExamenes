@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import modelo.dto.CursoDTO;
 import modelo.dto.ExamenAsignadoDTO;
 import modelo.dto.GrupoDTO;
+import modelo.dto.ReactivoAsignadoDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVConsultarCalificaciones;
 import vista.interfaz.InterfaceVista;
@@ -142,7 +143,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
             modelo.removeRow(i);
         }
         for (ExamenAsignadoDTO examen : examenes) {
-            Object[] fila = new Object[4];
+            Object[] fila = new Object[5];
             fila[0] = false;
             fila[1] = examen.getId();
             fila[2] = examen.getExamen().getTitulo();
@@ -151,6 +152,36 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
             modelo.addRow(fila);
         }
         tblExamenes.setModel(modelo);
+    }
+    
+    public void consultarExamen(Integer indexExamen){
+        ExamenAsignadoDTO examen = controlVista.obtenerExamen(indexExamen);
+        if (examen == null) {
+            JOptionPane.showMessageDialog(this, "No se pudo obtener el examen!", "Advertencia", 1);
+            limpiar();
+        } else {
+            mostrarExamen(examen);
+        }
+    }
+    
+    public void mostrarExamen(ExamenAsignadoDTO examen){
+        DefaultTableModel modelo = (DefaultTableModel) tblReactivos.getModel();
+        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
+            modelo.removeRow(i);
+        }
+        for (ReactivoAsignadoDTO reactivo : examen.getReactivos()) {
+            Object[] fila = new Object[4];
+            fila[0] = reactivo.getRedaccionReactivo();
+            fila[1] = reactivo.getRespuestaAlumno();
+            fila[2] = reactivo.getRespuestaReactivo();
+            if(reactivo.getRespuestaAlumno().equalsIgnoreCase(reactivo.getRespuestaReactivo())){
+                fila[3] = "No";
+            }else{
+                fila[3] = "Si";
+            }
+            modelo.addRow(fila);
+        }
+        tblReactivos.setModel(modelo);
     }
 
     /**
@@ -187,10 +218,21 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         tblExamenes = new javax.swing.JTable();
         btnSiguienteExamenes = new javax.swing.JButton();
         btnAnteriorExamenes = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblReactivos = new javax.swing.JTable();
+        btnAnteriorCalificacion = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
         lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        lblTitulo.setText("Consultar Calificacioes");
+        lblTitulo.setText("Consultar Calificaciones");
         lblTitulo.setToolTipText("");
 
         lblCursos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -441,28 +483,29 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(330, 330, 330)
-                        .addComponent(lblExamenes)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnAnteriorExamenes)
                         .addGap(18, 18, 18)
                         .addComponent(btnSiguienteExamenes))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)
-                        .addGap(16, 16, 16)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(51, 51, 51)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 662, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(348, 348, 348)
+                                .addComponent(lblExamenes)))
+                        .addGap(0, 46, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addGap(31, 31, 31)
                 .addComponent(lblExamenes)
-                .addGap(40, 40, 40)
+                .addGap(43, 43, 43)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSiguienteExamenes)
                     .addComponent(btnAnteriorExamenes))
@@ -470,6 +513,125 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         );
 
         tbpCalificaciones.addTab("Examenes", jPanel4);
+
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel1.setText("Alumno:");
+
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel2.setText("Titulo del examen:");
+
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel3.setText("Calificacion:");
+
+        jTextField1.setEnabled(false);
+
+        jTextField2.setEnabled(false);
+
+        jTextField3.setEnabled(false);
+
+        tblReactivos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Pregunta", "Respuesta del alumno", "Respuesta correcta", "Correcto Si/No"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tblReactivos);
+
+        btnAnteriorCalificacion.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnAnteriorCalificacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/atras24.png"))); // NOI18N
+        btnAnteriorCalificacion.setText("Anterior");
+        btnAnteriorCalificacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnteriorCalificacionActionPerformed(evt);
+            }
+        });
+
+        btnSalir.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField2))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(81, 81, 81)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(90, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnAnteriorCalificacion)
+                .addGap(18, 18, 18)
+                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAnteriorCalificacion)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24))
+        );
+
+        tbpCalificaciones.addTab("Calificaciones", jPanel5);
+
+        tbpCalificaciones.setEnabledAt(0, false);
+        tbpCalificaciones.setEnabledAt(1, false);
+        tbpCalificaciones.setEnabledAt(2, false);
+        tbpCalificaciones.setEnabledAt(3, false);
+        tbpCalificaciones.setEnabledAt(4, false);
+        tbpCalificaciones.setTitleAt(0, "<html><font color='black'>Cursos</font></html>");
+        tbpCalificaciones.setTitleAt(1, "<html><font color='black'>Grupos</font></html>");
+        tbpCalificaciones.setTitleAt(2, "<html><font color='black'>Alumnos</font></html>");
+        tbpCalificaciones.setTitleAt(3, "<html><font color='black'>Examenes</font></html>");
+        tbpCalificaciones.setTitleAt(4, "<html><font color='black'>Calificaciones</font></html>");
 
         btnCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonCancelar_1.png"))); // NOI18N
@@ -485,24 +647,26 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(285, 285, 285)
-                .addComponent(lblTitulo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tbpCalificaciones)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(tbpCalificaciones)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnCancelar)
+                        .addGap(23, 23, 23))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnCancelar)
-                .addGap(23, 23, 23))
+                .addComponent(lblTitulo)
+                .addGap(298, 298, 298))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(31, 31, 31)
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tbpCalificaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancelar)
@@ -522,7 +686,8 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
             JOptionPane.showMessageDialog(this, "Selecciona un examen",
                     "Advertencia", 1);
         } else {
-            padre.mostrarVista(Vista.ConsultarCalificacionesExamen);
+            tbpCalificaciones.setSelectedIndex(4);
+            consultarExamen(index);
         }
     }//GEN-LAST:event_btnSiguienteExamenesActionPerformed
 
@@ -543,6 +708,11 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
 
     private void btnAnteriorGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorGruposActionPerformed
         tbpCalificaciones.setSelectedIndex(0);
+        DefaultTableModel modelo = (DefaultTableModel) tblGrupos.getModel();
+        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
+            modelo.removeRow(i);
+        }
+        tblGrupos.setModel(modelo);
     }//GEN-LAST:event_btnAnteriorGruposActionPerformed
 
     private void btnSiguienteGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteGruposActionPerformed
@@ -564,6 +734,11 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
 
     private void btnAnteriorAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorAlumnosActionPerformed
         tbpCalificaciones.setSelectedIndex(1);
+        DefaultTableModel modelo = (DefaultTableModel) tblAlumnos.getModel();
+        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
+            modelo.removeRow(i);
+        }
+        tblAlumnos.setModel(modelo);
     }//GEN-LAST:event_btnAnteriorAlumnosActionPerformed
 
     private void btnSiguienteAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteAlumnosActionPerformed
@@ -585,26 +760,50 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
 
     private void btnAnteriorExamenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorExamenesActionPerformed
         tbpCalificaciones.setSelectedIndex(2);
+        DefaultTableModel modelo = (DefaultTableModel) tblExamenes.getModel();
+        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
+            modelo.removeRow(i);
+        }
+        tblExamenes.setModel(modelo);
     }//GEN-LAST:event_btnAnteriorExamenesActionPerformed
+
+    private void btnAnteriorCalificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorCalificacionActionPerformed
+        tbpCalificaciones.setSelectedIndex(3);
+    }//GEN-LAST:event_btnAnteriorCalificacionActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        padre.mostrarVista(Vista.HOME);
+        limpiar();
+    }//GEN-LAST:event_btnSalirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnteriorAlumnos;
+    private javax.swing.JButton btnAnteriorCalificacion;
     private javax.swing.JButton btnAnteriorExamenes;
     private javax.swing.JButton btnAnteriorGrupos;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSiguienteAlumnos;
     private javax.swing.JButton btnSiguienteCursos;
     private javax.swing.JButton btnSiguienteExamenes;
     private javax.swing.JButton btnSiguienteGrupos;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel lblAlumnos;
     private javax.swing.JLabel lblCursos;
     private javax.swing.JLabel lblExamenes;
@@ -614,6 +813,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
     private javax.swing.JTable tblAlumnos;
     private javax.swing.JTable tblExamenes;
     private javax.swing.JTable tblGrupos;
+    private javax.swing.JTable tblReactivos;
     private javax.swing.JTabbedPane tbpCalificaciones;
     // End of variables declaration//GEN-END:variables
 
