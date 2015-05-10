@@ -41,6 +41,21 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
      */
     public FrmAgregarReactivos() {
         initComponents();
+        
+        frmVerReactivo = new FrmVerReactivo();
+        frmVerReactivo.setPadre(this);
+        frmVerReactivo.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        this.setTitle("Agregar Reactivos");
+        
+        lstTemasAuto.setModel(new DefaultListModel());
+        lstTemasManual.setModel(new DefaultListModel());
+        
+        initListeners();
+        
+    }
+
+    private void initListeners() {
         this.addWindowListener(new WindowListener() {
 
             @Override
@@ -84,15 +99,6 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
             
         });
         
-        frmVerReactivo = new FrmVerReactivo();
-        frmVerReactivo.setPadre(this);
-        frmVerReactivo.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
-        this.setTitle("Agregar Reactivos");
-        
-        lstTemasAuto.setModel(new DefaultListModel());
-        lstTemasManual.setModel(new DefaultListModel());
-        
         lstTemasManual.addListSelectionListener(new ListSelectionListener() {
 
             @Override
@@ -126,7 +132,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
 
         });
     }
-
+    
     public void inicializar(int indexCurso, int clave) {
         
         ((JFrame)padre.getPadre()).setEnabled(false);

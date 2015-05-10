@@ -66,6 +66,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         //manejadorVista.last(vistas);
         setTitle("MatExamenes");
         
+        //Agregar los listeners para los menus
         miRegistrarTema.addActionListener(this);
         miConsultarTemas.addActionListener(this);
         
