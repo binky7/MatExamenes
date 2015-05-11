@@ -5,8 +5,16 @@
  */
 package vista.ui;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import modelo.dto.CursoDTO;
 import modelo.dto.TemaDTO;
 import modelo.dto.UsuarioDTO;
@@ -19,16 +27,24 @@ import vista.interfaz.InterfaceVista;
  * @author Jesus Donaldo
  */
 public class VistaModificarTema extends javax.swing.JPanel implements
-        InterfaceVista {
+        InterfaceVista, FocusListener {
 
     private CVMantenerTemas controlVista;
     private InterfaceVista padre;
+    private final ImageIcon ICONO_BIEN;
+    private final ImageIcon ICONO_MAL;
     
     /**
      * Creates new form VistaModificarTema
      */
     public VistaModificarTema() {
         initComponents();
+        txtfNombreTema.addFocusListener(this);
+
+        ICONO_BIEN = new ImageIcon(getClass().getResource("/recursos/bien.png"));
+        ICONO_MAL = new ImageIcon(getClass().getResource("/recursos/mal.png"));
+        
+        lblEstadoNombreTema.setVisible(false);
     }
 
     public void setPadre(InterfaceVista padre) {
@@ -44,7 +60,7 @@ public class VistaModificarTema extends javax.swing.JPanel implements
      */
     @Override
     public void limpiar() {
-        txtfNombre.setText("");
+        txtfNombreTema.setText("");
         controlVista.liberarMemoriaModificar();
     }
     
@@ -52,7 +68,7 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         TemaDTO tema = null;
         
         //Validar campos
-        String txtNombre = txtfNombre.getText();
+        String txtNombre = txtfNombreTema.getText();
         if(Validador.esCurso(txtNombre)) {
             //Crear objeto tema
             tema = new TemaDTO();
@@ -75,8 +91,27 @@ public class VistaModificarTema extends javax.swing.JPanel implements
             }
         }
         CursoDTO objCurso = controlVista.obtenerCursoPorTema(tema);
-        txtfNombre.setText(tema.getNombre());
+        txtfNombreTema.setText(tema.getNombre());
         cbCursos.setSelectedItem(objCurso.getNombre());
+    }
+    
+    private void mostrarLabelEstado(Object o, boolean estado, String causa) {
+        JTextField ob = (JTextField) o;
+        try {
+            Field field = getClass().getDeclaredField(ob.getName());
+            JLabel label = (JLabel) field.get(this);
+            label.setToolTipText(causa);
+            if (!label.isVisible()) {
+                label.setVisible(true);
+            }
+            if (estado) {
+                label.setIcon(ICONO_BIEN);
+            } else {
+                label.setIcon(ICONO_MAL);
+            }
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(VistaModificarTema.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -87,87 +122,109 @@ public class VistaModificarTema extends javax.swing.JPanel implements
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txtfNombre = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
+        lblNombreTema = new javax.swing.JLabel();
+        txtfNombreTema = new javax.swing.JTextField();
+        btnGuardar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        lblCursos = new javax.swing.JLabel();
         cbCursos = new javax.swing.JComboBox();
+        lblEstadoNombreTema = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(800, 579));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel1.setText("Modificar Temas");
+        lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitulo.setText("Modificar Tema");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel2.setText("Tema:");
+        lblNombreTema.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblNombreTema.setText("Nombre del tema: ");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/guardar24.png"))); // NOI18N
-        jButton1.setText("Guardar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        txtfNombreTema.setName("lblEstadoNombreTema");
+        txtfNombreTema.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfNombreTema.setPreferredSize(new java.awt.Dimension(300, 30));
+
+        btnGuardar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/guardar24.png"))); // NOI18N
+        btnGuardar.setText("Guardar");
+        btnGuardar.setPreferredSize(new java.awt.Dimension(110, 30));
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 modificarTema(evt);
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
-        jButton2.setText("Regresar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.setPreferredSize(new java.awt.Dimension(110, 30));
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pasarControlVistaConsulta(evt);
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setText("Seleccione un curso:");
+        lblCursos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblCursos.setText("Seleccione un curso:");
+
+        cbCursos.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cbCursos.setPreferredSize(new java.awt.Dimension(200, 30));
+
+        lblEstadoNombreTema.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(301, 301, 301))
             .addGroup(layout.createSequentialGroup()
-                .addGap(179, 179, 179)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                        .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 132, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCursos)
+                            .addComponent(lblNombreTema))
                         .addGap(28, 28, 28)
-                        .addComponent(cbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(226, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(179, 179, 179))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtfNombreTema, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblEstadoNombreTema)))
+                        .addGap(124, 124, 124))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(75, 75, 75)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(lblTitulo)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
                         .addGap(60, 60, 60)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(70, 70, 70)
-                        .addComponent(jLabel3))
+                            .addComponent(lblNombreTema)
+                            .addComponent(txtfNombreTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addComponent(lblEstadoNombreTema)))
+                .addGap(74, 74, 74)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblCursos)
                     .addComponent(cbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
-                .addContainerGap(242, Short.MAX_VALUE))
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(137, 137, 137))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -183,8 +240,8 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         //Seleccionar modificar
         //Muestra la vista consultar temas
         int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cambiar de pantalla?\nTodos los cambios no "
-                + "guardados se perderán");
+                + "quieres cancelar la operación?\nTodos los cambios no "
+                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
 
         if(ok == 0) {
             padre.mostrarVista(Vista.ConsultarTemas);
@@ -202,8 +259,9 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         //Encapsular objeto
         TemaDTO tema = encapsularTema();
         if(tema == null) {
-            JOptionPane.showMessageDialog(this, "Datos incorrectos, porfavor " +
-                    "sólo ingresa números y letras");
+            mostrarLabelEstado(txtfNombreTema, false, "No ingrese datos vacíos.");
+            JOptionPane.showMessageDialog(this, "No ingrese datos vacíos.", "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
         //Persistir el objeto en la base de datos
@@ -213,8 +271,11 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         boolean ok = controlVista.modificarTema(tema, indexCurso);
         //No se pudo guardar porque habia un tema duplicado
         if (!ok) {
-            JOptionPane.showMessageDialog(this, "Tema existente");
+            mostrarLabelEstado(txtfNombreTema, false, "Ya existe un tema con ese nombre.");
+            JOptionPane.showMessageDialog(this, "Ya existe un tema con ese nombre.", "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
         } else {
+            mostrarLabelEstado(txtfNombreTema, true, "");
             JOptionPane.showMessageDialog(this, "Tema Modificado");
             padre.mostrarVistaConEntidad(tema, Vista.ConsultarTemas);
             limpiar();
@@ -223,13 +284,14 @@ public class VistaModificarTema extends javax.swing.JPanel implements
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox cbCursos;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField txtfNombre;
+    private javax.swing.JLabel lblCursos;
+    private javax.swing.JLabel lblEstadoNombreTema;
+    private javax.swing.JLabel lblNombreTema;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JTextField txtfNombreTema;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -253,8 +315,8 @@ public class VistaModificarTema extends javax.swing.JPanel implements
     public boolean confirmarCambio() {
         boolean cambiar = false;
         int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cambiar de pantalla?\nTodos los cambios no "
-                + "guardados se perderán");
+                + "quieres cancelar la operación?\nTodos los cambios no "
+                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
             cambiar = true;
         }
@@ -266,4 +328,20 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public void focusGained(FocusEvent e) {
+        lblEstadoNombreTema.setVisible(false);
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        JTextField src = (JTextField) e.getSource();
+
+        String nombreTema = src.getText();
+        if (!Validador.esCurso(nombreTema)) {
+            mostrarLabelEstado(txtfNombreTema, false, "No ingrese datos vacíos.");
+        } else {
+            mostrarLabelEstado(txtfNombreTema, true, "");
+        }
+    }
 }

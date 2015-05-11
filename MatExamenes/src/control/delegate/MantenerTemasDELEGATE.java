@@ -153,4 +153,15 @@ public class MantenerTemasDELEGATE {
         
         return objCurso;
     }
+    
+    public boolean verificarExistencia(TemaDTO tema) {
+        boolean ok = false;
+        try {
+             ok = Enlace.getPersistencia().verificarExistencia(tema);
+        } catch(RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+        
+        return ok;
+    }
 }

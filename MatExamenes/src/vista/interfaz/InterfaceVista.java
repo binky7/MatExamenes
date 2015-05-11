@@ -23,7 +23,7 @@ public interface InterfaceVista {
         RegistrarCurso, ConsultarCursos, ModificarCurso, RegistrarGrupo,
         ConsultarGrupo, ModificarGrupo, RegistrarReactivo, ConsultarReactivos,
         ModificarReactivo, RegistrarExamen, ConsultarExamenes, ModificarExamen,
-        ConsultarCalificaciones, ConsultarCalificacionesExamen,
+        AsignarExamenes, ConsultarCalificaciones, ConsultarCalificacionesExamen,
         RegistrarUsuario,ConsultarUsuarios,ModificarUsuario, GenerarEstadisticas
     }
     

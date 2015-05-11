@@ -16,7 +16,7 @@ import modelo.dto.CursoDTO;
 public class CVMantenerCursos {
     
     private final MantenerCursosDELEGATE mantenerCursosDELEGATE;
-    private List<CursoDTO> cursos;
+    private List<CursoDTO> listaCursos;
     private CursoDTO curso;
     
     public CVMantenerCursos() {
@@ -46,9 +46,13 @@ public class CVMantenerCursos {
         curso = null;
     }
     
+    public void liberarMemoriaConsultar() {
+        listaCursos = null;
+    }
+    
     public List<CursoDTO> obtenerCursos() {
         List<CursoDTO> listaCursos = mantenerCursosDELEGATE.obtenerCursos();
-        cursos = listaCursos;
+        this.listaCursos = listaCursos;
         
         return listaCursos;
     }
@@ -56,8 +60,8 @@ public class CVMantenerCursos {
     public CursoDTO obtenerCurso(int indexCurso) {
         CursoDTO objCurso = null;
         
-        if(cursos != null || !cursos.isEmpty()) {
-            objCurso = cursos.get(indexCurso);
+        if(listaCursos != null || !listaCursos.isEmpty()) {
+            objCurso = listaCursos.get(indexCurso);
             curso = objCurso;
         }
         
@@ -72,10 +76,10 @@ public class CVMantenerCursos {
     }
     
     public boolean eliminarCurso(int indexCurso) {
-        CursoDTO objCurso = cursos.get(indexCurso);
+        CursoDTO objCurso = listaCursos.get(indexCurso);
         boolean ok = mantenerCursosDELEGATE.eliminarCurso(objCurso);
         if(ok) {
-            cursos.remove(indexCurso);
+            listaCursos.remove(indexCurso);
         }
         
         return ok;
