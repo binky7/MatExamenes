@@ -22,14 +22,14 @@ public class CVMantenerTemas {
     
     //Listas de dto necesarios
     //dtos para consultar
-    List<CursoDTO> cursos;
-    List<TemaDTO> temas;
+    private List<CursoDTO> listaCursos;
+    private List<TemaDTO> listaTemas;
     //dto para modificar
     //Es necesario matener en todo momento los objetos obtenidos por hibernate
     //Si se quiere modificar o eliminar dichos objetos, por eso la razon de este
     //atributo
-    TemaDTO tema;
-    CursoDTO curso;
+    private TemaDTO tema;
+    private CursoDTO curso;
     
     public CVMantenerTemas() {
         mantenerTemasDELEGATE = new MantenerTemasDELEGATE();
@@ -44,7 +44,7 @@ public class CVMantenerTemas {
         Integer id = mantenerTemasDELEGATE.guardarTema(tema);
         
         if(id != null) {
-            CursoDTO objCurso = cursos.get(indexCurso);
+            CursoDTO objCurso = listaCursos.get(indexCurso);
             
             List<TemaDTO> temasDeCurso = obtenerTemasDeCurso(indexCurso);
             if(temasDeCurso == null || temasDeCurso.isEmpty()) {
@@ -67,7 +67,7 @@ public class CVMantenerTemas {
         
         //Asigna los cursos obtenidos en la lista.
         listaCursos = mantenerTemasDELEGATE.obtenerCursos();
-        cursos = listaCursos;
+        this.listaCursos = listaCursos;
         
         return listaCursos;
     }
@@ -80,12 +80,12 @@ public class CVMantenerTemas {
     public List<TemaDTO> obtenerTemasDeCurso(int index) {
         List<TemaDTO> listaTemas = null;
 
-        if (cursos != null && !cursos.isEmpty()) {
+        if (listaCursos != null && !listaCursos.isEmpty()) {
             //Se obtiene el objeto de la lista (que contiene la llave prim)
-            CursoDTO objCurso = cursos.get(index);
+            CursoDTO objCurso = listaCursos.get(index);
             listaTemas = mantenerTemasDELEGATE
                     .obtenerTemasDeCurso(objCurso);
-            temas = listaTemas;
+            this.listaTemas = listaTemas;
         }
 
         return listaTemas;
@@ -100,7 +100,7 @@ public class CVMantenerTemas {
         
         //Se obtienen los temas sin asignar y se sustituye la lista
         listaTemas = mantenerTemasDELEGATE.obtenerTemasSinAsignar();
-        temas = listaTemas;
+        this.listaTemas = listaTemas;
         
         return listaTemas;
     }
@@ -120,8 +120,8 @@ public class CVMantenerTemas {
         //Se obtiene el objeto completo, como no tiene mas relaciones no es
         //Necesario llamar al dao, tambien como se va a modificar se asigna
         //al atributo tema
-        if (temas != null && !temas.isEmpty()) {
-            objTema = temas.get(index);
+        if (listaTemas != null && !listaTemas.isEmpty()) {
+            objTema = listaTemas.get(index);
         }
 
         //Se guarda el objeto para su posterior uso en la modificacion
@@ -148,7 +148,7 @@ public class CVMantenerTemas {
 
             ok = mantenerTemasDELEGATE.modificarTema(this.tema);
             if(ok) {
-                CursoDTO objCurso = cursos.get(indexCurso);
+                CursoDTO objCurso = listaCursos.get(indexCurso);
                 
                 if(objCurso.getId() != this.curso.getId()) {
                     //Cambió el curso
@@ -156,7 +156,7 @@ public class CVMantenerTemas {
                     /*Eliminar la relación que existía entre el tema y el curso
                     anterior*/
                     List<TemaDTO> temasDeCurso = 
-                            obtenerTemasDeCurso(cursos.indexOf(this.curso));
+                            obtenerTemasDeCurso(listaCursos.indexOf(this.curso));
                     if(temasDeCurso != null && !temasDeCurso.isEmpty()) {
                         temasDeCurso.remove(this.tema);
                         this.curso.setTemas(temasDeCurso);
@@ -192,12 +192,12 @@ public class CVMantenerTemas {
 
         boolean ok = false;
 
-        if (temas != null && !temas.isEmpty()) {
+        if (listaTemas != null && !listaTemas.isEmpty()) {
             //Se obtiene el objeto de la lista (que contiene la llave prim)
-            TemaDTO objTema = temas.get(index);
+            TemaDTO objTema = listaTemas.get(index);
             ok = mantenerTemasDELEGATE.eliminarTema(objTema);
             if (ok) {
-                temas.remove(index);
+                listaTemas.remove(index);
             }
         }
 
@@ -212,12 +212,21 @@ public class CVMantenerTemas {
     
     
     public void liberarMemoriaConsultar() {
-        cursos = null;
-        temas = null;
+        listaCursos = null;
+        listaTemas = null;
     }
     
     public void liberarMemoriaModificar() {
         tema = null;
     }
 
+    public boolean verificarExistencia(String nombreTema) {
+        boolean existe;
+        
+        TemaDTO objTema = new TemaDTO();
+        objTema.setNombre(nombreTema);
+        existe = mantenerTemasDELEGATE.verificarExistencia(objTema);
+        
+        return existe;
+    }
 }

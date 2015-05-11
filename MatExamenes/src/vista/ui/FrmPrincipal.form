@@ -165,13 +165,15 @@
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="miAsignarExamen">
+            <MenuItem class="javax.swing.JMenuItem" name="miAsignarExamenes">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Alt+A"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Asignar Examen"/>
-                <Property name="name" type="java.lang.String" value="AsignarExamen" noResource="true"/>
+                <Property name="text" type="java.lang.String" value="Asignar Examenes"/>
+                <Property name="name" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="&quot;AsignarExamenes&quot;" type="code"/>
+                </Property>
               </Properties>
             </MenuItem>
           </SubComponents>

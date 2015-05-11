@@ -20,53 +20,58 @@ import vista.interfaz.InterfaceVista;
  *
  * @author Jesus Donaldo
  */
-public class VistaConsultarCursos extends javax.swing.JPanel implements 
-        AncestorListener, InterfaceVista{
+public class VistaConsultarCursos extends javax.swing.JPanel implements
+        AncestorListener, InterfaceVista {
 
     private CVMantenerCursos controlVista;
     private InterfaceVista padre;
+
     /**
      * Creates new form ConsultarCursos
      */
     public VistaConsultarCursos() {
         initComponents();
         this.addAncestorListener(this);
-        
+
         lstCursos.setModel(new DefaultListModel());
-        
+
         lstCursos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
-        int x =0;
+
+        int x = 0;
     }
-    
+
     @Override
-    public void limpiar() {}
+    public void limpiar() {
+        ((DefaultListModel) lstCursos.getModel()).clear();
+        controlVista.liberarMemoriaConsultar();
+    }
 
     public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
-    
+
     public void setControlador(CVMantenerCursos controlVista) {
         this.controlVista = controlVista;
     }
-    
+
     public void consultarCursos() {
         List<CursoDTO> cursos = controlVista.obtenerCursos();
-        
-        if(cursos != null && !cursos.isEmpty()) {
+
+        if (cursos != null && !cursos.isEmpty()) {
             mostrarCursos(cursos);
-        }
-    }
-    
-    private void mostrarCursos(List<CursoDTO> cursos) {
-        DefaultListModel listModelCursos = 
-                (DefaultListModel) lstCursos.getModel();
-        
-        for(CursoDTO curso : cursos) {
-            listModelCursos.addElement(curso.getNombre());
+        } else {
+            //No hay cursos
         }
     }
 
+    private void mostrarCursos(List<CursoDTO> cursos) {
+        DefaultListModel listModelCursos
+                = (DefaultListModel) lstCursos.getModel();
+
+        for (CursoDTO curso : cursos) {
+            listModelCursos.addElement(curso.getNombre());
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -79,33 +84,51 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
 
         jScrollPane3 = new javax.swing.JScrollPane();
         lstCursos = new javax.swing.JList();
-        jLabel3 = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
+        lstCursos.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         lstCursos.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        lstCursos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(lstCursos);
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel3.setText("Consultar Cursos");
+        lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitulo.setText("Consultar Cursos");
 
+        btnModificar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/modificar24.png"))); // NOI18N
         btnModificar.setText("Modificar");
+        btnModificar.setPreferredSize(new java.awt.Dimension(110, 30));
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
             }
         });
 
+        btnEliminar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/eliminar24.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
+        btnEliminar.setPreferredSize(new java.awt.Dimension(110, 30));
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.setPreferredSize(new java.awt.Dimension(110, 30));
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
             }
         });
 
@@ -114,45 +137,50 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(276, 276, 276)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane3)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(332, 332, 332)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(btnModificar)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(329, 329, 329)
-                        .addComponent(jLabel3)))
-                .addContainerGap(250, Short.MAX_VALUE))
+                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(286, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(93, 93, 93)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
+                .addComponent(lblTitulo)
+                .addGap(45, 45, 45)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnModificar)
-                    .addComponent(btnEliminar))
-                .addContainerGap(153, Short.MAX_VALUE))
+                    .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(66, 66, 66))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
-        if(!lstCursos.isSelectionEmpty()) {
+        if (!lstCursos.isSelectionEmpty()) {
             int indexCurso = lstCursos.getSelectedIndex();
             CursoDTO curso = controlVista.obtenerCurso(indexCurso);
-            
-            if(curso != null) {
+
+            if (curso != null) {
                 padre.mostrarVistaConEntidad(curso, Vista.ModificarCurso);
             } else {
-                JOptionPane.showMessageDialog(this, "Ha ocurrido un error");
+                JOptionPane.showMessageDialog(this, "Ha ocurrido un error", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione un curso.");
@@ -161,18 +189,18 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        if(!lstCursos.isSelectionEmpty()) {
+        if (!lstCursos.isSelectionEmpty()) {
             int banEliminar = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres eliminar el curso?");
-            if(banEliminar == 0) {
+                    + "quieres eliminar el curso?", "Eliminación", JOptionPane.YES_NO_OPTION);
+            if (banEliminar == 0) {
                 int indexCurso = lstCursos.getSelectedIndex();
                 boolean ok = controlVista.eliminarCurso(indexCurso);
 
-                if(ok) {
-                    ((DefaultListModel)lstCursos.getModel()).remove(indexCurso);
+                if (ok) {
+                    ((DefaultListModel) lstCursos.getModel()).remove(indexCurso);
                     JOptionPane.showMessageDialog(this, "Curso eliminado.");
                 } else {
-                    JOptionPane.showMessageDialog(this, "Ha ocurrido un error");
+                    JOptionPane.showMessageDialog(this, "Ha ocurrido un error", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } else {
@@ -180,15 +208,21 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+            padre.mostrarVista(Vista.HOME);
+            limpiar();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblTitulo;
     private javax.swing.JList lstCursos;
     // End of variables declaration//GEN-END:variables
-
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
@@ -203,9 +237,9 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
     @Override
     public void mostrarEntidad(Object entidad) {
         int index = lstCursos.getSelectedIndex();
-        String nombreCurso = ((CursoDTO)entidad).getNombre();
-        
-        ((DefaultListModel)lstCursos.getModel()).setElementAt(nombreCurso, index);
+        String nombreCurso = ((CursoDTO) entidad).getNombre();
+
+        ((DefaultListModel) lstCursos.getModel()).setElementAt(nombreCurso, index);
     }
 
     @Override
@@ -220,10 +254,9 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
 
     @Override
     public void ancestorAdded(AncestorEvent event) {
-        if(isShowing()) {
-            if(((DefaultListModel)lstCursos.getModel()).isEmpty()) {
-                consultarCursos();
-            }
+        if (isShowing()) {
+            limpiar();
+            consultarCursos();
         }
     }
 
