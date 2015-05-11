@@ -52,6 +52,28 @@ public class MantenerUsuariosDELEGATE {
         return usuarios;
     }
 
+    public List<UsuarioDTO> obtenerAlumnosPorApellidoM(String apellidoMaterno) {
+        List<UsuarioDTO> usuarios = null;
+        try {
+            usuarios = Enlace.getPersistencia().obtenerAlumnosPorApellidoM(apellidoMaterno);
+        } catch (RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+
+        return usuarios;
+    }
+
+    public List<UsuarioDTO> obtenerAlumnosPorNombre(String nombre) {
+        List<UsuarioDTO> usuarios = null;
+        try {
+            usuarios = Enlace.getPersistencia().obtenerAlumnosPorNombre(nombre);
+        } catch (RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+
+        return usuarios;
+    }
+
     public List<UsuarioDTO> obtenerUsuariosPorApellido(String apellido, Tipo tipo) {
         List<UsuarioDTO> usuarios = null;
         try {

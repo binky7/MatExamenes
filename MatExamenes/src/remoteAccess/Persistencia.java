@@ -60,6 +60,12 @@ public interface Persistencia extends Remote {
 
     List<UsuarioDTO> obtenerAlumnosPorApellido(String apellidoPaterno)
             throws RemoteException;
+    
+    List<UsuarioDTO> obtenerAlumnosPorApellidoM(String apellidoMaterno)
+            throws RemoteException;
+
+    List<UsuarioDTO> obtenerAlumnosPorNombre(String nombre)
+            throws RemoteException;
 
     ReactivoDTO obtenerReactivo(int idReactivo) throws RemoteException;
 

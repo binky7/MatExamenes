@@ -132,15 +132,15 @@ public class CVMantenerGrupos {
     public List<UsuarioDTO> obtenerAlumnosPorApellido(String apellidoPaterno) {
         this.listaAlumnos = usuariosDELEGATE.obtenerAlumnosPorApellido(apellidoPaterno);
         return listaAlumnos;
-    }
+    } 
 
     public List<UsuarioDTO> obtenerAlumnosPorApellidoM(String apellidoMaterno) {
-        this.listaAlumnos = usuariosDELEGATE.obtenerUsuariosPorApellidoM(apellidoMaterno, Tipo.Alumno);
+        this.listaAlumnos = usuariosDELEGATE.obtenerAlumnosPorApellidoM(apellidoMaterno);
         return listaAlumnos;
     }
 
     public List<UsuarioDTO> obtenerAlumnosPorNombre(String nombre) {
-        this.listaAlumnos = usuariosDELEGATE.obtenerUsuariosPorNombre(nombre, Tipo.Alumno);
+        this.listaAlumnos = usuariosDELEGATE.obtenerAlumnosPorNombre(nombre);
         return listaAlumnos;
     }
 
