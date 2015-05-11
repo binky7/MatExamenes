@@ -70,16 +70,6 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
 
     public VistaGenerarEstadisticas() {
         initComponents();
-
-//                .addActionListener(new ActionListener() {
-//
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                guardarGrafica();
-//            }
-//        });
-        //btnGuardar.setBounds(600, 520, 150, 30);
-        //Crear panel fx y ventana emergente
         fxpnlGrafica = new JFXPanel();
         fxpnlGrafica.setBounds(0, 0, 800, 500);
         JFXPanel fxpnlBoton = new JFXPanel();
@@ -211,6 +201,10 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         addAncestorListener(this);
     }
 
+    public void initFX() {
+        
+    }
+    
     public void setControlador(CVGenerarEstadisticas controlVista) {
         this.controlVista = controlVista;
     }
