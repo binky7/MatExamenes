@@ -100,14 +100,34 @@ public class CVMantenerExamenes {
         return listaCursos;
     }
     
-    public List<ReactivoDTO> obtenerReactivosPorTema(String nombreTema) {
+    public List<ReactivoDTO> obtenerReactivosPorTema(String nombreTema, int clave) {
         TemaDTO tema = new TemaDTO();
         
         tema.setNombre(nombreTema);
         List<ReactivoDTO> listaReactivos = mantenerExamenesDELEGATE
                 .obtenerReactivosPorTema(tema);
+        
+        //Validar que los reactivos a mostrar no se repitan en la clave del examen
+        if(examen != null && clave != -1) {
+            
+            List<ClaveExamenDTO> claves = examen.getClaves();
+            ClaveExamenDTO objClave = claves.get(clave);
+            List<ReactivoDTO> reactivosClave = objClave.getReactivos();
+
+            if (!reactivosClave.isEmpty()) {
+                //Verificar que los reactivos agregados no se repitan en la clave
+                for (int i = 0; i < listaReactivos.size(); i++) {
+                    if(reactivosClave.contains(listaReactivos.get(i))) {
+                        listaReactivos.remove(i);
+                        i--;
+                    }
+                }
+            }
+        }
+        
         reactivos = listaReactivos;
         
+        //Lista de reactivos sin los reactivos repetidos en la clave
         return listaReactivos;
     }
     
@@ -338,7 +358,7 @@ public class CVMantenerExamenes {
     }
 
     public int obtenerTotalReactivos(String nombreTema) {
-        List<ReactivoDTO> reactivos = obtenerReactivosPorTema(nombreTema);
+        List<ReactivoDTO> reactivos = obtenerReactivosPorTema(nombreTema, -1);
         int total = 0;
         
         if(reactivos != null) {

@@ -19,8 +19,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 import modelo.dto.ClaveExamenDTO;

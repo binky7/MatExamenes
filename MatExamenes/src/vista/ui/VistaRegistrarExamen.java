@@ -622,8 +622,13 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
             
             if(id != null) {
                 JOptionPane.showMessageDialog(this, "Registro Completo");
-                padre.mostrarVista(Vista.HOME);
+                //padre.mostrarVista(Vista.HOME);
                 limpiar();
+                //Realizar todo como si fuera un nuevo registro
+                noSelect = true;
+                tbpClaves.add("Clave 1", new PnlReactivosTab());
+                controlVista.agregarClave(1);
+                consultarCursos();
             }
             else {
                 JOptionPane.showMessageDialog(this, "No se pudo guardar "

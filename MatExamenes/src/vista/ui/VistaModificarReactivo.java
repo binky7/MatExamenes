@@ -37,7 +37,7 @@ implements InterfaceVista, FocusListener {
     private InterfaceVista padre;
     private CVMantenerReactivos controlVista;
     
-    private final ButtonGroup opciones;
+    private ButtonGroup opciones;
     
     private final ImageIcon ICONO_BIEN;
     private final ImageIcon ICONO_MAL;
@@ -59,6 +59,18 @@ implements InterfaceVista, FocusListener {
         lblEstadoOpt3.setVisible(false);
         lblEstadoOpt4.setVisible(false);
         
+        init();
+    }
+
+    public void setPadre(InterfaceVista padre) {
+        this.padre = padre;
+    }
+    
+    public void setControlador(CVMantenerReactivos controlVista) {
+        this.controlVista = controlVista;
+    }
+
+    private void init() {
         //Para igualar los radios con los textos
         rbtnOpt1.setActionCommand("Opt1");
         rbtnOpt2.setActionCommand("Opt2");
@@ -81,15 +93,6 @@ implements InterfaceVista, FocusListener {
         txtfOpt2.addFocusListener(this);
         txtfOpt3.addFocusListener(this);
         txtfOpt4.addFocusListener(this);
-
-    }
-
-    public void setPadre(InterfaceVista padre) {
-        this.padre = padre;
-    }
-    
-    public void setControlador(CVMantenerReactivos controlVista) {
-        this.controlVista = controlVista;
     }
     
     private ReactivoDTO encapsularReactivo() {
@@ -447,16 +450,16 @@ implements InterfaceVista, FocusListener {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblNombre)
                         .addGap(18, 18, 18)
                         .addComponent(lblEstadoNombre))
-                    .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtfNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                     .addComponent(lblCurso)
                     .addComponent(lblTema)
-                    .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbCurso, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmbTema, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(31, 31, 31)
@@ -513,7 +516,7 @@ implements InterfaceVista, FocusListener {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
