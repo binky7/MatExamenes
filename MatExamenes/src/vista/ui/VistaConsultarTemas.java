@@ -24,13 +24,13 @@ import vista.interfaz.InterfaceVista.Vista;
  *
  * @author Jesus Donaldo
  */
-public class VistaConsultarTemas extends javax.swing.JPanel implements 
+public class VistaConsultarTemas extends javax.swing.JPanel implements
         AncestorListener, InterfaceVista {
 
     private CVMantenerTemas controlVista;
     //Para poder mostrar vista Modificar
     private InterfaceVista padre;
-    
+
     /**
      * Creates new form VistaConsultarTemas
      */
@@ -40,7 +40,7 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         //Para manipular las listas
         lstCursos.setModel(new DefaultListModel());
         lstTemas.setModel(new DefaultListModel());
-        
+
         //Solo seleccionar uno a la vez
         lstCursos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         lstTemas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -50,105 +50,151 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 //Para saber si se hizo click a la lista
-                if(!e.getValueIsAdjusting()) {
+                if (!e.getValueIsAdjusting()) {
                     consultarTemas();
                 }
             }
-            
+
         });
     }
 
     public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
-    
+
     public void setControlador(CVMantenerTemas controlVista) {
         this.controlVista = controlVista;
     }
-    
+
     /**
      * Limpia los componentes y libera las listas dtos utilizadas
      */
     @Override
     public void limpiar() {
         //Limpiar las listas
-        ((DefaultListModel)lstCursos.getModel()).clear();
-        ((DefaultListModel)lstTemas.getModel()).clear();
+        ((DefaultListModel) lstCursos.getModel()).clear();
+        ((DefaultListModel) lstTemas.getModel()).clear();
         //Liberar memoria dto
         controlVista.liberarMemoriaConsultar();
     }
-    
+
     /**
      * Se manda llamar al mostrarse la vista por primera vez (no despues de
      * regresar de modificar)
      */
-    private void consultarCursos() {
+    private boolean consultarCursos() {
         List<CursoDTO> cursos = controlVista.obtenerCursos();
-        
-        if(cursos != null && !cursos.isEmpty()) {
+        boolean ok = false;
+
+        if (cursos != null && !cursos.isEmpty()) {
+            ok = true;
             mostrarCursos(cursos);
         }
+
+        return ok;
     }
-    
+
     /**
      * Se llama automaticamente despues de seleccionar un curso en lstCursos
      */
     private void consultarTemas() {
-        
+
         List<TemaDTO> temas;
-        
-        if(lstCursos.getSelectedIndex() == -1) {
+
+        if (lstCursos.getSelectedIndex() == -1) {
             //Evitar que ocurra algo al cambiar de panel
             return;
         }
-        //Traer los temas sin asignar
-        if(lstCursos.getSelectedValue().toString().equals("Otros")) {
-            temas = controlVista.obtenerTemasSinAsignar();
-        }
-        //Traer los temas del curso, no se tienen en el objeto debido a algo 
-        //llamado lazy fetch, por eso se vuelve a llamar a la bd
-        else {
-            temas = controlVista.obtenerTemasDeCurso(lstCursos
-                    .getSelectedIndex());
-        }
-        
-        if(temas != null && !temas.isEmpty()) {
+
+        temas = controlVista.obtenerTemasDeCurso(lstCursos
+                .getSelectedIndex());
+
+        if (temas != null && !temas.isEmpty()) {
             mostrarTemas(temas);
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "No hay temas");
-            ((DefaultListModel)lstTemas.getModel()).clear();
+        } else {
+            JOptionPane.showMessageDialog(this, "El curso seleccionado no tiene temas.");
+            ((DefaultListModel) lstTemas.getModel()).clear();
         }
     }
 
     /**
      * Mostrar los cursos que se consultaron en lstCursos
+     *
      * @param cursos los objetos curso a mostrar
      */
     private void mostrarCursos(List<CursoDTO> cursos) {
         DefaultListModel listModel = (DefaultListModel) lstCursos.getModel();
-        
+        DefaultListModel modeloTemas = (DefaultListModel) lstTemas.getModel();
+        modeloTemas.clear();
+
         listModel.clear();
         //Mostrar cada curso, no remover, si no buscar por medio del for
-        for(CursoDTO curso : cursos) {
+        for (CursoDTO curso : cursos) {
             listModel.addElement(curso.getNombre());
         }
     }
-    
+
     /**
      * Mostrar los temas que se consultaron en lstTemas
+     *
      * @param temas los objetos tema a mostrar
      */
     private void mostrarTemas(List<TemaDTO> temas) {
         DefaultListModel listModel = (DefaultListModel) lstTemas.getModel();
-        
+
         listModel.clear();
         //Mostrar cada tema, no remover, si no buscar por medio del for
-        for(TemaDTO tema : temas) {
+        for (TemaDTO tema : temas) {
             listModel.addElement(tema.getNombre());
         }
     }
     
+        @Override
+    public void ancestorAdded(AncestorEvent event) {
+        if (!consultarCursos()) {
+            limpiar();
+            JOptionPane.showMessageDialog(this, "No hay cursos registrados.");
+            padre.mostrarVista(Vista.HOME);
+        }
+    }
+
+    @Override
+    public void ancestorRemoved(AncestorEvent event) {
+        //No implementado
+    }
+
+    @Override
+    public void ancestorMoved(AncestorEvent event) {
+        //No implementado
+    }
+
+    @Override
+    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarVista(Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarEntidad(Object entidad) {
+        ((DefaultListModel) lstCursos.getModel()).clear();
+        ((DefaultListModel) lstTemas.getModel()).clear();
+
+    }
+
+    @Override
+    public boolean confirmarCambio() {
+        return true;
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -240,15 +286,15 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
                         .addGap(99, 99, 99)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(212, 212, 212)
                 .addComponent(lblCursos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblTemas)
                 .addGap(205, 205, 205))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,7 +321,8 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
 
     /**
      * Elimina un tema seleccionado de la base de datos
-     * @param evt 
+     *
+     * @param evt
      */
     private void eliminarTema(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarTema
         //Eliminar Tema
@@ -283,8 +330,8 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         boolean ok;
         if (lstTemas.getSelectedIndex() != -1) {
             int banEliminar = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres eliminar el tema?", "Eliminación", JOptionPane.YES_NO_OPTION);
-            if(banEliminar == 0) {
+                    + "quieres eliminar el tema?", "Eliminación", JOptionPane.YES_NO_OPTION);
+            if (banEliminar == 0) {
                 ok = controlVista.eliminarTema(lstTemas.getSelectedIndex());
                 if (ok) {
                     JOptionPane.showMessageDialog(this, "Tema eliminado");
@@ -295,33 +342,32 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un tema");
+            JOptionPane.showMessageDialog(this, "Selecciona un tema");
         }
 
     }//GEN-LAST:event_eliminarTema
 
     /**
      * Pasa a la vista modificar para modificar el tema
-     * @param evt 
+     *
+     * @param evt
      */
     private void pasarControlVistaModificar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarControlVistaModificar
-        
+
         //Mostrar la vista modificar
-        if(lstTemas.getSelectedIndex() != -1) {
+        if (lstTemas.getSelectedIndex() != -1) {
             TemaDTO tema = controlVista.obtenerTema(lstTemas.getSelectedIndex());
-            
-            if(tema != null) {
+
+            if (tema != null) {
                 //Mostrar la vista modificar tema enviandole el objeto tema
                 padre.mostrarVistaConEntidad(tema, Vista.ModificarTema);
+            } else {
+                JOptionPane.showMessageDialog(this, "Ha ocurrido un error", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            else {
-                JOptionPane.showMessageDialog(this, "Ha ocurrido un error",  "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        else {
+        } else {
             JOptionPane.showMessageDialog(this, "Selecciona un tema");
         }
-        
+
     }//GEN-LAST:event_pasarControlVistaModificar
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -344,58 +390,5 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
     private javax.swing.JList lstTemas;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void ancestorAdded(AncestorEvent event) {
-        if(isShowing()) {
-            //Este evento ocurre cuando se muestra la vista. Aqui llamaremos
-            //a la consulta de cursos
-            if(((DefaultListModel)lstCursos.getModel()).isEmpty()) {
-                //Consultar de nuevo los cursos solo cuando ya no halla cursos
-                //en la lista, para evitar que se reinicien al regresar de
-                //modificar
-                consultarCursos();
-            }
-        }
-    }
-
-    @Override
-    public void ancestorRemoved(AncestorEvent event) {
-        //No implementado
-    }
-
-    @Override
-    public void ancestorMoved(AncestorEvent event) {
-        //No implementado
-    }
-
-    @Override
-    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mostrarVista(Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mostrarEntidad(Object entidad) {
-//        int index = lstTemas.getSelectedIndex();
-//        String nombreTema = ((TemaDTO)entidad).getNombre();
-//        ((DefaultListModel) lstTemas.getModel()).setElementAt(nombreTema, index);
-        ((DefaultListModel)lstCursos.getModel()).clear();
-        ((DefaultListModel)lstTemas.getModel()).clear();
-        
-    }
-
-    @Override
-    public boolean confirmarCambio() {
-        return true;
-    }
-
-    @Override
-    public UsuarioDTO obtenerUsuarioActual() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
 }

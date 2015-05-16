@@ -62,13 +62,17 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         this.controlVista = controlVista;
     }
 
-    private void consultarCursos() {
+    private boolean consultarCursos() {
         UsuarioDTO usuarioActual = padre.obtenerUsuarioActual();
         List<CursoDTO> listaCursos = controlVista.obtenerCursos(usuarioActual);
+        boolean ok = false;
 
         if (listaCursos != null && !listaCursos.isEmpty()) {
+            ok = true;
             mostrarCursos(listaCursos);
         }
+        
+        return ok;
     }
 
     private void mostrarCursos(List<CursoDTO> listaCursos) {
@@ -275,7 +279,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
             boolean ok = controlVista.asignarExamenes(listaExamenesAsignados);
 
             if (ok) {
-                JOptionPane.showMessageDialog(this, "Exámenes asignados :D");
+                JOptionPane.showMessageDialog(this, "Exámenes asignados");
                 limpiar();
                 padre.mostrarVista(Vista.HOME);
             } else {
@@ -435,7 +439,10 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
 
     @Override
     public void ancestorAdded(AncestorEvent event) {
-        consultarCursos();
+        if(!consultarCursos()) {
+            JOptionPane.showMessageDialog(this, "No hay cursos disponibles.");
+            padre.mostrarVista(Vista.HOME);
+        }
     }
 
     @Override
@@ -487,6 +494,10 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         btnRemoverAsignacion = new javax.swing.JButton();
         btnSiguienteAsignaciones = new javax.swing.JButton();
         btnAnteriorAsignaciones = new javax.swing.JButton();
+        btnSeleccionarAlumnos = new javax.swing.JButton();
+        btnDeseleccionarAlumnos = new javax.swing.JButton();
+        btnSeleccionarAsignaciones = new javax.swing.JButton();
+        btnDeseleccionarAsignaciones = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jsTiempo = new javax.swing.JSpinner();
@@ -511,6 +522,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("Asignar Exámenes");
 
+        tbpAsignarExamenes.setPreferredSize(new java.awt.Dimension(780, 481));
         tbpAsignarExamenes.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 tbpAsignarExamenesStateChanged(evt);
@@ -561,6 +573,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
                 return canEdit [columnIndex];
             }
         });
+        tblExamenes.setFocusable(false);
         tblExamenes.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblExamenes);
         if (tblExamenes.getColumnModel().getColumnCount() > 0) {
@@ -571,6 +584,11 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
             tblExamenes.getColumnModel().getColumn(4).setResizable(false);
         }
         tblExamenes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tblExamenes.getColumnModel().getColumn(0).setPreferredWidth(55);
+        tblExamenes.getColumnModel().getColumn(1).setPreferredWidth(175);
+        tblExamenes.getColumnModel().getColumn(2).setPreferredWidth(175);
+        tblExamenes.getColumnModel().getColumn(3).setPreferredWidth(175);
+        tblExamenes.getColumnModel().getColumn(4).setPreferredWidth(175);
 
         btnSiguienteExamenes.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnSiguienteExamenes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/siguiente24.png"))); // NOI18N
@@ -595,11 +613,15 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSiguienteExamenes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 755, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1)
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -611,10 +633,6 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
                                 .addComponent(btnConsultarExamenes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(lblExamenes))
                         .addGap(0, 352, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSiguienteExamenes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -628,7 +646,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
                 .addComponent(lblExamenes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(btnSiguienteExamenes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -696,7 +714,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
                 .addComponent(lblGrupos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAnteriorGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSiguienteGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -772,7 +790,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         });
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel2.setText("Claves asignadas");
+        jLabel2.setText("Asignaciones");
 
         tblAsignaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -846,60 +864,115 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
             }
         });
 
+        btnSeleccionarAlumnos.setText("Seleccionar todos");
+        btnSeleccionarAlumnos.setFocusable(false);
+        btnSeleccionarAlumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarAlumnosActionPerformed(evt);
+            }
+        });
+
+        btnDeseleccionarAlumnos.setText("Deseleccionar todos");
+        btnDeseleccionarAlumnos.setFocusable(false);
+        btnDeseleccionarAlumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeseleccionarAlumnosActionPerformed(evt);
+            }
+        });
+
+        btnSeleccionarAsignaciones.setText("Seleccionar todos");
+        btnSeleccionarAsignaciones.setFocusable(false);
+        btnSeleccionarAsignaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarAsignacionesActionPerformed(evt);
+            }
+        });
+
+        btnDeseleccionarAsignaciones.setText("Deseleccionar todos");
+        btnDeseleccionarAsignaciones.setFocusable(false);
+        btnDeseleccionarAsignaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeseleccionarAsignacionesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAsignarClave, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(9, 9, 9)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(517, 517, 517)
+                        .addComponent(btnAnteriorAsignaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSiguienteAsignaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(btnRemoverAsignacion, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(136, 136, 136)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSeleccionarAsignaciones)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDeseleccionarAsignaciones)
+                        .addGap(21, 21, 21))))
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(lblClaves)
                 .addGap(91, 91, 91)
-                .addComponent(jLabel1))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAsignarClave, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(149, 149, 149)
-                .addComponent(jLabel2))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addComponent(btnRemoverAsignacion, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(517, 517, 517)
-                .addComponent(btnAnteriorAsignaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSeleccionarAlumnos)
                 .addGap(18, 18, 18)
-                .addComponent(btnSiguienteAsignaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnDeseleccionarAlumnos)
+                .addGap(23, 23, 23))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(11, 11, 11)
+                .addGap(9, 9, 9)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblClaves)
-                    .addComponent(jLabel1))
-                .addGap(6, 6, 6)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(btnSeleccionarAlumnos)
+                        .addComponent(btnDeseleccionarAlumnos)))
+                .addGap(2, 2, 2)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(6, 6, 6)
                         .addComponent(btnAsignarClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
-                .addComponent(jLabel2)
-                .addGap(6, 6, 6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(btnDeseleccionarAsignaciones)
+                    .addComponent(btnSeleccionarAsignaciones))
+                .addGap(2, 2, 2)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRemoverAsignacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAnteriorAsignaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSiguienteAsignaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnSiguienteAsignaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         tbpAsignarExamenes.addTab("Asignaciones", jPanel3);
@@ -908,7 +981,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         jLabel3.setText("Tiempo límite:");
 
         jsTiempo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jsTiempo.setModel(new javax.swing.SpinnerNumberModel(0, 0, 120, 1));
+        jsTiempo.setModel(new javax.swing.SpinnerNumberModel(50, 50, 120, 1));
 
         jLabel4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel4.setText("minutos");
@@ -1072,7 +1145,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
                     .addComponent(jLabel4))
                 .addGap(29, 29, 29)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1104,11 +1177,13 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tbpAsignarExamenes)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(661, 661, 661)
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tbpAsignarExamenes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -1117,10 +1192,10 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
                 .addGap(12, 12, 12)
                 .addComponent(lblTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tbpAsignarExamenes, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tbpAsignarExamenes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         tbpAsignarExamenes.setEnabledAt(0, false);
@@ -1281,6 +1356,50 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         asignarExamen();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    private void btnSeleccionarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarAlumnosActionPerformed
+        // TODO add your handling code here:
+        int cont = tblAlumnos.getRowCount();
+
+        for (int i = 0; i < cont; i++) {
+            if (tblAlumnos.getValueAt(i, 0).equals(false)) {
+                ((DefaultTableModel)tblAlumnos.getModel()).setValueAt(true, i, 0);
+            }
+        }
+    }//GEN-LAST:event_btnSeleccionarAlumnosActionPerformed
+
+    private void btnDeseleccionarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeseleccionarAlumnosActionPerformed
+        // TODO add your handling code here:
+        int cont = tblAlumnos.getRowCount();
+
+        for (int i = 0; i < cont; i++) {
+            if (tblAlumnos.getValueAt(i, 0).equals(true)) {
+                ((DefaultTableModel)tblAlumnos.getModel()).setValueAt(false, i, 0);
+            }
+        }
+    }//GEN-LAST:event_btnDeseleccionarAlumnosActionPerformed
+
+    private void btnSeleccionarAsignacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarAsignacionesActionPerformed
+        // TODO add your handling code here:
+        int cont = tblAsignaciones.getRowCount();
+
+        for (int i = 0; i < cont; i++) {
+            if (tblAsignaciones.getValueAt(i, 0).equals(false)) {
+                ((DefaultTableModel)tblAsignaciones.getModel()).setValueAt(true, i, 0);
+            }
+        }
+    }//GEN-LAST:event_btnSeleccionarAsignacionesActionPerformed
+
+    private void btnDeseleccionarAsignacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeseleccionarAsignacionesActionPerformed
+        // TODO add your handling code here:
+        int cont = tblAsignaciones.getRowCount();
+
+        for (int i = 0; i < cont; i++) {
+            if (tblAsignaciones.getValueAt(i, 0).equals(true)) {
+                ((DefaultTableModel)tblAsignaciones.getModel()).setValueAt(false, i, 0);
+            }
+        }
+    }//GEN-LAST:event_btnDeseleccionarAsignacionesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnteriorAsignaciones;
@@ -1289,8 +1408,12 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
     private javax.swing.JButton btnAsignarClave;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConsultarExamenes;
+    private javax.swing.JButton btnDeseleccionarAlumnos;
+    private javax.swing.JButton btnDeseleccionarAsignaciones;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnRemoverAsignacion;
+    private javax.swing.JButton btnSeleccionarAlumnos;
+    private javax.swing.JButton btnSeleccionarAsignaciones;
     private javax.swing.JButton btnSiguienteAsignaciones;
     private javax.swing.JButton btnSiguienteExamenes;
     private javax.swing.JButton btnSiguienteGrupos;

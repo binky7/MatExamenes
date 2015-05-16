@@ -13,6 +13,8 @@ import org.apache.commons.lang3.text.WordUtils;
  * @author Jesus Donaldo
  */
 public class Validador {
+    public static final int LONGITUD_CURSO = 50;
+    public static final int LONGITUD_TEMA = 50;
 
     /**
      * Valida que el campo no este vacio.
@@ -147,6 +149,16 @@ public class Validador {
                 || campo.length() != 1) {
             ok = false;
         }
+        return ok;
+    }
+    
+    public static boolean validarLongitud(int longitud, String campoTexto) {
+        boolean ok = true;
+        
+        if(campoTexto.length() > longitud) {
+            ok = false;
+        }
+        
         return ok;
     }
 }
