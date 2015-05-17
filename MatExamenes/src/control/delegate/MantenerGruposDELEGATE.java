@@ -52,7 +52,7 @@ public class MantenerGruposDELEGATE {
     }
 
     public GrupoDTO obtenerGrupo(int id) {
-        GrupoDTO grupo = null;       
+        GrupoDTO grupo = null;
         try {
             grupo = Enlace.getPersistencia().obtenerGrupo(id);
         } catch (RemoteException | NotBoundException ex) {
@@ -62,7 +62,7 @@ public class MantenerGruposDELEGATE {
     }
 
     public boolean modificarGrupo(GrupoDTO grupo) {
-        boolean ok = false;       
+        boolean ok = false;
         try {
             ok = Enlace.getPersistencia().modificarEntidad(grupo);
         } catch (RemoteException | NotBoundException ex) {
@@ -80,6 +80,15 @@ public class MantenerGruposDELEGATE {
             Logger.getLogger(MantenerGruposDELEGATE.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ok;
+    }
+
+    public boolean verificarExistencia(GrupoDTO grupo) {
+        try {
+            return Enlace.getPersistencia().verificarExistencia(grupo);
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(MantenerGruposDELEGATE.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
 }

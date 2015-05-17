@@ -22,8 +22,8 @@ import modelo.dto.UsuarioDTO.Tipo;
  */
 public class CVMantenerGrupos {
 
-    private MantenerGruposDELEGATE gruposDELEGATE;
-    private MantenerUsuariosDELEGATE usuariosDELEGATE;
+    private final MantenerGruposDELEGATE gruposDELEGATE;
+    private final MantenerUsuariosDELEGATE usuariosDELEGATE;
 
     //Listas de dto necesarios
     //dtos para consultar
@@ -42,11 +42,16 @@ public class CVMantenerGrupos {
 
     //Lista de dto necesarios para agregar alumnos
     private List<UsuarioDTO> listaAlumnos;
+    private List<UsuarioDTO> listaEliminados;
 
     public CVMantenerGrupos() {
         gruposDELEGATE = new MantenerGruposDELEGATE();
         usuariosDELEGATE = new MantenerUsuariosDELEGATE();
         listaCursos = new ArrayList<>();
+        listaAlumnos = new ArrayList<>();
+        listaMaestros = new ArrayList<>();
+        listaEliminados = new ArrayList<>();
+        grupo = new GrupoDTO();
         mapaMaestros = null;
     }
 
@@ -93,13 +98,6 @@ public class CVMantenerGrupos {
         for (CursoDTO curso : grupo.getMaestros().keySet()) {
             UsuarioDTO maestro = grupo.getMaestros().get(curso);
             mapa.put(curso, maestro);
-            Object[] fila = new Object[6];
-            fila[0] = false;
-            fila[1] = String.valueOf(maestro.getId());
-            fila[2] = maestro.getNombre();
-            fila[3] = maestro.getApellidoPaterno();
-            fila[4] = maestro.getApellidoMaterno();
-            fila[5] = curso.getNombre();
         }
         this.mapaMaestros = mapa;
         this.grupo.setMaestros(mapa);
@@ -129,33 +127,47 @@ public class CVMantenerGrupos {
         return ok;
     }
 
-    public List<UsuarioDTO> obtenerAlumnosPorApellido(String apellidoPaterno) {
-        this.listaAlumnos = usuariosDELEGATE.obtenerAlumnosPorApellido(apellidoPaterno);
+    public List<UsuarioDTO> obtenerAlumnos(String busqueda) {
+        listaAlumnos = usuariosDELEGATE.obtenerAlumnosPorApellido(busqueda);
+        List<Integer> ids = new ArrayList<>();
+        for (UsuarioDTO listaAlumno : listaAlumnos) {
+            ids.add(listaAlumno.getId());
+        }
+        for (UsuarioDTO alumno : usuariosDELEGATE.obtenerAlumnosPorApellidoM(busqueda)) {
+            if (!ids.contains(alumno.getId())) {
+                ids.add(alumno.getId());
+                listaAlumnos.add(alumno);
+            }
+        }
+        for (UsuarioDTO alumno : usuariosDELEGATE.obtenerAlumnosPorNombre(busqueda)) {
+            if (!ids.contains(alumno.getId())) {
+                ids.add(alumno.getId());
+                listaAlumnos.add(alumno);
+            }
+        }
+        listaAlumnos.removeAll(listaEliminados);
+        listaAlumnos.addAll(listaEliminados);
         return listaAlumnos;
-    } 
-
-    public List<UsuarioDTO> obtenerAlumnosPorApellidoM(String apellidoMaterno) {
-        this.listaAlumnos = usuariosDELEGATE.obtenerAlumnosPorApellidoM(apellidoMaterno);
-        return listaAlumnos;
     }
 
-    public List<UsuarioDTO> obtenerAlumnosPorNombre(String nombre) {
-        this.listaAlumnos = usuariosDELEGATE.obtenerAlumnosPorNombre(nombre);
-        return listaAlumnos;
-    }
-
-    public List<UsuarioDTO> obtenerMaestrosPorApellido(String apellidoPaterno, Tipo tipo) {
-        this.listaMaestros = usuariosDELEGATE.obtenerUsuariosPorApellido(apellidoPaterno, tipo);
-        return listaMaestros;
-    }
-
-    public List<UsuarioDTO> obtenerMaestrosPorApellidoM(String apellidoMaterno, Tipo tipo) {
-        this.listaMaestros = usuariosDELEGATE.obtenerUsuariosPorApellidoM(apellidoMaterno, tipo);
-        return listaMaestros;
-    }
-
-    public List<UsuarioDTO> obtenerMaestrosPorNombre(String nombre, Tipo tipo) {
-        this.listaMaestros = usuariosDELEGATE.obtenerUsuariosPorNombre(nombre, tipo);
+    public List<UsuarioDTO> obtenerMaestros(String busqueda) {
+        listaMaestros = usuariosDELEGATE.obtenerUsuariosPorApellido(busqueda, Tipo.Maestro);
+        List<Integer> ids = new ArrayList<>();
+        for (UsuarioDTO listaMaestro : listaMaestros) {
+            ids.add(listaMaestro.getId());
+        }
+        for (UsuarioDTO maestro : usuariosDELEGATE.obtenerUsuariosPorApellidoM(busqueda, Tipo.Maestro)) {
+            if (!ids.contains(maestro.getId())) {
+                ids.add(maestro.getId());
+                listaMaestros.add(maestro);
+            }
+        }
+        for (UsuarioDTO maestro : usuariosDELEGATE.obtenerUsuariosPorNombre(busqueda, Tipo.Maestro)) {
+            if (!ids.contains(maestro.getId())) {
+                ids.add(maestro.getId());
+                listaMaestros.add(maestro);
+            }
+        }
         return listaMaestros;
     }
 
@@ -170,6 +182,7 @@ public class CVMantenerGrupos {
             }
         }
         alumnos = agregarAlumnosLista(alumnos);
+        this.listaEliminados.removeAll(alumnos);
         return alumnos;
     }
 
@@ -185,8 +198,8 @@ public class CVMantenerGrupos {
         List<UsuarioDTO> repetidos = new ArrayList<>();
         for (int i = 0; i < cont; i++) {
             boolean ban = false;
-            for (int j = 0; j < this.listaAlumnos.size(); j++) {
-                if (this.listaAlumnos.get(j).getId() == alumnos.get(i).getId()) {
+            for (UsuarioDTO listaAlumno : this.listaAlumnos) {
+                if (listaAlumno.getId() == alumnos.get(i).getId()) {
                     ban = true;
                 }
             }
@@ -201,8 +214,8 @@ public class CVMantenerGrupos {
     }
 
     public HashMap<CursoDTO, UsuarioDTO> agregarMaestro(List indexesCursos, int indexMaestro) {
-        UsuarioDTO maestro = null;
-        CursoDTO curso = null;
+        UsuarioDTO maestro;
+        CursoDTO curso;
         HashMap<CursoDTO, UsuarioDTO> mapaMaestro = null;
         if (this.listaMaestros != null && !this.listaMaestros.isEmpty()
                 && this.listaCursos != null && !this.listaCursos.isEmpty()) {
@@ -228,18 +241,23 @@ public class CVMantenerGrupos {
         return (HashMap<CursoDTO, UsuarioDTO>) grupo.getMaestros();
     }
 
-    public void removerAlumnos(List<Integer> indexesAlumnos) {
+    public void removerAlumnos(List<Integer> indexes) {
         List<UsuarioDTO> listaRemover = new ArrayList<>();
         if (this.grupo != null) {
             this.listaAlumnos = grupo.getAlumnos();
             if (listaAlumnos != null) {
-                int cont = indexesAlumnos.size();
+                int cont = indexes.size();
                 for (int i = 0; i < cont; i++) {
-                    listaRemover.add(this.listaAlumnos.get(indexesAlumnos.get(i)));
+                    listaRemover.add(this.listaAlumnos.get(indexes.get(i)));
                 }
                 this.listaAlumnos.removeAll(listaRemover);
             }
         }
+    }
+
+    public void agregarEliminados(List<UsuarioDTO> eliminados) {
+        this.listaEliminados.removeAll(eliminados);
+        this.listaEliminados.addAll(eliminados);
     }
 
     public void removerMaestro(String nombreCurso) {
@@ -256,30 +274,37 @@ public class CVMantenerGrupos {
         }
     }
 
+    public boolean verificarExistencia(GrupoDTO grupo) {
+        return gruposDELEGATE.verificarExistencia(grupo);
+    }
+
     public void liberarMemoriaRegistrar() {
-        this.grupo = null;
-        this.listaAlumnos = null;
-        this.listaCursos = null;
-        this.listaGrupos = null;
-        this.listaMaestros = null;
+        this.grupo = new GrupoDTO();
+        this.listaAlumnos = new ArrayList<>();
+        this.listaCursos = new ArrayList<>();
+        this.listaGrupos = new ArrayList<>();
+        this.listaMaestros = new ArrayList<>();
+        this.listaEliminados = new ArrayList<>();
         this.mapaMaestros = null;
     }
 
     public void liberarMemoriaConsultar() {
-        this.grupo = null;
-        this.listaAlumnos = null;
-        this.listaCursos = null;
-        this.listaGrupos = null;
-        this.listaMaestros = null;
+        this.grupo = new GrupoDTO();
+        this.listaAlumnos = new ArrayList<>();
+        this.listaCursos = new ArrayList<>();
+        this.listaGrupos = new ArrayList<>();
+        this.listaMaestros = new ArrayList<>();
+        this.listaEliminados = new ArrayList<>();
         this.mapaMaestros = null;
     }
 
     public void liberarMemoriaModificar() {
-        this.grupo = null;
-        this.listaAlumnos = null;
-        this.listaCursos = null;
-        this.listaGrupos = null;
-        this.listaMaestros = null;
+        this.grupo = new GrupoDTO();
+        this.listaAlumnos = new ArrayList<>();
+        this.listaCursos = new ArrayList<>();
+        this.listaGrupos = new ArrayList<>();
+        this.listaMaestros = new ArrayList<>();
+        this.listaEliminados = new ArrayList<>();
         this.mapaMaestros = null;
     }
 }

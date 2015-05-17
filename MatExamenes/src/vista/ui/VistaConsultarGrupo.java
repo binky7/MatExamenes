@@ -217,8 +217,7 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
      * @param evt Recibe el evento del boton que lo activo.
      */
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        int index = -1;
-        index = tblGrupos.getSelectedRow();
+        int index = tblGrupos.getSelectedRow();
         if (index == -1) {
             JOptionPane.showMessageDialog(this, "Selecciona al menos un grupo",
                     "Advertencia", 1);
@@ -241,8 +240,7 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
      * @param evt Recibe el evento del boton que lo activo.
      */
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        int index = -1;
-        index = tblGrupos.getSelectedRow();
+        int index = tblGrupos.getSelectedRow();
         if (index == -1) {
             JOptionPane.showMessageDialog(this, "Selecciona al menos un grupo",
                     "Advertencia", 1);
@@ -250,8 +248,7 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
             int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
                     + "quieres eliminar este grupo?\nEste proceso es irreversible");
             if (ok == 0) {
-                boolean ban = controladorVista.eliminarGrupo(index);
-                if (ban) {
+                if (controladorVista.eliminarGrupo(index)) {
                     JOptionPane.showMessageDialog(this, "Grupo Eliminado!",
                             "Exito", 1);
                     DefaultTableModel modelo = (DefaultTableModel) tblGrupos.getModel();

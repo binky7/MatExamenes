@@ -27,12 +27,12 @@ public class FrmAgregarAlumnos extends javax.swing.JFrame {
      * Creates new form FrmAgregarAlumnos
      */
     public FrmAgregarAlumnos() {
+        listaAlumnos = new ArrayList<>();
         controladorVista = new CVMantenerGrupos();
         initComponents();
         setVisible(false);
         this.setTitle("MatExamenes/Agregar Alumnos");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        cbBusqueda.setSelectedIndex(-1);
     }
 
     private void limpiar() {
@@ -65,7 +65,7 @@ public class FrmAgregarAlumnos extends javax.swing.JFrame {
         lblTitulo = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        cbBusqueda = new javax.swing.JComboBox();
+        lblBusqueda = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -118,7 +118,8 @@ public class FrmAgregarAlumnos extends javax.swing.JFrame {
             }
         });
 
-        cbBusqueda.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Apellido paterno", "Apellido materno", "Nombre" }));
+        lblBusqueda.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblBusqueda.setText("Busqueda:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -135,19 +136,18 @@ public class FrmAgregarAlumnos extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(btnCancelar))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(147, 147, 147)
-                                .addComponent(lblTitulo))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(cbBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtfBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(39, 39, 39)
-                                .addComponent(btnBuscar)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(147, 147, 147)
+                        .addComponent(lblTitulo)
+                        .addGap(0, 164, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(lblBusqueda)
+                .addGap(18, 18, 18)
+                .addComponent(txtfBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnBuscar)
+                .addGap(39, 39, 39))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,7 +158,7 @@ public class FrmAgregarAlumnos extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtfBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar)
-                    .addComponent(cbBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblBusqueda))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
@@ -206,36 +206,25 @@ public class FrmAgregarAlumnos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        int tipoBusqueda = cbBusqueda.getSelectedIndex();
-        if (tipoBusqueda != -1) {
-            if (cbBusqueda.getSelectedIndex() == 0) {
-                listaAlumnos = controladorVista.obtenerAlumnosPorApellido(txtfBusqueda.getText());
+        listaAlumnos = controladorVista.obtenerAlumnos(txtfBusqueda.getText());
+        DefaultTableModel model = (DefaultTableModel) tblAlumnos.getModel();
+        for (int i = model.getRowCount() - 1; i > -1; i--) {
+            model.removeRow(i);
+        }
+        if (listaAlumnos == null || listaAlumnos.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No se encontraron alumnos!", "Mensaje", 1);
+        } else {
+            for (int i = 0; i < listaAlumnos.size(); i++) {
+                UsuarioDTO alumno = listaAlumnos.get(i);
+                Object[] fila = new Object[5];
+                fila[0] = false;
+                fila[1] = String.valueOf(alumno.getId());
+                fila[2] = alumno.getApellidoPaterno();
+                fila[3] = alumno.getApellidoMaterno();
+                fila[4] = alumno.getNombre();
+                model.addRow(fila);
             }
-            if (cbBusqueda.getSelectedIndex() == 1) {
-                listaAlumnos = controladorVista.obtenerAlumnosPorApellidoM(txtfBusqueda.getText());
-            }
-            if (cbBusqueda.getSelectedIndex() == 2) {
-                listaAlumnos = controladorVista.obtenerAlumnosPorNombre(txtfBusqueda.getText());
-            }
-            DefaultTableModel model = (DefaultTableModel) tblAlumnos.getModel();
-            for (int i = model.getRowCount() - 1; i > -1; i--) {
-                model.removeRow(i);
-            }
-            if (listaAlumnos == null || listaAlumnos.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "No se encontraron alumnos!", "Mensaje", 1);
-            } else {
-                for (int i = 0; i < listaAlumnos.size(); i++) {
-                    UsuarioDTO alumno = listaAlumnos.get(i);
-                    Object[] fila = new Object[5];
-                    fila[0] = false;
-                    fila[1] = String.valueOf(alumno.getId());
-                    fila[2] = alumno.getApellidoPaterno();
-                    fila[3] = alumno.getApellidoMaterno();
-                    fila[4] = alumno.getNombre();
-                    model.addRow(fila);
-                }
-                tblAlumnos.setModel(model);
-            }
+            tblAlumnos.setModel(model);
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -248,9 +237,9 @@ public class FrmAgregarAlumnos extends javax.swing.JFrame {
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JComboBox cbBusqueda;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblBusqueda;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JTable tblAlumnos;
     private javax.swing.JTextField txtfBusqueda;

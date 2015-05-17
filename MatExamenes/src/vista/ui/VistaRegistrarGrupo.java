@@ -64,16 +64,16 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
         cbGrado.setSelectedIndex(-1);
         cbNombre.setSelectedIndex(-1);
         cbTurno.setSelectedIndex(-1);
-        DefaultTableModel modelo = (DefaultTableModel) tblAlumnos.getModel();
-        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
-            modelo.removeRow(i);
-        }
-        tblAlumnos.setModel(modelo);
-        modelo = (DefaultTableModel) tblMaestros.getModel();
-        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
-            modelo.removeRow(i);
-        }
-        tblMaestros.setModel(modelo);
+//        DefaultTableModel modelo = (DefaultTableModel) tblAlumnos.getModel();
+//        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
+//            modelo.removeRow(i);
+//        }
+//        tblAlumnos.setModel(modelo);
+//        modelo = (DefaultTableModel) tblMaestros.getModel();
+//        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
+//            modelo.removeRow(i);
+//        }
+//        tblMaestros.setModel(modelo);
         controlVista.liberarMemoriaRegistrar();
     }
 
@@ -177,8 +177,13 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
             } else {
                 grupo.setTurno(GrupoDTO.Turno.V);
             }
+            if (controlVista.verificarExistencia(grupo)) {
+                JOptionPane.showMessageDialog(this, "Este grupo ya existe!", "Advertencia", 1);
+                return null;
+            }
         } else {
-            grupo = null;
+            JOptionPane.showMessageDialog(this, "Faltan datos!", "Advertencia", 1);
+            return null;
         }
         return grupo;
     }
@@ -465,9 +470,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
      */
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         GrupoDTO grupo = encapsularGrupo();
-        if (grupo == null) {
-            JOptionPane.showMessageDialog(this, "Faltan datos!", "Advertencia", 1);
-        } else {
+        if (grupo != null) {
             Integer id = controlVista.guardarGrupo(grupo);
             if (id != null) {
                 JOptionPane.showMessageDialog(this, "Agregado Correctamente!", "Exito", 1);
@@ -510,7 +513,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
      * @param evt Recibe el evento del boton que lo activo.
      */
     private void btnRmvMaestroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRmvMaestroActionPerformed
-        String nombreCurso = null;
+        String nombreCurso;
         int index = tblMaestros.getSelectedRow();
         if (index != -1) {
             DefaultTableModel model = (DefaultTableModel) tblMaestros.getModel();
