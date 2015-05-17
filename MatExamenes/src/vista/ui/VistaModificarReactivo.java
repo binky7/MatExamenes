@@ -6,8 +6,14 @@
 package vista.ui;
 
 import java.awt.Component;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,7 +38,7 @@ import vista.interfaz.InterfaceVista;
  * @author Jesus Donaldo
  */
 public class VistaModificarReactivo extends javax.swing.JPanel
-implements InterfaceVista, FocusListener {
+implements InterfaceVista, FocusListener, KeyListener {
 
     private InterfaceVista padre;
     private CVMantenerReactivos controlVista;
@@ -43,6 +49,7 @@ implements InterfaceVista, FocusListener {
     private final ImageIcon ICONO_MAL;
     
     private String mensajeDatosIncorrectos;
+    
     /**
      * Creates new form ModificarReactivo
      */
@@ -88,6 +95,13 @@ implements InterfaceVista, FocusListener {
         opciones.add(rbtnOpt4);
         opciones.add(rbtnOpt3);
         
+        txtfNombre.addKeyListener(this);
+        txtaRedaccion.addKeyListener(this);
+        txtfOpt1.addKeyListener(this);
+        txtfOpt2.addKeyListener(this);
+        txtfOpt3.addKeyListener(this);
+        txtfOpt4.addKeyListener(this);
+        
         //Agregar los listeners de cambio de foco
         txtfOpt1.addFocusListener(this);
         txtfOpt2.addFocusListener(this);
@@ -120,7 +134,7 @@ implements InterfaceVista, FocusListener {
             mostrarLabelEstado(txtaRedaccion, false, "");
         } else {
             mostrarLabelEstado(txtaRedaccion, true, "");
-        } 
+        }
         
         if(!ok) {
             mensajeDatosIncorrectos = "No se puede completar la operación, los "
@@ -409,13 +423,16 @@ implements InterfaceVista, FocusListener {
                     .addComponent(lblEstadoOpt3))
                 .addGap(18, 18, 18)
                 .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtfOpt4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblOpciones4))
-                        .addComponent(rbtnOpt4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblEstadoOpt4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlOpcionesLayout.createSequentialGroup()
+                        .addComponent(lblEstadoOpt4)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlOpcionesLayout.createSequentialGroup()
+                        .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtfOpt4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblOpciones4))
+                            .addComponent(rbtnOpt4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 20, Short.MAX_VALUE))))
         );
 
         btnGuardar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -510,13 +527,13 @@ implements InterfaceVista, FocusListener {
                         .addGap(18, 18, 18)
                         .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                        .addGap(31, 31, 31)
+                        .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -687,5 +704,77 @@ implements InterfaceVista, FocusListener {
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(VistaRegistrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        JTextComponent campo = (JTextComponent) e.getSource();
+        int longitud = 0;
+        
+        if(campo.getName().contains("Nombre")) {
+            longitud = Validador.LONGITUD_NOMBRE_REACTIVO;
+        }
+        else if(campo.getName().contains("Redaccion")) {
+            longitud = Validador.LONGITUD_REDACCION_REACTIVO;
+        }
+        else if(campo.getName().contains("Opt")) {
+            longitud = Validador.LONGITUD_OPCION_REACTIVO;
+        }
+        
+        if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
+            String portapapeles = "";
+            
+            try {
+                portapapeles = (String) Toolkit.getDefaultToolkit()
+                        .getSystemClipboard().getData(DataFlavor.stringFlavor);
+            } catch (UnsupportedFlavorException | IOException | ClassCastException ex) {
+                System.out.println(ex);
+            }
+            
+            if(!Validador.validarLongitud(longitud, campo.getText() + portapapeles)) {
+                e.consume();
+                Toolkit.getDefaultToolkit().beep();
+            }
+        }
+        else if (!Validador.validarLongitud(longitud, campo.getText())) {
+            e.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        JTextComponent campo = (JTextComponent) e.getSource();
+        int longitud = 0;
+        
+        if(campo.getName().contains("Nombre")) {
+            longitud = Validador.LONGITUD_NOMBRE_REACTIVO;
+        }
+        else if(campo.getName().contains("Redaccion")) {
+            longitud = Validador.LONGITUD_REDACCION_REACTIVO;
+        }
+        else if(campo.getName().contains("Opt")) {
+            longitud = Validador.LONGITUD_OPCION_REACTIVO;
+        }
+        
+        if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
+            String portapapeles = "";
+            
+            try {
+                portapapeles = (String) Toolkit.getDefaultToolkit()
+                        .getSystemClipboard().getData(DataFlavor.stringFlavor);
+            } catch (UnsupportedFlavorException | IOException | ClassCastException ex) {
+                System.out.println(ex);
+            }
+            
+            if(!Validador.validarLongitud(longitud, campo.getText() + portapapeles)) {
+                e.consume();
+                Toolkit.getDefaultToolkit().beep();
+            }
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
 }

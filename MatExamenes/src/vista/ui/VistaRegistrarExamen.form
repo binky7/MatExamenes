@@ -57,18 +57,18 @@
                   <Component id="btnCancelar" min="-2" pref="115" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
               </Group>
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="166" max="-2" attributes="0"/>
-                          <Component id="lblEstadoTitulo" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblEstadoNombre" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="265" max="-2" attributes="0"/>
                           <Component id="lblEstadoInstrucciones" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
@@ -96,7 +96,7 @@
                           </Group>
                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                               <Component id="jScrollPane2" alignment="0" pref="284" max="32767" attributes="0"/>
-                              <Component id="txtfTitulo" alignment="0" pref="284" max="32767" attributes="0"/>
+                              <Component id="txtfNombre" alignment="0" pref="284" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
@@ -127,10 +127,16 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
-                  <Component id="lblEstadoTitulo" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
-                  <Component id="lblEstadoInstrucciones" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
+                          <Component id="lblEstadoNombre" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="154" max="-2" attributes="0"/>
+                          <Component id="lblEstadoInstrucciones" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
                   <EmptySpace pref="345" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnGuardar" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
@@ -169,7 +175,7 @@
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
-                              <Component id="txtfTitulo" min="-2" pref="30" max="-2" attributes="0"/>
+                              <Component id="txtfNombre" min="-2" pref="30" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="lblInstrucciones" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -210,10 +216,10 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="T&#xed;tulo del Examen:"/>
+            <Property name="text" type="java.lang.String" value="Nombre del Examen:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtfTitulo">
+        <Component class="javax.swing.JTextField" name="txtfNombre">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="12" style="0"/>
@@ -224,7 +230,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="txtfTitulo.addFocusListener(this);&#xd;&#xa;txtfTitulo.setName(&quot;lblEstadoTitulo&quot;);"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="txtfNombre.addFocusListener(this);&#xd;&#xa;txtfNombre.setName(&quot;lblEstadoNombre&quot;);"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="lblInstrucciones">
@@ -480,7 +486,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="agregarClave"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblEstadoTitulo">
+        <Component class="javax.swing.JLabel" name="lblEstadoNombre">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/recursos/bien.png"/>

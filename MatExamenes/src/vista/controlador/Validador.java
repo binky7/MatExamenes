@@ -15,7 +15,12 @@ import org.apache.commons.lang3.text.WordUtils;
 public class Validador {
     public static final int LONGITUD_CURSO = 50;
     public static final int LONGITUD_TEMA = 50;
-
+    public static final int LONGITUD_NOMBRE_REACTIVO = 50;
+    public static final int LONGITUD_REDACCION_REACTIVO = 1000;
+    public static final int LONGITUD_OPCION_REACTIVO = 250;
+    public static final int LONGITUD_NOMBRE_EXAMEN = 100;
+    public static final int LONGITUD_INSTRUCCIONES_EXAMEN = 200;
+    
     /**
      * Valida que el campo no este vacio.
      *

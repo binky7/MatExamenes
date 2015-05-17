@@ -349,8 +349,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
             String titulo) {
 
         CategoryAxis ejeHorizontal = new CategoryAxis();
-        ejeHorizontal.setCategories(FXCollections.<String>observableArrayList(tabla.
-                getColumnNames()));
+        ejeHorizontal.setCategories(FXCollections.<String>observableArrayList(tabla.getColumnas()));
         ejeHorizontal.setLabel(ejeX);
 
         double tickUnit = tabla.getTickUnit();
@@ -360,7 +359,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         ejeVertical.setLabel(ejeY);
 
         final BarChart grafica = new BarChart(ejeHorizontal, ejeVertical,
-                tabla.getBarChartData());
+                tabla.getBarChartDatos());
 
         Platform.runLater(new Runnable() {
             public void run() {

@@ -19,7 +19,7 @@ import modelo.dto.TablaEstadisticas;
 public class CVGenerarEstadisticas {
     
     private final GenerarEstadisticasDELEGATE generarEstadisticasDELEGATE;
-    List<ExamenDTO> examenes;
+    private List<ExamenDTO> examenes;
     
     public CVGenerarEstadisticas() {
         generarEstadisticasDELEGATE = new GenerarEstadisticasDELEGATE();

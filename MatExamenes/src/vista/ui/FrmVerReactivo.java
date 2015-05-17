@@ -27,6 +27,22 @@ public class FrmVerReactivo extends javax.swing.JFrame {
      */
     public FrmVerReactivo() {
         initComponents();
+        initListeners();
+        //Para igualar los radios con los textos
+        rbtnOpt1.setActionCommand("Opt1");
+        rbtnOpt2.setActionCommand("Opt2");
+        rbtnOpt3.setActionCommand("Opt3");
+        rbtnOpt4.setActionCommand("Opt4");
+        
+        txtfOpt1.setName("Opt1");
+        txtfOpt2.setName("Opt2");
+        txtfOpt3.setName("Opt3");
+        txtfOpt4.setName("Opt4");
+        
+        setTitle("Ver Reactivo");
+    }
+
+    private void initListeners() {
         this.addWindowListener(new WindowListener() {
 
             @Override
@@ -69,21 +85,8 @@ public class FrmVerReactivo extends javax.swing.JFrame {
             }
             
         });
-        
-        //Para igualar los radios con los textos
-        rbtnOpt1.setActionCommand("Opt1");
-        rbtnOpt2.setActionCommand("Opt2");
-        rbtnOpt3.setActionCommand("Opt3");
-        rbtnOpt4.setActionCommand("Opt4");
-        
-        txtfOpt1.setName("Opt1");
-        txtfOpt2.setName("Opt2");
-        txtfOpt3.setName("Opt3");
-        txtfOpt4.setName("Opt4");
-        
-        setTitle("Ver Reactivo");
     }
-
+    
     public void setPadre(JFrame padre) {
         this.padre = padre;
     }
