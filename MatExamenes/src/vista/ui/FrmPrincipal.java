@@ -107,7 +107,13 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     private void init() {
         //se deben agregar todos los paneles de vista a este panel
         vistas.setLayout(manejadorVista);
-        
+        initVistas();
+        initControladores();        
+        agregarPadres();
+        agregarAPrincipal();
+    }
+    
+    private void initVistas() {
         //Crear vistas
         vistaHome = new VistaHOME();
         vistaHome.setName(Vista.HOME.toString());
@@ -170,8 +176,9 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         
         vistaGenerarEstadisticas = new VistaGenerarEstadisticas();
         vistaGenerarEstadisticas.setName(Vista.GenerarEstadisticas.toString());
-        
-        
+    }
+    
+    private void initControladores() {
         //Crear controladores vistas
         CVMantenerTemas cvMantenerTemas = new CVMantenerTemas();
         CVMantenerCursos cvMantenerCursos = new CVMantenerCursos();
@@ -218,8 +225,9 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistaContestarExamen.setControlador(cvContestarExamen);
         
         vistaGenerarEstadisticas.setControlador(cvGenerarEstadisticas);
-        
-        
+    }
+    
+    private void agregarPadres() {
         //Asignar padre a vistas
         vistaRegistrarTema.setPadre(this);
         vistaConsultarTemas.setPadre(this);
@@ -252,8 +260,9 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistaModificarReactivo.setPadre(this);
 
         vistaGenerarEstadisticas.setPadre(this);
-        
-        
+    }
+    
+    private void agregarAPrincipal() {
         //Agregar un panel y su identificador. Para agregar mas identificadores
         //ir a vista.interfaz.InterfazVista y agregarlos al enum Vista
         vistas.add(vistaHome, Vista.HOME.toString());

@@ -5,6 +5,8 @@
  */
 package vista.ui;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import modelo.dto.UsuarioDTO;
@@ -15,7 +17,7 @@ import vista.controlador.CVLogin;
  *
  * @author Jesus Donaldo
  */
-public class FrmLogin extends javax.swing.JFrame {
+public class FrmLogin extends javax.swing.JFrame implements KeyListener {
 
     private final FrmPrincipal p;
     private final CVLogin cvLogin;
@@ -27,6 +29,8 @@ public class FrmLogin extends javax.swing.JFrame {
         initComponents();
         p = new FrmPrincipal();
         cvLogin = new CVLogin();
+        txtfUsuario.addKeyListener(this);
+        txtpPassword.addKeyListener(this);
     }
 
     /**
@@ -53,6 +57,7 @@ public class FrmLogin extends javax.swing.JFrame {
         btnLogin.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/usuarios.png"))); // NOI18N
         btnLogin.setText("Login");
+        btnLogin.setNextFocusableComponent(lblUsuario);
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLogin(evt);
@@ -60,6 +65,7 @@ public class FrmLogin extends javax.swing.JFrame {
         });
 
         txtfUsuario.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfUsuario.setNextFocusableComponent(txtpPassword);
         txtfUsuario.setPreferredSize(new java.awt.Dimension(100, 30));
 
         lblUsuario.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
@@ -69,14 +75,11 @@ public class FrmLogin extends javax.swing.JFrame {
         lblPassword.setText("Password:");
 
         txtpPassword.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtpPassword.setNextFocusableComponent(btnLogin);
         txtpPassword.setPreferredSize(new java.awt.Dimension(100, 25));
-        txtpPassword.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtpPasswordKeyTyped(evt);
-            }
-        });
 
         lblTitulo.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("Login");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -88,28 +91,27 @@ public class FrmLogin extends javax.swing.JFrame {
                 .addComponent(btnLogin)
                 .addGap(44, 44, 44))
             .addGroup(layout.createSequentialGroup()
-                .addGap(233, 233, 233)
-                .addComponent(lblTitulo)
-                .addGap(223, 243, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(130, 130, 130)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblUsuario)
                         .addGap(104, 104, 104)
-                        .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblPassword)
                         .addGap(90, 90, 90)
-                        .addComponent(txtpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(139, 139, 139))
+                        .addComponent(txtpPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(112, 112, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
+                .addGap(41, 41, 41)
                 .addComponent(lblTitulo)
-                .addGap(46, 46, 46)
+                .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(7, 7, 7)
@@ -121,7 +123,7 @@ public class FrmLogin extends javax.swing.JFrame {
                         .addGap(7, 7, 7)
                         .addComponent(lblPassword))
                     .addComponent(txtpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
         );
@@ -164,13 +166,6 @@ public class FrmLogin extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnLogin
 
-    private void txtpPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpPasswordKeyTyped
-        // TODO add your handling code here:
-        if(evt.getKeyChar() == '\n'){
-            btnLogin.doClick();
-        }
-    }//GEN-LAST:event_txtpPasswordKeyTyped
-
     private UsuarioDTO encapsularUsuario() {
         UsuarioDTO usuario = new UsuarioDTO();
 
@@ -182,6 +177,19 @@ public class FrmLogin extends javax.swing.JFrame {
 
         return usuario;
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        if (e.getKeyChar() == '\n') {
+            btnLogin.doClick();
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {}
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
 
     /**
      * @param args the command line arguments
@@ -216,5 +224,4 @@ public class FrmLogin extends javax.swing.JFrame {
     private javax.swing.JTextField txtfUsuario;
     private javax.swing.JPasswordField txtpPassword;
     // End of variables declaration//GEN-END:variables
-
 }

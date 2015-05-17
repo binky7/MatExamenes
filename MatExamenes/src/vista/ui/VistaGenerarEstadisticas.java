@@ -349,8 +349,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
             String titulo) {
 
         CategoryAxis ejeHorizontal = new CategoryAxis();
-        ejeHorizontal.setCategories(FXCollections.<String>observableArrayList(tabla.
-                getColumnNames()));
+        ejeHorizontal.setCategories(FXCollections.<String>observableArrayList(tabla.getColumnas()));
         ejeHorizontal.setLabel(ejeX);
 
         double tickUnit = tabla.getTickUnit();
@@ -360,7 +359,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         ejeVertical.setLabel(ejeY);
 
         final BarChart grafica = new BarChart(ejeHorizontal, ejeVertical,
-                tabla.getBarChartData());
+                tabla.getBarChartDatos());
 
         Platform.runLater(new Runnable() {
             public void run() {
@@ -489,9 +488,10 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         cmbCurso.setPreferredSize(new java.awt.Dimension(78, 25));
 
         lblTitulo1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblTitulo1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo1.setText("Generar Estadísticas");
 
-        pnlEstadisticas.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tipo de Estadística", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
+        pnlEstadisticas.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tipo de Estadística", 0, 0, new java.awt.Font("Arial", 1, 14))); // NOI18N
 
         rbtnGrupos.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         rbtnGrupos.setText("Por Grupos");
@@ -542,10 +542,6 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(307, 307, 307)
-                .addComponent(lblTitulo1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(75, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -566,6 +562,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(pnlEstadisticas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(202, 202, 202))))
+            .addComponent(lblTitulo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
