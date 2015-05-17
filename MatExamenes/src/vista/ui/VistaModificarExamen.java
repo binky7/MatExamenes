@@ -5,8 +5,14 @@
 package vista.ui;
 
 import java.awt.Component;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Date;
@@ -19,8 +25,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 import modelo.dto.ClaveExamenDTO;
@@ -37,7 +41,7 @@ import vista.interfaz.InterfaceVista;
  * @author BoredmanDA
  */
 public class VistaModificarExamen extends javax.swing.JPanel
-implements InterfaceVista, InterfaceExamen, FocusListener {
+implements InterfaceVista, InterfaceExamen, FocusListener, KeyListener {
 
     private CVMantenerExamenes controlVista;
     private InterfaceVista padre;
@@ -60,7 +64,7 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
         ICONO_BIEN = new ImageIcon(getClass().getResource("/recursos/bien.png"));
         ICONO_MAL = new ImageIcon(getClass().getResource("/recursos/mal.png"));
         
-        lblEstadoTitulo.setVisible(false);
+        lblEstadoNombre.setVisible(false);
         lblEstadoInstrucciones.setVisible(false);
         
         frmAgregarReactivos = new FrmAgregarReactivos();
@@ -73,6 +77,9 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
         permiso = new ButtonGroup();
         permiso.add(rbtnPublico);
         permiso.add(rbtnPrivado);
+        
+        txtfNombre.addKeyListener(this);
+        txtaInstrucciones.addKeyListener(this);
     }
 
     public void setPadre(InterfaceVista padre) {
@@ -89,13 +96,13 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
     public InterfaceVista getPadre() {
         return padre;
     }
-    
+
     private ExamenDTO encapsularExamen() {
         
         ExamenDTO examen = new ExamenDTO();
         mensajeDatosIncorrectos = "";
         
-        String titulo = txtfTitulo.getText();
+        String titulo = txtfNombre.getText();
         String instrucciones = txtaInstrucciones.getText();
         ExamenDTO.Permiso opPermiso = null;
         
@@ -104,11 +111,11 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
         if (Validador.estaVacio(titulo)) {
             ok = false;
             mensajeDatosIncorrectos = "* Título del Examen\n";
-            mostrarLabelEstado(txtfTitulo, false);
+            mostrarLabelEstado(txtfNombre, false);
         } else {
-            mostrarLabelEstado(txtfTitulo, true);
+            mostrarLabelEstado(txtfNombre, true);
         }
-        
+
         if (Validador.estaVacio(instrucciones)) {
             ok = false;
             mensajeDatosIncorrectos += "* Instrucciones del examen\n";
@@ -167,7 +174,7 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
     
     private void mostrarDatos(ExamenDTO examen) {
         
-        txtfTitulo.setText(examen.getTitulo());
+        txtfNombre.setText(examen.getTitulo());
         cmbCurso.addItem(examen.getCurso().getNombre());
         txtaInstrucciones.setText(examen.getInstrucciones());
         
@@ -243,9 +250,9 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
         tbpClaves = new javax.swing.JTabbedPane();
         lblTitulo1 = new javax.swing.JLabel();
         lblTitulo = new javax.swing.JLabel();
-        txtfTitulo = new javax.swing.JTextField();
-        txtfTitulo.addFocusListener(this);
-        txtfTitulo.setName("lblEstadoTitulo");
+        txtfNombre = new javax.swing.JTextField();
+        txtfNombre.addFocusListener(this);
+        txtfNombre.setName("lblEstadoNombre");
         lblInstrucciones = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtaInstrucciones = new javax.swing.JTextArea();
@@ -265,7 +272,7 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
         btnVer = new javax.swing.JButton();
         btnDesbloquear = new javax.swing.JButton();
         btnAgregarClave = new javax.swing.JButton();
-        lblEstadoTitulo = new javax.swing.JLabel();
+        lblEstadoNombre = new javax.swing.JLabel();
         lblEstadoInstrucciones = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(790, 467));
@@ -274,13 +281,14 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
         jPanel4.setPreferredSize(new java.awt.Dimension(790, 579));
 
         lblTitulo1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblTitulo1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo1.setText("Modificar Examen");
 
         lblTitulo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblTitulo.setText("Título del Examen:");
+        lblTitulo.setText("Nombre del Examen:");
 
-        txtfTitulo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        txtfTitulo.setPreferredSize(new java.awt.Dimension(6, 30));
+        txtfNombre.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfNombre.setPreferredSize(new java.awt.Dimension(6, 30));
 
         lblInstrucciones.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblInstrucciones.setText("Instrucciones del Examen:");
@@ -291,7 +299,7 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
         txtaInstrucciones.setRows(5);
         jScrollPane2.setViewportView(txtaInstrucciones);
 
-        pnlPermiso.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Permiso:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
+        pnlPermiso.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Permiso:", 0, 0, new java.awt.Font("Arial", 1, 14))); // NOI18N
         pnlPermiso.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
 
         rbtnPrivado.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
@@ -409,8 +417,8 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
             }
         });
 
-        lblEstadoTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
-        lblEstadoTitulo.setToolTipText("No ingresar datos vacios");
+        lblEstadoNombre.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+        lblEstadoNombre.setToolTipText("No ingresar datos vacios");
 
         lblEstadoInstrucciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
         lblEstadoInstrucciones.setToolTipText("No ingresar datos vacios");
@@ -429,11 +437,11 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(164, 164, 164)
-                        .addComponent(lblEstadoTitulo))
+                        .addComponent(lblEstadoNombre))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(264, 264, 264)
                         .addComponent(lblEstadoInstrucciones)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
                     .addGap(5, 5, 5)
@@ -454,11 +462,10 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
                                     .addGap(18, 18, 18)
                                     .addComponent(btnDesbloquear, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtfTitulo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+                            .addComponent(txtfNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)))
                     .addGap(25, 25, 25)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblTitulo1)
                         .addGroup(jPanel4Layout.createSequentialGroup()
                             .addComponent(tbpClaves, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -472,13 +479,16 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
                             .addComponent(btnAgregarClave, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(31, 31, 31)
                             .addComponent(btnRemoverClave, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addComponent(lblTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, 784, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(74, 74, 74)
-                .addComponent(lblEstadoTitulo)
+                .addComponent(lblEstadoNombre)
                 .addGap(63, 63, 63)
                 .addComponent(lblEstadoInstrucciones)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 346, Short.MAX_VALUE)
@@ -512,7 +522,7 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                             .addComponent(lblTitulo)
                             .addGap(13, 13, 13)
-                            .addComponent(txtfTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
                             .addComponent(lblInstrucciones)
                             .addGap(18, 18, 18)
@@ -680,7 +690,7 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
     private javax.swing.JLabel lblClaves;
     private javax.swing.JLabel lblCurso;
     private javax.swing.JLabel lblEstadoInstrucciones;
-    private javax.swing.JLabel lblEstadoTitulo;
+    private javax.swing.JLabel lblEstadoNombre;
     private javax.swing.JLabel lblInstrucciones;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel lblTitulo1;
@@ -689,7 +699,7 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
     private javax.swing.JRadioButton rbtnPublico;
     private javax.swing.JTabbedPane tbpClaves;
     private javax.swing.JTextArea txtaInstrucciones;
-    private javax.swing.JTextField txtfTitulo;
+    private javax.swing.JTextField txtfNombre;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -728,13 +738,13 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
     @Override
     public void limpiar() {
         //Limpiar componentes
-        txtfTitulo.setText("");
+        txtfNombre.setText("");
         txtaInstrucciones.setText("");
         permiso.clearSelection();
         cmbCurso.removeAllItems();
         tbpClaves.removeAll();
         
-        lblEstadoTitulo.setVisible(false);
+        lblEstadoNombre.setVisible(false);
         lblEstadoInstrucciones.setVisible(false);
         
         controlVista.liberarMemoriaModificar();
@@ -756,14 +766,14 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
 
     @Override
     public void focusLost(FocusEvent e) {
-        JTextComponent ob = (JTextComponent) e.getSource();
+        JTextComponent ob = (JTextComponent) e.getSource();        
 
         mostrarLabelEstado(ob, !Validador.estaVacio(ob.getText()));
     }
 
     private void mostrarLabelEstado(Object o, boolean estado) {
         JTextComponent ob = (JTextComponent) o;
-        
+
         try {
             Field field = getClass().getDeclaredField(ob.getName());
             JLabel label = (JLabel) field.get(this);
@@ -778,5 +788,71 @@ implements InterfaceVista, InterfaceExamen, FocusListener {
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(VistaRegistrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        JTextComponent campo = (JTextComponent) e.getSource();
+        int longitud = 0;
+        
+        if(campo.getName().contains("Nombre")) {
+            longitud = Validador.LONGITUD_NOMBRE_EXAMEN;
+        }
+        else if(campo.getName().contains("Instrucciones")) {
+            longitud = Validador.LONGITUD_INSTRUCCIONES_EXAMEN;
+        }
+        
+        if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
+            String portapapeles = "";
+            
+            try {
+                portapapeles = (String) Toolkit.getDefaultToolkit()
+                        .getSystemClipboard().getData(DataFlavor.stringFlavor);
+            } catch (UnsupportedFlavorException | IOException | ClassCastException ex) {
+                System.out.println(ex);
+            }
+            
+            if(!Validador.validarLongitud(longitud, campo.getText() + portapapeles)) {
+                e.consume();
+                Toolkit.getDefaultToolkit().beep();
+            }
+        }
+        else if (!Validador.validarLongitud(longitud, campo.getText())) {
+            e.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        JTextComponent campo = (JTextComponent) e.getSource();
+        int longitud = 0;
+        
+        if(campo.getName().contains("Nombre")) {
+            longitud = Validador.LONGITUD_NOMBRE_EXAMEN;
+        }
+        else if(campo.getName().contains("Instrucciones")) {
+            longitud = Validador.LONGITUD_INSTRUCCIONES_EXAMEN;
+        }
+        
+        if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
+            String portapapeles = "";
+            
+            try {
+                portapapeles = (String) Toolkit.getDefaultToolkit()
+                        .getSystemClipboard().getData(DataFlavor.stringFlavor);
+            } catch (UnsupportedFlavorException | IOException | ClassCastException ex) {
+                System.out.println(ex);
+            }
+            
+            if(!Validador.validarLongitud(longitud, campo.getText() + portapapeles)) {
+                e.consume();
+                Toolkit.getDefaultToolkit().beep();
+            }
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
 }

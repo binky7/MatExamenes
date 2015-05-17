@@ -27,6 +27,22 @@ public class FrmVerReactivo extends javax.swing.JFrame {
      */
     public FrmVerReactivo() {
         initComponents();
+        initListeners();
+        //Para igualar los radios con los textos
+        rbtnOpt1.setActionCommand("Opt1");
+        rbtnOpt2.setActionCommand("Opt2");
+        rbtnOpt3.setActionCommand("Opt3");
+        rbtnOpt4.setActionCommand("Opt4");
+        
+        txtfOpt1.setName("Opt1");
+        txtfOpt2.setName("Opt2");
+        txtfOpt3.setName("Opt3");
+        txtfOpt4.setName("Opt4");
+        
+        setTitle("Ver Reactivo");
+    }
+
+    private void initListeners() {
         this.addWindowListener(new WindowListener() {
 
             @Override
@@ -69,21 +85,8 @@ public class FrmVerReactivo extends javax.swing.JFrame {
             }
             
         });
-        
-        //Para igualar los radios con los textos
-        rbtnOpt1.setActionCommand("Opt1");
-        rbtnOpt2.setActionCommand("Opt2");
-        rbtnOpt3.setActionCommand("Opt3");
-        rbtnOpt4.setActionCommand("Opt4");
-        
-        txtfOpt1.setName("Opt1");
-        txtfOpt2.setName("Opt2");
-        txtfOpt3.setName("Opt3");
-        txtfOpt4.setName("Opt4");
-        
-        setTitle("Ver Reactivo");
     }
-
+    
     public void setPadre(JFrame padre) {
         this.padre = padre;
     }
@@ -167,7 +170,6 @@ public class FrmVerReactivo extends javax.swing.JFrame {
         lblRedaccion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(600, 475));
         setResizable(false);
 
         txtaRedaccion.setEditable(false);
@@ -177,7 +179,7 @@ public class FrmVerReactivo extends javax.swing.JFrame {
         txtaRedaccion.setRows(5);
         jScrollPane1.setViewportView(txtaRedaccion);
 
-        pnlOpciones.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Opciones:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
+        pnlOpciones.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Opciones:", 0, 0, new java.awt.Font("Arial", 1, 14))); // NOI18N
         pnlOpciones.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
 
         txtfOpt1.setEditable(false);
@@ -291,6 +293,7 @@ public class FrmVerReactivo extends javax.swing.JFrame {
         );
 
         lblRedaccion.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblRedaccion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRedaccion.setText("Redacción del Reactivo:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -300,14 +303,13 @@ public class FrmVerReactivo extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(65, 65, 65)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblRedaccion)
-                            .addGap(135, 135, 135)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(78, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblRedaccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

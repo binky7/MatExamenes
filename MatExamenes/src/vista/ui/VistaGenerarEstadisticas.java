@@ -59,8 +59,8 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     private InterfaceVista padre;
 
     private JFrame frmGrafica;
-    private final JFXPanel fxpnlGrafica;
-    private BarChart grafica;
+    private JFXPanel fxpnlGrafica;
+    private BarChart bcGrafica;
 
     private final ButtonGroup tipoEstadistica;
 
@@ -70,6 +70,20 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
 
     public VistaGenerarEstadisticas() {
         initComponents();
+        initFX();
+        
+        tipoEstadistica = new ButtonGroup();
+
+        tipoEstadistica.add(rbtnGrupos);
+        tipoEstadistica.add(rbtnGrados);
+        tipoEstadistica.add(rbtnTurnos);
+
+        initListeners();
+
+        addAncestorListener(this);
+    }
+
+    private void initFX() {
         fxpnlGrafica = new JFXPanel();
         fxpnlGrafica.setBounds(0, 0, 800, 500);
         JFXPanel fxpnlBoton = new JFXPanel();
@@ -100,13 +114,9 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         frmGrafica.setSize(800, 600);
         frmGrafica.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frmGrafica.setResizable(false);
-
-        tipoEstadistica = new ButtonGroup();
-
-        tipoEstadistica.add(rbtnGrupos);
-        tipoEstadistica.add(rbtnGrados);
-        tipoEstadistica.add(rbtnTurnos);
-
+    }
+    
+    private void initListeners() {
         //Para guardar el primer seleccionado como primer examen
         tblExamenes.getModel().addTableModelListener(new TableModelListener() {
 
@@ -197,12 +207,6 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
                 //
             }
         });
-
-        addAncestorListener(this);
-    }
-
-    public void initFX() {
-        
     }
     
     public void setControlador(CVGenerarEstadisticas controlVista) {
@@ -330,10 +334,10 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
                             + "contestados");
                 } else {
                     //Crear grafica de barras
-                    grafica = crearGrafica(tabla, ejeX, ejeY, titulo);
+                    bcGrafica = crearGrafica(tabla, ejeX, ejeY, titulo);
 
                     //Mostrar la grafica de barras
-                    mostrarGrafica(grafica);
+                    mostrarGrafica(bcGrafica);
                 }
             }
         } else {
@@ -344,42 +348,46 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     private BarChart crearGrafica(TablaEstadisticas tabla, String ejeX, String ejeY,
             String titulo) {
 
-        CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setCategories(FXCollections.<String>observableArrayList(tabla.
-                getColumnNames()));
-        xAxis.setLabel(ejeX);
+        CategoryAxis ejeHorizontal = new CategoryAxis();
+        ejeHorizontal.setCategories(FXCollections.<String>observableArrayList(tabla.getColumnas()));
+        ejeHorizontal.setLabel(ejeX);
 
         double tickUnit = tabla.getTickUnit();
 
-        NumberAxis yAxis = new NumberAxis();
-        yAxis.setTickUnit(tickUnit);
-        yAxis.setLabel(ejeY);
+        NumberAxis ejeVertical = new NumberAxis();
+        ejeVertical.setTickUnit(tickUnit);
+        ejeVertical.setLabel(ejeY);
 
-        final BarChart chart = new BarChart(xAxis, yAxis, tabla.getBarChartData());
+        final BarChart grafica = new BarChart(ejeHorizontal, ejeVertical,
+                tabla.getBarChartDatos());
 
         Platform.runLater(new Runnable() {
             public void run() {
                 for (int row = 0; row < tabla.getRowCount(); row++) {
                     for (int column = 0; column < tabla.getColumnCount(); column++) {
                         XYChart.Series<String, Number> s
-                                = (XYChart.Series<String, Number>) chart.getData().get(row);
+                                = (XYChart.Series<String, Number>) 
+                                grafica.getData().get(row);
+                        //pone el nombre a cada serie con el titulo del examen...
+                        s.setName(tblExamenes.getValueAt(indexesExamen.get(row), 2)
+                                .toString());
                         BarChart.Data data = s.getData().get(column);
                         Object value = tabla.getValueAt(row, column);
                         data.setYValue(value);
                     }
 
                 }
-                chart.setTitle(titulo);
+                grafica.setTitle(titulo);
 
             }
         });
 
-        return chart;
+        return grafica;
     }
 
     private void guardarGrafica() {
         //Crear una imagen de la grafica
-        WritableImage imagen = grafica.snapshot(new SnapshotParameters(), null);
+        WritableImage imagen = bcGrafica.snapshot(new SnapshotParameters(), null);
 
         //Elegir el archivo para guardar...
         JFileChooser chooser = new JFileChooser();
@@ -461,6 +469,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
                 return canEdit [columnIndex];
             }
         });
+        tblExamenes.setToolTipText("Selecciona los exámenes que desee en el orden que desea que se comparen");
         tblExamenes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblExamenes.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblExamenes);
@@ -479,9 +488,10 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         cmbCurso.setPreferredSize(new java.awt.Dimension(78, 25));
 
         lblTitulo1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblTitulo1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo1.setText("Generar Estadísticas");
 
-        pnlEstadisticas.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tipo de Estadística", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
+        pnlEstadisticas.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tipo de Estadística", 0, 0, new java.awt.Font("Arial", 1, 14))); // NOI18N
 
         rbtnGrupos.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         rbtnGrupos.setText("Por Grupos");
@@ -532,10 +542,6 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(307, 307, 307)
-                .addComponent(lblTitulo1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(75, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -556,6 +562,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(pnlEstadisticas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(202, 202, 202))))
+            .addComponent(lblTitulo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

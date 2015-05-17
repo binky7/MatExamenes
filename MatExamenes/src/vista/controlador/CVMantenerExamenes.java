@@ -35,7 +35,7 @@ public class CVMantenerExamenes {
     //Para asignar reactivos aleatoriamente
     private List<Integer> cantidades;
     //Para consultar examenes
-    private List<ExamenDTO> examenes;
+    private List<ExamenDTO> listaExamenes;
     
     public CVMantenerExamenes() {
         mantenerExamenesDELEGATE = new MantenerExamenesDELEGATE();
@@ -44,8 +44,8 @@ public class CVMantenerExamenes {
     public ExamenDTO obtenerExamen(int indexExamen) {
         ExamenDTO objExamen = null;
         
-        if(examenes != null && !examenes.isEmpty()) {
-            objExamen = examenes.get(indexExamen);
+        if(listaExamenes != null && !listaExamenes.isEmpty()) {
+            objExamen = listaExamenes.get(indexExamen);
             objExamen = mantenerExamenesDELEGATE.obtenerExamen(objExamen.getId());
         }
         examen = objExamen;
@@ -100,14 +100,34 @@ public class CVMantenerExamenes {
         return listaCursos;
     }
     
-    public List<ReactivoDTO> obtenerReactivosPorTema(String nombreTema) {
+    public List<ReactivoDTO> obtenerReactivosPorTema(String nombreTema, int clave) {
         TemaDTO tema = new TemaDTO();
         
         tema.setNombre(nombreTema);
         List<ReactivoDTO> listaReactivos = mantenerExamenesDELEGATE
                 .obtenerReactivosPorTema(tema);
+        
+        //Validar que los reactivos a mostrar no se repitan en la clave del examen
+        if(examen != null && clave != -1) {
+            
+            List<ClaveExamenDTO> claves = examen.getClaves();
+            ClaveExamenDTO objClave = claves.get(clave);
+            List<ReactivoDTO> reactivosClave = objClave.getReactivos();
+
+            if (!reactivosClave.isEmpty()) {
+                //Verificar que los reactivos agregados no se repitan en la clave
+                for (int i = 0; i < listaReactivos.size(); i++) {
+                    if(reactivosClave.contains(listaReactivos.get(i))) {
+                        listaReactivos.remove(i);
+                        i--;
+                    }
+                }
+            }
+        }
+        
         reactivos = listaReactivos;
         
+        //Lista de reactivos sin los reactivos repetidos en la clave
         return listaReactivos;
     }
     
@@ -144,11 +164,11 @@ public class CVMantenerExamenes {
     public boolean eliminarExamen(int indexExamen) {
         boolean ok = false;
         
-        if(examenes != null && !examenes.isEmpty()) {
-            ExamenDTO objExamen = examenes.get(indexExamen);
+        if(listaExamenes != null && !listaExamenes.isEmpty()) {
+            ExamenDTO objExamen = listaExamenes.get(indexExamen);
             ok = mantenerExamenesDELEGATE.eliminarExamen(objExamen);
             if(ok) {
-                examenes.remove(indexExamen);
+                listaExamenes.remove(indexExamen);
             }
         }
         
@@ -217,20 +237,20 @@ public class CVMantenerExamenes {
         CursoDTO curso = new CursoDTO();
         
         curso.setNombre(nombreCurso);
-        List<ExamenDTO> listaExamenes = mantenerExamenesDELEGATE
+        List<ExamenDTO> examenes = mantenerExamenesDELEGATE
                 .obtenerExamenesPorCurso(curso, todos, maestro);
-        examenes = listaExamenes;
+        this.listaExamenes = examenes;
         
-        return listaExamenes;
+        return examenes;
     }
     
     public List<ExamenDTO> obtenerExamenesPorTitulo(String titulo, boolean todos,
             UsuarioDTO maestro) {
-        List<ExamenDTO> listaExamenes = mantenerExamenesDELEGATE
+        List<ExamenDTO> examenes = mantenerExamenesDELEGATE
                 .obtenerExamenesPorTitulo(titulo, todos, maestro);
-        examenes = listaExamenes;
+        this.listaExamenes = examenes;
         
-        return listaExamenes;
+        return examenes;
     }
     
     public List<ExamenDTO> obtenerExamenesPorCursoYTitulo(String nombreCurso,
@@ -238,11 +258,11 @@ public class CVMantenerExamenes {
         CursoDTO curso = new CursoDTO();
         
         curso.setNombre(nombreCurso);
-        List<ExamenDTO> listaExamenes = mantenerExamenesDELEGATE
+        List<ExamenDTO> examenes = mantenerExamenesDELEGATE
                 .obtenerExamenesPorCursoYTitulo(curso, titulo, todos, maestro);
-        examenes = listaExamenes;
+        this.listaExamenes = examenes;
         
-        return listaExamenes;
+        return examenes;
     }
     
     public List<ReactivoDTO> agregarReactivosSeleccionados(
@@ -338,18 +358,18 @@ public class CVMantenerExamenes {
     }
 
     public int obtenerTotalReactivos(String nombreTema) {
-        List<ReactivoDTO> reactivos = obtenerReactivosPorTema(nombreTema);
+        List<ReactivoDTO> listaReactivos = obtenerReactivosPorTema(nombreTema, -1);
         int total = 0;
         
-        if(reactivos != null) {
-            total = reactivos.size();
+        if(listaReactivos != null) {
+            total = listaReactivos.size();
         }
         
         return total;
     }
     
     public void liberarMemoriaConsultar() {
-        examenes = null;
+        listaExamenes = null;
         cursos = null;
     }
     

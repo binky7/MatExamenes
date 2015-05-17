@@ -54,23 +54,73 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         this.controlVista = controlVista;
     }
 
-    public void consultarCursos() {
+    public boolean consultarCursos() {
         List<CursoDTO> cursos = controlVista.obtenerCursos();
+        boolean ok = false;
 
         if (cursos != null && !cursos.isEmpty()) {
+            ok = true;
             mostrarCursos(cursos);
-        } else {
-            //No hay cursos
         }
+
+        return ok;
     }
 
     private void mostrarCursos(List<CursoDTO> cursos) {
         DefaultListModel listModelCursos
                 = (DefaultListModel) lstCursos.getModel();
+        listModelCursos.clear();
 
         for (CursoDTO curso : cursos) {
             listModelCursos.addElement(curso.getNombre());
         }
+    }
+
+    @Override
+    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarVista(Vista vista) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mostrarEntidad(Object entidad) {
+        int index = lstCursos.getSelectedIndex();
+        String nombreCurso = ((CursoDTO) entidad).getNombre();
+
+        ((DefaultListModel) lstCursos.getModel()).setElementAt(nombreCurso, index);
+    }
+
+    @Override
+    public boolean confirmarCambio() {
+        return true;
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void ancestorAdded(AncestorEvent event) {
+        if (!consultarCursos()) {
+            limpiar();
+            JOptionPane.showMessageDialog(this, "No hay cursos registrados.");
+            padre.mostrarVista(Vista.HOME);
+        }
+    }
+
+    @Override
+    public void ancestorRemoved(AncestorEvent event) {
+        //No implementado
+    }
+
+    @Override
+    public void ancestorMoved(AncestorEvent event) {
+        //No implementado
     }
 
     /**
@@ -108,7 +158,7 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         btnModificar.setPreferredSize(new java.awt.Dimension(110, 30));
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarActionPerformed(evt);
+                pasarControlVistaModificar(evt);
             }
         });
 
@@ -118,7 +168,7 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         btnEliminar.setPreferredSize(new java.awt.Dimension(110, 30));
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
+                eliminarCurso(evt);
             }
         });
 
@@ -171,7 +221,7 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+    private void pasarControlVistaModificar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarControlVistaModificar
         // TODO add your handling code here:
         if (!lstCursos.isSelectionEmpty()) {
             int indexCurso = lstCursos.getSelectedIndex();
@@ -183,11 +233,11 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
                 JOptionPane.showMessageDialog(this, "Ha ocurrido un error", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un curso.");
+            JOptionPane.showMessageDialog(this, "Selecciona un curso.");
         }
-    }//GEN-LAST:event_btnModificarActionPerformed
+    }//GEN-LAST:event_pasarControlVistaModificar
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+    private void eliminarCurso(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarCurso
         // TODO add your handling code here:
         if (!lstCursos.isSelectionEmpty()) {
             int banEliminar = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
@@ -204,14 +254,14 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un curso");
+            JOptionPane.showMessageDialog(this, "Selecciona un curso");
         }
-    }//GEN-LAST:event_btnEliminarActionPerformed
+    }//GEN-LAST:event_eliminarCurso
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-            padre.mostrarVista(Vista.HOME);
-            limpiar();
+        padre.mostrarVista(Vista.HOME);
+        limpiar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
 
@@ -224,49 +274,4 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
     private javax.swing.JList lstCursos;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mostrarVista(Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mostrarEntidad(Object entidad) {
-        int index = lstCursos.getSelectedIndex();
-        String nombreCurso = ((CursoDTO) entidad).getNombre();
-
-        ((DefaultListModel) lstCursos.getModel()).setElementAt(nombreCurso, index);
-    }
-
-    @Override
-    public boolean confirmarCambio() {
-        return true;
-    }
-
-    @Override
-    public UsuarioDTO obtenerUsuarioActual() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void ancestorAdded(AncestorEvent event) {
-        if (isShowing()) {
-            limpiar();
-            consultarCursos();
-        }
-    }
-
-    @Override
-    public void ancestorRemoved(AncestorEvent event) {
-        //No implementado
-    }
-
-    @Override
-    public void ancestorMoved(AncestorEvent event) {
-        //No implementado
-    }
 }

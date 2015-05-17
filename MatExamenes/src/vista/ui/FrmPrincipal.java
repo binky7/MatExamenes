@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVAsignarExamenes;
 import vista.controlador.CVConsultarCalificaciones;
+import vista.controlador.CVContestarExamen;
 import vista.controlador.CVGenerarEstadisticas;
 import vista.controlador.CVMantenerCursos;
 import vista.controlador.CVMantenerExamenes;
@@ -58,6 +59,8 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     private VistaConsultarReactivos vistaConsultarReactivos;
     private VistaModificarReactivo vistaModificarReactivo;
     private VistaGenerarEstadisticas vistaGenerarEstadisticas;
+    private VistaBuscarExamenAsignado vistaBuscarExamenAsignado;
+    private VistaContestarExamen vistaContestarExamen;
     
     /**
      * Creates new form Principal
@@ -87,6 +90,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         miRegistrarExamen.addActionListener(this);
         miConsultarExamenes.addActionListener(this);
         miAsignarExamenes.addActionListener(this);
+        miContestarExamen.addActionListener(this);
         
         miConsultarCalificaciones.addActionListener(this);
         miGenerarEstadisticas.addActionListener(this);
@@ -103,7 +107,13 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     private void init() {
         //se deben agregar todos los paneles de vista a este panel
         vistas.setLayout(manejadorVista);
-        
+        initVistas();
+        initControladores();        
+        agregarPadres();
+        agregarAPrincipal();
+    }
+    
+    private void initVistas() {
         //Crear vistas
         vistaHome = new VistaHOME();
         vistaHome.setName(Vista.HOME.toString());
@@ -130,6 +140,10 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistaModificarExamen.setName(Vista.ModificarExamen.toString());
         vistaAsignarExamenes = new VistaAsignarExamenes();
         vistaAsignarExamenes.setName(Vista.AsignarExamenes.toString());
+        vistaBuscarExamenAsignado = new VistaBuscarExamenAsignado();
+        vistaBuscarExamenAsignado.setName(Vista.BuscarExamenAsignado.toString());
+        vistaContestarExamen = new VistaContestarExamen();
+        vistaContestarExamen.setName(Vista.ContestarExamen.toString());
         
         vistaRegistrarGrupo = new VistaRegistrarGrupo();
         vistaRegistrarGrupo.setName(Vista.RegistrarGrupo.toString());
@@ -162,8 +176,9 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         
         vistaGenerarEstadisticas = new VistaGenerarEstadisticas();
         vistaGenerarEstadisticas.setName(Vista.GenerarEstadisticas.toString());
-        
-        
+    }
+    
+    private void initControladores() {
         //Crear controladores vistas
         CVMantenerTemas cvMantenerTemas = new CVMantenerTemas();
         CVMantenerCursos cvMantenerCursos = new CVMantenerCursos();
@@ -175,6 +190,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         CVMantenerExamenes cvMantenerExamenes = new CVMantenerExamenes();
         CVAsignarExamenes cvAsignarExamenes = new CVAsignarExamenes();
         CVGenerarEstadisticas cvGenerarEstadisticas = new CVGenerarEstadisticas();
+        CVContestarExamen cvContestarExamen = new CVContestarExamen();
         
         //Asignar controladores a vistas
         vistaRegistrarTema.setControlador(cvMantenerTemas);
@@ -205,10 +221,13 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistaConsultarExamenes.setControlador(cvMantenerExamenes);
         vistaModificarExamen.setControlador(cvMantenerExamenes);
         vistaAsignarExamenes.setControlador(cvAsignarExamenes);
+        vistaBuscarExamenAsignado.setControlador(cvContestarExamen);
+        vistaContestarExamen.setControlador(cvContestarExamen);
         
         vistaGenerarEstadisticas.setControlador(cvGenerarEstadisticas);
-        
-        
+    }
+    
+    private void agregarPadres() {
         //Asignar padre a vistas
         vistaRegistrarTema.setPadre(this);
         vistaConsultarTemas.setPadre(this);
@@ -226,6 +245,8 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistaConsultarExamenes.setPadre(this);
         vistaModificarExamen.setPadre(this);
         vistaAsignarExamenes.setPadre(this);
+        vistaBuscarExamenAsignado.setPadre(this);
+        vistaContestarExamen.setPadre(this);
         
         vistaConsultarCalificaciones.setPadre(this);
         vistaConsultarCalificacionesExamen.setPadre(this);
@@ -239,8 +260,9 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistaModificarReactivo.setPadre(this);
 
         vistaGenerarEstadisticas.setPadre(this);
-        
-        
+    }
+    
+    private void agregarAPrincipal() {
         //Agregar un panel y su identificador. Para agregar mas identificadores
         //ir a vista.interfaz.InterfazVista y agregarlos al enum Vista
         vistas.add(vistaHome, Vista.HOME.toString());
@@ -261,6 +283,8 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistas.add(vistaConsultarExamenes, Vista.ConsultarExamenes.toString());
         vistas.add(vistaModificarExamen, Vista.ModificarExamen.toString());
         vistas.add(vistaAsignarExamenes, Vista.AsignarExamenes.toString());
+        vistas.add(vistaBuscarExamenAsignado, Vista.BuscarExamenAsignado.toString());
+        vistas.add(vistaContestarExamen, Vista.ContestarExamen.toString());
         
         vistas.add(vistaConsultarCalificaciones, Vista.ConsultarCalificaciones
                 .toString());
@@ -330,6 +354,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         miRegistrarGrupo = new javax.swing.JMenuItem();
         miConsultarGrupos = new javax.swing.JMenuItem();
         mContestarExamen = new javax.swing.JMenu();
+        miContestarExamen = new javax.swing.JMenuItem();
         mCalificaciones = new javax.swing.JMenu();
         miConsultarCalificaciones = new javax.swing.JMenuItem();
         mEstadisticas = new javax.swing.JMenu();
@@ -452,6 +477,11 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         mbPrincipal.add(mGrupos);
 
         mContestarExamen.setText("Contestar Examen");
+
+        miContestarExamen.setText("Contestar Examen");
+        miContestarExamen.setName("BuscarExamenAsignado"); // NOI18N
+        mContestarExamen.add(miContestarExamen);
+
         mbPrincipal.add(mContestarExamen);
 
         mCalificaciones.setText("Calificaciones");
@@ -541,6 +571,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     private javax.swing.JMenuItem miConsultarReactivos;
     private javax.swing.JMenuItem miConsultarTemas;
     private javax.swing.JMenuItem miConsultarUsuarios;
+    private javax.swing.JMenuItem miContestarExamen;
     private javax.swing.JMenuItem miGenerarEstadisticas;
     private javax.swing.JMenuItem miRegistrarCurso;
     private javax.swing.JMenuItem miRegistrarExamen;

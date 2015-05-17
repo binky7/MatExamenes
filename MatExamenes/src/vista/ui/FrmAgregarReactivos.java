@@ -161,7 +161,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
     private void consultarReactivos() {
         List<ReactivoDTO> reactivos = controlVista
                 .obtenerReactivosPorTema((String)lstTemasManual
-                        .getSelectedValue());
+                        .getSelectedValue(), clave);
         
         if(reactivos != null && !reactivos.isEmpty()) {
             mostrarReactivos(reactivos);

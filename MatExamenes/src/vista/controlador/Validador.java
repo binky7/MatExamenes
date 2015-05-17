@@ -14,6 +14,15 @@ import org.apache.commons.lang3.text.WordUtils;
  */
 public class Validador {
 
+    public static final int LONGITUD_CURSO = 50;
+    public static final int LONGITUD_TEMA = 50;
+    public static final int LONGITUD_NOMBRE_REACTIVO = 50;
+    public static final int LONGITUD_REDACCION_REACTIVO = 1000;
+    public static final int LONGITUD_OPCION_REACTIVO = 250;
+    public static final int LONGITUD_NOMBRE_EXAMEN = 100;
+    public static final int LONGITUD_INSTRUCCIONES_EXAMEN = 200;
+    public static final int LONGITUD_DATOS_USUARIO = 50;
+
     /**
      * Valida que el campo no este vacio.
      *
@@ -22,11 +31,11 @@ public class Validador {
      */
     public static boolean estaVacio(String campo) {
         boolean ok = false;
-        
+
         if (campo == null || campo.trim().isEmpty()) {
             ok = true;
         }
-        
+
         return ok;
     }
 
@@ -39,11 +48,11 @@ public class Validador {
      */
     public static boolean esNombre(String campo) {
         boolean ok = true;
-        
+
         if (estaVacio(campo) || !StringUtils.isAlphaSpace(campo)) {
             ok = false;
         }
-        
+
         return ok;
     }
 
@@ -56,9 +65,9 @@ public class Validador {
      */
     public static String capitalizarNombre(String nombre) {
         String nuevoNombre;
-        
+
         nuevoNombre = WordUtils.capitalizeFully(nombre);
-        
+
         return nuevoNombre;
     }
 
@@ -71,7 +80,7 @@ public class Validador {
      */
     public static boolean esUsuario(String campo) {
         boolean ok = true;
-        
+
         if (estaVacio(campo) || !StringUtils.isAlphanumeric(campo)) {
             ok = false;
         }
@@ -87,15 +96,16 @@ public class Validador {
      */
     public static boolean esPassword(String campo) {
         boolean ok = true;
-        
+
         if (estaVacio(campo) || !StringUtils.isAsciiPrintable(campo)
                 || campo.contains("'") || campo.contains("\"")
                 || campo.contains("<") || campo.contains(">")
                 || campo.contains("\\") || campo.contains("&")
-                || campo.contains("%") || campo.contains("_")) {
+                || campo.contains("%") || campo.contains("_")
+                || campo.length() < 4) {
             ok = false;
         }
-        
+
         return ok;
     }
 
@@ -113,7 +123,7 @@ public class Validador {
         if (estaVacio(campo) || !StringUtils.isNumeric(campo)) {
             ok = false;
         }
-        
+
         return ok;
     }
 
@@ -126,11 +136,11 @@ public class Validador {
      */
     public static boolean esCurso(String campo) {
         boolean ok = true;
-        
+
         if (estaVacio(campo) || !StringUtils.isAlphanumericSpace(campo)) {
             ok = false;
         }
-        
+
         return ok;
     }
 
@@ -147,6 +157,16 @@ public class Validador {
                 || campo.length() != 1) {
             ok = false;
         }
+        return ok;
+    }
+
+    public static boolean validarLongitud(int longitud, String campoTexto) {
+        boolean ok = true;
+
+        if (campoTexto.length() > longitud) {
+            ok = false;
+        }
+
         return ok;
     }
 }

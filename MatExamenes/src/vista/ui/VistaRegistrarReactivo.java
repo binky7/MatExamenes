@@ -6,10 +6,16 @@
 package vista.ui;
 
 import java.awt.Component;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,12 +43,12 @@ import vista.interfaz.InterfaceVista;
  * @author Jesus Donaldo
  */
 public class VistaRegistrarReactivo extends javax.swing.JPanel
-implements InterfaceVista, FocusListener, AncestorListener {
+implements InterfaceVista, FocusListener, AncestorListener, KeyListener {
 
     private InterfaceVista padre;
     private CVMantenerReactivos controlVista;
     
-    private final ButtonGroup opciones;
+    private ButtonGroup opciones;
     
     private final ImageIcon ICONO_BIEN;
     private final ImageIcon ICONO_MAL;
@@ -66,6 +72,18 @@ implements InterfaceVista, FocusListener, AncestorListener {
         lblEstadoOpt3.setVisible(false);
         lblEstadoOpt4.setVisible(false);
         
+        init();
+    }
+
+    public void setPadre(InterfaceVista padre) {
+        this.padre = padre;
+    }
+    
+    public void setControlador(CVMantenerReactivos controlVista) {
+        this.controlVista = controlVista;
+    }
+
+    private void init() {
         //Para igualar los radios con los textos
         rbtnOpt1.setActionCommand("Opt1");
         rbtnOpt2.setActionCommand("Opt2");
@@ -89,6 +107,13 @@ implements InterfaceVista, FocusListener, AncestorListener {
         txtfOpt3.addFocusListener(this);
         txtfOpt4.addFocusListener(this);
         
+        txtfNombre.addKeyListener(this);
+        txtaRedaccion.addKeyListener(this);
+        txtfOpt1.addKeyListener(this);
+        txtfOpt2.addKeyListener(this);
+        txtfOpt3.addKeyListener(this);
+        txtfOpt4.addKeyListener(this);
+        
         addAncestorListener(this);
         
         //Listener para el cmbCurso
@@ -102,14 +127,6 @@ implements InterfaceVista, FocusListener, AncestorListener {
             }
             
         });
-    }
-
-    public void setPadre(InterfaceVista padre) {
-        this.padre = padre;
-    }
-    
-    public void setControlador(CVMantenerReactivos controlVista) {
-        this.controlVista = controlVista;
     }
     
     private void consultarCursos() {
@@ -461,13 +478,16 @@ implements InterfaceVista, FocusListener, AncestorListener {
                     .addComponent(lblEstadoOpt3))
                 .addGap(18, 18, 18)
                 .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtfOpt4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblOpciones4))
-                        .addComponent(rbtnOpt4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblEstadoOpt4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlOpcionesLayout.createSequentialGroup()
+                        .addComponent(lblEstadoOpt4)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlOpcionesLayout.createSequentialGroup()
+                        .addGroup(pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtfOpt4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblOpciones4))
+                            .addComponent(rbtnOpt4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 20, Short.MAX_VALUE))))
         );
 
         btnGuardar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -502,21 +522,20 @@ implements InterfaceVista, FocusListener, AncestorListener {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblNombre)
                         .addGap(18, 18, 18)
                         .addComponent(lblEstadoNombre))
-                    .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtfNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                     .addComponent(lblCurso)
                     .addComponent(lblTema)
-                    .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbCurso, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmbTema, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblTitulo)
@@ -525,7 +544,8 @@ implements InterfaceVista, FocusListener, AncestorListener {
                                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(43, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -555,7 +575,7 @@ implements InterfaceVista, FocusListener, AncestorListener {
                         .addComponent(lblCurso)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
+                        .addGap(31, 31, 31)
                         .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -568,7 +588,7 @@ implements InterfaceVista, FocusListener, AncestorListener {
                         .addComponent(lblTema)
                         .addGap(18, 18, 18)
                         .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -588,8 +608,11 @@ implements InterfaceVista, FocusListener, AncestorListener {
             
             if(id != null) {
                 JOptionPane.showMessageDialog(this, "Registro Completo");
-                padre.mostrarVista(Vista.HOME);
+                //padre.mostrarVista(Vista.HOME);
                 limpiar();
+                //Mostrar de nuevo los cursos
+                noSelect = true;
+                consultarCursos();
             }
             else {
                 JOptionPane.showMessageDialog(this, "No se pudo guardar "
@@ -770,6 +793,78 @@ implements InterfaceVista, FocusListener, AncestorListener {
     @Override
     public void ancestorMoved(AncestorEvent event) {
         //
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        JTextComponent campo = (JTextComponent) e.getSource();
+        int longitud = 0;
+        
+        if(campo.getName().contains("Nombre")) {
+            longitud = Validador.LONGITUD_NOMBRE_REACTIVO;
+        }
+        else if(campo.getName().contains("Redaccion")) {
+            longitud = Validador.LONGITUD_REDACCION_REACTIVO;
+        }
+        else if(campo.getName().contains("Opt")) {
+            longitud = Validador.LONGITUD_OPCION_REACTIVO;
+        }
+        
+        if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
+            String portapapeles = "";
+            
+            try {
+                portapapeles = (String) Toolkit.getDefaultToolkit()
+                        .getSystemClipboard().getData(DataFlavor.stringFlavor);
+            } catch (UnsupportedFlavorException | IOException | ClassCastException ex) {
+                System.out.println(ex);
+            }
+            
+            if(!Validador.validarLongitud(longitud, campo.getText() + portapapeles)) {
+                e.consume();
+                Toolkit.getDefaultToolkit().beep();
+            }
+        }
+        else if (!Validador.validarLongitud(longitud, campo.getText())) {
+            e.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        JTextComponent campo = (JTextComponent) e.getSource();
+        int longitud = 0;
+        
+        if(campo.getName().contains("Nombre")) {
+            longitud = Validador.LONGITUD_NOMBRE_REACTIVO;
+        }
+        else if(campo.getName().contains("Redaccion")) {
+            longitud = Validador.LONGITUD_REDACCION_REACTIVO;
+        }
+        else if(campo.getName().contains("Opt")) {
+            longitud = Validador.LONGITUD_OPCION_REACTIVO;
+        }
+        
+        if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
+            String portapapeles = "";
+            
+            try {
+                portapapeles = (String) Toolkit.getDefaultToolkit()
+                        .getSystemClipboard().getData(DataFlavor.stringFlavor);
+            } catch (UnsupportedFlavorException | IOException | ClassCastException ex) {
+                System.out.println(ex);
+            }
+            
+            if(!Validador.validarLongitud(longitud, campo.getText() + portapapeles)) {
+                e.consume();
+                Toolkit.getDefaultToolkit().beep();
+            }
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
     
 }

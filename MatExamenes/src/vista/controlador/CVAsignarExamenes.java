@@ -14,6 +14,7 @@ import modelo.dto.ExamenAsignadoDTO;
 import modelo.dto.ExamenDTO;
 import modelo.dto.GrupoDTO;
 import modelo.dto.UsuarioDTO;
+import modelo.dto.UsuarioDTO.Tipo;
 import vista.interfaz.InterfaceVista;
 
 /**

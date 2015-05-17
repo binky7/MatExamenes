@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[800, 600]"/>
+    </Property>
+  </Properties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -16,93 +21,98 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="0" pref="264" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="lblNombre" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblApellidoPaterno" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblApellidoMaterno" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblUsuario" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblPassword" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="129" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtfNombre" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtfApellidoPaterno" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtfApellidoMaterno" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtfUsuario" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtfPassword" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblEstadoNombre" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblEstadoAPaterno" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblEstadoAMaterno" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblEstadoUsuario" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblEstadoPassword" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="189" max="-2" attributes="0"/>
+          <Component id="lblTitulo" alignment="0" max="32767" attributes="0"/>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace pref="230" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="btnModificiar" min="-2" pref="115" max="-2" attributes="0"/>
+                      <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
+                      <Component id="btnCancelar" min="-2" pref="114" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="283" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="0" groupAlignment="0" attributes="0">
+                              <Component id="lblNombre" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblUsuario" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblPassword" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblApellidoMaterno" alignment="1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="lblApellidoPaterno" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="120" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="txtfPassword" max="32767" attributes="0"/>
+                          <Component id="txtfUsuario" alignment="1" max="32767" attributes="0"/>
+                          <Component id="txtfApellidoMaterno" alignment="1" max="32767" attributes="0"/>
+                          <Component id="txtfApellidoPaterno" alignment="1" max="32767" attributes="0"/>
+                          <Component id="txtfNombre" alignment="1" min="-2" pref="150" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="0" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="0" groupAlignment="0" attributes="0">
+                                  <Group type="103" alignment="0" groupAlignment="0" attributes="0">
+                                      <Component id="lblEstadoNombre" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblEstadoAMaterno" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="lblEstadoUsuario" alignment="1" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="lblEstadoPassword" alignment="1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="lblEstadoAPaterno" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="btnModificiar" min="-2" pref="115" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" pref="114" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="170" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="176" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
               <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="lblNombre" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                      <Component id="txtfNombre" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblEstadoNombre" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtfApellidoPaterno" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblEstadoAPaterno" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblApellidoPaterno" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lblEstadoAMaterno" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtfApellidoMaterno" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblApellidoMaterno" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblEstadoNombre" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtfNombre" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblEstadoUsuario" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtfUsuario" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblUsuario" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
+                  <Component id="lblNombre" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblApellidoPaterno" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtfApellidoPaterno" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblEstadoAPaterno" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="txtfPassword" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblEstadoPassword" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblPassword" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblApellidoMaterno" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtfApellidoMaterno" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblEstadoAMaterno" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="120" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="btnModificiar" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnCancelar" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtfUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblEstadoUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblPassword" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtfPassword" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblEstadoPassword" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnModificiar" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace pref="32" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -153,6 +163,9 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="12" style="0"/>
         </Property>
+        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="txtfUsuario"/>
+        </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[100, 30]"/>
         </Property>
@@ -165,6 +178,9 @@
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="12" style="0"/>
+        </Property>
+        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="txtfApellidoMaterno"/>
         </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[100, 30]"/>
@@ -179,6 +195,9 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="12" style="0"/>
         </Property>
+        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="txtfNombre"/>
+        </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[100, 30]"/>
         </Property>
@@ -192,6 +211,10 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="12" style="0"/>
         </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Ingresar letras y/o numeros"/>
+        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="txtfPassword"/>
+        </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[100, 30]"/>
         </Property>
@@ -204,6 +227,10 @@
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="12" style="0"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="No caracteres especiales, mayor de 3 caracteres"/>
+        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="btnModificiar"/>
         </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[100, 30]"/>
@@ -219,8 +246,9 @@
     <Component class="javax.swing.JLabel" name="lblTitulo">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Arial" size="24" style="1"/>
+          <Font name="Arial" size="18" style="1"/>
         </Property>
+        <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="Modificar Usuario"/>
       </Properties>
     </Component>
@@ -233,6 +261,9 @@
           <Image iconType="3" name="/recursos/modificar24.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Modificar"/>
+        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="btnCancelar"/>
+        </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[75, 30]"/>
         </Property>
@@ -246,6 +277,7 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/recursos/bien.png"/>
         </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Ingresar solo letras"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblEstadoAPaterno">
@@ -253,6 +285,7 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/recursos/bien.png"/>
         </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Ingresar solo letras"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblEstadoAMaterno">
@@ -260,6 +293,7 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/recursos/bien.png"/>
         </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Ingresar solo letras"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblEstadoUsuario">
@@ -267,6 +301,7 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/recursos/bien.png"/>
         </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Ingresar letras y/o numeros"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblEstadoPassword">
@@ -274,9 +309,10 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/recursos/bien.png"/>
         </Property>
+        <Property name="toolTipText" type="java.lang.String" value="No caracteres especiales, mayor de 3 caracteres"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="btnCancelar">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="12" style="0"/>
@@ -285,12 +321,15 @@
           <Image iconType="3" name="/recursos/cancelar24.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Cancelar"/>
+        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="txtfApellidoMaterno"/>
+        </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[75, 30]"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

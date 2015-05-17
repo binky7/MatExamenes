@@ -20,7 +20,7 @@ import modelo.dto.TemaDTO;
 public class CVMantenerReactivos {
     
     private final MantenerReactivosDELEGATE mantenerReactivosDELEGATE;
-    private List<ReactivoDTO> reactivos;
+    private List<ReactivoDTO> listaReactivos;
     private List<CursoDTO> cursos;
     private List<TemaDTO> temas;
     private TemaDTO temaReactivo;
@@ -60,7 +60,7 @@ public class CVMantenerReactivos {
         tema.setNombre(nombreTema);
         List<ReactivoDTO> reactivos = mantenerReactivosDELEGATE
                 .obtenerReactivosPorTema(tema);
-        this.reactivos = reactivos;
+        this.listaReactivos = reactivos;
         
         return reactivos;
     }
@@ -75,25 +75,25 @@ public class CVMantenerReactivos {
     }
     
     public ReactivoDTO obtenerReactivo(int indexReactivo) {
-        ReactivoDTO reactivo = null;
+        ReactivoDTO objReactivo = null;
         
-        if(reactivos != null && !reactivos.isEmpty()) {
-            reactivo = reactivos.get(indexReactivo);
-            reactivo = mantenerReactivosDELEGATE
-                    .obtenerReactivo(reactivo.getId());
-            this.reactivo = reactivo;
+        if(listaReactivos != null && !listaReactivos.isEmpty()) {
+            objReactivo = listaReactivos.get(indexReactivo);
+            objReactivo = mantenerReactivosDELEGATE
+                    .obtenerReactivo(objReactivo.getId());
+            this.reactivo = objReactivo;
         }
         
-        return reactivo;
+        return objReactivo;
     }
     
-    public boolean modificarReactivo(ReactivoDTO reactivo) {
+    public boolean modificarReactivo(ReactivoDTO objReactivo) {
         
-        this.reactivo.setNombre(reactivo.getNombre());
-        this.reactivo.setOpciones(reactivo.getOpciones());
-        this.reactivo.setRedaccion(reactivo.getRedaccion());
-        this.reactivo.setRespuesta(reactivo.getRespuesta());
-        this.reactivo.setFechaModificacion(reactivo.getFechaModificacion());
+        this.reactivo.setNombre(objReactivo.getNombre());
+        this.reactivo.setOpciones(objReactivo.getOpciones());
+        this.reactivo.setRedaccion(objReactivo.getRedaccion());
+        this.reactivo.setRespuesta(objReactivo.getRespuesta());
+        this.reactivo.setFechaModificacion(objReactivo.getFechaModificacion());
 
         return mantenerReactivosDELEGATE.modificarReactivo(this.reactivo);
     }
@@ -101,11 +101,11 @@ public class CVMantenerReactivos {
     public boolean eliminarReactivos(List<Integer> indexesReactivo) {
         boolean ok = false;
         
-        if(reactivos != null && !reactivos.isEmpty()) {
+        if(listaReactivos != null && !listaReactivos.isEmpty()) {
             List<ReactivoDTO> objsReactivo = new ArrayList<>();
             
             for(int indexReactivo : indexesReactivo) {
-                objsReactivo.add(reactivos.get(indexReactivo));
+                objsReactivo.add(listaReactivos.get(indexReactivo));
             }
             ok = mantenerReactivosDELEGATE.eliminarReactivos(objsReactivo);
             if(ok) {
@@ -113,7 +113,7 @@ public class CVMantenerReactivos {
                 Collections.sort(indexesReactivo, Collections.reverseOrder());
                 
                 for(int index : indexesReactivo) {
-                    reactivos.remove(index);
+                    listaReactivos.remove(index);
                 }
             }
         }
@@ -122,7 +122,7 @@ public class CVMantenerReactivos {
     }
     
     public void liberarMemoriaConsultar() {
-        reactivos = null;
+        listaReactivos = null;
         cursos = null;
         temas = null;
     }
