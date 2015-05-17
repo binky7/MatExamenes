@@ -433,7 +433,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         ((DefaultListModel) lstClaves.getModel()).clear();
         ((DefaultTableModel) tblAlumnos.getModel()).setRowCount(0);
         ((DefaultTableModel) tblAsignaciones.getModel()).setRowCount(0);
-        jsTiempo.setValue(0);
+        jsTiempo.setValue(50);
         tbpAsignarExamenes.setSelectedIndex(0);
     }
 

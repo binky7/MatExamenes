@@ -5,17 +5,100 @@
  */
 package vista.ui;
 
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.List;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import modelo.dto.ExamenAsignadoDTO;
+import modelo.dto.ReactivoAsignadoDTO;
+import modelo.dto.UsuarioDTO;
+import vista.controlador.CVContestarExamen;
+import vista.controlador.Cronometro;
+import vista.interfaz.InterfaceVista;
+import vista.controlador.RespaldoJSON;
+import vista.interfaz.InterfaceContestarExamen;
+
 /**
  *
  * @author Alf
  */
-public class VistaContestarExamen extends javax.swing.JPanel {
+public class VistaContestarExamen extends javax.swing.JPanel implements
+        InterfaceVista, ActionListener, InterfaceContestarExamen {
+
+    private static final int OPCIONES = 4;
+    private static final int REACTIVOS_POR_PANEL = 13;
+
+    private InterfaceVista padre;
+    private CVContestarExamen control;
+    private int nReactivos;
+    private int reactivoActual;
+    private JButton[] btnReactivos;
+    private RespaldoJSON respaldo;
+    private JRadioButton[] rbtnOpciones;
+    private List<List<String>> opcionesAleatorias;
+    private List<String> respuestasAlumno;
+    private boolean[] reactivosVistos;
+    private int[] reactivosContestados;
+    private JPanel[] pnlsReactivos;
+    private Cronometro cronometro;
 
     /**
      * Creates new form VistaContestarExamen
      */
     public VistaContestarExamen() {
         initComponents();
+        inicializarComponentes();
+    }
+
+    private void inicializarComponentes() {
+        rbtnOpciones = new JRadioButton[4];
+        rbtnOpciones[0] = rbtnOpcion1;
+        rbtnOpciones[1] = rbtnOpcion2;
+        rbtnOpciones[2] = rbtnOpcion3;
+        rbtnOpciones[3] = rbtnOpcion4;
+        rbtnOpcion1.addActionListener(this);
+        rbtnOpcion2.addActionListener(this);
+        rbtnOpcion3.addActionListener(this);
+        rbtnOpcion4.addActionListener(this);
+    }
+
+    private void inicializarObjetos() {
+        respaldo = new RespaldoJSON();
+        reactivoActual = 0;
+        opcionesAleatorias = new ArrayList();
+        respuestasAlumno = new ArrayList();
+    }
+
+    private void iniciarBanderas() {
+        reactivosVistos = new boolean[nReactivos];
+        reactivosContestados = new int[nReactivos];
+        for (int i = 0; i < nReactivos; i++) {
+            reactivosVistos[i] = false;
+            reactivosContestados[i] = -1;
+            respuestasAlumno.add(".");
+        }
+        reactivosVistos[0] = true;
+    }
+
+    public void setPadre(InterfaceVista padre) {
+        this.padre = padre;
+    }
+
+    public void setControlador(CVContestarExamen cvContestarExamen) {
+        this.control = cvContestarExamen;
     }
 
     /**
@@ -27,84 +110,393 @@ public class VistaContestarExamen extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        rbtnGrupoRespuestas = new javax.swing.ButtonGroup();
+        jButton1 = new javax.swing.JButton();
         lblTiempo = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtaRedaccion = new javax.swing.JTextArea();
-        lblReactivo = new javax.swing.JLabel();
-        rbtnRespuesta1 = new javax.swing.JRadioButton();
-        rbtnRespuesta2 = new javax.swing.JRadioButton();
-        rbtnRespuesta3 = new javax.swing.JRadioButton();
+        rbtnOpcion1 = new javax.swing.JRadioButton();
+        rbtnOpcion2 = new javax.swing.JRadioButton();
+        rbtnOpcion3 = new javax.swing.JRadioButton();
         btnSiguiente = new javax.swing.JButton();
+        rbtnOpcion4 = new javax.swing.JRadioButton();
+        btnTerminarExamen = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        pnlReactivos = new javax.swing.JPanel();
+        lblInstrucciones = new javax.swing.JLabel();
 
-        lblTiempo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblTiempo.setText("Tiempo restante: 50:00");
+        jButton1.setText("jButton1");
 
+        lblTiempo.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        lblTiempo.setText("Tiempo restante:");
+
+        txtaRedaccion.setEditable(false);
+        txtaRedaccion.setBackground(new java.awt.Color(240, 240, 240));
         txtaRedaccion.setColumns(20);
+        txtaRedaccion.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtaRedaccion.setRows(5);
+        txtaRedaccion.setToolTipText("");
         jScrollPane1.setViewportView(txtaRedaccion);
 
-        lblReactivo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblReactivo.setText("Reactivo: 1-10");
+        rbtnGrupoRespuestas.add(rbtnOpcion1);
+        rbtnOpcion1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        rbtnOpcion1.setText("opcion1");
 
-        rbtnRespuesta1.setText("Respuesta1");
+        rbtnGrupoRespuestas.add(rbtnOpcion2);
+        rbtnOpcion2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        rbtnOpcion2.setText("opcion2");
 
-        rbtnRespuesta2.setText("Respuesta2");
+        rbtnGrupoRespuestas.add(rbtnOpcion3);
+        rbtnOpcion3.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        rbtnOpcion3.setText("opcion3");
 
-        rbtnRespuesta3.setText("Respuesta3");
-
+        btnSiguiente.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnSiguiente.setText("Siguiente");
+        btnSiguiente.setPreferredSize(new java.awt.Dimension(77, 30));
+        btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSiguienteActionPerformed(evt);
+            }
+        });
+
+        rbtnGrupoRespuestas.add(rbtnOpcion4);
+        rbtnOpcion4.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        rbtnOpcion4.setText("opcion4");
+
+        btnTerminarExamen.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnTerminarExamen.setText("Terminar Examen");
+        btnTerminarExamen.setToolTipText("");
+        btnTerminarExamen.setPreferredSize(new java.awt.Dimension(77, 30));
+        btnTerminarExamen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTerminarExamenActionPerformed(evt);
+            }
+        });
+
+        jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reactivos", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 12))); // NOI18N
+        jScrollPane2.setMaximumSize(null);
+        jScrollPane2.setMinimumSize(null);
+
+        pnlReactivos.setMaximumSize(null);
+        pnlReactivos.setMinimumSize(null);
+        jScrollPane2.setViewportView(pnlReactivos);
+
+        lblInstrucciones.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        lblInstrucciones.setText("jLabel1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(151, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rbtnRespuesta3)
-                    .addComponent(rbtnRespuesta2)
-                    .addComponent(lblReactivo)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(lblTiempo)
-                            .addGap(31, 31, 31))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(btnSiguiente)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(149, 149, 149)))
-                    .addComponent(rbtnRespuesta1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(633, 633, 633)
+                        .addComponent(lblTiempo))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(461, 461, 461)
+                        .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(btnTerminarExamen, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rbtnOpcion1)
+                            .addComponent(rbtnOpcion2)
+                            .addComponent(rbtnOpcion3)
+                            .addComponent(rbtnOpcion4)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE))
+                            .addComponent(lblInstrucciones))))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(65, 65, 65)
+                .addGap(23, 23, 23)
                 .addComponent(lblTiempo)
-                .addGap(67, 67, 67)
-                .addComponent(lblReactivo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(rbtnRespuesta1)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(lblInstrucciones)
                 .addGap(18, 18, 18)
-                .addComponent(rbtnRespuesta2)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rbtnOpcion1)
                 .addGap(18, 18, 18)
-                .addComponent(rbtnRespuesta3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnSiguiente)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addComponent(rbtnOpcion2)
+                .addGap(18, 18, 18)
+                .addComponent(rbtnOpcion3)
+                .addGap(12, 12, 12)
+                .addComponent(rbtnOpcion4)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTerminarExamen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
+        siguienteReactivo();
+    }//GEN-LAST:event_btnSiguienteActionPerformed
+
+    private void btnTerminarExamenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTerminarExamenActionPerformed
+        int ok = JOptionPane.showConfirmDialog(this, "¿Esta seguro que desea terminar el examen?",
+                "Examen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (ok == JOptionPane.YES_OPTION) {
+            mostrarCalificacion();
+        }
+    }//GEN-LAST:event_btnTerminarExamenActionPerformed
+
+    private void contarReactivos(ExamenAsignadoDTO examen) {
+        nReactivos = examen.getReactivos().size();
+    }
+
+    private void mostrarDatosReactivo() {
+        for (int i = 0; i < OPCIONES; i++) {
+            rbtnOpciones[i].setText(opcionesAleatorias.get(reactivoActual).get(i));
+        }
+        txtaRedaccion.setText(opcionesAleatorias.get(reactivoActual).get(OPCIONES));
+        rbtnGrupoRespuestas.clearSelection();
+        seleccionarRespuestaAlumno();
+    }
+
+    private void seleccionarRespuestaAlumno() {
+        if (reactivosContestados[reactivoActual] != -1) {
+            rbtnGrupoRespuestas.setSelected(rbtnOpciones[reactivosContestados[reactivoActual]].getModel(), true);
+        }
+    }
+
+    private void ordenarOpcionesReactivos() {
+        List<ReactivoAsignadoDTO> reactivos = control.obtenerExamenAsignado().getReactivos();
+
+        for (int i = 0; i < nReactivos; i++) {
+            List<String> opciones = new ArrayList();
+            for (int j = 0; j < OPCIONES - 1; j++) {
+                opciones.add(reactivos.get(i).getOpcionesReactivo().get(j));
+            }
+            opciones.add(reactivos.get(i).getRespuestaReactivo());
+            Collections.shuffle(opciones);
+            opciones.add(reactivos.get(i).getRedaccionReactivo());
+            opcionesAleatorias.add(i, opciones);
+        }
+    }
+
+    private void mostrarCalificacion() {
+        double calificacion = control.calificarExamen(nReactivos, respuestasAlumno, control.obtenerExamenAsignado());
+        String cali = String.format("%.2f", calificacion);
+        if (calificacion == 100) {
+            JOptionPane.showMessageDialog(this, "Su calificación es de: " + cali,
+                    "Calificación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/recursos/like.png")));
+        } else {
+            JOptionPane.showMessageDialog(this, "Su calificación es de: "
+                    + cali, "Calificación", JOptionPane.INFORMATION_MESSAGE);
+        }
+        padre.mostrarVista(Vista.HOME);
+        respaldo.setContestado(true);
+        cronometro.detenerCronometro();
+        if (control.actualizarExamen(control.obtenerExamenAsignado())) {
+            respaldo.eliminarRespaldo();
+        } else {
+            JOptionPane.showMessageDialog(this, "Exmen no actualizado");
+        }
+
+    }
+
+    private void verificarReactivos() {
+        for (int i = 0; i < nReactivos; i++) {
+            if (reactivosVistos[i] && reactivosContestados[i] == -1) {
+                btnReactivos[i].setBackground(Color.red);
+                btnReactivos[i].setForeground(Color.white);
+            } else if (reactivosContestados[i] != -1) {
+                btnReactivos[i].setBackground(Color.blue);
+                btnReactivos[i].setForeground(Color.white);
+            }
+            btnReactivos[i].setEnabled(true);
+        }
+        btnReactivos[reactivoActual].setEnabled(false);
+    }
+
+    private void siguienteReactivo() {
+        reactivosVistos[reactivoActual] = true;
+        if (!(reactivoActual == nReactivos - 1)) {
+            reactivoActual++;
+            mostrarDatosReactivo();
+        }
+        verificarReactivos();
+    }
+
+    private void respaldoRespuestas(List<String> respuestas) {
+        for (int i = 0; i < nReactivos; i++) {
+            for (int j = 0; j < OPCIONES; j++) {
+                if (opcionesAleatorias.get(i).get(j).compareTo(respuestas.get(i)) == 0) {
+                    reactivosContestados[i] = j;
+                    respuestasAlumno.add(i, respuestas.get(i));
+                }
+            }
+        }
+    }
+
+    private void tiempoRestanteExamen(Date fechaAsignacion, int duracion) {
+        long asignadoMilis = fechaAsignacion.getTime();
+        long actualMilis = System.currentTimeMillis();
+        long terminacionMilis = asignadoMilis + (duracion * 60 * 1000);
+        long diferenciaMilis = terminacionMilis - actualMilis;
+        int seg = (int) diferenciaMilis / 1000;
+        int min = seg / 60;
+        int seg2 = (seg % 60);
+        iniciarCronometro(min, seg2);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() instanceof JButton) {
+            int num = Integer.parseInt(((JButton) e.getSource()).getText()) - 1;
+            reactivosVistos[reactivoActual] = true;
+            reactivoActual = num;
+            mostrarDatosReactivo();
+        } else { // radiosbuttons
+            String respuesta = getSelectedButtonText(rbtnGrupoRespuestas);
+            respuestasAlumno.add(reactivoActual, respuesta);
+            respaldo.modificarRespuesta(reactivoActual, respuesta);
+        }
+        verificarReactivos();
+    }
+
+    @Override
+    public void mostrarEntidad(Object entidad) {
+        limpiar();
+        inicializarObjetos();
+        ExamenAsignadoDTO examen = control.obtenerExamenAsignado();
+        lblInstrucciones.setText(examen.getExamen().getInstrucciones());
+        contarReactivos(examen);
+        iniciarBanderas();
+        ordenarOpcionesReactivos();
+        mostrarDatosReactivo();
+        agregarBotonesReactivos();
+        tiempoRestanteExamen(examen.getFechaAsignacion(), examen.getTiempo());
+        if (entidad instanceof RespaldoJSON) {
+            respaldo = (RespaldoJSON) entidad;
+            ArrayList resp = respaldo.getRespaldo();
+            List<String> respuestas = (List<String>) resp.get(RespaldoJSON.I_RESPUESTAS);
+            respaldoRespuestas(respuestas);
+            verificarReactivos();
+            seleccionarRespuestaAlumno();
+        } else {
+            respaldo.inicializarArchivo(nReactivos, ".",
+                    examen.getId().getIdExamen(), examen.getId().getIdAlumno(), false);
+        }
+    }
+
+    @Override
+    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
+    }
+
+    @Override
+    public void mostrarVista(Vista vista) {
+    }
+
+    @Override
+    public boolean confirmarCambio() {
+        return true;
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioActual() {
+        return padre.obtenerUsuarioActual();
+    }
+
+    @Override
+    public void limpiar() {
+        nReactivos = 0;
+        reactivoActual = 0;
+        btnReactivos = null;
+        respaldo = null;
+        opcionesAleatorias = null;
+        respuestasAlumno = null;
+        reactivosVistos = null;
+        reactivosContestados = null;
+        pnlsReactivos = null;
+        cronometro = null;
+        pnlReactivos.removeAll();
+    }
+
+    private void agregarBotonesReactivos() {
+        calcularFilasBotones();
+        btnReactivos = new JButton[nReactivos];
+        for (int i = 0, j = 0; i < nReactivos; i++) {
+            btnReactivos[i] = new JButton(String.valueOf(i + 1));
+            btnReactivos[i].addActionListener(this);
+            pnlsReactivos[j].add(btnReactivos[i]);
+            if (i % (REACTIVOS_POR_PANEL) == 0) {
+                if (i != 0) {
+                    j++;
+                }
+            }
+        }
+        btnReactivos[reactivoActual].setEnabled(false);
+    }
+
+    private void calcularFilasBotones() {
+        int y = nReactivos / REACTIVOS_POR_PANEL;
+        int k = nReactivos % REACTIVOS_POR_PANEL;
+        if (k != 0) {
+            y++;
+        }
+        pnlReactivos.setLayout(new GridLayout(0, 1));
+        pnlsReactivos = new JPanel[y];
+        for (int i = 0; i < y; i++) {
+            pnlsReactivos[i] = new JPanel();
+            pnlsReactivos[i].setLayout(new FlowLayout());
+            pnlReactivos.add(pnlsReactivos[i]);
+        }
+    }
+
+    private String getSelectedButtonText(ButtonGroup buttonGroup) {
+        int i = 0;
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected()) {
+                reactivosContestados[reactivoActual] = i;
+                return button.getText();
+            }
+            i++;
+        }
+        return null;
+    }
+
+    private void iniciarCronometro(int minutos, int segundos) {
+        cronometro = new Cronometro(this, minutos, segundos);
+        cronometro.start();
+    }
+
+    @Override
+    public void actualizarLblTiempo(String tiempo) {
+        lblTiempo.setText(tiempo);
+    }
+
+    @Override
+    public void tiempoTerminado() {
+        mostrarCalificacion();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSiguiente;
+    private javax.swing.JButton btnTerminarExamen;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblReactivo;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblInstrucciones;
     private javax.swing.JLabel lblTiempo;
-    private javax.swing.JRadioButton rbtnRespuesta1;
-    private javax.swing.JRadioButton rbtnRespuesta2;
-    private javax.swing.JRadioButton rbtnRespuesta3;
+    private javax.swing.JPanel pnlReactivos;
+    private javax.swing.ButtonGroup rbtnGrupoRespuestas;
+    private javax.swing.JRadioButton rbtnOpcion1;
+    private javax.swing.JRadioButton rbtnOpcion2;
+    private javax.swing.JRadioButton rbtnOpcion3;
+    private javax.swing.JRadioButton rbtnOpcion4;
     private javax.swing.JTextArea txtaRedaccion;
     // End of variables declaration//GEN-END:variables
 }

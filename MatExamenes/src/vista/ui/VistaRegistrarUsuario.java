@@ -82,10 +82,13 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
 
         if (rbtnAlumno.isSelected()) {
             usuario.setTipo(UsuarioDTO.Tipo.Alumno);
+            rbtnAlumno.setSelected(false);
         } else if (rbtnMaestro.isSelected()) {
             usuario.setTipo(UsuarioDTO.Tipo.Maestro);
+            rbtnMaestro.setSelected(false);
         } else {
             ok = false;
+            mensajeDatosIncorrectos += "Tipo de usuario";
         }
 
         if (!ok) {
@@ -94,9 +97,9 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
                     + "siguientes campos necesitan ser corregidos:\n"
                     + mensajeDatosIncorrectos;
         } else {
-            usuario.setApellidoMaterno(aMaterno);
-            usuario.setApellidoPaterno(aPaterno);
-            usuario.setNombre(nombre);
+            usuario.setApellidoMaterno(Validador.capitalizarNombre(aMaterno));
+            usuario.setApellidoPaterno(Validador.capitalizarNombre(aPaterno));
+            usuario.setNombre(Validador.capitalizarNombre(nombre));
             usuario.setPassword(pass);
             usuario.setUsuario(usuari);
         }
@@ -145,15 +148,12 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
         txtfApellidoMaterno.setText("");
         txtpPassword.setText("");
         txtfUsuario.setText("");
-        rbtnAlumno.setSelected(false);
-        rbtnMaestro.setSelected(false);
         lblEstadoAMaterno.setVisible(false);
         lblEstadoAPaterno.setVisible(false);
         lblEstadoNombre.setVisible(false);
         lblEstadoPassword.setVisible(false);
         lblEstadoUsuario.setVisible(false);
-        
-
+        buttonGroup1.clearSelection();
     }
 
     @Override
@@ -242,6 +242,7 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
         txtfNombre.setPreferredSize(new java.awt.Dimension(100, 30));
 
         lblTitulo.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("Registrar Usuario");
 
         txtfApellidoPaterno.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -276,15 +277,14 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
 
         lblNombre.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblNombre.setText("Nombre:");
-        lblNombre.setPreferredSize(new java.awt.Dimension(48, 20));
 
         lblApellidoPaterno.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblApellidoPaterno.setText("Apellido Paterno:");
-        lblApellidoPaterno.setPreferredSize(new java.awt.Dimension(93, 20));
+        lblApellidoPaterno.setPreferredSize(new java.awt.Dimension(93, 15));
 
         lblApellidoMaterno.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblApellidoMaterno.setText("Apellido Materno:");
-        lblApellidoMaterno.setPreferredSize(new java.awt.Dimension(94, 20));
+        lblApellidoMaterno.setPreferredSize(new java.awt.Dimension(94, 15));
 
         lblUsuario.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblUsuario.setText("Usuario:");
@@ -320,29 +320,25 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(192, 192, 192)
+                        .addGap(238, 238, 238)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblUsuario)
+                            .addComponent(lblPassword)
+                            .addComponent(lblApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblNombre)
+                            .addComponent(lblTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(69, 69, 69)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(226, 226, 226)
-                                        .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(lblPassword)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txtpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                            .addComponent(lblUsuario)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                            .addComponent(lblApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(165, 165, 165)
-                                            .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(lblApellidoPaterno, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtpPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                        .addComponent(txtfUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                        .addComponent(txtfNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblEstadoNombre)
@@ -351,20 +347,16 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
                                     .addComponent(lblEstadoUsuario)
                                     .addComponent(lblEstadoPassword)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(127, 127, 127)
                                 .addComponent(rbtnMaestro)
                                 .addGap(18, 18, 18)
-                                .addComponent(rbtnAlumno))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(209, 209, 209)
-                                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(rbtnAlumno))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(269, 269, 269)
-                        .addComponent(lblTitulo)))
+                        .addGap(401, 401, 401)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(165, Short.MAX_VALUE))
+            .addComponent(lblTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -373,40 +365,40 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
                 .addComponent(lblTitulo)
                 .addGap(59, 59, 59)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblEstadoNombre, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblEstadoNombre)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(41, 41, 41)
+                        .addComponent(lblNombre)))
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEstadoAPaterno))
+                    .addComponent(lblEstadoAPaterno)
+                    .addComponent(lblApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEstadoAMaterno))
-                .addGap(34, 34, 34)
+                    .addComponent(lblEstadoAMaterno)
+                    .addComponent(lblApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblUsuario)
-                    .addComponent(lblEstadoUsuario))
-                .addGap(27, 27, 27)
+                    .addComponent(lblEstadoUsuario)
+                    .addComponent(lblUsuario))
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPassword)
                     .addComponent(txtpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEstadoPassword))
-                .addGap(71, 71, 71)
+                    .addComponent(lblEstadoPassword)
+                    .addComponent(lblPassword))
+                .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rbtnMaestro)
                     .addComponent(rbtnAlumno))
-                .addGap(28, 28, 28)
+                .addGap(51, 51, 51)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

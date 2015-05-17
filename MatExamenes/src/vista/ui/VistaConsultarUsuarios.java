@@ -6,7 +6,6 @@
 package vista.ui;
 
 import java.util.List;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.dto.UsuarioDTO;
@@ -22,19 +21,14 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
 
     private CVMantenerUsuarios cvMantenerUsuarios;
     private InterfaceVista padre;
-    private DefaultTableModel dtm;
-    private final ImageIcon ICONO_BIEN;
-    private final ImageIcon ICONO_MAL;
+    private final DefaultTableModel dtm;
 
     /**
-     * Creates new form VistaConsultarUsuario2
+     * Creates new form VistaConsultarUsuario
      */
     public VistaConsultarUsuarios() {
         initComponents();
         dtm = (DefaultTableModel) tblUsuarios.getModel();
-        ICONO_BIEN = new ImageIcon(getClass().getResource("/recursos/bien.png"));
-        ICONO_MAL = new ImageIcon(getClass().getResource("/recursos/mal.png"));
-        lblEstadoAPaterno.setVisible(false);
     }
 
     public void setPadre(InterfaceVista padre) {
@@ -63,7 +57,6 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         lblApellidoPaterno = new javax.swing.JLabel();
         txtfApellidoPaterno = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        lblEstadoAPaterno = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(800, 600));
 
@@ -115,18 +108,14 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         });
 
         lblTitulo.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("Consultar Usuario");
 
         lblApellidoPaterno.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblApellidoPaterno.setText("Apellido Paterno:");
 
         txtfApellidoPaterno.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        txtfApellidoPaterno.setPreferredSize(new java.awt.Dimension(100, 25));
-        txtfApellidoPaterno.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtfApellidoPaternoFocusLost(evt);
-            }
-        });
+        txtfApellidoPaterno.setPreferredSize(new java.awt.Dimension(100, 30));
         txtfApellidoPaterno.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtfApellidoPaternoKeyTyped(evt);
@@ -138,26 +127,10 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         jButton1.setText("Cancelar");
         jButton1.setPreferredSize(new java.awt.Dimension(77, 30));
 
-        lblEstadoAPaterno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblApellidoPaterno)
-                .addGap(27, 27, 27)
-                .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblEstadoAPaterno)
-                .addGap(86, 86, 86)
-                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblTitulo)
-                .addGap(284, 284, 284))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(138, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -169,6 +142,15 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(117, 117, 117))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblApellidoPaterno)
+                .addGap(18, 18, 18)
+                .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55)
+                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,8 +161,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblApellidoPaterno)
                     .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar)
-                    .addComponent(lblEstadoAPaterno))
+                    .addComponent(btnBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
@@ -215,10 +196,12 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
             List<UsuarioDTO> usuarios;
             usuarios
                     = cvMantenerUsuarios.obtenerUsuariosPorApellido(apellido);
-
-            mostrarUsuariosTabla(usuarios);
+            if (usuarios.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No se encontraron coincidencias", "Busqueda", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                mostrarUsuariosTabla(usuarios);
+            }
         }
-
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void mostrarUsuariosTabla(List<UsuarioDTO> usuarios) {
@@ -254,21 +237,9 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-    private void txtfApellidoPaternoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfApellidoPaternoFocusLost
-        // TODO add your handling code here:
-        if (!lblEstadoAPaterno.isVisible()) {
-            lblEstadoAPaterno.setVisible(true);
-        }
-        if (Validador.esNombre(txtfApellidoPaterno.getText())) {
-            lblEstadoAPaterno.setIcon(ICONO_BIEN);
-        } else {
-            lblEstadoAPaterno.setIcon(ICONO_MAL);
-        }
-    }//GEN-LAST:event_txtfApellidoPaternoFocusLost
-
     private void txtfApellidoPaternoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfApellidoPaternoKeyTyped
         // TODO add your handling code here:
-        if(evt.getKeyChar() == '\n'){
+        if (evt.getKeyChar() == '\n') {
             btnBuscar.doClick();
         }
     }//GEN-LAST:event_txtfApellidoPaternoKeyTyped
@@ -313,7 +284,6 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblApellidoPaterno;
-    private javax.swing.JLabel lblEstadoAPaterno;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JTable tblUsuarios;
     private javax.swing.JTextField txtfApellidoPaterno;
