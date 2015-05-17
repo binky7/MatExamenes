@@ -5,8 +5,14 @@
  */
 package vista.ui;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +30,7 @@ import vista.interfaz.InterfaceVista;
  * @author Alf
  */
 public class VistaModificarUsuario extends javax.swing.JPanel implements
-        InterfaceVista, FocusListener {
+        InterfaceVista, FocusListener, KeyListener {
 
     private CVMantenerUsuarios cvMantenerUsuarios;
     private InterfaceVista padre;
@@ -50,6 +56,11 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         lblEstadoAMaterno.setVisible(false);
         lblEstadoUsuario.setVisible(false);
         lblEstadoPassword.setVisible(false);
+        txtfApellidoMaterno.addKeyListener(this);
+        txtfApellidoPaterno.addKeyListener(this);
+        txtfNombre.addKeyListener(this);
+        txtfUsuario.addKeyListener(this);
+        txtfUsuario.addKeyListener(this);
         NOMBRE = 0;
         APELLIDO_PATERNO = 1;
         APELLIDO_MATERNO = 2;
@@ -81,11 +92,11 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
                     + mensajeDatosIncorrectos;
             return null;
         } else {
-            usuario.setApellidoMaterno(txtfApellidoMaterno.getText());
-            usuario.setApellidoPaterno(txtfApellidoPaterno.getText());
-            usuario.setNombre(txtfNombre.getText());
-            usuario.setUsuario(txtfUsuario.getText());
-            usuario.setPassword(txtfPassword.getText());
+            usuario.setApellidoMaterno(Validador.capitalizarNombre(aMaterno));
+            usuario.setApellidoPaterno(Validador.capitalizarNombre(aPaterno));
+            usuario.setNombre(Validador.capitalizarNombre(nombre));
+            usuario.setUsuario(usuari);
+            usuario.setPassword(pass);
         }
 
         return usuario;
@@ -108,9 +119,14 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
             ok = false;
         }
 
-        if (!Validador.esUsuario(datos[USUARIO]) || !cvMantenerUsuarios.validarUsuario(datos[USUARIO])) {
+        if (!Validador.esUsuario(datos[USUARIO])) {
             mensajeDatosIncorrectos += "Usuario\n";
             ok = false;
+        } else if (usuario.getUsuario().compareTo(datos[USUARIO]) != 0) {
+            if (!cvMantenerUsuarios.validarUsuario(datos[USUARIO])) {
+                mensajeDatosIncorrectos += "Usuario\n";
+                ok = false;
+            }
         }
 
         if (!Validador.esPassword(datos[PASSWORD])) {
@@ -157,7 +173,9 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         lblEstadoAMaterno = new javax.swing.JLabel();
         lblEstadoUsuario = new javax.swing.JLabel();
         lblEstadoPassword = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+
+        setPreferredSize(new java.awt.Dimension(800, 600));
 
         lblNombre.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblNombre.setText("Nombre:");
@@ -175,18 +193,25 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         lblPassword.setText("Password:");
 
         txtfNombre.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfNombre.setNextFocusableComponent(txtfUsuario);
         txtfNombre.setPreferredSize(new java.awt.Dimension(100, 30));
 
         txtfApellidoPaterno.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfApellidoPaterno.setNextFocusableComponent(txtfApellidoMaterno);
         txtfApellidoPaterno.setPreferredSize(new java.awt.Dimension(100, 30));
 
         txtfApellidoMaterno.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfApellidoMaterno.setNextFocusableComponent(txtfNombre);
         txtfApellidoMaterno.setPreferredSize(new java.awt.Dimension(100, 30));
 
         txtfUsuario.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfUsuario.setToolTipText("Ingresar letras y/o numeros");
+        txtfUsuario.setNextFocusableComponent(txtfPassword);
         txtfUsuario.setPreferredSize(new java.awt.Dimension(100, 30));
 
         txtfPassword.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfPassword.setToolTipText("No caracteres especiales, mayor de 3 caracteres");
+        txtfPassword.setNextFocusableComponent(btnModificiar);
         txtfPassword.setPreferredSize(new java.awt.Dimension(100, 30));
         txtfPassword.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -194,12 +219,14 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
             }
         });
 
-        lblTitulo.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("Modificar Usuario");
 
         btnModificiar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnModificiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/modificar24.png"))); // NOI18N
         btnModificiar.setText("Modificar");
+        btnModificiar.setNextFocusableComponent(btnCancelar);
         btnModificiar.setPreferredSize(new java.awt.Dimension(75, 30));
         btnModificiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -208,22 +235,28 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         });
 
         lblEstadoNombre.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+        lblEstadoNombre.setToolTipText("Ingresar solo letras");
 
         lblEstadoAPaterno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+        lblEstadoAPaterno.setToolTipText("Ingresar solo letras");
 
         lblEstadoAMaterno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+        lblEstadoAMaterno.setToolTipText("Ingresar solo letras");
 
         lblEstadoUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+        lblEstadoUsuario.setToolTipText("Ingresar letras y/o numeros");
 
         lblEstadoPassword.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
+        lblEstadoPassword.setToolTipText("No caracteres especiales, mayor de 3 caracteres");
 
-        jButton1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
-        jButton1.setText("Cancelar");
-        jButton1.setPreferredSize(new java.awt.Dimension(75, 30));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.setNextFocusableComponent(txtfApellidoMaterno);
+        btnCancelar.setPreferredSize(new java.awt.Dimension(75, 30));
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
 
@@ -231,77 +264,78 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 264, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblNombre)
-                            .addComponent(lblApellidoPaterno)
-                            .addComponent(lblApellidoMaterno)
-                            .addComponent(lblUsuario)
-                            .addComponent(lblPassword))
-                        .addGap(129, 129, 129)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtfNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtfUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtfPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblEstadoNombre)
-                            .addComponent(lblEstadoAPaterno)
-                            .addComponent(lblEstadoAMaterno)
-                            .addComponent(lblEstadoUsuario)
-                            .addComponent(lblEstadoPassword))
-                        .addGap(189, 189, 189))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lblTitulo)
-                        .addGap(283, 283, 283))))
+            .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnModificiar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(170, 170, 170))
+                .addContainerGap(230, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnModificiar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblNombre)
+                                .addComponent(lblUsuario)
+                                .addComponent(lblPassword)
+                                .addComponent(lblApellidoMaterno, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(lblApellidoPaterno))
+                        .addGap(120, 120, 120)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtfPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtfUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtfNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblEstadoNombre)
+                                        .addComponent(lblEstadoAMaterno, javax.swing.GroupLayout.Alignment.TRAILING))
+                                    .addComponent(lblEstadoUsuario, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addComponent(lblEstadoPassword, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(lblEstadoAPaterno))))
+                .addGap(176, 176, 176))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
+                .addGap(49, 49, 49)
                 .addComponent(lblTitulo)
-                .addGap(74, 74, 74)
+                .addGap(52, 52, 52)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblNombre)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblEstadoNombre)))
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblApellidoPaterno)
                     .addComponent(txtfApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEstadoAPaterno))
-                .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblApellidoMaterno)
+                    .addComponent(lblEstadoAPaterno)
+                    .addComponent(lblApellidoPaterno))
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblEstadoAMaterno)
                     .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEstadoAMaterno))
-                .addGap(42, 42, 42)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblUsuario)
-                    .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEstadoUsuario))
-                .addGap(42, 42, 42)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPassword)
+                    .addComponent(lblApellidoMaterno))
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblEstadoNombre)
+                            .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblEstadoUsuario)
+                            .addComponent(txtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblUsuario)))
+                    .addComponent(lblNombre))
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEstadoPassword))
-                .addGap(71, 71, 71)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnModificiar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(32, Short.MAX_VALUE))
+                    .addComponent(lblEstadoPassword)
+                    .addComponent(lblPassword))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnModificiar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(53, 53, 53))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -312,26 +346,23 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
             ok = cvMantenerUsuarios.modificarUsuario(usuario);
             if (ok) {
                 JOptionPane.showMessageDialog(this, "Usuario Modificado", "Modificación",
-                    JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon(getClass().getResource("/recursos/usuarioModificado.png")));
+                        JOptionPane.INFORMATION_MESSAGE);
                 padre.mostrarVistaConEntidad(cvMantenerUsuarios.obtenerUsuariosBuscados(),
                         Vista.ConsultarUsuarios);
 
             } else {
                 JOptionPane.showMessageDialog(this, "Usuario no Modiicado", "Modificación",
-                    JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon(getClass().getResource("/recursos/incorrecto.png")));
+                        JOptionPane.ERROR_MESSAGE);
                 padre.mostrarVista(Vista.ConsultarUsuarios);
             }
         } else {
             JOptionPane.showMessageDialog(this, mensajeDatosIncorrectos, "Modificación",
-                    JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon(getClass().getResource("/recursos/incorrecto.png")));
+                    JOptionPane.WARNING_MESSAGE);
         }
 
     }//GEN-LAST:event_btnModificiarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
                 + "quieres cancelar la operación?\nTodos los cambios no "
@@ -340,11 +371,11 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
             padre.mostrarVista(Vista.HOME);
             limpiar();
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtfPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfPasswordKeyTyped
         // TODO add your handling code here:
-        if(evt.getKeyChar() == '\n'){
+        if (evt.getKeyChar() == '\n') {
             btnModificiar.doClick();
         }
     }//GEN-LAST:event_txtfPasswordKeyTyped
@@ -424,7 +455,14 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         if (ob == txtfNombre || ob == txtfApellidoPaterno || ob == txtfApellidoMaterno) {
             mostrarLabelEstado(ob, Validador.esNombre(ob.getText()));
         } else if (ob == txtfUsuario) {
-            boolean ok = cvMantenerUsuarios.validarUsuario(ob.getText());
+            boolean ok = true;
+            if (ob.getText().compareTo(usuario.getUsuario()) != 0) {
+                if (!cvMantenerUsuarios.validarUsuario(ob.getText())) {
+                    ok = false;
+                } else {
+                    ok = cvMantenerUsuarios.validarUsuario(ob.getText());
+                }
+            }
             if (ok) {
                 mostrarLabelEstado(ob, Validador.esUsuario(ob.getText()));
             } else {
@@ -434,9 +472,59 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
             mostrarLabelEstado(ob, Validador.esPassword(ob.getText()));
         }
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        JTextField txt = (JTextField) e.getSource();
+        int longitud = Validador.LONGITUD_DATOS_USUARIO;
+        if (!Validador.validarLongitud(longitud, txt.getText())) {
+            e.consume();
+            Toolkit.getDefaultToolkit().beep();
+
+        } else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
+            String portapapeles = "";
+
+            try {
+                portapapeles = (String) Toolkit.getDefaultToolkit()
+                        .getSystemClipboard().getData(DataFlavor.stringFlavor);
+            } catch (UnsupportedFlavorException | IOException | ClassCastException ex) {
+                System.out.println(ex);
+            }
+
+            if (!Validador.validarLongitud(longitud, txt.getText() + portapapeles)) {
+                e.consume();
+                Toolkit.getDefaultToolkit().beep();
+            }
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        JTextField txt = (JTextField) e.getSource();
+        int longitud = Validador.LONGITUD_DATOS_USUARIO;
+        if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
+            String portapapeles = "";
+
+            try {
+                portapapeles = (String) Toolkit.getDefaultToolkit()
+                        .getSystemClipboard().getData(DataFlavor.stringFlavor);
+            } catch (UnsupportedFlavorException | IOException | ClassCastException ex) {
+                System.out.println(ex);
+            }
+
+            if (!Validador.validarLongitud(longitud, txt.getText() + portapapeles)) {
+                e.consume();
+                Toolkit.getDefaultToolkit().beep();
+            }
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnModificiar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lblApellidoMaterno;
     private javax.swing.JLabel lblApellidoPaterno;
     private javax.swing.JLabel lblEstadoAMaterno;
@@ -454,5 +542,4 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
     private javax.swing.JTextField txtfPassword;
     private javax.swing.JTextField txtfUsuario;
     // End of variables declaration//GEN-END:variables
-
 }

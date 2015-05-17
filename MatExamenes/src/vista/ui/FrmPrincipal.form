@@ -210,6 +210,14 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Contestar Examen"/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="miContestarExamen">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Contestar Examen"/>
+                <Property name="name" type="java.lang.String" value="BuscarExamenAsignado" noResource="true"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="mCalificaciones">
           <Properties>

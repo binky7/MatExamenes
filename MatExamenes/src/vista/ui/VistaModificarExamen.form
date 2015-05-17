@@ -101,7 +101,6 @@
                       </Group>
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblTitulo1" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="tbpClaves" min="-2" pref="428" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -120,6 +119,10 @@
                           </Group>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="lblTitulo1" min="-2" pref="784" max="-2" attributes="0"/>
+                      <EmptySpace min="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -202,6 +205,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="18" style="1"/>
             </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Modificar Examen"/>
           </Properties>
         </Component>

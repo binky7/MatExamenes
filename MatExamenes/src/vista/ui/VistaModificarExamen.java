@@ -281,6 +281,7 @@ implements InterfaceVista, InterfaceExamen, FocusListener, KeyListener {
         jPanel4.setPreferredSize(new java.awt.Dimension(790, 579));
 
         lblTitulo1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblTitulo1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo1.setText("Modificar Examen");
 
         lblTitulo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -298,7 +299,7 @@ implements InterfaceVista, InterfaceExamen, FocusListener, KeyListener {
         txtaInstrucciones.setRows(5);
         jScrollPane2.setViewportView(txtaInstrucciones);
 
-        pnlPermiso.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Permiso:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
+        pnlPermiso.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Permiso:", 0, 0, new java.awt.Font("Arial", 1, 14))); // NOI18N
         pnlPermiso.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
 
         rbtnPrivado.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
@@ -465,7 +466,6 @@ implements InterfaceVista, InterfaceExamen, FocusListener, KeyListener {
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)))
                     .addGap(25, 25, 25)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblTitulo1)
                         .addGroup(jPanel4Layout.createSequentialGroup()
                             .addComponent(tbpClaves, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -479,6 +479,9 @@ implements InterfaceVista, InterfaceExamen, FocusListener, KeyListener {
                             .addComponent(btnAgregarClave, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(31, 31, 31)
                             .addComponent(btnRemoverClave, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addComponent(lblTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, 784, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel4Layout.setVerticalGroup(
