@@ -1,7 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2015 Alfredo Rouse Madrigal
+ *
+ * This file is part of MatExamenes.
+ *
+ * MatExamenes is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package vista.controlador;
 
@@ -13,34 +27,77 @@ import modelo.dto.UsuarioDTO;
 
 /**
  *
- * @author Alf
+ * @author Alfredo Rouse Madrigal
+ * @version 1 18 Mayo 2015
  */
 public class CVContestarExamen {
 
+    
     private final ContestarExamenDELEGATE contestarExamenDELEGATE;
+    /**
+     * Examen que el alumno se encuentra contestando o contesto.
+     */
     private ExamenAsignadoDTO examenAsignado;
 
+    /**
+     * Crea un objeto CVContestarExamen e inicializa sus atributos.
+     */
     public CVContestarExamen() {
         contestarExamenDELEGATE = new ContestarExamenDELEGATE();
+        examenAsignado = null;
     }
 
+    /**
+     * Retorna una lista de ExamenAsignadoDTO del alumno.
+     *
+     * @param alumno Alumno por el cual se buscaran los exámenes asigandos.
+     * @return Lista de exámenes asignados para el alumno.<br>
+     * Si no tiene exámenes retornara null.
+     */
     public List<ExamenAsignadoDTO> obtenerExamenesAsignados(UsuarioDTO alumno) {
         List<ExamenAsignadoDTO> examenes = contestarExamenDELEGATE.obtenerExamensAsignados(alumno);
         return examenes;
     }
 
+    /**
+     * Busca el examen asignado y lo guarda en el atributo
+     * examenAsignado.
+     *
+     * @param id ExamenAsignadoPK por el cual se buscara el ExamenAsignadoDTO.
+     */
     public void setExamenAsignado(ExamenAsignadoPK id) {
         examenAsignado = contestarExamenDELEGATE.obetnerExamenAsignado(id);
     }
 
-    public ExamenAsignadoDTO obtenerExamenAsignado() {
+    /**
+     * Una vez que se seleccione el examen, se usara este método para guardar
+     * una referencia a ese mismo examen.
+     *
+     * @return El examenAsignado del alumno.
+     */
+    public ExamenAsignadoDTO getExamenAsignado() {
         return examenAsignado;
     }
 
+    /**
+     * Actualiza el examen en la base de datos.
+     *
+     * @param examen El examen que fue contestado por el alumno.
+     * @return Verdadero en caso de que la actualización fue exitosa.<br>
+     * Falso de otra forma.
+     */
     public boolean actualizarExamen(ExamenAsignadoDTO examen) {
         return contestarExamenDELEGATE.actualizarExamen(examen);
     }
 
+    /**
+     * Retorna la calificación obtenid por el alumno de 0 a 10.
+     *
+     * @param nReactivos Número de reactivos en el examen.
+     * @param respuestasAlumno Lista de respuestas del alumno.
+     * @param examen El examen asignado al alumno.
+     * @return La calificación obtenida por el alumno.
+     */
     public double calificarExamen(int nReactivos, List<String> respuestasAlumno,
             ExamenAsignadoDTO examen) {
         int buenas = 0;
@@ -57,7 +114,7 @@ public class CVContestarExamen {
                 //reactivo no respondido
             }
         }
-        calificacion = (buenas / (double) nReactivos) * 100;
+        calificacion = (buenas / (double) nReactivos) * 10;
         examen.setCalificacion(calificacion);
         return calificacion;
     }

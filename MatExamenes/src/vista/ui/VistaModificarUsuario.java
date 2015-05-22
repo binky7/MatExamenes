@@ -1,7 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2015 Alfredo Rouse Madrigal
+ *
+ * This file is part of MatExamenes.
+ *
+ * MatExamenes is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package vista.ui;
 
@@ -27,25 +41,52 @@ import vista.interfaz.InterfaceVista;
 
 /**
  *
- * @author Alf
+ * @author Alfredo Rouse Madrigal
+ * @version 1 18 Mayo 2015
  */
 public class VistaModificarUsuario extends javax.swing.JPanel implements
         InterfaceVista, FocusListener, KeyListener {
 
     private CVMantenerUsuarios cvMantenerUsuarios;
+    /**
+     * Interface para interactuar con el JFrame principal.
+     */
     private InterfaceVista padre;
-    private UsuarioDTO usuario;
+    /**
+     * Almacena el icono del estado correcto.
+     */
     private final ImageIcon ICONO_BIEN;
+    /**
+     * Almacena el icno del estado incorrecto.
+     */
     private final ImageIcon ICONO_MAL;
-    private final int NOMBRE;
-    private final int APELLIDO_PATERNO;
-    private final int APELLIDO_MATERNO;
-    private final int USUARIO;
-    private final int PASSWORD;
-    private String mensajeDatosIncorrectos;
+    /**
+     * Índice del nombre.
+     */
+    private final int NOMBRE = 0;
+    /**
+     * Índice del apellido paterno.
+     */
+    private final int APELLIDO_PATERNO = 1;
+    /**
+     * Índice del apellido materno.
+     */
+    private final int APELLIDO_MATERNO = 2;
+    /**
+     * Índice del usuario.
+     */
+    private final int USUARIO = 3;
+    /**
+     * Índice del password.
+     */
+    private final int PASSWORD = 4;
+    /**
+     * Almacena el mensaje de datos faltantes.
+     */
+    private String mensajeDatosFaltantes;
 
     /**
-     * Creates new form VistaModificarUsuario2
+     * Crea un objeto VistaModificarUsuario e inicialza los atributos.
      */
     public VistaModificarUsuario() {
         initComponents();
@@ -61,37 +102,52 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         txtfNombre.addKeyListener(this);
         txtfUsuario.addKeyListener(this);
         txtfUsuario.addKeyListener(this);
-        NOMBRE = 0;
-        APELLIDO_PATERNO = 1;
-        APELLIDO_MATERNO = 2;
-        USUARIO = 3;
-        PASSWORD = 4;
     }
 
+    /**
+     * Almacena la interface del JFrame principal.
+     *
+     * @param padre Interface para interactuar con el JFrame principal.
+     */
     public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
 
+    /**
+     * Alamacena el control de la vista.
+     *
+     * @param cvMantenerUsuarios El objeto encargado de realizar las
+     * interacciones con la base de datos.
+     */
     public void setControlador(CVMantenerUsuarios cvMantenerUsuarios) {
         this.cvMantenerUsuarios = cvMantenerUsuarios;
     }
 
+    /**
+     * Crea un objeto de tipo UsuarioDTO obteniendo los datos de los campos de
+     * texto.
+     *
+     * @return Un UsuarioDTO si los campos fueron validos.<br>
+     * Retorna null de otra forma.
+     */
     public UsuarioDTO encapsularUsuario() {
         String aPaterno = txtfApellidoPaterno.getText();
         String aMaterno = txtfApellidoMaterno.getText();
         String nombre = txtfNombre.getText();
         String pass = txtfPassword.getText();
         String usuari = txtfUsuario.getText();
-        mensajeDatosIncorrectos = "";
+        mensajeDatosFaltantes = "";
 
         boolean ok = validarCampos(nombre, aPaterno, aMaterno, usuari, pass);
+        UsuarioDTO usuario;
 
         if (!ok) {
-            mensajeDatosIncorrectos = "No se puede completar la operación, los "
+            mensajeDatosFaltantes = "No se puede completar la operación, los "
                     + "siguientes campos necesitan ser corregidos:\n"
-                    + mensajeDatosIncorrectos;
+                    + mensajeDatosFaltantes;
             return null;
         } else {
+            usuario = cvMantenerUsuarios.getUsuarioModificar();
             usuario.setApellidoMaterno(Validador.capitalizarNombre(aMaterno));
             usuario.setApellidoPaterno(Validador.capitalizarNombre(aPaterno));
             usuario.setNombre(Validador.capitalizarNombre(nombre));
@@ -102,35 +158,43 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         return usuario;
     }
 
+    /**
+     * Valida que los datos ingresados en los campos sean correctos.
+     *
+     * @param datos Vector de String que contiene todos los datos de los campos
+     * de texto
+     * @return Verdadero en caso de que todos los datos sean correctos.<br>
+     * Falso de otra forma.
+     */
     private boolean validarCampos(String... datos) {
         boolean ok = true;
         if (!Validador.esNombre(datos[NOMBRE])) {
-            mensajeDatosIncorrectos += "Nombre\n";
+            mensajeDatosFaltantes += "Nombre\n";
             ok = false;
         }
 
         if (!Validador.esNombre(datos[APELLIDO_PATERNO])) {
-            mensajeDatosIncorrectos += "Apellido Paterno\n";
+            mensajeDatosFaltantes += "Apellido Paterno\n";
             ok = false;
         }
 
         if (!Validador.esNombre(datos[APELLIDO_MATERNO])) {
-            mensajeDatosIncorrectos += "Apellido Materno\n";
+            mensajeDatosFaltantes += "Apellido Materno\n";
             ok = false;
         }
 
         if (!Validador.esUsuario(datos[USUARIO])) {
-            mensajeDatosIncorrectos += "Usuario\n";
+            mensajeDatosFaltantes += "Usuario\n";
             ok = false;
-        } else if (usuario.getUsuario().compareTo(datos[USUARIO]) != 0) {
+        } else if (cvMantenerUsuarios.getUsuarioModificar().getUsuario().compareTo(datos[USUARIO]) != 0) {
             if (!cvMantenerUsuarios.validarUsuario(datos[USUARIO])) {
-                mensajeDatosIncorrectos += "Usuario\n";
+                mensajeDatosFaltantes += "Usuario\n";
                 ok = false;
             }
         }
 
         if (!Validador.esPassword(datos[PASSWORD])) {
-            mensajeDatosIncorrectos += "Password\n";
+            mensajeDatosFaltantes += "Password\n";
             ok = false;
         }
 
@@ -138,9 +202,7 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
     }
 
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * Inicializa los atributos gráficos y los coloca en su posición.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -213,11 +275,6 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         txtfPassword.setToolTipText("No caracteres especiales, mayor de 3 caracteres");
         txtfPassword.setNextFocusableComponent(btnModificiar);
         txtfPassword.setPreferredSize(new java.awt.Dimension(100, 30));
-        txtfPassword.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtfPasswordKeyTyped(evt);
-            }
-        });
 
         lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -339,15 +396,20 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Método llamado cuando se acciona el botón de modificar.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
     private void btnModificiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificiarActionPerformed
-        // TODO add your handling code here:
         boolean ok;
         if (encapsularUsuario() != null) {
-            ok = cvMantenerUsuarios.modificarUsuario(usuario);
+            //datos capturados correctos
+            ok = cvMantenerUsuarios.modificarUsuario(cvMantenerUsuarios.getUsuarioModificar());
             if (ok) {
                 JOptionPane.showMessageDialog(this, "Usuario Modificado", "Modificación",
                         JOptionPane.INFORMATION_MESSAGE);
-                padre.mostrarVistaConEntidad(cvMantenerUsuarios.obtenerUsuariosBuscados(),
+                padre.mostrarVistaConEntidad(cvMantenerUsuarios.getUsuariosBuscados(),
                         Vista.ConsultarUsuarios);
 
             } else {
@@ -356,12 +418,17 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
                 padre.mostrarVista(Vista.ConsultarUsuarios);
             }
         } else {
-            JOptionPane.showMessageDialog(this, mensajeDatosIncorrectos, "Modificación",
+            JOptionPane.showMessageDialog(this, mensajeDatosFaltantes, "Modificación",
                     JOptionPane.WARNING_MESSAGE);
         }
 
     }//GEN-LAST:event_btnModificiarActionPerformed
 
+    /**
+     * Método llamado cuando se acciona el botón de cancelar.
+     *
+     * @param evt Objeto que contiene la información del evento.
+     */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
@@ -373,27 +440,18 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void txtfPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfPasswordKeyTyped
-        // TODO add your handling code here:
-        if (evt.getKeyChar() == '\n') {
-            btnModificiar.doClick();
-        }
-    }//GEN-LAST:event_txtfPasswordKeyTyped
-
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void mostrarVista(Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void mostrarEntidad(Object entidad) {
-        usuario = (UsuarioDTO) entidad;
-
+        UsuarioDTO usuario = (UsuarioDTO) entidad;
+        cvMantenerUsuarios.setUsuarioModificar(usuario);
         txtfApellidoMaterno.setText(usuario.getApellidoMaterno());
         txtfApellidoPaterno.setText(usuario.getApellidoPaterno());
         txtfNombre.setText(usuario.getNombre());
@@ -422,9 +480,17 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
 
     @Override
     public UsuarioDTO obtenerUsuarioActual() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return padre.obtenerUsuarioActual();
     }
 
+    /**
+     * Muestra el estado del campo de texto dependiendo si la validacion fue
+     * verdadera o falsa.
+     *
+     * @param o El objeto campo de texto al cual se quiere cambiar el estado.
+     * @param estado Si es verdadero el estado sera correcto, si es falso el
+     * estado sera incorrecto.
+     */
     private void mostrarLabelEstado(Object o, boolean estado) {
         JTextField ob = (JTextField) o;
         try {
@@ -448,6 +514,12 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
 
     }
 
+    /**
+     * Valida el estado de los campos de texto cuando se pierde el foco en los
+     * campos de texto.
+     *
+     * @param e Objeto que contiene información del evento.
+     */
     @Override
     public void focusLost(FocusEvent e) {
         JTextField ob = (JTextField) e.getSource();
@@ -456,7 +528,7 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
             mostrarLabelEstado(ob, Validador.esNombre(ob.getText()));
         } else if (ob == txtfUsuario) {
             boolean ok = true;
-            if (ob.getText().compareTo(usuario.getUsuario()) != 0) {
+            if (ob.getText().compareTo(cvMantenerUsuarios.getUsuarioModificar().getUsuario()) != 0) {
                 if (!cvMantenerUsuarios.validarUsuario(ob.getText())) {
                     ok = false;
                 } else {
@@ -473,8 +545,17 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         }
     }
 
+    /**
+     * Valida que los campos no acepten mas de los caracteres estipulados en la
+     * base de datos.
+     *
+     * @param e Objeto que contiene información del evento.
+     */
     @Override
     public void keyTyped(KeyEvent e) {
+        if (e.getKeyChar() == '\n') {
+            btnModificiar.doClick();
+        }
         JTextField txt = (JTextField) e.getSource();
         int longitud = Validador.LONGITUD_DATOS_USUARIO;
         if (!Validador.validarLongitud(longitud, txt.getText())) {
@@ -498,6 +579,12 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         }
     }
 
+    /**
+     * Valida que los campos no acepten mas de los caracteres estipulados en la
+     * base de datos.
+     *
+     * @param e Objeto que contiene información del evento.
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         JTextField txt = (JTextField) e.getSource();
@@ -523,23 +610,77 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
     public void keyReleased(KeyEvent e) {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Botón para cancelar la modificación.
+    */
     private javax.swing.JButton btnCancelar;
+    /**
+    * Botón para modificar el usuario.
+    */
     private javax.swing.JButton btnModificiar;
+    /**
+    * Label para el apellido materno.
+    */
     private javax.swing.JLabel lblApellidoMaterno;
+    /**
+    * Label para el apellido paterno.
+    */
     private javax.swing.JLabel lblApellidoPaterno;
+    /**
+    * Label para mostrar el estado del campo de texto apellido materno.
+    */
     private javax.swing.JLabel lblEstadoAMaterno;
+    /**
+    * Label para mostrar el estado del campo de texto apellido paterno.
+    */
     private javax.swing.JLabel lblEstadoAPaterno;
+    /**
+    * Label para mostrar el estado del campo de texto del nombre.
+    */
     private javax.swing.JLabel lblEstadoNombre;
+    /**
+    * Label para mostrar el estado del campo de texto de password.
+    */
     private javax.swing.JLabel lblEstadoPassword;
+    /**
+    * Label para mostrar el estado del campo de texto usuario.
+    */
     private javax.swing.JLabel lblEstadoUsuario;
+    /**
+    * Label para el nombre.
+    */
     private javax.swing.JLabel lblNombre;
+    /**
+    * Label para el password.
+    */
     private javax.swing.JLabel lblPassword;
+    /**
+    * Label del título de la interfaz gráfica.
+    */
     private javax.swing.JLabel lblTitulo;
+    /**
+    * Label para el usuario.
+    */
     private javax.swing.JLabel lblUsuario;
+    /**
+    * Campo de texto para ingresar el apellido materno.
+    */
     private javax.swing.JTextField txtfApellidoMaterno;
+    /**
+    * Campo de texto para ingresar el apellido paterno.
+    */
     private javax.swing.JTextField txtfApellidoPaterno;
+    /**
+    * Campo de texto para ingresar el nombre.
+    */
     private javax.swing.JTextField txtfNombre;
+    /**
+    * Campo de texto tipo password para ingresar el password.
+    */
     private javax.swing.JTextField txtfPassword;
+    /**
+    * Campo de texto para ingresar el usuario.
+    */
     private javax.swing.JTextField txtfUsuario;
     // End of variables declaration//GEN-END:variables
 }
