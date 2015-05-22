@@ -37,11 +37,7 @@ public class FrmAgregarAlumnos extends javax.swing.JFrame {
 
     private void limpiar() {
         txtfBusqueda.setText("");
-        DefaultTableModel model = (DefaultTableModel) tblAlumnos.getModel();
-        for (int i = model.getRowCount() - 1; i > -1; i--) {
-            model.removeRow(i);
-        }
-        tblAlumnos.setModel(model);
+        ((DefaultTableModel) tblAlumnos.getModel()).setRowCount(0);
     }
 
     private void setPadre(InterfaceGrupo padre) {
@@ -197,7 +193,8 @@ public class FrmAgregarAlumnos extends javax.swing.JFrame {
             }
         }
         if (cont == 0 || indexes.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Selecciona al menos un alumno", "Advertencia", 1);
+            JOptionPane.showMessageDialog(this, "Debes seleccionar al menos un"
+                    + " alumno.", "Advertencia", 2);
         } else {
             listaAlumnos = controladorVista.agregarAlumnos(indexes);
             padre.mostrarAlumnos(listaAlumnos);
@@ -207,12 +204,10 @@ public class FrmAgregarAlumnos extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         listaAlumnos = controladorVista.obtenerAlumnos(txtfBusqueda.getText());
-        DefaultTableModel model = (DefaultTableModel) tblAlumnos.getModel();
-        for (int i = model.getRowCount() - 1; i > -1; i--) {
-            model.removeRow(i);
-        }
+        ((DefaultTableModel) tblAlumnos.getModel()).setRowCount(0);
         if (listaAlumnos == null || listaAlumnos.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No se encontraron alumnos!", "Mensaje", 1);
+            JOptionPane.showMessageDialog(this, "No se encontraron alumnos.",
+                    "Advertencia", 2);
         } else {
             for (int i = 0; i < listaAlumnos.size(); i++) {
                 UsuarioDTO alumno = listaAlumnos.get(i);
@@ -222,9 +217,8 @@ public class FrmAgregarAlumnos extends javax.swing.JFrame {
                 fila[2] = alumno.getApellidoPaterno();
                 fila[3] = alumno.getApellidoMaterno();
                 fila[4] = alumno.getNombre();
-                model.addRow(fila);
+                ((DefaultTableModel) tblAlumnos.getModel()).addRow(fila);
             }
-            tblAlumnos.setModel(model);
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 

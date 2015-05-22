@@ -41,10 +41,8 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
 
     private void limpiar() {
         txtfBusqueda.setText("");
-//        DefaultTableModel modelo = (DefaultTableModel) tblMaestros.getModel();
-//        modelo.setRowCount(0);
-//        modelo = (DefaultTableModel) tblCursos.getModel();
-//        modelo.setRowCount(0);
+        ((DefaultTableModel) tblCursos.getModel()).setRowCount(0);
+        ((DefaultTableModel) tblMaestros.getModel()).setRowCount(0);
     }
 
     /**
@@ -234,7 +232,8 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         int indexMaestro = tblMaestros.getSelectedRow();
         if (indexMaestro == -1) {
-            JOptionPane.showMessageDialog(this, "Selecciona al menos un maestro", "Advertencia", 1);
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un maestro",
+                    "Advertencia", 2);
         } else {
             List<Integer> indexesCursos = new ArrayList<>();
             int cont = tblCursos.getRowCount();
@@ -244,10 +243,12 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
                 }
             }
             if (indexesCursos.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Selecciona al menos un curso", "Advertencia", 1);
+                JOptionPane.showMessageDialog(this, "Debes seleccionar al menos"
+                        + " un curso.", "Advertencia", 2);
             } else {
                 btnCancelarActionPerformed(evt);
-                HashMap<CursoDTO, UsuarioDTO> mapa = controladorVista.agregarMaestro(indexesCursos, indexMaestro);
+                HashMap<CursoDTO, UsuarioDTO> mapa = controladorVista.
+                        agregarMaestro(indexesCursos, indexMaestro);
                 padre.mostrarMaestros(mapa);
             }
         }
@@ -260,7 +261,7 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
             model.removeRow(x);
         }
         if (listaMaestros == null || listaMaestros.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No se encontraron maestros!", "Mensaje", 1);
+            JOptionPane.showMessageDialog(this, "No se encontraron maestros.", "Advertencia", 2);
         } else {
             for (UsuarioDTO maestro : listaMaestros) {
                 Object[] fila = new Object[4];
@@ -299,21 +300,17 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
             public void valueChanged(ListSelectionEvent e) {
                 if (tblMaestros.getSelectedRow() != -1) {
                     listaCursos = controladorVista.obtenerCursos(tblMaestros.getSelectedRow());
-                    DefaultTableModel modelo = (DefaultTableModel) tblCursos.getModel();
-                    for (int i = modelo.getRowCount() - 1; i > -1; i--) {
-                        modelo.removeRow(i);
-                    }
+                    ((DefaultTableModel) tblCursos.getModel()).setRowCount(0);
                     if (listaCursos.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "No hay cursos disponibles "
-                                + "para este maestro!", "Advertencia", 1);
+                                + "para este maestro.", "Advertencia", 2);
                     } else {
                         for (CursoDTO listaCurso : listaCursos) {
                             Object[] fila = new Object[2];
                             fila[0] = false;
                             fila[1] = listaCurso.getNombre();
-                            modelo.addRow(fila);
+                            ((DefaultTableModel) tblCursos.getModel()).addRow(fila);
                         }
-                        tblCursos.setModel(modelo);
                     }
                 }
             }

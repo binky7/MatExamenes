@@ -21,7 +21,8 @@ import vista.interfaz.InterfaceVista;
  *
  * @author BoredmanDA
  */
-public class VistaRegistrarGrupo extends javax.swing.JPanel implements InterfaceVista, InterfaceGrupo {
+public class VistaRegistrarGrupo extends javax.swing.JPanel implements
+        InterfaceVista, InterfaceGrupo {
 
     private CVMantenerGrupos controlVista;
     private InterfaceVista padre;
@@ -33,9 +34,9 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
      */
     public VistaRegistrarGrupo() {
         initComponents();
-        cbGrado.setSelectedIndex(-1);
-        cbNombre.setSelectedIndex(-1);
-        cbTurno.setSelectedIndex(-1);
+        cmbGrado.setSelectedIndex(-1);
+        cmbNombre.setSelectedIndex(-1);
+        cmbTurno.setSelectedIndex(-1);
     }
 
     /**
@@ -61,20 +62,11 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
      */
     @Override
     public void limpiar() {
-        cbGrado.setSelectedIndex(-1);
-        cbNombre.setSelectedIndex(-1);
-        cbTurno.setSelectedIndex(-1);
-//        DefaultTableModel modelo = (DefaultTableModel) tblAlumnos.getModel();
-//        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
-//            modelo.removeRow(i);
-//        }
-//        tblAlumnos.setModel(modelo);
-//        modelo = (DefaultTableModel) tblMaestros.getModel();
-//        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
-//            modelo.removeRow(i);
-//        }
-//        tblMaestros.setModel(modelo);
-        controlVista.liberarMemoriaRegistrar();
+        cmbGrado.setSelectedIndex(-1);
+        cmbNombre.setSelectedIndex(-1);
+        cmbTurno.setSelectedIndex(-1);
+        ((DefaultTableModel) tblAlumnos.getModel()).setRowCount(0);
+        ((DefaultTableModel) tblMaestros.getModel()).setRowCount(0);
     }
 
     /**
@@ -85,10 +77,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
      */
     @Override
     public void mostrarAlumnos(List<UsuarioDTO> listaAlumnos) {
-        DefaultTableModel modelo = (DefaultTableModel) tblAlumnos.getModel();
-        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
-            modelo.removeRow(i);
-        }
+        ((DefaultTableModel) tblAlumnos.getModel()).setRowCount(0);
         for (int i = 0; i < listaAlumnos.size(); i++) {
             UsuarioDTO alumno = listaAlumnos.get(i);
             Object[] fila = new Object[5];
@@ -97,9 +86,8 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
             fila[2] = alumno.getNombre();
             fila[3] = alumno.getApellidoPaterno();
             fila[4] = alumno.getApellidoMaterno();
-            modelo.addRow(fila);
+            ((DefaultTableModel) tblAlumnos.getModel()).addRow(fila);
         }
-        tblAlumnos.setModel(modelo);
     }
 
     /**
@@ -110,10 +98,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
      */
     @Override
     public void mostrarMaestros(HashMap<CursoDTO, UsuarioDTO> mapaMaestros) {
-        DefaultTableModel modelo = (DefaultTableModel) tblMaestros.getModel();
-        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
-            modelo.removeRow(i);
-        }
+        ((DefaultTableModel) tblMaestros.getModel()).setRowCount(0);
         for (CursoDTO curso : mapaMaestros.keySet()) {
             UsuarioDTO maestro = mapaMaestros.get(curso);
             Object[] fila = new Object[5];
@@ -122,9 +107,8 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
             fila[2] = maestro.getApellidoPaterno();
             fila[3] = maestro.getApellidoMaterno();
             fila[4] = curso.getNombre();
-            modelo.addRow(fila);
+            ((DefaultTableModel) tblMaestros.getModel()).addRow(fila);
         }
-        tblMaestros.setModel(modelo);
     }
 
     /**
@@ -139,7 +123,6 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
         for (int i = 0; i < noFilasAlumnos.size(); i++) {
             modelo.removeRow(noFilasAlumnos.get(i) - i);
         }
-        tblAlumnos.setModel(modelo);
     }
 
     /**
@@ -157,7 +140,6 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
                 break;
             }
         }
-        tblMaestros.setModel(modelo);
     }
 
     /**
@@ -168,21 +150,35 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
      */
     public GrupoDTO encapsularGrupo() {
         GrupoDTO grupo = new GrupoDTO();
-        String nombre = String.valueOf(cbNombre.getSelectedItem());
+        String nombre = String.valueOf(cmbNombre.getSelectedItem());
         if (Validador.esGrupo(nombre)) {
             grupo.setNombre(nombre);
-            grupo.setGrado(cbGrado.getSelectedIndex() + 1);
-            if (cbTurno.getSelectedIndex() == 0) {
-                grupo.setTurno(GrupoDTO.Turno.M);
+            if (cmbGrado.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Debes seleccionar un grado.",
+                        "Advertencia", 2);
+                return null;
             } else {
-                grupo.setTurno(GrupoDTO.Turno.V);
+                grupo.setGrado(cmbGrado.getSelectedIndex() + 1);
+            }
+            if (cmbTurno.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Debes seleccionar un turno.",
+                        "Advertencia", 2);
+                return null;
+            } else {
+                if (cmbTurno.getSelectedIndex() == 0) {
+                    grupo.setTurno(GrupoDTO.Turno.M);
+                } else {
+                    grupo.setTurno(GrupoDTO.Turno.V);
+                }
             }
             if (controlVista.verificarExistencia(grupo)) {
-                JOptionPane.showMessageDialog(this, "Este grupo ya existe!", "Advertencia", 1);
+                JOptionPane.showMessageDialog(this, "El grupo seleccionado ya "
+                        + "está registrado.", "Advertencia", 2);
                 return null;
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Faltan datos!", "Advertencia", 1);
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un nombre.",
+                    "Advertencia", 2);
             return null;
         }
         return grupo;
@@ -197,117 +193,46 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblTitulo = new javax.swing.JLabel();
+        lblGrado = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
-        lblAlumnos = new javax.swing.JLabel();
-        btnAgrAlumnos = new javax.swing.JButton();
-        btnRmvAlumnos = new javax.swing.JButton();
-        btnCancelar = new javax.swing.JButton();
-        btnGuardar = new javax.swing.JButton();
+        lblTurno = new javax.swing.JLabel();
         lblMaestros = new javax.swing.JLabel();
-        jScrollPane6 = new javax.swing.JScrollPane();
+        lblAlumnos = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblMaestros = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
         tblAlumnos = new javax.swing.JTable();
         btnAgrMaestro = new javax.swing.JButton();
         btnRmvMaestro = new javax.swing.JButton();
-        lblGrado = new javax.swing.JLabel();
-        cbGrado = new javax.swing.JComboBox();
-        lblTurno = new javax.swing.JLabel();
-        cbTurno = new javax.swing.JComboBox();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        tblMaestros = new javax.swing.JTable();
-        lblTitulo = new javax.swing.JLabel();
-        cbNombre = new javax.swing.JComboBox();
+        btnAgrAlumnos = new javax.swing.JButton();
+        btnRmvAlumnos = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        cmbGrado = new javax.swing.JComboBox();
+        cmbNombre = new javax.swing.JComboBox();
+        cmbTurno = new javax.swing.JComboBox();
 
         setPreferredSize(new java.awt.Dimension(800, 600));
 
-        lblNombre.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblNombre.setText("Nombre:");
-
-        lblAlumnos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblAlumnos.setText("Alumnos");
-
-        btnAgrAlumnos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnAgrAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/agregar24.png"))); // NOI18N
-        btnAgrAlumnos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgrAlumnos(evt);
-            }
-        });
-
-        btnRmvAlumnos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnRmvAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/remover24.png"))); // NOI18N
-        btnRmvAlumnos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRmvAlumnosActionPerformed(evt);
-            }
-        });
-
-        btnCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
-        btnCancelar.setText("Cancelar");
-        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
-            }
-        });
-
-        btnGuardar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/guardar24.png"))); // NOI18N
-        btnGuardar.setText("Guardar");
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
-            }
-        });
-
-        lblMaestros.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblMaestros.setText("Maestros");
-
-        tblAlumnos.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        tblAlumnos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "[x]", "Id", "Nom", "Apellido P.", "Apellido M."
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jScrollPane6.setViewportView(tblAlumnos);
-
-        btnAgrMaestro.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnAgrMaestro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/agregar24.png"))); // NOI18N
-        btnAgrMaestro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgrMaestroActionPerformed(evt);
-            }
-        });
-
-        btnRmvMaestro.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnRmvMaestro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/remover24.png"))); // NOI18N
-        btnRmvMaestro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRmvMaestroActionPerformed(evt);
-            }
-        });
+        lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitulo.setText("Registrar Grupo");
 
         lblGrado.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblGrado.setText("Grado:");
 
-        cbGrado.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        cbGrado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1ro", "2do", "3ro" }));
+        lblNombre.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblNombre.setText("Nombre:");
 
         lblTurno.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblTurno.setText("Turno:");
 
-        cbTurno.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        cbTurno.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Matutino", "Vespertino" }));
+        lblMaestros.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblMaestros.setText("Maestros");
+
+        lblAlumnos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblAlumnos.setText("Alumnos");
 
         tblMaestros.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         tblMaestros.setModel(new javax.swing.table.DefaultTableModel(
@@ -327,34 +252,90 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
             }
         });
         tblMaestros.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane7.setViewportView(tblMaestros);
+        jScrollPane1.setViewportView(tblMaestros);
 
-        lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitulo.setText("Registrar Grupo");
+        tblAlumnos.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        tblAlumnos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        cbNombre.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        cbNombre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "C", "D", "E" }));
+            },
+            new String [] {
+                "[x]", "Id", "Nom", "Apellido P.", "Apellido M."
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tblAlumnos);
+
+        btnAgrMaestro.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnAgrMaestro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/agregar24.png"))); // NOI18N
+        btnAgrMaestro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgrMaestroActionPerformed(evt);
+            }
+        });
+
+        btnRmvMaestro.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnRmvMaestro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/remover24.png"))); // NOI18N
+        btnRmvMaestro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRmvMaestroActionPerformed(evt);
+            }
+        });
+
+        btnAgrAlumnos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnAgrAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/agregar24.png"))); // NOI18N
+        btnAgrAlumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgrAlumnos(evt);
+            }
+        });
+
+        btnRmvAlumnos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnRmvAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/remover24.png"))); // NOI18N
+        btnRmvAlumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRmvAlumnosActionPerformed(evt);
+            }
+        });
+
+        btnGuardar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/guardar24.png"))); // NOI18N
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        cmbGrado.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cmbGrado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1ro", "2do", "3ro" }));
+
+        cmbNombre.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cmbNombre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "C", "D", "E" }));
+
+        cmbTurno.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cmbTurno.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Matutino", "Vespertino" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(244, 244, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblTitulo)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblNombre)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(71, 71, 71)
-                        .addComponent(lblTurno)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(225, 225, 225))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 51, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -366,7 +347,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnAgrAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -375,31 +356,44 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
                             .addComponent(lblAlumnos)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                         .addComponent(lblGrado)
                                         .addGap(18, 18, 18)
-                                        .addComponent(cbGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(cmbGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnAgrMaestro, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnRmvMaestro, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(37, 37, 37))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(244, 244, Short.MAX_VALUE)
+                .addComponent(lblNombre)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTitulo)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cmbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(71, 71, 71)
+                        .addComponent(lblTurno)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(225, 225, 225))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(21, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblGrado)
-                    .addComponent(cbGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTurno)
-                    .addComponent(cbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblNombre)
-                    .addComponent(cbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
                 .addComponent(lblMaestros)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -408,7 +402,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
                         .addComponent(btnAgrMaestro)
                         .addGap(18, 18, 18)
                         .addComponent(btnRmvMaestro))
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(lblAlumnos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -417,7 +411,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
                         .addComponent(btnAgrAlumnos)
                         .addGap(18, 18, 18)
                         .addComponent(btnRmvAlumnos))
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
@@ -457,8 +451,9 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
                 + "quieres cancelar la operación?\nTodos los cambios no "
                 + "guardados se perderán");
         if (ok == 0) {
-            padre.mostrarVista(Vista.HOME);
             limpiar();
+            controlVista.liberarMemoriaRegistrar();
+            padre.mostrarVista(Vista.HOME);
         }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -473,11 +468,13 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
         if (grupo != null) {
             Integer id = controlVista.guardarGrupo(grupo);
             if (id != null) {
-                JOptionPane.showMessageDialog(this, "Agregado Correctamente!", "Exito", 1);
+                JOptionPane.showMessageDialog(this, "Grupo registrado "
+                        + "correctamente.", "Exito", 1);
                 padre.mostrarVista(Vista.HOME);
                 limpiar();
             } else {
-                JOptionPane.showMessageDialog(this, "No se pudo agregar!", "Advertencia", 2);
+                JOptionPane.showMessageDialog(this, "No se pudo agregar!",
+                        "Error", 3);
             }
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -498,7 +495,8 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
             }
         }
         if (contador == 0 || indexes.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Selecciona al menos un alumno", "Advertencia", 1);
+            JOptionPane.showMessageDialog(this, "Debes seleccionar al menos "
+                    + "un alumno.", "Advertencia", 2);
         } else {
             controlVista.removerAlumnos(indexes);
             removerAlumnos(indexes);
@@ -521,7 +519,8 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
             controlVista.removerMaestro(nombreCurso);
             removerMaestro(nombreCurso);
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona al menos un maestro", "Advertencia", 1);
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un maestro.",
+                    "Advertencia", 2);
         }
     }//GEN-LAST:event_btnRmvMaestroActionPerformed
 
@@ -532,11 +531,11 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnRmvAlumnos;
     private javax.swing.JButton btnRmvMaestro;
-    private javax.swing.JComboBox cbGrado;
-    private javax.swing.JComboBox cbNombre;
-    private javax.swing.JComboBox cbTurno;
-    private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JComboBox cmbGrado;
+    private javax.swing.JComboBox cmbNombre;
+    private javax.swing.JComboBox cmbTurno;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblAlumnos;
     private javax.swing.JLabel lblGrado;
     private javax.swing.JLabel lblMaestros;
@@ -549,12 +548,12 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //No implementado.
     }
 
     @Override
     public void mostrarEntidad(Object entidad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //No implementado.
     }
 
     /**
@@ -577,12 +576,13 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements Interface
 
     @Override
     public UsuarioDTO obtenerUsuarioActual() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //No implementado.
+        return null;
     }
 
     @Override
     public void mostrarVista(Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //No implementado.
     }
 
     /**

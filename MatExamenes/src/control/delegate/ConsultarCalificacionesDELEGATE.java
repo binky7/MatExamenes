@@ -28,7 +28,8 @@ public class ConsultarCalificacionesDELEGATE {
         try {
             cursos = Enlace.getPersistencia().obtenerEntidades(CursoDTO.class);
         } catch (RemoteException | NotBoundException ex) {
-            Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
         return cursos;
     }
@@ -38,19 +39,10 @@ public class ConsultarCalificacionesDELEGATE {
         try {
             cursos = Enlace.getPersistencia().obtenerCursosDeGrupo(maestro);
         } catch (RemoteException | NotBoundException ex) {
-            Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
         return cursos;
-    }
-
-    public List<GrupoDTO> obtenerGruposPorCurso(CursoDTO curso) {
-        List<GrupoDTO> grupos = null;
-        try {
-            grupos = Enlace.getPersistencia().obtenerGruposPorCurso(curso, null);
-        } catch (RemoteException | NotBoundException ex) {
-            Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return grupos;
     }
 
     public List<GrupoDTO> obtenerGruposPorCurso(CursoDTO curso, UsuarioDTO usuarioActual) {
@@ -58,7 +50,8 @@ public class ConsultarCalificacionesDELEGATE {
         try {
             grupos = Enlace.getPersistencia().obtenerGruposPorCurso(curso, usuarioActual);
         } catch (RemoteException | NotBoundException ex) {
-            Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
         return grupos;
     }
@@ -68,17 +61,19 @@ public class ConsultarCalificacionesDELEGATE {
         try {
             alumnos = Enlace.getPersistencia().obtenerAlumnosDeGrupo(grupo);
         } catch (RemoteException | NotBoundException ex) {
-            Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName()
+            ).log(Level.SEVERE, null, ex);
         }
         return alumnos;
     }
 
-    public List<ExamenAsignadoDTO> obtenerExamenes(UsuarioDTO alumno) {
+    public List<ExamenAsignadoDTO> obtenerExamenes(UsuarioDTO alumno, CursoDTO curso) {
         List<ExamenAsignadoDTO> examenes = null;
         try {
-            examenes = Enlace.getPersistencia().obtenerExamenesAsignados(alumno);
+            examenes = Enlace.getPersistencia().obtenerExamenesContestados(alumno, curso);
         } catch (RemoteException | NotBoundException ex) {
-            Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
         return examenes;
     }
@@ -88,7 +83,8 @@ public class ConsultarCalificacionesDELEGATE {
         try {
             examen = Enlace.getPersistencia().obtenerExamenContestado(id);
         } catch (RemoteException | NotBoundException ex) {
-            Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConsultarCalificacionesDELEGATE.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
         return examen;
     }

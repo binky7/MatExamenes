@@ -55,11 +55,7 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
      */
     @Override
     public void limpiar() {
-        DefaultTableModel modelo = (DefaultTableModel) tblGrupos.getModel();
-        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
-            modelo.removeRow(i);
-        }
-        tblGrupos.setModel(modelo);
+        ((DefaultTableModel) tblGrupos.getModel()).setRowCount(0);
         controladorVista.liberarMemoriaConsultar();
     }
 
@@ -69,8 +65,9 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
     private void consultarGrupos() {
         this.listaGrupos = controladorVista.obtenerGrupos();
         if (listaGrupos.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No hay grupos!", "Advertencia", 1);
-            padre.mostrarVista(Vista.HOME);
+            JOptionPane.showMessageDialog(this, "No hay grupos disponibles.",
+                    "Advertencia", 2);
+            this.padre.mostrarVista(Vista.HOME);
             limpiar();
         } else {
             mostrarGrupos(this.listaGrupos);
@@ -83,18 +80,14 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
      * @param listaGrupos Recibe la lista de los grupos.
      */
     private void mostrarGrupos(List<GrupoDTO> listaGrupos) {
-        DefaultTableModel modelo = (DefaultTableModel) tblGrupos.getModel();
-        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
-            modelo.removeRow(i);
-        }
+        ((DefaultTableModel) tblGrupos.getModel()).setRowCount(0);
         for (GrupoDTO grupo : listaGrupos) {
             Object[] fila = new Object[3];
             fila[0] = grupo.getGrado();
             fila[1] = grupo.getNombre();
             fila[2] = grupo.getTurno();
-            modelo.addRow(fila);
+            ((DefaultTableModel) tblGrupos.getModel()).addRow(fila);
         }
-        tblGrupos.setModel(modelo);
     }
 
     /**
@@ -106,13 +99,16 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblGrupos = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblGrupos = new javax.swing.JTable();
-        btnEliminar = new javax.swing.JButton();
-        btnModificar = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
+        lblGrupos = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblGrupos = new javax.swing.JTable();
+        btnModificar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+
+        lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblTitulo.setText("Consultar Grupos");
 
         lblGrupos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblGrupos.setText("Grupos");
@@ -136,16 +132,7 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
         });
         tblGrupos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblGrupos.getTableHeader().setReorderingAllowed(false);
-        jScrollPane3.setViewportView(tblGrupos);
-
-        btnEliminar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/eliminar24.png"))); // NOI18N
-        btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
+        jScrollPane1.setViewportView(tblGrupos);
 
         btnModificar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/modificar24.png"))); // NOI18N
@@ -156,8 +143,14 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
             }
         });
 
-        lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        lblTitulo.setText("Consultar Grupos");
+        btnEliminar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/eliminar24.png"))); // NOI18N
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonCancelar_1.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
@@ -174,12 +167,9 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(311, 311, 311)
-                        .addComponent(lblTitulo))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(106, 106, 106)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnModificar)
                                 .addGap(18, 18, 18)
@@ -187,7 +177,10 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
                                 .addGap(18, 18, 18)
                                 .addComponent(btnCancelar))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(356, 356, 356)
+                        .addGap(318, 318, 318)
+                        .addComponent(lblTitulo))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(365, 365, 365)
                         .addComponent(lblGrupos)))
                 .addContainerGap(140, Short.MAX_VALUE))
         );
@@ -199,7 +192,7 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
                 .addGap(36, 36, 36)
                 .addComponent(lblGrupos)
                 .addGap(48, 48, 48)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnModificar)
@@ -242,21 +235,21 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int index = tblGrupos.getSelectedRow();
         if (index == -1) {
-            JOptionPane.showMessageDialog(this, "Selecciona al menos un grupo",
-                    "Advertencia", 1);
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un grupo.",
+                    "Advertencia", 2);
         } else {
             int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
                     + "quieres eliminar este grupo?\nEste proceso es irreversible");
             if (ok == 0) {
                 if (controladorVista.eliminarGrupo(index)) {
-                    JOptionPane.showMessageDialog(this, "Grupo Eliminado!",
-                            "Exito", 1);
+                    JOptionPane.showMessageDialog(this, "Grupo eliminado "
+                            + "correctamente", "Exito", 1);
                     DefaultTableModel modelo = (DefaultTableModel) tblGrupos.getModel();
                     modelo.removeRow(index);
                     tblGrupos.setModel(modelo);
                 } else {
-                    JOptionPane.showMessageDialog(this, "No se pudo eliminar el grupo!",
-                            "Advertencia", 1);
+                    JOptionPane.showMessageDialog(this, "No se pudo eliminar el grupo!.",
+                            "Advertencia", 3);
                 }
             }
         }
@@ -271,7 +264,7 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements AncestorL
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblGrupos;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JTable tblGrupos;
