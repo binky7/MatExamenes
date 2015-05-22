@@ -1,7 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2015 Jesús Donaldo Osornio Hernández
+ *
+ * This file is part of MatExamenes.
+ *
+ * MatExamenes is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package vista.ui;
 
@@ -34,24 +48,182 @@ import vista.controlador.Validador;
 import vista.interfaz.InterfaceVista;
 
 /**
+ * JPanel que mostrará la interfaz gráfica de Modificar Reactivo
  *
- * @author Jesus Donaldo
+ * @author Jesus Donaldo Osornio Hernández
+ * @version 1 18 Mayo 2015
  */
 public class VistaModificarReactivo extends javax.swing.JPanel
 implements InterfaceVista, FocusListener, KeyListener {
 
+    /**
+     * Interface de comunicación con la interfaz padre, la cuál sirve para
+     * comunicarse con ella y recibir mensajes para mostrar otras vistas. En ese
+     * caso es utilizada para comunicarse con el JFrame Principal
+     */
     private InterfaceVista padre;
+    /**
+     * Controlador de la vista del caso de uso mantener reactivos, funciona para
+     * manejar la información obtenida en la vista para comunicarse con las
+     * capas inferiores
+     */
     private CVMantenerReactivos controlVista;
     
+    /**
+     * Objeto que agrupa lógicamente los radio buttons para seleccionar la
+     * respuesta correcta del reactivo de sus opciones
+     */
     private ButtonGroup opciones;
     
+    /**
+     * Almacena el icono del estado correcto.
+     */
     private final ImageIcon ICONO_BIEN;
+    /**
+     * Almacena el icno del estado incorrecto.
+     */
     private final ImageIcon ICONO_MAL;
     
+    /**
+     * Cadena para almacenar el mensaje que se cree en caso de que los campos
+     * de la interfaz no cumplan con el formato esperado
+     */
     private String mensajeDatosIncorrectos;
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+     * Botón usado para cancelar la operación
+     */
+    private javax.swing.JButton btnCancelar;
+    /**
+     * Botón usado para guardar el reactivo
+     */
+    private javax.swing.JButton btnGuardar;
+    /**
+     * ComboBox usado para mostrar los cursos
+     */
+    private javax.swing.JComboBox cmbCurso;
+    /**
+     * ComboBox usado para mostrar los temas
+     */
+    private javax.swing.JComboBox cmbTema;
+    /**
+     * ScrollPane usado para el área de texto de redacción
+     */
+    private javax.swing.JScrollPane jScrollPane1;
+    /**
+     * Label para el cmbCurso
+     */
+    private javax.swing.JLabel lblCurso;
+    /**
+     * Label para mostrar el estado del campo nombre
+     */
+    private javax.swing.JLabel lblEstadoNombre;
+    /**
+     * Label para mostrar el estado del campo opt1
+     */
+    private javax.swing.JLabel lblEstadoOpt1;
+    /**
+     * Label para mostrar el estado del campo opt2
+     */
+    private javax.swing.JLabel lblEstadoOpt2;
+    /**
+     * Label para mostrar el estado del campo opt3
+     */
+    private javax.swing.JLabel lblEstadoOpt3;
+    /**
+     * Label para mostrar el estado del campo opt4
+     */
+    private javax.swing.JLabel lblEstadoOpt4;
+    /**
+     * Label para mostrar el estado del campo redaccion
+     */
+    private javax.swing.JLabel lblEstadoRedaccion;
+    /**
+     * Label para el campo de texto del nombre
+     */
+    private javax.swing.JLabel lblNombre;
+    /**
+     * Label para el campo de texto de la opcion 1
+     */
+    private javax.swing.JLabel lblOpciones1;
+    /**
+     * Label para el campo de texto de la opcion 2
+     */
+    private javax.swing.JLabel lblOpciones2;
+    /**
+     * Label para el campo de texto de la opcion 3
+     */
+    private javax.swing.JLabel lblOpciones3;
+    /**
+     * Label para el campo de texto de la opcion 4
+     */
+    private javax.swing.JLabel lblOpciones4;
+    /**
+     * Label para el campo de texto de la redaccion
+     */
+    private javax.swing.JLabel lblRedaccion;
+    /**
+     * Label para mostrar Respuesta
+     */
+    private javax.swing.JLabel lblRespuesta;
+    /**
+     * Label para el cmbTema
+     */
+    private javax.swing.JLabel lblTema;
+    /**
+     * Label para el título de la interfaz gráfica.
+     */
+    private javax.swing.JLabel lblTitulo;
+    /**
+     * Panel para agrupar los componentes de las opciones del reactivo
+     */
+    private javax.swing.JPanel pnlOpciones;
+    /**
+     * Radio Button para la opción 1.
+     */
+    private javax.swing.JRadioButton rbtnOpt1;
+    /**
+     * Radio Button para la opción 2.
+     */
+    private javax.swing.JRadioButton rbtnOpt2;
+    /**
+     * Radio Button para la opción 3.
+     */
+    private javax.swing.JRadioButton rbtnOpt3;
+    /**
+     * Radio Button para la opción 4.
+     */
+    private javax.swing.JRadioButton rbtnOpt4;
+    /**
+    * Área de texto utilizado para ingresar la redacción.
+    */
+    private javax.swing.JTextArea txtaRedaccion;
+    /**
+    * Campo de texto utilizado para ingresar el nombre.
+    */
+    private javax.swing.JTextField txtfNombre;
+    /**
+    * Campo de texto utilizado para ingresar la opción 1.
+    */
+    private javax.swing.JTextField txtfOpt1;
+    /**
+    * Campo de texto utilizado para ingresar la opción 2.
+    */
+    private javax.swing.JTextField txtfOpt2;
+    /**
+    * Campo de texto utilizado para ingresar la opción 3.
+    */
+    private javax.swing.JTextField txtfOpt3;
+    /**
+    * Campo de texto utilizado para ingresar la opción 4.
+    */
+    private javax.swing.JTextField txtfOpt4;
+    // End of variables declaration//GEN-END:variables
     
     /**
-     * Creates new form ModificarReactivo
+     * Crea un objeto VistaModificarReactivo e inicializa sus atributos,
+     * oculta las etiquetas para mostrar el estado de los campos de la vista
      */
     public VistaModificarReactivo() {
         initComponents();
@@ -69,14 +241,31 @@ implements InterfaceVista, FocusListener, KeyListener {
         init();
     }
 
+    /**
+     * Almacena la interface del JFrame principal.
+     * @param padre Interface para interactuar con el JFrame principal.
+     */
     public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
     
+    /**
+     * Almacena el control de la vista
+     * @param controlVista El objeto encargado de realizar comunicar la vista
+     * con las capas inferiores para acceder a los datos
+     */
     public void setControlador(CVMantenerReactivos controlVista) {
         this.controlVista = controlVista;
     }
 
+    /**
+     * Este método inicializa tantos los componentes de las opciones del
+     * reactivo para relacionarlos entre si y se puedan validar los campos
+     * con otro método genérico, como agrega también los listeners necesarios
+     * a los campos de la vista. Este método debe ser llamado primero, desde el
+     * constructor
+     * @see mostrarLabelEstado
+     */
     private void init() {
         //Para igualar los radios con los textos
         rbtnOpt1.setActionCommand("Opt1");
@@ -109,17 +298,32 @@ implements InterfaceVista, FocusListener, KeyListener {
         txtfOpt4.addFocusListener(this);
     }
     
+    /**
+     * Crea un objeto de tipo ReactivoDTO obteniendo los datos de los campos de
+     * texto de la vista, también valida si la información capturada es correcta,
+     * en caso de que no el objeto no se construye y se agrega la información de
+     * la falla en una cadena mensajeDatosIncorrectos, de igual forma se le
+     * muestra al usuario los campos donde falló por medio de las etiquetas 
+     * ICONO_BIEN, ICONO_MAL
+     * 
+     * @return Un objeto ReactivoDTO si los datos de los campos fueron validos.<br>
+     * Retorna null de otra forma.
+     */
     private ReactivoDTO encapsularReactivo() {
-        
+        //El objeto reactivo donde se encapsularán todos los datos
         ReactivoDTO reactivo = new ReactivoDTO();
         mensajeDatosIncorrectos = "";
         
+        //Datos del reactivo
         String nombre = txtfNombre.getText();
         String redaccion = txtaRedaccion.getText();
         String respuesta = "";
         List<String> opcionesReactivo = new ArrayList<>();
+        //bandera que indica que el encapsulado fue correcto
         boolean ok = true;
 
+        //Si el campo está vacío agregar el mensaje correspondiente y mostrar el
+        //label correspondiente a un lado del campo
         if (Validador.estaVacio(nombre)) {
             ok = false;
             mensajeDatosIncorrectos = "* Nombre del Reactivo\n";
@@ -136,16 +340,20 @@ implements InterfaceVista, FocusListener, KeyListener {
             mostrarLabelEstado(txtaRedaccion, true, "");
         }
         
+        //Validación para acomodar el orden de los mensajes
         if(!ok) {
             mensajeDatosIncorrectos = "No se puede completar la operación, los "
                 + "siguientes campos necesitan ser corregidos:\n" +
                     mensajeDatosIncorrectos;
         }
         
+        //Este ciclo recorre todos los componentes del pnlOpciones para validar
+        //cada opción
         for (Component comp : pnlOpciones.getComponents()) {
             if (comp.getClass() == JTextField.class) {
                 JTextField field = (JTextField) comp;
 
+                //Validar el campo y mostrar el label correspondiente
                 if (Validador.estaVacio(field.getText())) {
                     mostrarLabelEstado(field, false, "lblEstado");
                     ok = false;
@@ -153,6 +361,9 @@ implements InterfaceVista, FocusListener, KeyListener {
                     mostrarLabelEstado(field, true, "lblEstado");
                 }
 
+                //Si se seleccionó una opción como respuesta correcta almacenar
+                //la selección en la respuesta del reactivo y las demás en las
+                //opciones del reactivo
                 if (opciones.getSelection() != null) {
                     if (field.getName().equals(opciones.getSelection().getActionCommand())) {
                         respuesta = field.getText();
@@ -163,18 +374,21 @@ implements InterfaceVista, FocusListener, KeyListener {
             }
         }
         
+        //Comprobar si se seleccionó una opción como respuesta correcta
         if (respuesta.isEmpty()) {
             ok = false;
             mensajeDatosIncorrectos += "Debes seleccionar una opción como "
                     + "respuesta\n";
         }
         
+        //Almacenar todos los datos obtenidos en el reactivo
         reactivo.setNombre(nombre);
         reactivo.setRedaccion(redaccion);
         reactivo.setRespuesta(respuesta);
         reactivo.setOpciones(opcionesReactivo);
         reactivo.setFechaModificacion(new Date());
         
+        //Si falló la validación regresar null
         if(!ok){
             reactivo = null;
         }
@@ -182,7 +396,15 @@ implements InterfaceVista, FocusListener, KeyListener {
         return reactivo;
     }
     
+    /**
+     * Este método es utilizado para mostrar los datos del reactivo proporcionado
+     * en los componentes de la vista, para así poder editar sus datos
+     * 
+     * @param reactivo el objeto ReactivoDTO que se desea mostrar en los
+     * componentes de la vista.
+     */
     private void mostrarDatos(ReactivoDTO reactivo) {
+        //Mostrar los datos del reactivo en el nombre, tema y redacción
         txtfNombre.setText(reactivo.getNombre());
         cmbTema.addItem(reactivo.getTema().getNombre());
         txtaRedaccion.setText(reactivo.getRedaccion());
@@ -196,10 +418,14 @@ implements InterfaceVista, FocusListener, KeyListener {
                 JTextField field = (JTextField) comp;
 
                 if (i < size) {
+                    //Mostrar todas las opciones del reactivo primero
                     field.setText(reactivo.getOpciones().get(i));
                 } else {
+                    //Después mostrar la opción seleccionada como respuesta
                     field.setText(reactivo.getRespuesta());
                     try {
+                        //Obtener el radio button asociado a ese campo y
+                        //seleccionarlo para denotar que esa opción es la respuesta
                         Field fieldObj = getClass().getDeclaredField("rbtn" + field.getName());
                         JRadioButton button = (JRadioButton) fieldObj.get(this);
                         opciones.setSelected(button.getModel(), true);
@@ -211,10 +437,9 @@ implements InterfaceVista, FocusListener, KeyListener {
             }
         }
     }
+    
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * Inicializa los atributos gráficos y los coloca en su posición.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -535,10 +760,22 @@ implements InterfaceVista, FocusListener, KeyListener {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Este método es llamado cuando el botón para guardar el reactivo es
+     * seleccionado. Encapsula la información de la vista en un objeto reactivo
+     * y lo actualiza en la base de datos mediante el controlVista. En caso de
+     * que la validación falle se muestra un mensaje al usuario. Si todo fue
+     * correcto se limpian los campos y se regresa el control a la vista consultar
+     * reactivos.
+     * 
+     * @param evt el objeto ActionEvent generado por el evento, no es utilizado.
+     */
     private void modificarReactivo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarReactivo
 
+        //El objeto ReactivoDTO obtenido al encapsular los datos de la vista
         ReactivoDTO reactivo = encapsularReactivo();
 
+        //Si la validación falló se muestra un mensaje de advertencia
         if(reactivo == null) {
             if(mensajeDatosIncorrectos.isEmpty()) {
                 mensajeDatosIncorrectos = "Falta ingresar opciones";
@@ -547,14 +784,19 @@ implements InterfaceVista, FocusListener, KeyListener {
                     JOptionPane.WARNING_MESSAGE);
         }
         else {
+            //Si la valdiación fue correcta se actualiza el objeto mediante el
+            //control vista
             boolean ok = controlVista.modificarReactivo(reactivo);
 
             if(ok) {
+                //Si la operación se realiza con éxito se muestra un mensaje
+                //de confirmación y se regresa el control a la Vista Consultar
                 JOptionPane.showMessageDialog(this, "Reactivo Modificado");
                 padre.mostrarVistaConEntidad(reactivo, Vista.ConsultarReactivos);
                 limpiar();
             }
             else {
+                //Si no se pudo modificar el reactivo mostrar un mensaje de error
                 JOptionPane.showMessageDialog(this, "No se pudo modificar "
                     + "el reactivo", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -562,8 +804,14 @@ implements InterfaceVista, FocusListener, KeyListener {
 
     }//GEN-LAST:event_modificarReactivo
 
+    /**
+     * Este método sirve para pasar el control a la Vista Consultar
+     * correspondiente al mismo caso de uso al que pertence esta vista. Se manda
+     * llamar al seleccionar la opción de cancelar en la vista.
+     * @param evt un objeto de tipo ActionEvent generado al ocurrir el evento
+     */
     private void pasarControlVistaConsulta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarControlVistaConsulta
-        // TODO add your handling code here:
+
         int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
             + "quieres cancelar la operación?\nTodos los cambios no "
             + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
@@ -573,41 +821,6 @@ implements InterfaceVista, FocusListener, KeyListener {
         }
     }//GEN-LAST:event_pasarControlVistaConsulta
 
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnGuardar;
-    private javax.swing.JComboBox cmbCurso;
-    private javax.swing.JComboBox cmbTema;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblCurso;
-    private javax.swing.JLabel lblEstadoNombre;
-    private javax.swing.JLabel lblEstadoOpt1;
-    private javax.swing.JLabel lblEstadoOpt2;
-    private javax.swing.JLabel lblEstadoOpt3;
-    private javax.swing.JLabel lblEstadoOpt4;
-    private javax.swing.JLabel lblEstadoRedaccion;
-    private javax.swing.JLabel lblNombre;
-    private javax.swing.JLabel lblOpciones1;
-    private javax.swing.JLabel lblOpciones2;
-    private javax.swing.JLabel lblOpciones3;
-    private javax.swing.JLabel lblOpciones4;
-    private javax.swing.JLabel lblRedaccion;
-    private javax.swing.JLabel lblRespuesta;
-    private javax.swing.JLabel lblTema;
-    private javax.swing.JLabel lblTitulo;
-    private javax.swing.JPanel pnlOpciones;
-    private javax.swing.JRadioButton rbtnOpt1;
-    private javax.swing.JRadioButton rbtnOpt2;
-    private javax.swing.JRadioButton rbtnOpt3;
-    private javax.swing.JRadioButton rbtnOpt4;
-    private javax.swing.JTextArea txtaRedaccion;
-    private javax.swing.JTextField txtfNombre;
-    private javax.swing.JTextField txtfOpt1;
-    private javax.swing.JTextField txtfOpt2;
-    private javax.swing.JTextField txtfOpt3;
-    private javax.swing.JTextField txtfOpt4;
-    // End of variables declaration//GEN-END:variables
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
@@ -619,6 +832,14 @@ implements InterfaceVista, FocusListener, KeyListener {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Muestra la información de la entidad obtenida en todos los campos de la
+     * vista, este objeto es enviado desde la Vista Consultar del caso de uso
+     * correspondiente a esta vista
+     * 
+     * @param entidad el objeto entidad que contiene la información a mostrar
+     * en la vista para ser modificada
+     */
     @Override
     public void mostrarEntidad(Object entidad) {
         //Mostrar Datos
@@ -672,11 +893,19 @@ implements InterfaceVista, FocusListener, KeyListener {
     public void focusGained(FocusEvent e) {
     }
 
+    /**
+     * Este método es invocado cuando un campo pierde el foco, sirve para validar
+     * los campos y para mostrar su label correspondiente en caso de que los
+     * campos estén correctos o incorrectos
+     * @param e el objeto FocusEvent que se obtiene del evento
+     */
     @Override
     public void focusLost(FocusEvent e) {
         //Cuando cambia de componente
         JTextComponent ob = (JTextComponent) e.getComponent();
         
+        //Si el nombre empieza con Opt significa que se trata de los campos de 
+        //opciones del reactivo
         if(ob.getName().startsWith("Opt")) {
             mostrarLabelEstado(ob, !Validador.estaVacio(ob.getText()), "lblEstado");
         }
@@ -685,15 +914,28 @@ implements InterfaceVista, FocusListener, KeyListener {
         }
     }
     
+    /**
+     * Muestra el estado del campo de texto dependiendo si la validacion fue
+     * verdadera o falsa.
+     *
+     * @param o El objeto campo de texto al cual se quiere cambiar el estado.
+     * @param estado Si es verdadero el estado sera correcto, si es falso el
+     * estado sera incorrecto.
+     * @param prefix El prefijo que se quiere agregar al nombre del objeto o al
+     * momento de comparar los campos
+     */
     private void mostrarLabelEstado(Object o, boolean estado, String prefix) {
         JTextComponent ob = (JTextComponent) o;
         
         try {
+            //Se utiliza la reflexión para crear un método de validación
+            //genérico
             Field field = getClass().getDeclaredField(prefix + ob.getName());
             JLabel label = (JLabel) field.get(this);
             if (!label.isVisible()) {
                 label.setVisible(true);
             }
+            //Si el estado es verdadero, mostrar ICONO_BIEN, si no mostrar ICONO_MAL
             if (estado) {
                 label.setIcon(ICONO_BIEN);
             } else {
@@ -704,11 +946,18 @@ implements InterfaceVista, FocusListener, KeyListener {
         }
     }
 
+    /**
+     * Valida que los campos no acepten mas de los caracteres estipulados en la
+     * base de datos.
+     *
+     * @param e Objeto que contiene información del evento.
+     */
     @Override
     public void keyTyped(KeyEvent e) {
         JTextComponent campo = (JTextComponent) e.getSource();
         int longitud = 0;
-        
+       
+        //Asignar la longitud máxima según el campo de la vista
         if(campo.getName().contains("Nombre")) {
             longitud = Validador.LONGITUD_NOMBRE_REACTIVO;
         }
@@ -719,32 +968,45 @@ implements InterfaceVista, FocusListener, KeyListener {
             longitud = Validador.LONGITUD_OPCION_REACTIVO;
         }
         
+        //Verificar si se está pegando contenido mediante Ctrl + V
         if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
             String portapapeles = "";
             
             try {
+                //Obtener la cadena del portapapeles del sistema
                 portapapeles = (String) Toolkit.getDefaultToolkit()
                         .getSystemClipboard().getData(DataFlavor.stringFlavor);
             } catch (UnsupportedFlavorException | IOException | ClassCastException ex) {
                 System.out.println(ex);
             }
             
+            //Si la longitud del campo de texto mas la cadena del portapapeles
+            //Es mayor del máximo permitido evitar la acción...
             if(!Validador.validarLongitud(longitud, campo.getText() + portapapeles)) {
                 e.consume();
                 Toolkit.getDefaultToolkit().beep();
             }
         }
+        //Si no hay acción de pegado pero aún así se llegó al límite de caracteres
+        //evitar la acción
         else if (!Validador.validarLongitud(longitud, campo.getText())) {
             e.consume();
             Toolkit.getDefaultToolkit().beep();
         }
     }
 
+    /**
+     * Valida que los campos no acepten mas de los caracteres estipulados en la
+     * base de datos.
+     *
+     * @param e Objeto que contiene información del evento.
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         JTextComponent campo = (JTextComponent) e.getSource();
         int longitud = 0;
         
+        //Asignar la longitud máxima según el campo de la vista
         if(campo.getName().contains("Nombre")) {
             longitud = Validador.LONGITUD_NOMBRE_REACTIVO;
         }
@@ -755,6 +1017,7 @@ implements InterfaceVista, FocusListener, KeyListener {
             longitud = Validador.LONGITUD_OPCION_REACTIVO;
         }
         
+        //Verificar si se está pegando contenido mediante Ctrl + V
         if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
             String portapapeles = "";
             
@@ -765,6 +1028,8 @@ implements InterfaceVista, FocusListener, KeyListener {
                 System.out.println(ex);
             }
             
+            //Si la longitud del campo de texto mas la cadena del portapapeles
+            //Es mayor del máximo permitido evitar la acción...
             if(!Validador.validarLongitud(longitud, campo.getText() + portapapeles)) {
                 e.consume();
                 Toolkit.getDefaultToolkit().beep();

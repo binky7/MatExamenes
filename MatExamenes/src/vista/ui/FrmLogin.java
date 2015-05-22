@@ -40,6 +40,7 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
      */
     private final FrmPrincipal p;
     private final CVLogin cvLogin;
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     /**
     * Botón usado para iniciar sesión.
