@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.4" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
     <Component class="javax.swing.ButtonGroup" name="buttonGroup1">
     </Component>
@@ -80,10 +80,12 @@
               <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
               <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="txtfApellidoPaterno" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="lblEstadoAPaterno" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblApellidoPaterno" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtfApellidoPaterno" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblApellidoPaterno" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -102,10 +104,12 @@
                   <Component id="lblEstadoNombre" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="txtfUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="lblEstadoUsuario" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtfUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -137,6 +141,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Password:"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Lael para el password.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblTipo">
       <Properties>
@@ -148,6 +155,9 @@
           <Dimension value="[89, 20]"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para el tipo de usuario.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="txtfNombre">
       <Properties>
@@ -163,7 +173,8 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="txtfNombre.addFocusListener(this);&#xd;&#xa;txtfNombre.setName(&quot;lblEstadoNombre&quot;);&#xd;&#xa;"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="txtfNombre.addFocusListener(this);&#xa;txtfNombre.setName(&quot;lblEstadoNombre&quot;);"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Campo de texto para el nombre.&#xa; */"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblTitulo">
@@ -174,6 +185,9 @@
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="Registrar Usuario"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label de t&#xed;tulo de la interfaz gr&#xe1;fica.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="txtfApellidoPaterno">
       <Properties>
@@ -189,7 +203,8 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="txtfApellidoPaterno.addFocusListener(this);&#xd;&#xa;txtfApellidoPaterno.setName(&quot;lblEstadoAPaterno&quot;);&#xd;&#xa;"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="txtfApellidoPaterno.addFocusListener(this);&#xa;txtfApellidoPaterno.setName(&quot;lblEstadoAPaterno&quot;);"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Campo de texto para el apellido paterno.&#xa; */"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="btnGuardar">
@@ -211,6 +226,9 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n para guardar.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="txtfApellidoMaterno">
       <Properties>
@@ -226,7 +244,8 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="txtfApellidoMaterno.addFocusListener(this);&#xd;&#xa;txtfApellidoMaterno.setName(&quot;lblEstadoAMaterno&quot;);&#xd;&#xa;"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="txtfApellidoMaterno.addFocusListener(this);&#xa;txtfApellidoMaterno.setName(&quot;lblEstadoAMaterno&quot;);"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Campo de texto para el apellido materno.&#xa; */"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JRadioButton" name="rbtnMaestro">
@@ -242,6 +261,9 @@
           <ComponentRef name="btnGuardar"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n radio para el tipo maestro.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="txtfUsuario">
       <Properties>
@@ -257,7 +279,8 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="txtfUsuario.addFocusListener(this);&#xd;&#xa;txtfUsuario.setName(&quot;lblEstadoUsuario&quot;);&#xd;&#xa;"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="txtfUsuario.addFocusListener(this);&#xa;txtfUsuario.setName(&quot;lblEstadoUsuario&quot;);"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Campo de texto para el usuario.&#xa; */"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JRadioButton" name="rbtnAlumno">
@@ -273,6 +296,9 @@
           <ComponentRef name="rbtnMaestro"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n radio para el tipo alumno.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblNombre">
       <Properties>
@@ -281,6 +307,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Nombre:"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para el nombre.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblApellidoPaterno">
       <Properties>
@@ -292,6 +321,9 @@
           <Dimension value="[93, 15]"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para el apellido paterno.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblApellidoMaterno">
       <Properties>
@@ -303,6 +335,9 @@
           <Dimension value="[94, 15]"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para el apellido materno.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblUsuario">
       <Properties>
@@ -311,6 +346,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Usuario:"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para el usuario.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JPasswordField" name="txtpPassword">
       <Properties>
@@ -326,7 +364,8 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="txtpPassword.addFocusListener(this);&#xd;&#xa;txtpPassword.setName(&quot;lblEstadoPassword&quot;);&#xd;&#xa;"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="txtpPassword.addFocusListener(this);&#xa;txtpPassword.setName(&quot;lblEstadoPassword&quot;);"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Campo de texto para el password.&#xa; */"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblEstadoNombre">
@@ -336,6 +375,9 @@
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="Ingresar solo letras"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para mostrar el estdo del campo de texto nombre.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblEstadoAPaterno">
       <Properties>
@@ -344,6 +386,9 @@
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="Ingresar solo letras"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para mostrar el estado del campo de texto apellido paterno.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblEstadoAMaterno">
       <Properties>
@@ -352,6 +397,9 @@
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="Ingresar solo letras"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para mostrar el estado del campo de texto apellido materno.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblEstadoUsuario">
       <Properties>
@@ -360,6 +408,9 @@
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="Ingresar letras y/o numeros"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para mostrar el estado del campo de texto usuario.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblEstadoPassword">
       <Properties>
@@ -368,6 +419,9 @@
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="No caracteres especiales, mayor de 3 caracteres"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para mostrar el estado del campo de texto password.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="btnCancelar">
       <Properties>
@@ -388,6 +442,9 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n para cancelar.&#xa; */"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

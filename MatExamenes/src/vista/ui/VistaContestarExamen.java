@@ -1,7 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2015 Alfredo Rouse Madrigal
+ *
+ * This file is part of MatExamenes.
+ *
+ * MatExamenes is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package vista.ui;
 
@@ -10,6 +24,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -32,37 +47,86 @@ import vista.controlador.RespaldoJSON;
 import vista.interfaz.InterfaceContestarExamen;
 
 /**
+ * Interfaz gráfica para contestar examen.
  *
- * @author Alf
+ * @author Alfredo Rouse Madrigal
+ * @version 1 18 Mayo 2015
  */
 public class VistaContestarExamen extends javax.swing.JPanel implements
         InterfaceVista, ActionListener, InterfaceContestarExamen {
 
+    /**
+     * Número de opciones.
+     */
     private static final int OPCIONES = 4;
+    /**
+     * Número máximo de reactivos por panel.
+     */
     private static final int REACTIVOS_POR_PANEL = 13;
 
+    /**
+     * Interface para interactuar con el JFrame principal.
+     */
     private InterfaceVista padre;
     private CVContestarExamen control;
+    /**
+     * Alamacenara el numero máximo de reactivos.
+     */
     private int nReactivos;
+    /**
+     * Almacenara el númeor del reactivo actual.
+     */
     private int reactivoActual;
+    /**
+     * Vector contenedor de todos los botones de los reactivos.
+     */
     private JButton[] btnReactivos;
+    /**
+     * Inicializa y modifica el respaldo del examen que se esta contestando.
+     */
     private RespaldoJSON respaldo;
+    /**
+     * Vector contenedor de los botones radios.
+     */
     private JRadioButton[] rbtnOpciones;
+    /**
+     * Lista de listas, cada índice de la primera lista es el número de
+     * reactivo, y cada lista en ese índice almacena las opciones de respuestas
+     * en un orden aleatorio calculado cada que el examen es iniciado.
+     */
     private List<List<String>> opcionesAleatorias;
+    /**
+     * Lista que almacena las respuestas del alumno.
+     */
     private List<String> respuestasAlumno;
+    /**
+     * Bandera que almacena los reactivos que fueron vistos previamente.
+     */
     private boolean[] reactivosVistos;
+    /**
+     * Bandera utilizada para saber cual de las 4 opciones selecciono el alumno.
+     */
     private int[] reactivosContestados;
+    /**
+     * Vector de paneles que almacenaran los botones de los reactivos.
+     */
     private JPanel[] pnlsReactivos;
+    /**
+     * El cronómetro encargado del llevar el tiempo.
+     */
     private Cronometro cronometro;
 
     /**
-     * Creates new form VistaContestarExamen
+     * Crea una nueva VistaContestarExamen e inicializa sus atributos.
      */
     public VistaContestarExamen() {
         initComponents();
         inicializarComponentes();
     }
 
+    /**
+     * Inicializa algunos componentes gráficos.
+     */
     private void inicializarComponentes() {
         rbtnOpciones = new JRadioButton[4];
         rbtnOpciones[0] = rbtnOpcion1;
@@ -75,6 +139,9 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         rbtnOpcion4.addActionListener(this);
     }
 
+    /**
+     * Inicializa el resto de objetos a utilizar.
+     */
     private void inicializarObjetos() {
         respaldo = new RespaldoJSON();
         reactivoActual = 0;
@@ -82,6 +149,9 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         respuestasAlumno = new ArrayList();
     }
 
+    /**
+     * Inicializa las banderas.
+     */
     private void iniciarBanderas() {
         reactivosVistos = new boolean[nReactivos];
         reactivosContestados = new int[nReactivos];
@@ -93,25 +163,33 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         reactivosVistos[0] = true;
     }
 
+    /**
+     * Almacena la interface del JFrame principal.
+     *
+     * @param padre Interface para interactuar con el JFrame principal.
+     */
     public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
 
+    /**
+     * Alamacena el control de la vista.
+     *
+     * @param cvContestarExamen El objeto encargado de realizar las
+     * interacciones con la base de datos.
+     */
     public void setControlador(CVContestarExamen cvContestarExamen) {
         this.control = cvContestarExamen;
     }
 
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * Inicializa los atributos gráficos y los coloca en su posición.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         rbtnGrupoRespuestas = new javax.swing.ButtonGroup();
-        jButton1 = new javax.swing.JButton();
         lblTiempo = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtaRedaccion = new javax.swing.JTextArea();
@@ -124,8 +202,6 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         jScrollPane2 = new javax.swing.JScrollPane();
         pnlReactivos = new javax.swing.JPanel();
         lblInstrucciones = new javax.swing.JLabel();
-
-        jButton1.setText("jButton1");
 
         lblTiempo.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblTiempo.setText("Tiempo restante:");
@@ -238,10 +314,20 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Método llamado cuando se acciona el botón siguiente.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
     private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
         siguienteReactivo();
     }//GEN-LAST:event_btnSiguienteActionPerformed
 
+    /**
+     * Método llamado cuando se acciona el botón terminar examen.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
     private void btnTerminarExamenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTerminarExamenActionPerformed
         int ok = JOptionPane.showConfirmDialog(this, "¿Esta seguro que desea terminar el examen?",
                 "Examen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -250,10 +336,18 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         }
     }//GEN-LAST:event_btnTerminarExamenActionPerformed
 
+    /**
+     * Cuenta los reactivos que el examen tiene asignados.
+     *
+     * @param examen El examen al cual contar los reactivos.
+     */
     private void contarReactivos(ExamenAsignadoDTO examen) {
         nReactivos = examen.getReactivos().size();
     }
 
+    /**
+     * Muestra la información del reactivo actual en la interfaz gráfica.
+     */
     private void mostrarDatosReactivo() {
         for (int i = 0; i < OPCIONES; i++) {
             rbtnOpciones[i].setText(opcionesAleatorias.get(reactivoActual).get(i));
@@ -263,18 +357,26 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         seleccionarRespuestaAlumno();
     }
 
+    /**
+     * Selecciona el botón radio de la respuesta contestada por el alumno.
+     */
     private void seleccionarRespuestaAlumno() {
         if (reactivosContestados[reactivoActual] != -1) {
             rbtnGrupoRespuestas.setSelected(rbtnOpciones[reactivosContestados[reactivoActual]].getModel(), true);
         }
     }
 
+    /**
+     * Agrega las tres opciones y la repuesta correcta auna lista, y despues
+     * esta lista es barajeada.
+     */
     private void ordenarOpcionesReactivos() {
-        List<ReactivoAsignadoDTO> reactivos = control.obtenerExamenAsignado().getReactivos();
+        List<ReactivoAsignadoDTO> reactivos = control.getExamenAsignado().getReactivos();
 
         for (int i = 0; i < nReactivos; i++) {
             List<String> opciones = new ArrayList();
             for (int j = 0; j < OPCIONES - 1; j++) {
+                // -1 ya que una se agrega abajo la respuesta correcta
                 opciones.add(reactivos.get(i).getOpcionesReactivo().get(j));
             }
             opciones.add(reactivos.get(i).getRespuestaReactivo());
@@ -284,8 +386,12 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         }
     }
 
+    /**
+     * Califica el examen, muestra en pantalla la calificación y actualiza el
+     * examen en la base de datos.
+     */
     private void mostrarCalificacion() {
-        double calificacion = control.calificarExamen(nReactivos, respuestasAlumno, control.obtenerExamenAsignado());
+        double calificacion = control.calificarExamen(nReactivos, respuestasAlumno, control.getExamenAsignado());
         String cali = String.format("%.2f", calificacion);
         if (calificacion == 100) {
             JOptionPane.showMessageDialog(this, "Su calificación es de: " + cali,
@@ -295,9 +401,12 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
                     + cali, "Calificación", JOptionPane.INFORMATION_MESSAGE);
         }
         padre.mostrarVista(Vista.HOME);
-        respaldo.setContestado(true);
-        cronometro.detenerCronometro();
-        if (control.actualizarExamen(control.obtenerExamenAsignado())) {
+        try {
+            respaldo.setContestado(true);
+        } catch (IOException e) {
+        }
+        cronometro.detener();
+        if (control.actualizarExamen(control.getExamenAsignado())) {
             respaldo.eliminarRespaldo();
         } else {
             JOptionPane.showMessageDialog(this, "Exmen no actualizado");
@@ -305,6 +414,11 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
 
     }
 
+    /**
+     * Verifica los reactivos, si fueron visitados previamente y no fueron
+     * contestados, su color sera cambiado a rojo, si fueron contestados, su
+     * color sera cambiado a azul, deshabilitando el boton del reactivo actual.
+     */
     private void verificarReactivos() {
         for (int i = 0; i < nReactivos; i++) {
             if (reactivosVistos[i] && reactivosContestados[i] == -1) {
@@ -319,6 +433,9 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         btnReactivos[reactivoActual].setEnabled(false);
     }
 
+    /**
+     * Cambia el reactivo actual por el reactivo siguiente.
+     */
     private void siguienteReactivo() {
         reactivosVistos[reactivoActual] = true;
         if (!(reactivoActual == nReactivos - 1)) {
@@ -328,6 +445,13 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         verificarReactivos();
     }
 
+    /**
+     * Método llamado cuando se reinicia un examen.<br>
+     * Verifica
+     *
+     * @param respuestas Lista de respuestas obtenida del respaldo.
+     * @see vista.controlador.RespaldoJSON
+     */
     private void respaldoRespuestas(List<String> respuestas) {
         for (int i = 0; i < nReactivos; i++) {
             for (int j = 0; j < OPCIONES; j++) {
@@ -339,6 +463,13 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         }
     }
 
+    /**
+     * Calcula el tiempo restante en base a la fehca de asignación y la duración
+     * del examen.
+     *
+     * @param fechaAsignacion Fecha en la que el examen fue asignado.
+     * @param duracion Duracion del examen en minutos.
+     */
     private void tiempoRestanteExamen(Date fechaAsignacion, int duracion) {
         long asignadoMilis = fechaAsignacion.getTime();
         long actualMilis = System.currentTimeMillis();
@@ -350,6 +481,78 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         iniciarCronometro(min, seg2);
     }
 
+    /**
+     * Agrega los botones de los reactivos a los paneles.
+     */
+    private void agregarBotonesReactivos() {
+        calcularFilasBotones();
+        btnReactivos = new JButton[nReactivos];
+        for (int i = 0, j = 0; i < nReactivos; i++) {
+            btnReactivos[i] = new JButton(String.valueOf(i + 1));
+            btnReactivos[i].addActionListener(this);
+            pnlsReactivos[j].add(btnReactivos[i]);
+            if (i % (REACTIVOS_POR_PANEL) == 0) {
+                if (i != 0) {
+                    j++;
+                }
+            }
+        }
+        btnReactivos[reactivoActual].setEnabled(false);
+    }
+
+    /**
+     * Calcula cuatos paneles seran necesarios para los botones de los
+     * reactivos.
+     */
+    private void calcularFilasBotones() {
+        int y = nReactivos / REACTIVOS_POR_PANEL;
+        int k = nReactivos % REACTIVOS_POR_PANEL;
+        if (k != 0) {
+            y++;
+        }
+        pnlReactivos.setLayout(new GridLayout(0, 1));
+        pnlsReactivos = new JPanel[y];
+        for (int i = 0; i < y; i++) {
+            pnlsReactivos[i] = new JPanel();
+            pnlsReactivos[i].setLayout(new FlowLayout());
+            pnlReactivos.add(pnlsReactivos[i]);
+        }
+    }
+
+    /**
+     * Obtiene los botones en el grupo de botones y verifica si estan
+     * seleccionados.
+     *
+     * @param grupoBotones El grupo de botones del cual se quiere obtener el
+     * texto del seleccionado.
+     * @return El texto del boton seleccionado.<br>
+     * Si no hay un boton seleccionado retorna null.
+     */
+    private String obtenerTextoBotonSeleccionado(ButtonGroup grupoBotones) {
+        int i = 0;
+        for (Enumeration<AbstractButton> buttons = grupoBotones.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected()) {
+                reactivosContestados[reactivoActual] = i;
+                return button.getText();
+            }
+            i++;
+        }
+        return null;
+    }
+
+    /**
+     * Inicia el Thread del cronómetro.
+     *
+     * @param minutos Los minutos del examen.
+     * @param segundos Los segundos del examen.
+     */
+    private void iniciarCronometro(int minutos, int segundos) {
+        cronometro = new Cronometro(this, minutos, segundos);
+        cronometro.start();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof JButton) {
@@ -357,10 +560,14 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
             reactivosVistos[reactivoActual] = true;
             reactivoActual = num;
             mostrarDatosReactivo();
-        } else { // radiosbuttons
-            String respuesta = getSelectedButtonText(rbtnGrupoRespuestas);
+        } else {
+            //botones radio
+            String respuesta = obtenerTextoBotonSeleccionado(rbtnGrupoRespuestas);
             respuestasAlumno.add(reactivoActual, respuesta);
-            respaldo.modificarRespuesta(reactivoActual, respuesta);
+            try {
+                respaldo.modificarRespuesta(reactivoActual, respuesta);
+            } catch (IOException ex) {
+            }
         }
         verificarReactivos();
     }
@@ -369,7 +576,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
     public void mostrarEntidad(Object entidad) {
         limpiar();
         inicializarObjetos();
-        ExamenAsignadoDTO examen = control.obtenerExamenAsignado();
+        ExamenAsignadoDTO examen = control.getExamenAsignado();
         lblInstrucciones.setText(examen.getExamen().getInstrucciones());
         contarReactivos(examen);
         iniciarBanderas();
@@ -385,8 +592,11 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
             verificarReactivos();
             seleccionarRespuestaAlumno();
         } else {
-            respaldo.inicializarArchivo(nReactivos, ".",
-                    examen.getId().getIdExamen(), examen.getId().getIdAlumno(), false);
+            try {
+                respaldo.inicializarArchivo(nReactivos, examen.getId().getIdExamen(),
+                        examen.getId().getIdAlumno());
+            } catch (IOException ex) {
+            }
         }
     }
 
@@ -423,80 +633,76 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         pnlReactivos.removeAll();
     }
 
-    private void agregarBotonesReactivos() {
-        calcularFilasBotones();
-        btnReactivos = new JButton[nReactivos];
-        for (int i = 0, j = 0; i < nReactivos; i++) {
-            btnReactivos[i] = new JButton(String.valueOf(i + 1));
-            btnReactivos[i].addActionListener(this);
-            pnlsReactivos[j].add(btnReactivos[i]);
-            if (i % (REACTIVOS_POR_PANEL) == 0) {
-                if (i != 0) {
-                    j++;
-                }
-            }
-        }
-        btnReactivos[reactivoActual].setEnabled(false);
-    }
-
-    private void calcularFilasBotones() {
-        int y = nReactivos / REACTIVOS_POR_PANEL;
-        int k = nReactivos % REACTIVOS_POR_PANEL;
-        if (k != 0) {
-            y++;
-        }
-        pnlReactivos.setLayout(new GridLayout(0, 1));
-        pnlsReactivos = new JPanel[y];
-        for (int i = 0; i < y; i++) {
-            pnlsReactivos[i] = new JPanel();
-            pnlsReactivos[i].setLayout(new FlowLayout());
-            pnlReactivos.add(pnlsReactivos[i]);
-        }
-    }
-
-    private String getSelectedButtonText(ButtonGroup buttonGroup) {
-        int i = 0;
-        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
-            AbstractButton button = buttons.nextElement();
-
-            if (button.isSelected()) {
-                reactivosContestados[reactivoActual] = i;
-                return button.getText();
-            }
-            i++;
-        }
-        return null;
-    }
-
-    private void iniciarCronometro(int minutos, int segundos) {
-        cronometro = new Cronometro(this, minutos, segundos);
-        cronometro.start();
-    }
-
+    /**
+     * Actualiza el texto que muestra el Label cada segundo.
+     *
+     * @param txtLabel El Texto que mostrara el Label.
+     */
     @Override
-    public void actualizarLblTiempo(String tiempo) {
-        lblTiempo.setText(tiempo);
+    public void actualizarLblTiempo(String txtLabel) {
+        lblTiempo.setText(txtLabel);
     }
 
+    /**
+     * Método llamado cuando se termina el tiempo del examen.<br>
+     */
     @Override
     public void tiempoTerminado() {
         mostrarCalificacion();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Boton usado para cambiar de reactivo.
+    */
     private javax.swing.JButton btnSiguiente;
+    /**
+    * Botón usado para terminar el examen.
+    */
     private javax.swing.JButton btnTerminarExamen;
-    private javax.swing.JButton jButton1;
+    /**
+    * ScrollPane para la redacción del reactivo.
+    */
     private javax.swing.JScrollPane jScrollPane1;
+    /**
+    * ScrollPane para el panel de reactivos.
+    */
     private javax.swing.JScrollPane jScrollPane2;
+    /**
+    * Label para mostrar las instrucciones del examen.
+    */
     private javax.swing.JLabel lblInstrucciones;
+    /**
+    * Label para mostrar el tiempo restante del examen.
+    */
     private javax.swing.JLabel lblTiempo;
+    /**
+    * Panel para mostrar los reactivos del examen.
+    */
     private javax.swing.JPanel pnlReactivos;
+    /**
+    * Agrupa los Botónes de radio.
+    */
     private javax.swing.ButtonGroup rbtnGrupoRespuestas;
+    /**
+    * Botón de la opción uno.
+    */
     private javax.swing.JRadioButton rbtnOpcion1;
+    /**
+    * Botón de la opción dos.
+    */
     private javax.swing.JRadioButton rbtnOpcion2;
+    /**
+    * Botón de la opción tres.
+    */
     private javax.swing.JRadioButton rbtnOpcion3;
+    /**
+    * Botón de la opción cuatro.
+    */
     private javax.swing.JRadioButton rbtnOpcion4;
+    /**
+    * Campo de texto para mostrar la redacción del reactivo.
+    */
     private javax.swing.JTextArea txtaRedaccion;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,24 +1,63 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2015 Alfredo Rouse Madrigal
+ *
+ * This file is part of MatExamenes.
+ *
+ * MatExamenes is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package vista.controlador;
 
 import vista.interfaz.InterfaceContestarExamen;
 
 /**
+ * Encargado de calcular el tiempo transcurrido al contestar examen.
  *
- * @author Alf
+ * @author Alfredo Rouse Madrigal
+ * @version 1 18 Mayo 2015
  */
 public class Cronometro extends Thread {
 
+    /**
+     * Almacena los segundos.
+     */
     private volatile Integer minutos;
+    /**
+     * Almacena los minutos.
+     */
     private volatile Integer segundos;
+    /**
+     * Bandera usada para saber si el cronometro se encuentra activo.
+     */
     private volatile boolean cronometroFuncionando;
+    /**
+     * Bandera usada para saber si el tiempo llego a su límite.
+     */
     private volatile boolean tiempoTerminado;
+    /**
+     * Interface para comunicarse con la vistaContestarExamen.
+     */
     private InterfaceContestarExamen iContestarExamen;
 
+    /**
+     * Crea un objeto Cronómetro e inicializa sus atributos.
+     *
+     * @param iContestarExamen Interface para comunicarse con la
+     * vistaContestarExamen
+     * @param minutos Los minutos con los que el cronómetro iniciara.
+     * @param segundos Los segundos con los que el cronómetro iniciara.
+     */
     public Cronometro(InterfaceContestarExamen iContestarExamen, int minutos, int segundos) {
         this.iContestarExamen = iContestarExamen;
         this.minutos = minutos;
@@ -27,14 +66,19 @@ public class Cronometro extends Thread {
         tiempoTerminado = false;
     }
 
+    /**
+     * Método sobrescrito de la clase Thread, encargado de calcular el tiempo
+     * transcurrido y actualizar el JLabel de la vista contestar examen.
+     */
     @Override
     public void run() {
         Integer milesimas = 0;
 
         String min;
         String seg;
-        try {
-            while (cronometroFuncionando) {
+
+        while (cronometroFuncionando) {
+            try {
                 Thread.sleep(4);
                 milesimas += 4;
 
@@ -62,20 +106,25 @@ public class Cronometro extends Thread {
                     seg = segundos.toString();
                 }
 
+                //Si el cronometro termino su tiempo naturalmente.
                 if (!cronometroFuncionando && tiempoTerminado) {
                     iContestarExamen.actualizarLblTiempo("Tiempo terminado");
                     iContestarExamen.tiempoTerminado();
                 } else {
                     iContestarExamen.actualizarLblTiempo("Tiempo restante: " + min + ":" + seg);
                 }
+            } catch (InterruptedException ex) {
             }
-        } catch (Exception e) {
         }
+
     }
 
-    public void detenerCronometro() {
-        this.cronometroFuncionando = false;
-        this.tiempoTerminado = false;
+    /**
+     * Método usado para detener el cronómetro antes de tiempo.
+     */
+    public void detener() {
+        cronometroFuncionando = false;
+        tiempoTerminado = false;
     }
 
 }

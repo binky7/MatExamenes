@@ -9,7 +9,7 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 
 /**
- *
+ * DTO utilizado para almacenar el id del alumno y el id del examen.
  * @author Jesus Donaldo
  */
 @Embeddable

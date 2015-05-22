@@ -1,7 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2015 Alfredo Rouse Madrigal
+ *
+ * This file is part of MatExamenes.
+ *
+ * MatExamenes is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package vista.controlador;
 
@@ -10,12 +24,9 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import modelo.dto.ExamenAsignadoPK;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,209 +34,254 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
+ * Encargado de llevar el respaldo al momento de contestar examen.
  *
- * @author Alf
+ * @author Alfredo Rouse Madrigal
+ * @version 1 18 Mayo 2015
  */
 public class RespaldoJSON {
 
+    /**
+     * Utilizada para identificar las respuestas en el objeto JSON.
+     */
     private static final String RESPUESTAS = "respuestas";
+    /**
+     * Utilizada para identificar el idExamen en el objeto JSON.
+     */
     private static final String ID_EXAMEN = "idExamen";
+    /**
+     * Utilizada para identificar el idAlumno en el objeto JSON.
+     */
     private static final String ID_ALUMNO = "idAlumno";
+    /**
+     * Utilizada para identificar el estado del examen en el objeto JSON.
+     */
     private static final String CONTESTADO = "contestado";
+    /**
+     * Contiene la ruta por defecto donde se guardaran los archivos de respaldo.
+     */
     private static final String RUTA_ARCHIVO = System.getProperty("user.home");
+    /**
+     * Contiene el nombre del archivo que se le dara al respaldo.
+     */
     private static final String ARCHIVO = "file";
+    /**
+     * Indice de la lista de respuestas, utilizado cuando obtenemos el respaldo
+     * en una lista.
+     */
     public static final int I_RESPUESTAS = 1;
+    /**
+     * Indice del ExamenAsignadoDTO, utilizado cuando obtenemos el respaldo en
+     * una lista.
+     */
     public static final int I_EXAMEN_ASIGNADO_PK = 0;
+    /**
+     * String usado para iniciar las respuestas de los respaldos.
+     */
+    private static final String RESPUESTA_INICIAL = ".";
+    /**
+     * ArrayList Usado para guardar los objetos ExamenAsignadoPK y una List
+     * de las respuestas de los alumnos.
+     */
     private ArrayList respaldo;
+    /**
+     * Objeto usado para crear el formato JSON de los datos del alumno.
+     */
     private JSONObject alumnoJSON;
+    /**
+     * Objeto usado para crear un Array de objetos contenidos en el JSONObject.
+     */
     private JSONArray respuestasJSON;
 
+    /**
+     * Crea un nuevo RespaldoJSON e inicializa sus atributos.
+     */
     public RespaldoJSON() {
         alumnoJSON = new JSONObject();
         respuestasJSON = new JSONArray();
     }
 
-    public void inicializarArchivo(int numeroReactivos, String respuesta,
-            int idExamen, int idAlumno, boolean contestado) {
-        FileOutputStream fos = null;
-        try {
-            for (int i = 0; i < numeroReactivos; i++) {
-                respuestasJSON.add(respuesta);
-            }
-            alumnoJSON.put(ID_EXAMEN, String.valueOf(idExamen));
-            alumnoJSON.put(ID_ALUMNO, String.valueOf(idAlumno));
-            alumnoJSON.put(CONTESTADO, String.valueOf(contestado ? 1 : 0));
-            alumnoJSON.put(RESPUESTAS, respuestasJSON);
-            File file;
-            file = new File(RUTA_ARCHIVO, ARCHIVO);
-            if (file.exists()) {
-                file.delete();
-            }//        FileWriter fw = new FileWriter(file);
-            //binarios
-            fos = new FileOutputStream(file);
-            DataOutputStream dos = new DataOutputStream(fos);
-            dos.writeUTF(alumnoJSON.toJSONString());
-            System.out.println("\nJSON Object: " + alumnoJSON);
-            dos.flush();
-            dos.close();
-
-//        fw.writeUTF(alumnoJSON.toJSONString());
-//        System.out.println("\nJSON Object: " + alumnoJSON);
-//
-//        fw.flush();
-//        fw.close();
-        } catch (IOException ex) {
-            Logger.getLogger(RespaldoJSON.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException ex) {
-                Logger.getLogger(RespaldoJSON.class.getName()).log(Level.SEVERE, null, ex);
-            }
+    /**
+     * Crea al archivo que servira de respaldo para contestar examen.
+     *
+     * @param numeroReactivos Número de reactivos contenidos en el examen.
+     * @param idExamen ID del examen asignado.
+     * @param idAlumno ID del alumno que contestara el examen.
+     * @throws java.io.IOException Si hay problemas de escritura en el respaldo.
+     */
+    public void inicializarArchivo(int numeroReactivos,
+            int idExamen, int idAlumno) throws IOException {
+        FileOutputStream fos;
+        for (int i = 0; i < numeroReactivos; i++) {
+            respuestasJSON.add(RESPUESTA_INICIAL);
         }
+        alumnoJSON.put(ID_EXAMEN, String.valueOf(idExamen));
+        alumnoJSON.put(ID_ALUMNO, String.valueOf(idAlumno));
+        alumnoJSON.put(CONTESTADO, String.valueOf(false));
+        alumnoJSON.put(RESPUESTAS, respuestasJSON);
+
+        File file = new File(RUTA_ARCHIVO, ARCHIVO);
+        if (file.exists()) {
+            file.delete();
+        }
+        fos = new FileOutputStream(file);
+        DataOutputStream dos = new DataOutputStream(fos);
+        dos.writeUTF(alumnoJSON.toJSONString());
+        dos.flush();
+        dos.close();
+        fos.close();
+
     }
 
-    public void modificarRespuesta(int numeroReactivo, String respuesta) {
-        FileWriter fw = null;
-        try {
-            respuestasJSON.set(numeroReactivo, respuesta);
-            alumnoJSON.put(RESPUESTAS, respuestasJSON);
-            File file;
-            file = new File(RUTA_ARCHIVO, ARCHIVO);
-            if (file.exists()) {
-                file.delete();
-            }
-            FileOutputStream fos = new FileOutputStream(file);
-            DataOutputStream dos = new DataOutputStream(fos);
+    /**
+     * Modifica la respuesta del alumno en el respaldo.
+     *
+     * @param numeroReactivo Número de reactivo a modificar en el respaldo.
+     * @param respuesta Respuesta del alumno en el respaldo.
+     * @throws java.io.IOException Si hay problemas de escritura en el respaldo.
+     */
+    public void modificarRespuesta(int numeroReactivo, String respuesta)
+            throws IOException {
 
-            dos.writeUTF(alumnoJSON.toJSONString());
-            System.out.println("\nJSON Object: " + alumnoJSON);
-
-            dos.flush();
-            dos.close();
-//            fw = new FileWriter(file);
-//            fw.write(alumnoJSON.toJSONString());
-//            System.out.println("\nJSON Object:" + alumnoJSON);
-//            fw.flush();
-//            fw.close();
-        } catch (IOException ex) {
-            //
+        respuestasJSON.set(numeroReactivo, respuesta);
+        alumnoJSON.put(RESPUESTAS, respuestasJSON);
+        File file;
+        file = new File(RUTA_ARCHIVO, ARCHIVO);
+        if (file.exists()) {
+            file.delete();
         }
-//        finally {
-//            try {
-//                fw.close();
-//            } catch (IOException ex) {
-//                Logger.getLogger(RespaldoJSON.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+        FileOutputStream fos = new FileOutputStream(file);
+        DataOutputStream dos = new DataOutputStream(fos);
+
+        dos.writeUTF(alumnoJSON.toJSONString());
+
+        dos.flush();
+        dos.close();
+
     }
 
+    /**
+     * Verifica si el archivo respaldo ha sido creado previamente.
+     *
+     * @return Verdadero si el respaldo existe.<br>
+     * Falso de lo contrario.
+     */
     public boolean existeRespaldo() {
         boolean ok = false;
         File file;
         file = new File(RUTA_ARCHIVO, ARCHIVO);
         if (file.exists()) {
             ok = true;
-            cargarRespaldo();
+            try {
+                cargarRespaldo();
+            } catch (IOException ex) {
+            }
         }
         return ok;
     }
 
-    private void cargarRespaldo() {
+    /**
+     *
+     * Lee el archivo con las respuestas del alumno, y lo transforma de vuelta a
+     * un objeto JSONObject
+     *
+     * @throws java.io.IOException Si hay problemas de lectura en el respaldo.
+     */
+    private void cargarRespaldo() throws IOException {
         File file;
         file = new File(RUTA_ARCHIVO, ARCHIVO);
         String datos = "";
 
         respaldo = new ArrayList();
-//        Scanner sc;
         JSONParser parse = new JSONParser();
 
-        //binarios
         FileInputStream fis;
+
+        fis = new FileInputStream(file);
+        DataInputStream dis = new DataInputStream(fis);
+        datos = dis.readUTF();
+        dis.close();
+
+        Object obj = null;
         try {
-            fis = new FileInputStream(file);
-            DataInputStream dis = new DataInputStream(fis);
-            datos = dis.readUTF();
-            dis.close();
-        } catch (IOException ex) {
+            obj = parse.parse(datos);
+        } catch (ParseException ex) {
+        }
+        alumnoJSON = (JSONObject) obj;
+        int idAlumno = Integer.parseInt((String) alumnoJSON.get(ID_ALUMNO));
+        Integer idExamen = Integer.parseInt((String) alumnoJSON.get(ID_EXAMEN));
+        respuestasJSON = (JSONArray) alumnoJSON.get(RESPUESTAS);
+
+        List<String> respuestas = new ArrayList<>();
+
+        for (int i = 0; i < respuestasJSON.size(); i++) {
+            respuestas.add((String) respuestasJSON.get(i));
         }
 
-//        try {
-//            sc = new Scanner(file);
-//            datos = sc.nextLine();
-//            sc.close();
-//        } catch (FileNotFoundException ex) {
-//            System.out.println("problemas archivo");
-//        }
-        try {
-            Object obj = parse.parse(datos);
-            alumnoJSON = (JSONObject) obj;
-            int idAlumno = Integer.parseInt((String) alumnoJSON.get(ID_ALUMNO));
-            Integer idExamen = Integer.parseInt((String) alumnoJSON.get(ID_EXAMEN));
-            respuestasJSON = (JSONArray) alumnoJSON.get(RESPUESTAS);
-            List<String> respuestas = new ArrayList<>();
-            for (int i = 0; i < respuestasJSON.size(); i++) {
-                respuestas.add((String) respuestasJSON.get(i));
-            }
-            ExamenAsignadoPK eapk = new ExamenAsignadoPK(idExamen, idAlumno);
-            respaldo.add(eapk);
-            respaldo.add(respuestas);
-        } catch (ParseException ex) {
-            System.out.println("exception");
-        }
+        ExamenAsignadoPK eapk = new ExamenAsignadoPK(idExamen, idAlumno);
+        respaldo.add(eapk);
+        respaldo.add(respuestas);
+
     }
 
+    /**
+     *
+     * @return ArrayList Contenedor de los id, examen, alumno y sus respuestas.
+     */
     public ArrayList getRespaldo() {
         return respaldo;
     }
 
+    /**
+     *
+     * @return Retorna ExamenAsignadoDTO utilizado para consultar el examen
+     * asignado del alumno.
+     */
     public ExamenAsignadoPK getExamenAsignadoPKRespaldo() {
         return (ExamenAsignadoPK) respaldo.get(I_EXAMEN_ASIGNADO_PK);
     }
 
+    /**
+     * Elimina el respaldo.
+     */
     public void eliminarRespaldo() {
         File file;
         file = new File(RUTA_ARCHIVO, ARCHIVO);
         file.delete();
     }
 
+    /**
+     * Verifica si el respaldo se encuentra en el estado contestado.
+     *
+     * @return Verdadero si el respaldo esta en estado contestado.<br>
+     * Falso de lo contrario.
+     */
     public boolean estaContestado() {
         return Integer.parseInt((String) alumnoJSON.get(CONTESTADO)) == 1;
     }
 
-    public void setContestado(boolean contestado) {
-        FileWriter fw = null;
-        try {
-            int n = contestado ? 1 : 0;
-            alumnoJSON.put(CONTESTADO, String.valueOf(n));
-            File file;
-            file = new File(RUTA_ARCHIVO, ARCHIVO);
-            if (file.exists()) {
-                file.delete();
-            }
-            FileOutputStream fos = new FileOutputStream(file);
-            DataOutputStream dos = new DataOutputStream(fos);
+    /**
+     * Cambia el estado del respaldo a contestado
+     *
+     * @param contestado Boleano usado para cambiar el estado del respaldo.
+     * @throws java.io.IOException Si hay problemas de escritura en el respaldo.
+     */
+    public void setContestado(boolean contestado) throws IOException {
+        int n = contestado ? 1 : 0;
+        alumnoJSON.put(CONTESTADO, String.valueOf(n));
+        File file;
+        file = new File(RUTA_ARCHIVO, ARCHIVO);
 
-            dos.writeUTF(alumnoJSON.toJSONString());
-            System.out.println("\nJSON Object: " + alumnoJSON);
-
-            dos.flush();
-            dos.close();
-//            fw = new FileWriter(file);
-//            fw.write(alumnoJSON.toJSONString());
-//            System.out.println("\nJSON Object:" + alumnoJSON);
-//            fw.flush();
-//            fw.close();
-        } catch (IOException ex) {
-            Logger.getLogger(RespaldoJSON.class.getName()).log(Level.SEVERE, null, ex);
+        if (file.exists()) {
+            file.delete();
         }
-//        finally {
-//            try {
-//                fw.close();
-//            } catch (IOException ex) {
-//                Logger.getLogger(RespaldoJSON.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+        FileOutputStream fos = new FileOutputStream(file);
+        DataOutputStream dos = new DataOutputStream(fos);
 
+        dos.writeUTF(alumnoJSON.toJSONString());
+        System.out.println("\nJSON Object: " + alumnoJSON);
+
+        dos.flush();
+        dos.close();
     }
 }
