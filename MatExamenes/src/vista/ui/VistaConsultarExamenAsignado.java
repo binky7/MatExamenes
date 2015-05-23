@@ -38,9 +38,13 @@ import vista.interfaz.InterfaceVista;
  * @author Alfredo Rouse Madrigal
  * @version 1 18 Mayo 2015
  */
-public class VistaBuscarExamenAsignado extends javax.swing.JPanel implements
+public class VistaConsultarExamenAsignado extends javax.swing.JPanel implements
         InterfaceVista {
 
+    /**
+     * Ruta de la imagen a mostrar en una calificación perfecta.
+     */
+    private static final String IMAGEN_LIKE = "/recursos/like.png";
     /**
      * Tiempo mínimo para que un alumno reinicie su examen.
      */
@@ -52,7 +56,7 @@ public class VistaBuscarExamenAsignado extends javax.swing.JPanel implements
     /**
      *
      */
-    private CVContestarExamen control;
+    private CVContestarExamen cvContestarExamen;
     /**
      * Modelo para cambiar los datos de la lista.
      */
@@ -65,7 +69,7 @@ public class VistaBuscarExamenAsignado extends javax.swing.JPanel implements
     /**
      * Crea una nueva VistaBuscarExamenAsignado e inicializa sus atributos.
      */
-    public VistaBuscarExamenAsignado() {
+    public VistaConsultarExamenAsignado() {
         initComponents();
         lstExamenesEncontrados.setModel(new DefaultListModel());
         lstExamenesEncontrados.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -89,7 +93,7 @@ public class VistaBuscarExamenAsignado extends javax.swing.JPanel implements
      * interacciones con la base de datos.
      */
     public void setControlador(CVContestarExamen cvContestarExamen) {
-        this.control = cvContestarExamen;
+        this.cvContestarExamen = cvContestarExamen;
     }
 
     /**
@@ -107,27 +111,30 @@ public class VistaBuscarExamenAsignado extends javax.swing.JPanel implements
 
         setName(""); // NOI18N
 
-        lblTitulo.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("Buscar Examen");
 
         btnBuscar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/buscar24.png"))); // NOI18N
         btnBuscar.setText("Buscar");
         btnBuscar.setPreferredSize(new java.awt.Dimension(73, 30));
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
+                buscarExamenes(evt);
             }
         });
 
+        lstExamenesEncontrados.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jScrollPane1.setViewportView(lstExamenesEncontrados);
 
         btnIniciar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnIniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/aceptar24.png"))); // NOI18N
         btnIniciar.setText("Iniciar");
         btnIniciar.setPreferredSize(new java.awt.Dimension(65, 30));
         btnIniciar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIniciarActionPerformed(evt);
+                iniciarExamen(evt);
             }
         });
 
@@ -142,28 +149,28 @@ public class VistaBuscarExamenAsignado extends javax.swing.JPanel implements
                         .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(358, 358, 358))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(253, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(238, 238, 238))
+                        .addGap(0, 243, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnIniciar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(238, 238, 238))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(341, 341, 341)
+                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addComponent(lblTitulo)
-                .addGap(43, 43, 43)
+                .addGap(42, 42, 42)
                 .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGap(36, 36, 36)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
+                .addGap(37, 37, 37)
                 .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(196, Short.MAX_VALUE))
+                .addContainerGap(204, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -175,13 +182,13 @@ public class VistaBuscarExamenAsignado extends javax.swing.JPanel implements
      *
      * @param evt Objeto que contiene información sobre el evento.
      */
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+    private void buscarExamenes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarExamenes
         limpiar();
         if (respaldo.existeRespaldo()) {
             ArrayList alumno = respaldo.getRespaldo();
             ExamenAsignadoPK eapk = (ExamenAsignadoPK) alumno.get(RespaldoJSON.I_EXAMEN_ASIGNADO_PK);
-            control.setExamenAsignado(eapk);
-            ExamenAsignadoDTO examen = control.getExamenAsignado();
+            cvContestarExamen.setExamenAsignado(eapk);
+            ExamenAsignadoDTO examen = cvContestarExamen.getExamenAsignado();
             long inicio = examen.getFechaAsignacion().getTime();
             long fin = inicio + (examen.getTiempo() * 60 * 1000);
             boolean usuarioRespaldo = padre.obtenerUsuarioActual().getId() == eapk.getIdAlumno();
@@ -213,23 +220,33 @@ public class VistaBuscarExamenAsignado extends javax.swing.JPanel implements
                 respaldo.eliminarRespaldo();
             } else if (!usuarioRespaldo) {
                 //El usuario que inicio en el sistema no es igual al que genero el respaldo.
-                control.calificarExamen(examen.getReactivos().size(),
+                cvContestarExamen.calificarExamen(examen.getReactivos().size(),
                         (List<String>) alumno.get(RespaldoJSON.I_RESPUESTAS), examen);
-                control.actualizarExamen(examen);
+                cvContestarExamen.actualizarExamen(examen);
                 respaldo.eliminarRespaldo();
             }
         }
         //no hay respaldo o no desea continuar con su examen anterior
         List<ExamenAsignadoDTO> ea;
-        ea = control.obtenerExamenesAsignados(padre.obtenerUsuarioActual());
+        ea = cvContestarExamen.obtenerExamenesAsignados(padre.obtenerUsuarioActual());
         if (ea.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Examenes no asignados");
         } else {
-            for (ExamenAsignadoDTO examen : ea) {
-                DML.addElement(examen.getExamen().getTitulo());
-            }
+            mostrarExamenes(ea);
         }
-    }//GEN-LAST:event_btnBuscarActionPerformed
+    }//GEN-LAST:event_buscarExamenes
+
+    /**
+     * Muestra los exámenes que el alumno tiene asignados en la lista.
+     *
+     * @param examenesAsignados Lista de ExamenAsignadoDTO previamente obtenida de la base de
+     * datos, de la cual se obtendra su título para mostrar en la lista.
+     */
+    private void mostrarExamenes(List<ExamenAsignadoDTO> examenesAsignados) {
+        for (ExamenAsignadoDTO examen : examenesAsignados) {
+            DML.addElement(examen.getExamen().getTitulo());
+        }
+    }
 
     /**
      * Califica el examen previamente resuelto por el alumno, con una
@@ -240,18 +257,18 @@ public class VistaBuscarExamenAsignado extends javax.swing.JPanel implements
      * @see vista.controlador.RespaldoJSON
      */
     private void calificarExamen(ExamenAsignadoDTO examen, ArrayList alumno) {
-        double calificacion = control.calificarExamen(examen.getReactivos().size(),
-                (List<String>) alumno.get(RespaldoJSON.I_RESPUESTAS), control.getExamenAsignado());
+        double calificacion = cvContestarExamen.calificarExamen(examen.getReactivos().size(),
+                (List<String>) alumno.get(RespaldoJSON.I_RESPUESTAS), cvContestarExamen.getExamenAsignado());
         String cali = String.format("%.2f", calificacion);
         if (calificacion == 100) {
             JOptionPane.showMessageDialog(this, "Su calificación es de: " + cali,
-                    "Calificación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/recursos/like.png")));
+                    "Calificación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource(IMAGEN_LIKE)));
         } else {
             JOptionPane.showMessageDialog(this, "Su calificación es de: "
                     + cali, "Calificación", JOptionPane.INFORMATION_MESSAGE);
         }
 
-        if (control.actualizarExamen(control.getExamenAsignado())) {
+        if (cvContestarExamen.actualizarExamen(cvContestarExamen.getExamenAsignado())) {
             respaldo.eliminarRespaldo();
         } else {
             JOptionPane.showMessageDialog(this, "Exmen no actualizado");
@@ -263,17 +280,17 @@ public class VistaBuscarExamenAsignado extends javax.swing.JPanel implements
      *
      * @param evt Objeto que contiene información sobre el evento.
      */
-    private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
+    private void iniciarExamen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarExamen
         int index = lstExamenesEncontrados.getSelectedIndex();
         if (index != -1) {
-            ExamenAsignadoPK expk = control.obtenerExamenesAsignados(padre.obtenerUsuarioActual()).get(index).getId();
-            control.setExamenAsignado(expk);
+            ExamenAsignadoPK expk = cvContestarExamen.getExamenesAsignados().get(index).getId();
+            cvContestarExamen.setExamenAsignado(expk);
             padre.mostrarVistaConEntidad(expk, Vista.ContestarExamen);
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione un examen");
         }
         limpiar();
-    }//GEN-LAST:event_btnIniciarActionPerformed
+    }//GEN-LAST:event_iniciarExamen
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {

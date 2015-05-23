@@ -80,8 +80,8 @@ public class RespaldoJSON {
      */
     private static final String RESPUESTA_INICIAL = ".";
     /**
-     * ArrayList Usado para guardar los objetos ExamenAsignadoPK y una List
-     * de las respuestas de los alumnos.
+     * ArrayList Usado para guardar los objetos ExamenAsignadoPK y una List de
+     * las respuestas de los alumnos.
      */
     private ArrayList respaldo;
     /**
@@ -263,12 +263,10 @@ public class RespaldoJSON {
     /**
      * Cambia el estado del respaldo a contestado
      *
-     * @param contestado Boleano usado para cambiar el estado del respaldo.
      * @throws java.io.IOException Si hay problemas de escritura en el respaldo.
      */
-    public void setContestado(boolean contestado) throws IOException {
-        int n = contestado ? 1 : 0;
-        alumnoJSON.put(CONTESTADO, String.valueOf(n));
+    public void setContestado() throws IOException {
+        alumnoJSON.put(CONTESTADO, String.valueOf(true));
         File file;
         file = new File(RUTA_ARCHIVO, ARCHIVO);
 
@@ -279,7 +277,6 @@ public class RespaldoJSON {
         DataOutputStream dos = new DataOutputStream(fos);
 
         dos.writeUTF(alumnoJSON.toJSONString());
-        System.out.println("\nJSON Object: " + alumnoJSON);
 
         dos.flush();
         dos.close();

@@ -32,12 +32,15 @@ import modelo.dto.UsuarioDTO;
  */
 public class CVContestarExamen {
 
-    
     private final ContestarExamenDELEGATE contestarExamenDELEGATE;
     /**
      * Examen que el alumno se encuentra contestando o contesto.
      */
     private ExamenAsignadoDTO examenAsignado;
+    /**
+     *
+     */
+    List<ExamenAsignadoDTO> examenesAsignados;
 
     /**
      * Crea un objeto CVContestarExamen e inicializa sus atributos.
@@ -55,18 +58,27 @@ public class CVContestarExamen {
      * Si no tiene exámenes retornara null.
      */
     public List<ExamenAsignadoDTO> obtenerExamenesAsignados(UsuarioDTO alumno) {
-        List<ExamenAsignadoDTO> examenes = contestarExamenDELEGATE.obtenerExamensAsignados(alumno);
-        return examenes;
+        examenesAsignados = contestarExamenDELEGATE.obtenerExamensAsignados(alumno);
+        return examenesAsignados;
     }
 
     /**
-     * Busca el examen asignado y lo guarda en el atributo
-     * examenAsignado.
+     * Busca el examen asignado y lo guarda en el atributo examenAsignado.
      *
      * @param id ExamenAsignadoPK por el cual se buscara el ExamenAsignadoDTO.
      */
     public void setExamenAsignado(ExamenAsignadoPK id) {
         examenAsignado = contestarExamenDELEGATE.obetnerExamenAsignado(id);
+    }
+
+    /**
+     * Devuelve la lista previamente busacada en la base de dastos, de los
+     * examenes asigandos para el alumno.
+     *
+     * @return Lista de ExamenAsignadoDTO
+     */
+    public List<ExamenAsignadoDTO> getExamenesAsignados() {
+        return examenesAsignados;
     }
 
     /**

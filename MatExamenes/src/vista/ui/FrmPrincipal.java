@@ -59,7 +59,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     private VistaConsultarReactivos vistaConsultarReactivos;
     private VistaModificarReactivo vistaModificarReactivo;
     private VistaGenerarEstadisticas vistaGenerarEstadisticas;
-    private VistaBuscarExamenAsignado vistaBuscarExamenAsignado;
+    private VistaConsultarExamenAsignado vistaBuscarExamenAsignado;
     private VistaContestarExamen vistaContestarExamen;
     
     /**
@@ -140,7 +140,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistaModificarExamen.setName(Vista.ModificarExamen.toString());
         vistaAsignarExamenes = new VistaAsignarExamenes();
         vistaAsignarExamenes.setName(Vista.AsignarExamenes.toString());
-        vistaBuscarExamenAsignado = new VistaBuscarExamenAsignado();
+        vistaBuscarExamenAsignado = new VistaConsultarExamenAsignado();
         vistaBuscarExamenAsignado.setName(Vista.BuscarExamenAsignado.toString());
         vistaContestarExamen = new VistaContestarExamen();
         vistaContestarExamen.setName(Vista.ContestarExamen.toString());

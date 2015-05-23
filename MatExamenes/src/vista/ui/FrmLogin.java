@@ -102,7 +102,7 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
         btnLogin.setText("Login");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLogin(evt);
+                login(evt);
             }
         });
 
@@ -177,7 +177,7 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
      *
      * @param evt Objeto que contiene información sobre evento.
      */
-    private void btnLogin(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogin
+    private void login(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login
         UsuarioDTO usuario;
         usuario = encapsularUsuario();
 
@@ -208,7 +208,7 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
                     "Login", JOptionPane.INFORMATION_MESSAGE,
                     new ImageIcon(getClass().getResource("/recursos/usuarioIncorrecto.png")));
         }
-    }//GEN-LAST:event_btnLogin
+    }//GEN-LAST:event_login
 
     /**
      * Crea un objeto tipo UsuarioDTO con el usuario y password obtenidos de los

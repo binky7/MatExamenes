@@ -103,7 +103,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
+                buscarUsuarios(evt);
             }
         });
 
@@ -131,7 +131,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         btnModificar.setPreferredSize(new java.awt.Dimension(81, 30));
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarActionPerformed(evt);
+                pasarControlVistaModificar(evt);
             }
         });
 
@@ -141,15 +141,15 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         btnEliminar.setPreferredSize(new java.awt.Dimension(79, 30));
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
+                eliminarUsuario(evt);
             }
         });
 
         lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitulo.setText("Consultar Usuario");
+        lblTitulo.setText("Consultar Usuarios");
 
-        lblBusqueda.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        lblBusqueda.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblBusqueda.setText("Nombre o Apellidos: ");
 
         txtfNombre.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -168,6 +168,11 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.setPreferredSize(new java.awt.Dimension(77, 30));
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarConsultaUsuarios(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -222,8 +227,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
      *
      * @param evt Objeto que contiene información del evento.
      */
-    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        // TODO add your handling code here:
+    private void pasarControlVistaModificar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarControlVistaModificar
         int i = tblUsuarios.getSelectedRow();
         if (i != -1) {
             UsuarioDTO usuario = cvMantenerUsuarios.getUsuariosBuscados().get(i);
@@ -232,7 +236,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
             JOptionPane.showMessageDialog(this, "Seleccione un usuario primero", "Modificación",
                     JOptionPane.WARNING_MESSAGE);
         }
-    }//GEN-LAST:event_btnModificarActionPerformed
+    }//GEN-LAST:event_pasarControlVistaModificar
 
     /**
      * Método llamado cuando se acciona el botón buscar.<br>
@@ -241,8 +245,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
      *
      * @param evt Objeto que contiene información del evento.
      */
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+    private void buscarUsuarios(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarUsuarios
         String apellido = txtfNombre.getText();
         boolean ok;
         if (Validador.estaVacio(apellido)) {
@@ -265,7 +268,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
                 mostrarUsuariosTabla(usuarios);
             }
         }
-    }//GEN-LAST:event_btnBuscarActionPerformed
+    }//GEN-LAST:event_buscarUsuarios
 
     /**
      * Muesta los datos de los usuarios en la tabla.
@@ -292,8 +295,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
      *
      * @param evt Objeto que contiene información del evento.
      */
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+    private void eliminarUsuario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarUsuario
         int i = tblUsuarios.getSelectedRow();
         UsuarioDTO usuario = cvMantenerUsuarios.getUsuariosBuscados().get(i);
 
@@ -310,7 +312,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
                         "Eliminar usuario", JOptionPane.ERROR_MESSAGE);
             }
         }
-    }//GEN-LAST:event_btnEliminarActionPerformed
+    }//GEN-LAST:event_eliminarUsuario
 
     /**
      * Método llamado cuando se teclea en el campo de texto.
@@ -318,7 +320,6 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
      * @param evt Objeto que contiene información del evento.
      */
     private void txtfNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfNombreKeyTyped
-        // TODO add your handling code here:
         if (evt.getKeyChar() == '\n') {
             btnBuscar.doClick();
         }
@@ -369,6 +370,16 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
             }
         }
     }//GEN-LAST:event_txtfNombreKeyPressed
+
+    /**
+     * Método llamado cuando se acciona el botón cancelar.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
+    private void cancelarConsultaUsuarios(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarConsultaUsuarios
+        padre.mostrarVista(Vista.HOME);
+        limpiar();
+    }//GEN-LAST:event_cancelarConsultaUsuarios
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
