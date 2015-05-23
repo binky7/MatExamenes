@@ -82,8 +82,8 @@ implements InterfaceVista, AncestorListener {
         tblExamenes = new javax.swing.JTable();
         lblCurso = new javax.swing.JLabel();
         cmbCurso = new javax.swing.JComboBox();
-        lblTitulo = new javax.swing.JLabel();
-        txtfTitulo = new javax.swing.JTextField();
+        lblNombre = new javax.swing.JLabel();
+        txtfNombre = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         lblExamenes = new javax.swing.JLabel();
         lblTitulo1 = new javax.swing.JLabel();
@@ -138,12 +138,12 @@ implements InterfaceVista, AncestorListener {
         cmbCurso.setToolTipText("filtrar la búsqueda por curso");
         cmbCurso.setPreferredSize(new java.awt.Dimension(78, 25));
 
-        lblTitulo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblTitulo.setText("Título del Examen:");
+        lblNombre.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblNombre.setText("Título del Examen:");
 
-        txtfTitulo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        txtfTitulo.setToolTipText("filtrar la búsqueda por título del examen");
-        txtfTitulo.setPreferredSize(new java.awt.Dimension(6, 30));
+        txtfNombre.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtfNombre.setToolTipText("filtrar la búsqueda por título del examen");
+        txtfNombre.setPreferredSize(new java.awt.Dimension(6, 30));
 
         btnBuscar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/buscar24_2.png"))); // NOI18N
@@ -227,9 +227,9 @@ implements InterfaceVista, AncestorListener {
                                             .addGap(18, 18, 18)
                                             .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(42, 42, 42)
-                                            .addComponent(lblTitulo)
+                                            .addComponent(lblNombre)
                                             .addGap(18, 18, 18)
-                                            .addComponent(txtfTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                                            .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
@@ -250,8 +250,8 @@ implements InterfaceVista, AncestorListener {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblCurso)
-                        .addComponent(lblTitulo)
-                        .addComponent(txtfTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblNombre)
+                        .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
                     .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(25, 25, 25)
@@ -287,7 +287,7 @@ implements InterfaceVista, AncestorListener {
         //Para validar que se haya seleccionado un curso
         int seleccionado = cmbCurso.getSelectedIndex();
         //Obtener el valor de lo ingresado en el titulo
-        String titulo = txtfTitulo.getText();
+        String titulo = txtfNombre.getText();
         //El curso seleccionado si ubiera...
         String curso = "";
         
@@ -443,10 +443,10 @@ implements InterfaceVista, AncestorListener {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCurso;
     private javax.swing.JLabel lblExamenes;
-    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblTitulo1;
     private javax.swing.JTable tblExamenes;
-    private javax.swing.JTextField txtfTitulo;
+    private javax.swing.JTextField txtfNombre;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -485,7 +485,7 @@ implements InterfaceVista, AncestorListener {
     public void limpiar() {
         //Limpiar componentes
         cmbCurso.removeAllItems();
-        txtfTitulo.setText("");
+        txtfNombre.setText("");
         ((DefaultTableModel)tblExamenes.getModel()).setRowCount(0);
         
         controlVista.liberarMemoriaConsultar();

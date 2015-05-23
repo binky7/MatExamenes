@@ -1,7 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2015 Jesús Donaldo Osornio Hernández
+ *
+ * This file is part of MatExamenes.
+ *
+ * MatExamenes is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package vista.controlador;
 
@@ -9,25 +23,52 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 /**
+ * Clase Validador que es utilizada para validar las cadenas de texto y comprobar
+ * que cumplen con la longitud máxima, caracteres aceptados, etc.
  *
- * @author Jesus Donaldo
+ * @author Jesus Donaldo Osornio Hernández
+ * @version 1 18 Mayo 2015
  */
 public class Validador {
 
+    /**
+     * Longitud máxima del curso
+     */
     public static final int LONGITUD_CURSO = 50;
+    /**
+     * Longitud máxima del tema
+     */
     public static final int LONGITUD_TEMA = 50;
+    /**
+     * Longitud máxima del nombre del reactivo
+     */
     public static final int LONGITUD_NOMBRE_REACTIVO = 50;
+    /**
+     * Longitud máxima de la redacción del reactivo
+     */
     public static final int LONGITUD_REDACCION_REACTIVO = 1000;
+    /**
+     * Longitud máxima de las opciones del reactivo
+     */
     public static final int LONGITUD_OPCION_REACTIVO = 250;
+    /**
+     * Longitud máxima del nombre del examen
+     */
     public static final int LONGITUD_NOMBRE_EXAMEN = 100;
+    /**
+     * Longitud máxima de las instrucciones del examen
+     */
     public static final int LONGITUD_INSTRUCCIONES_EXAMEN = 200;
+    /**
+     * Longitud máxima de los datos del usuario
+     */
     public static final int LONGITUD_DATOS_USUARIO = 50;
 
     /**
-     * Valida que el campo no este vacio.
+     * Valida que el campo no esté vacío, incluyendo espacios.
      *
-     * @param campo
-     * @return falso si el campo no esta vacio, verdadero si el campo esta vacio
+     * @param campo la cadena a validar
+     * @return false si el campo no está vacío, true si el campo está vacío
      */
     public static boolean estaVacio(String campo) {
         boolean ok = false;
@@ -40,11 +81,12 @@ public class Validador {
     }
 
     /**
-     * Valida que el campo sea nombre, esto es que no este vacio y que contenga
-     * solo letras y espacios
+     * Valida que el campo sea nombre, esto es que no esté vacío y que contenga
+     * sólo letras y espacios
      *
-     * @param campo
-     * @return
+     * @param campo la cadena de texto a validar
+     * @return true si el campo ingresado es validado como un nombre, false si
+     * ocurre lo contrario
      */
     public static boolean esNombre(String campo) {
         boolean ok = true;
@@ -60,7 +102,7 @@ public class Validador {
      * Sirve para poner en mayúscula la primera letra de cada palabra y las
      * demás en minúsculas, como un nombre debe ser.
      *
-     * @param nombre
+     * @param nombre el nombre que se quiere capitalizar
      * @return el nombre escrito correctamente
      */
     public static String capitalizarNombre(String nombre) {
@@ -72,10 +114,10 @@ public class Validador {
     }
 
     /**
-     * Valida si el campo es un usuario, esto es que solo contenga letras o
+     * Valida si el campo es un usuario, esto es que sólo contenga letras o
      * números y sin espacios
      *
-     * @param campo
+     * @param campo la cadena de texto a validar
      * @return true si el campo es un usuario
      */
     public static boolean esUsuario(String campo) {
@@ -91,8 +133,8 @@ public class Validador {
      * Valida que el campo sea una contraseña, esto es que no esté vacío y que
      * contenga los caracteres permitidos
      *
-     * @param campo
-     * @return true si el campo es contraseña
+     * @param campo la cadena de texto a validar
+     * @return true si el campo es contraseña, false si no es así.
      */
     public static boolean esPassword(String campo) {
         boolean ok = true;
@@ -112,9 +154,9 @@ public class Validador {
     /**
      * Valida si el campo es un número entero positivo
      *
-     * @param campo
+     * @param campo la cadena de texto a validar
      * @return false si el campo es negativo, decimal o demasiado grande, o si
-     * en efecto no es un numero
+     * en efecto no es un numero, true si ocurre lo contrario
      */
     public static boolean esNumero(String campo) {
         boolean ok = true;
@@ -128,11 +170,11 @@ public class Validador {
     }
 
     /**
-     * Para validar tanto cursos como temas, esto es que solo contengan letras,
-     * numeros y espacios
+     * Para validar tanto cursos como temas. Esto es que sólo contengan letras,
+     * números y espacios
      *
-     * @param campo
-     * @return true si el campo es un curso/tema
+     * @param campo la cadena de texto a validar
+     * @return true si el campo es un curso/tema, false si no
      */
     public static boolean esCurso(String campo) {
         boolean ok = true;
@@ -145,11 +187,11 @@ public class Validador {
     }
 
     /**
-     * Valida que el campo sea un grupo, osea que no este vacio, y que contenga
-     * maximo 3 letras sin espacios
+     * Valida que el campo sea un grupo, osea que no esté vacío, y que contenga
+     * solo una letra.
      *
-     * @param campo
-     * @return true si el campo es un grupo
+     * @param campo la cadena de texto a validar
+     * @return true si el campo es un grupo, false si no
      */
     public static boolean esGrupo(String campo) {
         boolean ok = true;
@@ -160,6 +202,15 @@ public class Validador {
         return ok;
     }
 
+    /**
+     * Valida que la longitud ingresada se cumpla en el campo ingresado.
+     * 
+     * @param longitud el total máximo de caracteres que se espera que un campo
+     * de texto tenga
+     * @param campoTexto la cadena de texto a validar
+     * @return true si la longitud de campoTexto es menor o igual a la longitud
+     * especificada. De lo contrario retorna false
+     */
     public static boolean validarLongitud(int longitud, String campoTexto) {
         boolean ok = true;
 
