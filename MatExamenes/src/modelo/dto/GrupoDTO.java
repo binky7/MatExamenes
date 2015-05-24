@@ -40,48 +40,48 @@ import javax.persistence.UniqueConstraint;
 
 /**
  * Esta clase entidad almacena los datos del Grupo.
- * 
+ *
  * @author Fernando Enrique Avendaño Hernández.
  * @version 1 18 Mayo 2015.
  */
 @Entity
 @Table(
         name = "grupo",
-        uniqueConstraints = 
-        @UniqueConstraint(columnNames = {"nombre", "grado", "turno"})
+        uniqueConstraints
+        = @UniqueConstraint(columnNames = {"nombre", "grado", "turno"})
 )
 public class GrupoDTO implements Serializable {
-    
+
     /**
      * El id del grupo.
      */
     private int id;
-    
+
     /**
      * El nombre del grupo.
      */
     private String nombre;
-    
+
     /**
      * El grado del grupo.
      */
     private int grado;
-    
+
     /**
      * El turno del grupo.
      */
     private Turno turno;
-    
+
     /**
      * La lista de alumnos del grupo.
      */
     private List<UsuarioDTO> alumnos = new ArrayList<UsuarioDTO>();
-    
+
     /**
      * El mapa de maestros y cursos del grupo.
      */
-    private Map<CursoDTO, UsuarioDTO> maestros = 
-            new HashMap<CursoDTO, UsuarioDTO>();
+    private Map<CursoDTO, UsuarioDTO> maestros
+            = new HashMap<CursoDTO, UsuarioDTO>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -186,11 +186,12 @@ public class GrupoDTO implements Serializable {
     public void setMaestros(Map<CursoDTO, UsuarioDTO> maestros) {
         this.maestros = maestros;
     }
-    
+
     /**
      * Declaracion del enum turno.
      */
     public static enum Turno {
+
         M, V
     }
 }
