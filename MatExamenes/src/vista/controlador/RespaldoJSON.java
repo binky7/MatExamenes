@@ -257,7 +257,7 @@ public class RespaldoJSON {
      * Falso de lo contrario.
      */
     public boolean estaContestado() {
-        return Integer.parseInt((String) alumnoJSON.get(CONTESTADO)) == 1;
+        return Boolean.parseBoolean((String)alumnoJSON.get(CONTESTADO));
     }
 
     /**

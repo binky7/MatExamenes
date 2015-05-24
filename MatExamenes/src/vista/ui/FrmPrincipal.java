@@ -59,7 +59,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     private VistaConsultarReactivos vistaConsultarReactivos;
     private VistaModificarReactivo vistaModificarReactivo;
     private VistaGenerarEstadisticas vistaGenerarEstadisticas;
-    private VistaConsultarExamenAsignado vistaBuscarExamenAsignado;
+    private VistaConsultarExamenesAsignados vistaBuscarExamenAsignado;
     private VistaContestarExamen vistaContestarExamen;
     
     /**
@@ -90,7 +90,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         miRegistrarExamen.addActionListener(this);
         miConsultarExamenes.addActionListener(this);
         miAsignarExamenes.addActionListener(this);
-        miContestarExamen.addActionListener(this);
+        miContestarExamenes.addActionListener(this);
         
         miConsultarCalificaciones.addActionListener(this);
         miGenerarEstadisticas.addActionListener(this);
@@ -140,7 +140,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistaModificarExamen.setName(Vista.ModificarExamen.toString());
         vistaAsignarExamenes = new VistaAsignarExamenes();
         vistaAsignarExamenes.setName(Vista.AsignarExamenes.toString());
-        vistaBuscarExamenAsignado = new VistaConsultarExamenAsignado();
+        vistaBuscarExamenAsignado = new VistaConsultarExamenesAsignados();
         vistaBuscarExamenAsignado.setName(Vista.BuscarExamenAsignado.toString());
         vistaContestarExamen = new VistaContestarExamen();
         vistaContestarExamen.setName(Vista.ContestarExamen.toString());
@@ -353,8 +353,8 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         mGrupos = new javax.swing.JMenu();
         miRegistrarGrupo = new javax.swing.JMenuItem();
         miConsultarGrupos = new javax.swing.JMenuItem();
-        mContestarExamen = new javax.swing.JMenu();
-        miContestarExamen = new javax.swing.JMenuItem();
+        mContestarExamenes = new javax.swing.JMenu();
+        miContestarExamenes = new javax.swing.JMenuItem();
         mCalificaciones = new javax.swing.JMenu();
         miConsultarCalificaciones = new javax.swing.JMenuItem();
         mEstadisticas = new javax.swing.JMenu();
@@ -476,13 +476,13 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
 
         mbPrincipal.add(mGrupos);
 
-        mContestarExamen.setText("Contestar Examen");
+        mContestarExamenes.setText("Contestar Exámenes");
 
-        miContestarExamen.setText("Contestar Examen");
-        miContestarExamen.setName("BuscarExamenAsignado"); // NOI18N
-        mContestarExamen.add(miContestarExamen);
+        miContestarExamenes.setText("Contestar Exámenes");
+        miContestarExamenes.setName("BuscarExamenAsignado"); // NOI18N
+        mContestarExamenes.add(miContestarExamenes);
 
-        mbPrincipal.add(mContestarExamen);
+        mbPrincipal.add(mContestarExamenes);
 
         mCalificaciones.setText("Calificaciones");
 
@@ -519,7 +519,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
 
     public void setVistaAlumno() {
         ocultarTodos();
-        mContestarExamen.setVisible(true);
+        mContestarExamenes.setVisible(true);
     }
     
     public void setVistaMaestro() {
@@ -538,7 +538,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     
     private void ocultarTodos(){
         mCalificaciones.setVisible(false);
-        mContestarExamen.setVisible(false);
+        mContestarExamenes.setVisible(false);
         mCursos.setVisible(false);
         mEstadisticas.setVisible(false);
         mExamenes.setVisible(false);
@@ -554,7 +554,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JMenu mCalificaciones;
-    private javax.swing.JMenu mContestarExamen;
+    private javax.swing.JMenu mContestarExamenes;
     private javax.swing.JMenu mCursos;
     private javax.swing.JMenu mEstadisticas;
     private javax.swing.JMenu mExamenes;
@@ -571,7 +571,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     private javax.swing.JMenuItem miConsultarReactivos;
     private javax.swing.JMenuItem miConsultarTemas;
     private javax.swing.JMenuItem miConsultarUsuarios;
-    private javax.swing.JMenuItem miContestarExamen;
+    private javax.swing.JMenuItem miContestarExamenes;
     private javax.swing.JMenuItem miGenerarEstadisticas;
     private javax.swing.JMenuItem miRegistrarCurso;
     private javax.swing.JMenuItem miRegistrarExamen;

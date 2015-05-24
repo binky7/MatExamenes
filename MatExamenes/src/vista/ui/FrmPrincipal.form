@@ -206,14 +206,14 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="mContestarExamen">
+        <Menu class="javax.swing.JMenu" name="mContestarExamenes">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Contestar Examen"/>
+            <Property name="text" type="java.lang.String" value="Contestar Ex&#xe1;menes"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="miContestarExamen">
+            <MenuItem class="javax.swing.JMenuItem" name="miContestarExamenes">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Contestar Examen"/>
+                <Property name="text" type="java.lang.String" value="Contestar Ex&#xe1;menes"/>
                 <Property name="name" type="java.lang.String" value="BuscarExamenAsignado" noResource="true"/>
               </Properties>
             </MenuItem>

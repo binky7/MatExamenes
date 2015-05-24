@@ -32,6 +32,18 @@ import modelo.dto.UsuarioDTO;
  */
 public class CVContestarExamen {
 
+    /**
+     * Índice número reactivos.
+     */
+    public static final int N_REACTIVOS = 2;
+    /**
+     * Índice respuestas correctas.
+     */
+    public static final int BUENAS = 1;
+    /**
+     * Índice calificación alumno.
+     */
+    public static final int CALIFICACION = 0;
     private final ContestarExamenDELEGATE contestarExamenDELEGATE;
     /**
      * Examen que el alumno se encuentra contestando o contesto.
@@ -110,10 +122,10 @@ public class CVContestarExamen {
      * @param examen El examen asignado al alumno.
      * @return La calificación obtenida por el alumno.
      */
-    public double calificarExamen(int nReactivos, List<String> respuestasAlumno,
+    public double[] calificarExamen(int nReactivos, List<String> respuestasAlumno,
             ExamenAsignadoDTO examen) {
         int buenas = 0;
-        double calificacion;
+        double calificacion[] = new double[3];
         for (int i = 0; i < nReactivos; i++) {
             try {
                 examen.getReactivos().get(i).setRespuestaAlumno(respuestasAlumno.get(i));
@@ -126,8 +138,10 @@ public class CVContestarExamen {
                 //reactivo no respondido
             }
         }
-        calificacion = (buenas / (double) nReactivos) * 10;
-        examen.setCalificacion(calificacion);
+        calificacion[CALIFICACION] = (buenas / (double) nReactivos) * 10;
+        calificacion[BUENAS] = buenas;
+        calificacion[N_REACTIVOS] = nReactivos;
+        examen.setCalificacion(calificacion[0]);
         return calificacion;
     }
 

@@ -38,7 +38,7 @@ import vista.interfaz.InterfaceVista;
  * @author Alfredo Rouse Madrigal
  * @version 1 18 Mayo 2015
  */
-public class VistaConsultarExamenAsignado extends javax.swing.JPanel implements
+public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implements
         InterfaceVista {
 
     /**
@@ -69,7 +69,7 @@ public class VistaConsultarExamenAsignado extends javax.swing.JPanel implements
     /**
      * Crea una nueva VistaBuscarExamenAsignado e inicializa sus atributos.
      */
-    public VistaConsultarExamenAsignado() {
+    public VistaConsultarExamenesAsignados() {
         initComponents();
         lstExamenesEncontrados.setModel(new DefaultListModel());
         lstExamenesEncontrados.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -108,6 +108,7 @@ public class VistaConsultarExamenAsignado extends javax.swing.JPanel implements
         jScrollPane1 = new javax.swing.JScrollPane();
         lstExamenesEncontrados = new javax.swing.JList();
         btnIniciar = new javax.swing.JButton();
+        lblNombreExamen = new javax.swing.JLabel();
 
         setName(""); // NOI18N
 
@@ -138,26 +139,31 @@ public class VistaConsultarExamenAsignado extends javax.swing.JPanel implements
             }
         });
 
+        lblNombreExamen.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblNombreExamen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNombreExamen.setText("Nombre Examen");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(252, 252, 252)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(255, 255, 255))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 243, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnIniciar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(238, 238, 238))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(341, 341, 341)
-                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(10, 10, 10)
+                        .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(341, 341, 341)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblNombreExamen)
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(10, 10, 10))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,11 +172,13 @@ public class VistaConsultarExamenAsignado extends javax.swing.JPanel implements
                 .addComponent(lblTitulo)
                 .addGap(42, 42, 42)
                 .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
+                .addGap(28, 28, 28)
+                .addComponent(lblNombreExamen)
+                .addGap(34, 34, 34)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
+                .addGap(35, 35, 35)
                 .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(204, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -230,7 +238,7 @@ public class VistaConsultarExamenAsignado extends javax.swing.JPanel implements
         List<ExamenAsignadoDTO> ea;
         ea = cvContestarExamen.obtenerExamenesAsignados(padre.obtenerUsuarioActual());
         if (ea.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Examenes no asignados");
+            JOptionPane.showMessageDialog(this, "No hay exámenes asignados");
         } else {
             mostrarExamenes(ea);
         }
@@ -239,8 +247,9 @@ public class VistaConsultarExamenAsignado extends javax.swing.JPanel implements
     /**
      * Muestra los exámenes que el alumno tiene asignados en la lista.
      *
-     * @param examenesAsignados Lista de ExamenAsignadoDTO previamente obtenida de la base de
-     * datos, de la cual se obtendra su título para mostrar en la lista.
+     * @param examenesAsignados Lista de ExamenAsignadoDTO previamente obtenida
+     * de la base de datos, de la cual se obtendra su título para mostrar en la
+     * lista.
      */
     private void mostrarExamenes(List<ExamenAsignadoDTO> examenesAsignados) {
         for (ExamenAsignadoDTO examen : examenesAsignados) {
@@ -257,15 +266,21 @@ public class VistaConsultarExamenAsignado extends javax.swing.JPanel implements
      * @see vista.controlador.RespaldoJSON
      */
     private void calificarExamen(ExamenAsignadoDTO examen, ArrayList alumno) {
-        double calificacion = cvContestarExamen.calificarExamen(examen.getReactivos().size(),
+        double evaluacion[] = cvContestarExamen.calificarExamen(examen.getReactivos().size(),
                 (List<String>) alumno.get(RespaldoJSON.I_RESPUESTAS), cvContestarExamen.getExamenAsignado());
-        String cali = String.format("%.2f", calificacion);
-        if (calificacion == 100) {
-            JOptionPane.showMessageDialog(this, "Su calificación es de: " + cali,
-                    "Calificación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource(IMAGEN_LIKE)));
+
+        String cali = String.format("%.2f", evaluacion[CVContestarExamen.CALIFICACION]);
+        String mensaje = "Reactivos correctos: " + (int) evaluacion[CVContestarExamen.BUENAS]
+                + "/" + (int) evaluacion[CVContestarExamen.N_REACTIVOS] + "\n"
+                + "Su calificación es de: " + cali;
+
+        if (evaluacion[CVContestarExamen.CALIFICACION] == 10) {
+            JOptionPane.showMessageDialog(this, mensaje,
+                    "Calificación", JOptionPane.INFORMATION_MESSAGE,
+                    new ImageIcon(getClass().getResource(IMAGEN_LIKE)));
         } else {
-            JOptionPane.showMessageDialog(this, "Su calificación es de: "
-                    + cali, "Calificación", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, mensaje,
+                    "Calificación", JOptionPane.INFORMATION_MESSAGE);
         }
 
         if (cvContestarExamen.actualizarExamen(cvContestarExamen.getExamenAsignado())) {
@@ -335,6 +350,10 @@ public class VistaConsultarExamenAsignado extends javax.swing.JPanel implements
     * ScrollPane de la lista de exámenes.
     */
     private javax.swing.JScrollPane jScrollPane1;
+    /**
+    * Label para el nombre del examen.
+    */
+    private javax.swing.JLabel lblNombreExamen;
     /**
     * Label para el título de la interfaz gráfica.
     */

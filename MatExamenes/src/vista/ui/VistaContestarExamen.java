@@ -37,6 +37,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 import modelo.dto.ExamenAsignadoDTO;
 import modelo.dto.ReactivoAsignadoDTO;
 import modelo.dto.UsuarioDTO;
@@ -63,12 +64,23 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
      * Número máximo de reactivos por panel.
      */
     private static final int REACTIVOS_POR_PANEL = 13;
-
+    /**
+     * Ruta de la imagen a mostrar en una calificación perfecta.
+     */
+    private static final String IMAGEN_LIKE = "/recursos/like.png";
+    /**
+     * Identificador para los reactivos no contestados.
+     */
+    private static final int NO_CONTESTADO = -1;
+    /**
+     * Posiciona al principio de la redacción en el campo de texto redacción.
+     */
+    private static final int INICIO_TEXT_AREA = 0;
     /**
      * Interface para interactuar con el JFrame principal.
      */
     private InterfaceVista padre;
-    private CVContestarExamen control;
+    private CVContestarExamen cvContestarExamen;
     /**
      * Alamacenara el numero máximo de reactivos.
      */
@@ -157,7 +169,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         reactivosContestados = new int[nReactivos];
         for (int i = 0; i < nReactivos; i++) {
             reactivosVistos[i] = false;
-            reactivosContestados[i] = -1;
+            reactivosContestados[i] = NO_CONTESTADO;
             respuestasAlumno.add(".");
         }
         reactivosVistos[0] = true;
@@ -179,7 +191,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
      * interacciones con la base de datos.
      */
     public void setControlador(CVContestarExamen cvContestarExamen) {
-        this.control = cvContestarExamen;
+        this.cvContestarExamen = cvContestarExamen;
     }
 
     /**
@@ -203,8 +215,11 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         pnlReactivos = new javax.swing.JPanel();
         lblInstrucciones = new javax.swing.JLabel();
 
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         lblTiempo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblTiempo.setText("Tiempo restante:");
+        add(lblTiempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(603, 23, -1, -1));
 
         txtaRedaccion.setEditable(false);
         txtaRedaccion.setBackground(new java.awt.Color(240, 240, 240));
@@ -214,17 +229,22 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         txtaRedaccion.setToolTipText("");
         jScrollPane2.setViewportView(txtaRedaccion);
 
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 249, 740, 125));
+
         rbtnGrupoRespuestas.add(rbtnOpcion1);
         rbtnOpcion1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         rbtnOpcion1.setText("opcion1");
+        add(rbtnOpcion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 376, -1, -1));
 
         rbtnGrupoRespuestas.add(rbtnOpcion2);
         rbtnOpcion2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         rbtnOpcion2.setText("opcion2");
+        add(rbtnOpcion2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 417, -1, -1));
 
         rbtnGrupoRespuestas.add(rbtnOpcion3);
         rbtnOpcion3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         rbtnOpcion3.setText("opcion3");
+        add(rbtnOpcion3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 458, -1, -1));
 
         btnSiguiente.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnSiguiente.setText("Siguiente");
@@ -234,10 +254,12 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
                 siguienteReactivo(evt);
             }
         });
+        add(btnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(461, 534, 101, -1));
 
         rbtnGrupoRespuestas.add(rbtnOpcion4);
         rbtnOpcion4.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         rbtnOpcion4.setText("opcion4");
+        add(rbtnOpcion4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 493, -1, -1));
 
         btnTerminarExamen.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnTerminarExamen.setText("Terminar Examen");
@@ -248,6 +270,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
                 terminarExamen(evt);
             }
         });
+        add(btnTerminarExamen, new org.netbeans.lib.awtextra.AbsoluteConstraints(572, 534, 138, -1));
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reactivos", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 12))); // NOI18N
         jScrollPane1.setMaximumSize(null);
@@ -257,62 +280,11 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         pnlReactivos.setMinimumSize(null);
         jScrollPane1.setViewportView(pnlReactivos);
 
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 58, 740, 130));
+
         lblInstrucciones.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblInstrucciones.setText("jLabel1");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(461, 461, 461)
-                        .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(btnTerminarExamen, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rbtnOpcion1)
-                            .addComponent(rbtnOpcion2)
-                            .addComponent(rbtnOpcion3)
-                            .addComponent(rbtnOpcion4)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE))
-                            .addComponent(lblInstrucciones))))
-                .addContainerGap(30, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblTiempo)
-                .addGap(79, 79, 79))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(lblTiempo)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(lblInstrucciones)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rbtnOpcion1)
-                .addGap(18, 18, 18)
-                .addComponent(rbtnOpcion2)
-                .addGap(18, 18, 18)
-                .addComponent(rbtnOpcion3)
-                .addGap(12, 12, 12)
-                .addComponent(rbtnOpcion4)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnTerminarExamen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(36, Short.MAX_VALUE))
-        );
+        add(lblInstrucciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 214, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -330,12 +302,37 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
      * @param evt Objeto que contiene información del evento.
      */
     private void terminarExamen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terminarExamen
-        int ok = JOptionPane.showConfirmDialog(this, "¿Esta seguro que desea terminar el examen?",
-                "Examen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int ok;
+        if (examenTerminado()) {
+            ok = JOptionPane.showConfirmDialog(this, "¿Esta seguro que desea terminar el examen?",
+                    "Examen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        } else {
+            ok = JOptionPane.showConfirmDialog(this, "¿Esta seguro que desea terminar el examen?"
+                    + "\n" + "Aún tiene reactivos pendientes", "Examen",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        }
+
         if (ok == JOptionPane.YES_OPTION) {
             mostrarCalificacion();
         }
     }//GEN-LAST:event_terminarExamen
+
+    /**
+     * Verifica si hay algun reactivo no contestado.
+     *
+     * @return Verdadero si no hay reactivos pendientes.<br>
+     * Falso de otra forma.
+     */
+    private boolean examenTerminado() {
+        boolean ok = true;
+        for (int i : reactivosContestados) {
+            if (i == NO_CONTESTADO) {
+                ok = false;
+                break;
+            }
+        }
+        return ok;
+    }
 
     /**
      * Cuenta los reactivos que el examen tiene asignados.
@@ -354,6 +351,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
             rbtnOpciones[i].setText(opcionesAleatorias.get(reactivoActual).get(i));
         }
         txtaRedaccion.setText(opcionesAleatorias.get(reactivoActual).get(OPCIONES));
+        txtaRedaccion.setCaretPosition(INICIO_TEXT_AREA);
         rbtnGrupoRespuestas.clearSelection();
         seleccionarRespuestaAlumno();
     }
@@ -362,7 +360,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
      * Selecciona el botón radio de la respuesta contestada por el alumno.
      */
     private void seleccionarRespuestaAlumno() {
-        if (reactivosContestados[reactivoActual] != -1) {
+        if (reactivosContestados[reactivoActual] != NO_CONTESTADO) {
             rbtnGrupoRespuestas.setSelected(rbtnOpciones[reactivosContestados[reactivoActual]].getModel(), true);
         }
     }
@@ -372,7 +370,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
      * esta lista es barajeada.
      */
     private void ordenarOpcionesReactivos() {
-        List<ReactivoAsignadoDTO> reactivos = control.getExamenAsignado().getReactivos();
+        List<ReactivoAsignadoDTO> reactivos = cvContestarExamen.getExamenAsignado().getReactivos();
 
         for (int i = 0; i < nReactivos; i++) {
             List<String> opciones = new ArrayList();
@@ -392,27 +390,37 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
      * examen en la base de datos.
      */
     private void mostrarCalificacion() {
-        double calificacion = control.calificarExamen(nReactivos, respuestasAlumno, control.getExamenAsignado());
-        String cali = String.format("%.2f", calificacion);
-        if (calificacion == 100) {
-            JOptionPane.showMessageDialog(this, "Su calificación es de: " + cali,
-                    "Calificación", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/recursos/like.png")));
+        double[] evaluacion = cvContestarExamen.calificarExamen(nReactivos,
+                respuestasAlumno, cvContestarExamen.getExamenAsignado());
+        String cali = String.format("%.2f", evaluacion[CVContestarExamen.CALIFICACION]);
+
+        String mensaje = "Reactivos correctos: " + ((int) evaluacion[CVContestarExamen.BUENAS])
+                + "/" + ((int) evaluacion[CVContestarExamen.N_REACTIVOS]) + "\n"
+                + "Su calificación es de: " + cali;
+
+        if (evaluacion[CVContestarExamen.CALIFICACION] == 10) {
+            JOptionPane.showMessageDialog(this, mensaje,
+                    "Calificación", JOptionPane.INFORMATION_MESSAGE,
+                    new ImageIcon(getClass().getResource(IMAGEN_LIKE)));
         } else {
-            JOptionPane.showMessageDialog(this, "Su calificación es de: "
-                    + cali, "Calificación", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, mensaje,
+                    "Calificación", JOptionPane.INFORMATION_MESSAGE);
         }
+
         try {
             respaldo.setContestado();
         } catch (IOException e) {
         }
+
         cronometro.detener();
-        if (control.actualizarExamen(control.getExamenAsignado())) {
+
+        if (cvContestarExamen.actualizarExamen(cvContestarExamen.getExamenAsignado())) {
             respaldo.eliminarRespaldo();
         } else {
             JOptionPane.showMessageDialog(this, "Exmen no actualizado");
         }
-        padre.mostrarVista(Vista.HOME);
 
+        padre.mostrarVista(Vista.HOME);
     }
 
     /**
@@ -422,10 +430,10 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
      */
     private void verificarReactivos() {
         for (int i = 0; i < nReactivos; i++) {
-            if (reactivosVistos[i] && reactivosContestados[i] == -1) {
+            if (reactivosVistos[i] && reactivosContestados[i] == NO_CONTESTADO) {
                 btnReactivos[i].setBackground(Color.red);
                 btnReactivos[i].setForeground(Color.white);
-            } else if (reactivosContestados[i] != -1) {
+            } else if (reactivosContestados[i] != NO_CONTESTADO) {
                 btnReactivos[i].setBackground(Color.blue);
                 btnReactivos[i].setForeground(Color.white);
             }
@@ -442,6 +450,10 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         if (!(reactivoActual == nReactivos - 1)) {
             reactivoActual++;
             mostrarDatosReactivo();
+        }
+        if (reactivoActual == nReactivos - 1) {
+            //Se encuentra en el penultimo reactivo.
+            btnSiguiente.setVisible(false);
         }
         verificarReactivos();
     }
@@ -558,10 +570,16 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof JButton) {
             int num = Integer.parseInt(((JButton) e.getSource()).getText()) - 1;
-            // -1 para que concuerden los índices con el número del botón.
+            // -1 para que concuerden los índices del numero de reactivo
+            //con el número del botón.
             reactivosVistos[reactivoActual] = true;
             reactivoActual = num;
             mostrarDatosReactivo();
+            if (reactivoActual != nReactivos - 1) {
+                btnSiguiente.setVisible(true);
+            } else {
+                btnSiguiente.setVisible(false);
+            }
         } else {
             //botones radio
             String respuesta = obtenerTextoBotonSeleccionado(rbtnGrupoRespuestas);
@@ -590,7 +608,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
     public void mostrarEntidad(Object entidad) {
         limpiar();
         inicializarObjetos();
-        ExamenAsignadoDTO examen = control.getExamenAsignado();
+        ExamenAsignadoDTO examen = cvContestarExamen.getExamenAsignado();
         lblInstrucciones.setText(examen.getExamen().getInstrucciones());
         contarReactivos(examen);
         iniciarBanderas();
