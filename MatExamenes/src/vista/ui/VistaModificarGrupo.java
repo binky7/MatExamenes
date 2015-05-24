@@ -1,6 +1,21 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2015 Fernando Enrique Avendaño Hernández
+ *
+ * This file is part of MatExamenes.
+ *
+ * MatExamenes is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package vista.ui;
 
@@ -19,25 +34,54 @@ import vista.interfaz.InterfaceGrupo;
 import vista.interfaz.InterfaceVista;
 
 /**
+ * JPanel que mostrará la interfaz gráfica de Modificar Grupo
  *
- * @author BoredmanDA
+ * @author Fernando Enrique Avendaño Hernández
+ * @version 1 18 Mayo 2015
  */
 public class VistaModificarGrupo extends javax.swing.JPanel implements
         InterfaceVista, InterfaceGrupo {
 
+    /**
+     * Controlador de la vista del caso de uso mantener grupos, funciona para
+     * manejar la información obtenida en la vista para comunicarse con las
+     * capas inferiores.
+     */
     private CVMantenerGrupos controlVista;
+    /**
+     * Interface de comunicación con la interfaz padre, la cuál sirve para
+     * comunicarse con ella y recibir mensajes para mostrar otras vistas, En ese
+     * caso es utilizada para comunicarse con el JFrame Principal.
+     */
     private InterfaceVista padre;
+    /**
+     * JPanel utilizado para realizar la busqueda de usuarios de tipo alumno y
+     * agregarlos al grupo.
+     */
     private FrmAgregarAlumnos vistaAgregarAlumnos;
+    /**
+     * JPanel utilizado para realizar la busqueda de usuarios de tipo maestro y
+     * agregarlos al grupo.
+     */
     private FrmAgregarMaestro vistaAgregarMaestro;
+    /**
+     * Objeto de tipo GrupoDTO utilizado para saber cual es el grupo que se esta
+     * modificando y al guardarlo no existan conflictos con un grupo ya
+     * existente.
+     */
+    private GrupoDTO grupoActual;
 
     /**
-     * Creates new form CrearNuevoGrupo
+     * Crea un objeto VistaModificarGrupo e inicializa sus atributos, establece
+     * los JComboBox de la vista en seleccion de -1 e inicializa el objeto
+     * GrupoDTO.
      */
     public VistaModificarGrupo() {
         initComponents();
-        cbGrado.setSelectedIndex(-1);
-        cbNombre.setSelectedIndex(-1);
-        cbTurno.setSelectedIndex(-1);
+        grupoActual = new GrupoDTO();
+        cmbGrado.setSelectedIndex(-1);
+        cmbNombre.setSelectedIndex(-1);
+        cmbTurno.setSelectedIndex(-1);
     }
 
     /**
@@ -59,24 +103,16 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
     }
 
     /**
-     * Limpia los campos de la vista
+     * Limpia los campos de la vista.
      */
     @Override
     public void limpiar() {
-        cbGrado.setSelectedIndex(-1);
-        cbNombre.setSelectedIndex(-1);
-        cbTurno.setSelectedIndex(-1);
-        DefaultTableModel modelo = (DefaultTableModel) tblAlumnos.getModel();
-        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
-            modelo.removeRow(i);
-        }
-        tblAlumnos.setModel(modelo);
-        modelo = (DefaultTableModel) tblMaestros.getModel();
-        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
-            modelo.removeRow(i);
-        }
-        tblMaestros.setModel(modelo);
-        controlVista.liberarMemoriaModificar();
+        cmbGrado.setSelectedIndex(-1);
+        cmbNombre.setSelectedIndex(-1);
+        cmbTurno.setSelectedIndex(-1);
+        ((DefaultTableModel) tblAlumnos.getModel()).setRowCount(0);
+        ((DefaultTableModel) tblMaestros.getModel()).setRowCount(0);
+        grupoActual = new GrupoDTO();
     }
 
     /**
@@ -85,29 +121,23 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
      * @param grupo Recibe un objeto de tipo GrupoDTO.
      */
     private void mostrarDatos(GrupoDTO grupo) {
-        cbNombre.setSelectedItem(grupo.getNombre());
-        cbGrado.setSelectedIndex(grupo.getGrado() - 1);
+        cmbNombre.setSelectedItem(grupo.getNombre());
+        this.grupoActual.setNombre(grupo.getNombre());
+        cmbGrado.setSelectedIndex(grupo.getGrado() - 1);
+        this.grupoActual.setGrado(grupo.getGrado());
         if (grupo.getTurno() == Turno.M) {
-            cbTurno.setSelectedIndex(0);
+            cmbTurno.setSelectedIndex(0);
+            this.grupoActual.setTurno(Turno.M);
         } else {
-            cbTurno.setSelectedIndex(1);
+            cmbTurno.setSelectedIndex(1);
+            this.grupoActual.setTurno(Turno.V);
         }
         mostrarAlumnos(grupo.getAlumnos());
         HashMap<CursoDTO, UsuarioDTO> mapa = new HashMap<>();
-        DefaultTableModel modelo2 = (DefaultTableModel) tblMaestros.getModel();
-        for (int x = modelo2.getRowCount() - 1; x > -1; x--) {
-            modelo2.removeRow(x);
-        }
+        ((DefaultTableModel) tblMaestros.getModel()).setRowCount(0);
         for (CursoDTO curso : grupo.getMaestros().keySet()) {
             UsuarioDTO maestro = grupo.getMaestros().get(curso);
             mapa.put(curso, maestro);
-            Object[] fila = new Object[6];
-            fila[0] = false;
-            fila[1] = String.valueOf(maestro.getId());
-            fila[2] = maestro.getNombre();
-            fila[3] = maestro.getApellidoPaterno();
-            fila[4] = maestro.getApellidoMaterno();
-            fila[5] = curso.getNombre();
         }
         mostrarMaestros(mapa);
     }
@@ -120,10 +150,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
      */
     @Override
     public void mostrarAlumnos(List<UsuarioDTO> listaAlumnos) {
-        DefaultTableModel modelo = (DefaultTableModel) tblAlumnos.getModel();
-        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
-            modelo.removeRow(i);
-        }
+        ((DefaultTableModel) tblAlumnos.getModel()).setRowCount(0);
         for (int i = 0; i < listaAlumnos.size(); i++) {
             UsuarioDTO alumno = listaAlumnos.get(i);
             Object[] fila = new Object[5];
@@ -132,9 +159,8 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
             fila[2] = alumno.getNombre();
             fila[3] = alumno.getApellidoPaterno();
             fila[4] = alumno.getApellidoMaterno();
-            modelo.addRow(fila);
+            ((DefaultTableModel) tblAlumnos.getModel()).addRow(fila);
         }
-        tblAlumnos.setModel(modelo);
     }
 
     /**
@@ -145,10 +171,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
      */
     @Override
     public void mostrarMaestros(HashMap<CursoDTO, UsuarioDTO> mapaMaestros) {
-        DefaultTableModel modelo = (DefaultTableModel) tblMaestros.getModel();
-        for (int i = modelo.getRowCount() - 1; i > -1; i--) {
-            modelo.removeRow(i);
-        }
+        ((DefaultTableModel) tblMaestros.getModel()).setRowCount(0);
         for (CursoDTO curso : mapaMaestros.keySet()) {
             UsuarioDTO maestro = mapaMaestros.get(curso);
             Object[] fila = new Object[5];
@@ -157,9 +180,8 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
             fila[2] = maestro.getApellidoPaterno();
             fila[3] = maestro.getApellidoMaterno();
             fila[4] = curso.getNombre();
-            modelo.addRow(fila);
+            ((DefaultTableModel) tblMaestros.getModel()).addRow(fila);
         }
-        tblMaestros.setModel(modelo);
     }
 
     /**
@@ -203,115 +225,88 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
      */
     public GrupoDTO encapsularGrupo() {
         GrupoDTO grupo = new GrupoDTO();
-        String nombre = String.valueOf(cbNombre.getSelectedItem());
+        String nombre = String.valueOf(cmbNombre.getSelectedItem());
         if (Validador.esGrupo(nombre)) {
             grupo.setNombre(nombre);
-            grupo.setGrado(cbGrado.getSelectedIndex() + 1);
-            if (cbTurno.getSelectedIndex() == 0) {
-                grupo.setTurno(GrupoDTO.Turno.M);
+            if (cmbGrado.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Debes seleccionar un grado.",
+                        "Advertencia", 2);
+                return null;
             } else {
-                grupo.setTurno(GrupoDTO.Turno.V);
+                grupo.setGrado(cmbGrado.getSelectedIndex() + 1);
             }
-            //Guardar alumnos y maestros
+            if (cmbTurno.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Debes seleccionar un turno.",
+                        "Advertencia", 2);
+                return null;
+            } else {
+                if (cmbTurno.getSelectedIndex() == 0) {
+                    grupo.setTurno(GrupoDTO.Turno.M);
+                } else {
+                    grupo.setTurno(GrupoDTO.Turno.V);
+                }
+            }
+            if (controlVista.verificarExistencia(grupo)) {
+                if (grupo.getGrado() != this.grupoActual.getGrado()
+                        || grupo.getTurno() != this.grupoActual.getTurno()
+                        || !grupo.getNombre().equalsIgnoreCase(this.grupoActual.getNombre())) {
+                    JOptionPane.showMessageDialog(this, "El grupo seleccionado "
+                            + "ya está registrado.", "Advertencia", 1);
+                    return null;
+                }
+            }
         } else {
-            grupo = null;
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un nombre.",
+                    "Advertencia", 2);
+            return null;
         }
         return grupo;
     }
 
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * Inicializa los atributos gráficos y los coloca en su posición.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblNombre = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
         lblGrado = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        lblTurno = new javax.swing.JLabel();
+        lblMaestros = new javax.swing.JLabel();
         lblAlumnos = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblMaestros = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
         tblAlumnos = new javax.swing.JTable();
+        btnAgrMaestros = new javax.swing.JButton();
+        btnRmvMaestro = new javax.swing.JButton();
         btnAgrAlumnos = new javax.swing.JButton();
         btnRmvAlumnos = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
-        lblTitulo = new javax.swing.JLabel();
-        cbGrado = new javax.swing.JComboBox();
-        lblTurno = new javax.swing.JLabel();
-        cbTurno = new javax.swing.JComboBox();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        tblMaestros = new javax.swing.JTable();
-        lblMaestros = new javax.swing.JLabel();
-        btnRmvMaestro = new javax.swing.JButton();
-        btnAgrMaestros = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        cbNombre = new javax.swing.JComboBox();
-
-        lblNombre.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblNombre.setText("Nombre:");
-
-        lblGrado.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblGrado.setText("Grado:");
-
-        lblAlumnos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblAlumnos.setText("Alumnos");
-
-        tblAlumnos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tblAlumnos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "[x]", "Id", "A.P.", "A.M.", "Nom"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jScrollPane3.setViewportView(tblAlumnos);
-
-        btnAgrAlumnos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnAgrAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/agregar24.png"))); // NOI18N
-        btnAgrAlumnos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgrAlumnosActionPerformed(evt);
-            }
-        });
-
-        btnRmvAlumnos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnRmvAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/remover24.png"))); // NOI18N
-        btnRmvAlumnos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRmvAlumnosActionPerformed(evt);
-            }
-        });
-
-        btnGuardar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/guardar24.png"))); // NOI18N
-        btnGuardar.setText("Guardar");
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
-            }
-        });
+        cmbGrado = new javax.swing.JComboBox();
+        cmbNombre = new javax.swing.JComboBox();
+        cmbTurno = new javax.swing.JComboBox();
 
         lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         lblTitulo.setText("Modificar Grupo");
 
-        cbGrado.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        cbGrado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1ro", "2do", "3ro" }));
+        lblGrado.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblGrado.setText("Grado:");
+
+        lblNombre.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblNombre.setText("Nombre:");
 
         lblTurno.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblTurno.setText("Turno:");
 
-        cbTurno.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        cbTurno.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Matutino", "Vespertino" }));
+        lblMaestros.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblMaestros.setText("Maestros");
+
+        lblAlumnos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblAlumnos.setText("Alumnos");
 
         tblMaestros.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tblMaestros.setModel(new javax.swing.table.DefaultTableModel(
@@ -319,7 +314,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
 
             },
             new String [] {
-                "Id", "A.P.", "A.M.", "Nom", "Curso"
+                "Id", "Nom", "A.P.", "A.M.", "Curso"
             }
         ) {
             Class[] types = new Class [] {
@@ -330,24 +325,65 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
                 return types [columnIndex];
             }
         });
-        jScrollPane6.setViewportView(tblMaestros);
+        jScrollPane1.setViewportView(tblMaestros);
 
-        lblMaestros.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblMaestros.setText("Maestros");
+        tblAlumnos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tblAlumnos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        btnRmvMaestro.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnRmvMaestro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/remover24.png"))); // NOI18N
-        btnRmvMaestro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRmvMaestroActionPerformed(evt);
+            },
+            new String [] {
+                "[x]", "Id", "Nom", "A.P.", "A.M."
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
             }
         });
+        jScrollPane2.setViewportView(tblAlumnos);
 
         btnAgrMaestros.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnAgrMaestros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/agregar24.png"))); // NOI18N
         btnAgrMaestros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgrMaestrosActionPerformed(evt);
+                AgregarMaestro(evt);
+            }
+        });
+
+        btnRmvMaestro.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnRmvMaestro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/remover24.png"))); // NOI18N
+        btnRmvMaestro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RemoverMaestro(evt);
+            }
+        });
+
+        btnAgrAlumnos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnAgrAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/agregar24.png"))); // NOI18N
+        btnAgrAlumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AgregarAlumnos(evt);
+            }
+        });
+
+        btnRmvAlumnos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnRmvAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/remover24.png"))); // NOI18N
+        btnRmvAlumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RemoverAlumnos(evt);
+            }
+        });
+
+        btnGuardar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/guardar24.png"))); // NOI18N
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GuardarGrupo(evt);
             }
         });
 
@@ -356,11 +392,17 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
+                CancelarRegistro(evt);
             }
         });
 
-        cbNombre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "C", "D", "E" }));
+        cmbGrado.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cmbGrado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1ro", "2do", "3ro" }));
+
+        cmbNombre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "C", "D", "E" }));
+
+        cmbTurno.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cmbTurno.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Matutino", "Vespertino" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -372,8 +414,8 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
                     .addComponent(lblAlumnos)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(btnRmvAlumnos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -384,18 +426,18 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblGrado)
                         .addGap(18, 18, 18)
-                        .addComponent(cbGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(79, 79, 79)
+                        .addComponent(lblNombre)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblTitulo)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblNombre)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(41, 41, 41)
-                        .addComponent(lblTurno)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(cmbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(68, 68, 68)
+                                .addComponent(lblTurno)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cmbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(99, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -407,16 +449,16 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addGap(29, 29, 29)
                 .addComponent(lblTitulo)
-                .addGap(33, 33, 33)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNombre)
                     .addComponent(lblGrado)
-                    .addComponent(cbGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTurno)
-                    .addComponent(cbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(lblMaestros)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -425,7 +467,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
                         .addComponent(btnAgrMaestros)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnRmvMaestro))
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(lblAlumnos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -434,7 +476,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
                         .addComponent(btnAgrAlumnos)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnRmvAlumnos))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
@@ -448,10 +490,10 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
      *
      * @param evt Recibe el evento del boton que lo activo.
      */
-    private void btnAgrAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgrAlumnosActionPerformed
+    private void AgregarAlumnos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarAlumnos
         vistaAgregarAlumnos = new FrmAgregarAlumnos();
         vistaAgregarAlumnos.inicializar(controlVista, this);
-    }//GEN-LAST:event_btnAgrAlumnosActionPerformed
+    }//GEN-LAST:event_AgregarAlumnos
 
     /**
      * Muestra un mensaje de confirmacion para cancelar y regresa a la vista
@@ -459,15 +501,16 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
      *
      * @param evt Recibe el evento del boton que lo activo.
      */
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+    private void CancelarRegistro(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarRegistro
         int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
                 + "quieres cancelar la operación?\nTodos los cambios no "
                 + "guardados se perderán");
         if (ok == 0) {
-            padre.mostrarVista(Vista.ConsultarGrupo);
             limpiar();
+            controlVista.liberarMemoriaModificar();
+            padre.mostrarVista(Vista.ConsultarGrupo);
         }
-    }//GEN-LAST:event_btnCancelarActionPerformed
+    }//GEN-LAST:event_CancelarRegistro
 
     /**
      * Llama a encapsular grupo y lo manda al controlador de la vista para que
@@ -475,21 +518,21 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
      *
      * @param evt Recibe el evento del boton que lo activo.
      */
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+    private void GuardarGrupo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarGrupo
         GrupoDTO grupo = encapsularGrupo();
-        if (grupo == null) {
-            JOptionPane.showMessageDialog(this, "Faltan datos!", "Advertencia", 1);
-        } else {
+        if (grupo != null) {
             boolean ok = controlVista.modificarGrupo(grupo);
             if (ok) {
-                JOptionPane.showMessageDialog(this, "Grupo modificado", "Exito", 1);
+                JOptionPane.showMessageDialog(this, "Grupo modificado "
+                        + "correctamente.", "Exito", 1);
                 padre.mostrarVista(Vista.ConsultarGrupo);
                 limpiar();
             } else {
-                JOptionPane.showMessageDialog(this, "No se pudo modificar!", "Advertencia", 1);
+                JOptionPane.showMessageDialog(this, "No se pudo modificar!",
+                        "Error", 3);
             }
         }
-    }//GEN-LAST:event_btnGuardarActionPerformed
+    }//GEN-LAST:event_GuardarGrupo
 
     /**
      * Verifica que alumnos se seleccionaron de la tabla y obtiene sus indices,
@@ -498,31 +541,40 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
      *
      * @param evt Recibe el evento del boton que lo activo.
      */
-    private void btnRmvAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRmvAlumnosActionPerformed
+    private void RemoverAlumnos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoverAlumnos
         List<Integer> indexes = new ArrayList<>();
+        List<UsuarioDTO> eliminados = new ArrayList<>();
         int cont = tblAlumnos.getRowCount();
-        for (int x = 0; x < cont; x++) {
-            if (tblAlumnos.getValueAt(x, 0).equals(true)) {
-                indexes.add(x);
+        for (int i = 0; i < cont; i++) {
+            if (tblAlumnos.getValueAt(i, 0).equals(true)) {
+                UsuarioDTO alumno = new UsuarioDTO();
+                indexes.add(i);
+                alumno.setId(Integer.parseInt((String) tblAlumnos.getValueAt(i, 1)));
+                alumno.setNombre((String) tblAlumnos.getValueAt(i, 2));
+                alumno.setApellidoPaterno((String) tblAlumnos.getValueAt(i, 3));
+                alumno.setApellidoMaterno((String) tblAlumnos.getValueAt(i, 4));
+                eliminados.add(alumno);
             }
         }
         if (cont == 0 || indexes.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Selecciona al menos un alumno", "Advertencia", 1);
+            JOptionPane.showMessageDialog(this, "Debes seleccionar al menos un "
+                    + "alumno", "Advertencia", 2);
         } else {
             controlVista.removerAlumnos(indexes);
+            controlVista.agregarEliminados(eliminados);
             removerAlumnos(indexes);
         }
-    }//GEN-LAST:event_btnRmvAlumnosActionPerformed
+    }//GEN-LAST:event_RemoverAlumnos
 
     /**
      * Llama al frame de agregar maestros.
      *
      * @param evt Recibe el evento del boton que lo activo.
      */
-    private void btnAgrMaestrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgrMaestrosActionPerformed
+    private void AgregarMaestro(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarMaestro
         vistaAgregarMaestro = new FrmAgregarMaestro();
         vistaAgregarMaestro.inicializar(controlVista, this);
-    }//GEN-LAST:event_btnAgrMaestrosActionPerformed
+    }//GEN-LAST:event_AgregarMaestro
 
     /**
      * Verifica que maestros se seleccionaron de la tabla y obtiene sus indices,
@@ -531,8 +583,8 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
      *
      * @param evt Recibe el evento del boton que lo activo.
      */
-    private void btnRmvMaestroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRmvMaestroActionPerformed
-        String nombreCurso = null;
+    private void RemoverMaestro(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoverMaestro
+        String nombreCurso;
         int index = tblMaestros.getSelectedRow();
         if (index != -1) {
             DefaultTableModel model = (DefaultTableModel) tblMaestros.getModel();
@@ -540,40 +592,92 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
             controlVista.removerMaestro(nombreCurso);
             removerMaestro(nombreCurso);
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona al menos un maestro", "Advertencia", 1);
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un maestro.",
+                    "Advertencia", 2);
         }
-    }//GEN-LAST:event_btnRmvMaestroActionPerformed
+    }//GEN-LAST:event_RemoverMaestro
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Boton para agregar alumnos.
+    */
     private javax.swing.JButton btnAgrAlumnos;
+    /**
+    * Boton para agregar maestros.
+    */
     private javax.swing.JButton btnAgrMaestros;
+    /**
+    * Boton para cancelar.
+    */
     private javax.swing.JButton btnCancelar;
+    /**
+    * Boton para guardar.
+    */
     private javax.swing.JButton btnGuardar;
+    /**
+    * Boton para remover alumnos.
+    */
     private javax.swing.JButton btnRmvAlumnos;
+    /**
+    * Boton para remover maestros.
+    */
     private javax.swing.JButton btnRmvMaestro;
-    private javax.swing.JComboBox cbGrado;
-    private javax.swing.JComboBox cbNombre;
-    private javax.swing.JComboBox cbTurno;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane6;
+    /**
+    * Combobox para el grado.
+    */
+    private javax.swing.JComboBox cmbGrado;
+    /**
+    * Combobox para el nombre.
+    */
+    private javax.swing.JComboBox cmbNombre;
+    /**
+    * Combobox para el turno.
+    */
+    private javax.swing.JComboBox cmbTurno;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    /**
+    * Label para la tabla alumnos.
+    */
     private javax.swing.JLabel lblAlumnos;
+    /**
+    * Label para el grado.
+    */
     private javax.swing.JLabel lblGrado;
+    /**
+    * Label para la tabla maestros.
+    */
     private javax.swing.JLabel lblMaestros;
+    /**
+    * Label para el nombre.
+    */
     private javax.swing.JLabel lblNombre;
+    /**
+    * Label para el titulo de la vista.
+    */
     private javax.swing.JLabel lblTitulo;
+    /**
+    * Label para el turno.
+    */
     private javax.swing.JLabel lblTurno;
+    /**
+    * Tabla para mostrar alumnos.
+    */
     private javax.swing.JTable tblAlumnos;
+    /**
+    * Tabla para mostrar los maestros.
+    */
     private javax.swing.JTable tblMaestros;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //No implementado.
     }
 
     @Override
     public void mostrarVista(Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //No implementado.
     }
 
     @Override
@@ -595,11 +699,13 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
 
     @Override
     public UsuarioDTO obtenerUsuarioActual() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //No implementado.
+        return null;
     }
 
     @Override
     public InterfaceVista getPadre() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //No implementado.
+        return null;
     }
 }

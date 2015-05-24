@@ -14,7 +14,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import modelo.dto.CursoDTO;
 import modelo.dto.UsuarioDTO;
-import modelo.dto.UsuarioDTO.Tipo;
 import vista.controlador.CVMantenerGrupos;
 import vista.interfaz.InterfaceGrupo;
 
@@ -37,21 +36,13 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
         initComponents();
         this.setTitle("MatExamenes/Agregar Alumnos");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        cbBusqueda.setSelectedIndex(-1);
+        listaMaestros = new ArrayList<>();
     }
 
     private void limpiar() {
-        txtBusqueda.setText("");
-        DefaultTableModel model = (DefaultTableModel) tblMaestros.getModel();
-        for (int i = model.getRowCount() - 1; i > -1; i--) {
-            model.removeRow(i);
-        }
-        tblMaestros.setModel(model);
-        DefaultTableModel modelo = (DefaultTableModel) tblCursos.getModel();
-        for (int i = model.getRowCount() - 1; i > -1; i--) {
-            model.removeRow(i);
-        }
-        tblCursos.setModel(modelo);
+        txtfBusqueda.setText("");
+        ((DefaultTableModel) tblCursos.getModel()).setRowCount(0);
+        ((DefaultTableModel) tblMaestros.getModel()).setRowCount(0);
     }
 
     /**
@@ -65,7 +56,7 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
-        txtBusqueda = new javax.swing.JTextField();
+        txtfBusqueda = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblMaestros = new javax.swing.JTable();
@@ -75,7 +66,7 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
         lblMaestros = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblCursos = new javax.swing.JTable();
-        cbBusqueda = new javax.swing.JComboBox();
+        lblBusqueda = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -151,7 +142,8 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(tblCursos);
 
-        cbBusqueda.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Apellido paterno", "Apellido materno", "Nombre" }));
+        lblBusqueda.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblBusqueda.setText("Busqueda:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -178,11 +170,11 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
                                 .addComponent(lblTitulo))
                             .addComponent(lblMaestros)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addComponent(cbBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(20, 20, 20)
+                                .addComponent(lblBusqueda)
                                 .addGap(18, 18, 18)
+                                .addComponent(txtfBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(69, 69, 69)
                                 .addComponent(btnBuscar)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -194,9 +186,9 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
                 .addComponent(lblTitulo)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar))
+                    .addComponent(txtfBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar)
+                    .addComponent(lblBusqueda))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(lblMaestros)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -240,7 +232,8 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         int indexMaestro = tblMaestros.getSelectedRow();
         if (indexMaestro == -1) {
-            JOptionPane.showMessageDialog(this, "Selecciona al menos un maestro", "Advertencia", 1);
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un maestro",
+                    "Advertencia", 2);
         } else {
             List<Integer> indexesCursos = new ArrayList<>();
             int cont = tblCursos.getRowCount();
@@ -250,47 +243,35 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
                 }
             }
             if (indexesCursos.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Selecciona al menos un curso", "Advertencia", 1);
+                JOptionPane.showMessageDialog(this, "Debes seleccionar al menos"
+                        + " un curso.", "Advertencia", 2);
             } else {
                 btnCancelarActionPerformed(evt);
-                HashMap<CursoDTO, UsuarioDTO> mapa = controladorVista.agregarMaestro(indexesCursos, indexMaestro);
+                HashMap<CursoDTO, UsuarioDTO> mapa = controladorVista.
+                        agregarMaestro(indexesCursos, indexMaestro);
                 padre.mostrarMaestros(mapa);
             }
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        int tipoBusqueda = cbBusqueda.getSelectedIndex();
-        if (tipoBusqueda != -1) {
-            if (cbBusqueda.getSelectedIndex() == 0) {
-                listaMaestros = controladorVista.obtenerMaestrosPorApellido(txtBusqueda.getText(), Tipo.Maestro);
-            }
-            if (cbBusqueda.getSelectedIndex() == 1) {
-                listaMaestros = controladorVista.obtenerMaestrosPorApellidoM(txtBusqueda.getText(), Tipo.Maestro);
-            }
-            if (cbBusqueda.getSelectedIndex() == 2) {
-                listaMaestros = controladorVista.obtenerMaestrosPorNombre(txtBusqueda.getText(), Tipo.Maestro);
-            }
-            DefaultTableModel model = (DefaultTableModel) tblMaestros.getModel();
-            for (int x = model.getRowCount() - 1; x > -1; x--) {
-                model.removeRow(x);
-            }
-            if (listaMaestros == null || listaMaestros.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "No se encontraron maestros!", "Mensaje", 1);
-            } else {
-                for (UsuarioDTO maestro : listaMaestros) {
-                    Object[] fila = new Object[4];
-                    fila[0] = String.valueOf(maestro.getId());
-                    fila[1] = maestro.getApellidoPaterno();
-                    fila[2] = maestro.getApellidoMaterno();
-                    fila[3] = maestro.getNombre();
-                    model.addRow(fila);
-                }
-                tblMaestros.setModel(model);
-            }
+        listaMaestros = controladorVista.obtenerMaestros(txtfBusqueda.getText());
+        DefaultTableModel model = (DefaultTableModel) tblMaestros.getModel();
+        for (int x = model.getRowCount() - 1; x > -1; x--) {
+            model.removeRow(x);
+        }
+        if (listaMaestros == null || listaMaestros.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No se encontraron maestros.", "Advertencia", 2);
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona un criterio de "
-                    + "busqueda", "Mensaje", 1);
+            for (UsuarioDTO maestro : listaMaestros) {
+                Object[] fila = new Object[4];
+                fila[0] = String.valueOf(maestro.getId());
+                fila[1] = maestro.getApellidoPaterno();
+                fila[2] = maestro.getApellidoMaterno();
+                fila[3] = maestro.getNombre();
+                model.addRow(fila);
+            }
+            tblMaestros.setModel(model);
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -299,16 +280,16 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JComboBox cbBusqueda;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblBusqueda;
     private javax.swing.JLabel lblCursos;
     private javax.swing.JLabel lblMaestros;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JTable tblCursos;
     private javax.swing.JTable tblMaestros;
-    private javax.swing.JTextField txtBusqueda;
+    private javax.swing.JTextField txtfBusqueda;
     // End of variables declaration//GEN-END:variables
     void inicializar(CVMantenerGrupos controladorVista, InterfaceGrupo padre) {
         this.setVisible(true);
@@ -319,21 +300,17 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
             public void valueChanged(ListSelectionEvent e) {
                 if (tblMaestros.getSelectedRow() != -1) {
                     listaCursos = controladorVista.obtenerCursos(tblMaestros.getSelectedRow());
-                    DefaultTableModel modelo = (DefaultTableModel) tblCursos.getModel();
-                    for (int i = modelo.getRowCount() - 1; i > -1; i--) {
-                        modelo.removeRow(i);
-                    }
+                    ((DefaultTableModel) tblCursos.getModel()).setRowCount(0);
                     if (listaCursos.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "No hay cursos disponibles "
-                                + "para este maestro!", "Advertencia", 1);
+                                + "para este maestro.", "Advertencia", 2);
                     } else {
                         for (CursoDTO listaCurso : listaCursos) {
                             Object[] fila = new Object[2];
                             fila[0] = false;
                             fila[1] = listaCurso.getNombre();
-                            modelo.addRow(fila);
+                            ((DefaultTableModel) tblCursos.getModel()).addRow(fila);
                         }
-                        tblCursos.setModel(modelo);
                     }
                 }
             }
