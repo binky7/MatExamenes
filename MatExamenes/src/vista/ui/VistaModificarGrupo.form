@@ -118,6 +118,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Modificar Grupo"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para el titulo de la vista.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblGrado">
       <Properties>
@@ -126,6 +129,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Grado:"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para el grado.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblNombre">
       <Properties>
@@ -134,6 +140,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Nombre:"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para el nombre.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblTurno">
       <Properties>
@@ -142,6 +151,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Turno:"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para el turno.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblMaestros">
       <Properties>
@@ -150,6 +162,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Maestros"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para la tabla maestros.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblAlumnos">
       <Properties>
@@ -158,6 +173,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Alumnos"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para la tabla alumnos.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -208,6 +226,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Tabla para mostrar los maestros.&#xa; */"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
@@ -260,6 +281,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Tabla para mostrar alumnos.&#xa; */"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
@@ -273,8 +297,11 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAgrMaestrosActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AgregarMaestro"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Boton para agregar maestros.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="btnRmvMaestro">
       <Properties>
@@ -286,8 +313,11 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRmvMaestroActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RemoverMaestro"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Boton para remover maestros.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="btnAgrAlumnos">
       <Properties>
@@ -299,8 +329,11 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAgrAlumnosActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AgregarAlumnos"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Boton para agregar alumnos.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="btnRmvAlumnos">
       <Properties>
@@ -312,8 +345,11 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRmvAlumnosActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RemoverAlumnos"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Boton para remover alumnos.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="btnGuardar">
       <Properties>
@@ -326,8 +362,11 @@
         <Property name="text" type="java.lang.String" value="Guardar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="GuardarGrupo"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Boton para guardar.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="btnCancelar">
       <Properties>
@@ -340,8 +379,11 @@
         <Property name="text" type="java.lang.String" value="Cancelar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CancelarRegistro"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Boton para cancelar.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JComboBox" name="cmbGrado">
       <Properties>
@@ -356,6 +398,9 @@
           </StringArray>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Combobox para el grado.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JComboBox" name="cmbNombre">
       <Properties>
@@ -369,6 +414,9 @@
           </StringArray>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Combobox para el nombre.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JComboBox" name="cmbTurno">
       <Properties>
@@ -382,6 +430,9 @@
           </StringArray>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Combobox para el turno.&#xa; */"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

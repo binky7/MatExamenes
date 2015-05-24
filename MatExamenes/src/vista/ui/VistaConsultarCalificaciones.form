@@ -63,15 +63,22 @@
         <Property name="text" type="java.lang.String" value="Consultar Calificaciones"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para el titulo de la vista.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Container class="javax.swing.JTabbedPane" name="tbpCalificaciones">
       <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Tabbedpane para mostrar las secciones de consulta.&#xa; */"/>
         <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="tbpCalificaciones.setEnabledAt(0, false);&#xa;tbpCalificaciones.setEnabledAt(1, false);&#xa;tbpCalificaciones.setEnabledAt(2, false);&#xa;tbpCalificaciones.setEnabledAt(3, false);&#xa;tbpCalificaciones.setEnabledAt(4, false);&#xa;tbpCalificaciones.setTitleAt(0, &quot;&lt;html&gt;&lt;font color=&apos;black&apos;&gt;Cursos&lt;/font&gt;&lt;/html&gt;&quot;);&#xa;tbpCalificaciones.setTitleAt(1, &quot;&lt;html&gt;&lt;font color=&apos;black&apos;&gt;Grupos&lt;/font&gt;&lt;/html&gt;&quot;);&#xa;tbpCalificaciones.setTitleAt(2, &quot;&lt;html&gt;&lt;font color=&apos;black&apos;&gt;Alumnos&lt;/font&gt;&lt;/html&gt;&quot;);&#xa;tbpCalificaciones.setTitleAt(3, &quot;&lt;html&gt;&lt;font color=&apos;black&apos;&gt;Examenes&lt;/font&gt;&lt;/html&gt;&quot;);&#xa;tbpCalificaciones.setTitleAt(4, &quot;&lt;html&gt;&lt;font color=&apos;black&apos;&gt;Calificaciones&lt;/font&gt;&lt;/html&gt;&quot;);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
         <Container class="javax.swing.JPanel" name="pnlCursos">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Panel para la seccion de cursos.&#xa; */"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Cursos">
@@ -125,15 +132,22 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Cursos"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para la lista de cursos.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane5">
               <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Scrollpane para la lista de cursos.&#xa; */"/>
                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
               </AuxValues>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
                 <Component class="javax.swing.JList" name="lstCursos">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Lista para mostrar los cursos.&#xa; */"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -148,12 +162,18 @@
                 <Property name="text" type="java.lang.String" value="Siguiente"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSiguienteCursosActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AvanzarCursos"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Boton siguiente para pasar a la seccion de grupos.&#xa; */"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="pnlGrupos">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Panel para la seccion de grupos.&#xa; */"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Grupos">
@@ -212,9 +232,13 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Grupos"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para la tabla de grupos.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane1">
               <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Scrollpane para la tabla de grupos.&#xa; */"/>
                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
               </AuxValues>
 
@@ -230,6 +254,9 @@
                       </Table>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Tabla para mostrar grupos.&#xa; */"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -244,8 +271,11 @@
                 <Property name="text" type="java.lang.String" value="Anterior"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAnteriorGruposActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RetrocederGrupos"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Boton anterior para pasar a la seccion de crusos.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnSiguienteGrupos">
               <Properties>
@@ -258,12 +288,18 @@
                 <Property name="text" type="java.lang.String" value="Siguiente"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSiguienteGruposActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AvanzarGrupos"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Boton siguiente para pasar a la seccion de alumnos.&#xa; */"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="pnlAlumnos">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Panel para la seccion de alumnos.&#xa; */"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Alumnos">
@@ -320,9 +356,13 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Alumnos"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para la tabla de alumnos.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane2">
               <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Scrollpane para la tabla de alumnos.&#xa; */"/>
                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
               </AuxValues>
 
@@ -339,6 +379,9 @@
                       </Table>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Tabla para mostrar alumnos.&#xa; */"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -353,8 +396,11 @@
                 <Property name="text" type="java.lang.String" value="Anterior"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAnteriorAlumnosActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RetrocederAlumnos"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Boton anterior para pasar a la seccion de grupos.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnSiguienteAlumnos">
               <Properties>
@@ -367,12 +413,18 @@
                 <Property name="text" type="java.lang.String" value="Siguiente"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSiguienteAlumnosActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AvanzarAlumnos"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Boton siguiente para pasar a la seccion de examenes.&#xa; */"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="pnlExamenes">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Panel para la seccion de examenes.&#xa; */"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Examenes">
@@ -431,9 +483,13 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Examenes"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para la tabla de examenes.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane4">
               <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Scrollpane para la tabla de examenes. &#xa; */"/>
                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
               </AuxValues>
 
@@ -450,6 +506,9 @@
                       </Table>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Tabla para mostrar examenes.&#xa; */"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -464,8 +523,11 @@
                 <Property name="text" type="java.lang.String" value="Anterior"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAnteriorExamenesActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RetrocederExamenes"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Boton anterior para pasar a la seccion de alumnos.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnSiguienteExamenes">
               <Properties>
@@ -478,12 +540,18 @@
                 <Property name="text" type="java.lang.String" value="Siguiente"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSiguienteExamenesActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AvanzarExamenes"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Boton siguiente para pasar a la vista de calificacion.&#xa; */"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="pnlExamen">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Panel para la seccion de calificacion.&#xa; */"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Calificaciones">
@@ -529,9 +597,9 @@
                           <Component id="lblReactivos" min="-2" max="-2" attributes="0"/>
                           <Component id="jScrollPane6" min="-2" pref="170" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane7" min="-2" pref="200" max="-2" attributes="0"/>
+                          <Component id="jScrollPane7" min="-2" pref="225" max="-2" attributes="0"/>
                           <Component id="lblRedaccion" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="52" max="32767" attributes="0"/>
@@ -615,6 +683,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Alumno:"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para el nombre del alumno.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="lblTituloExamen">
               <Properties>
@@ -623,6 +694,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Titulo del examen:"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para el titulo del examen.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="lblCalificacion">
               <Properties>
@@ -631,21 +705,33 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Calificacion:"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para la calificacion.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JTextField" name="txtfAlumno">
               <Properties>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Textfield para el nombre del alumno.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JTextField" name="txtfTitulo">
               <Properties>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Textfield para el titulo del examen.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JTextField" name="txtfCalificacion">
               <Properties>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Textfield para la calificacion.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="lblReactivos">
               <Properties>
@@ -654,9 +740,13 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Reactivos"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para la lista de reactivos.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane6">
               <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Scrollpane para la lista de reactivos.&#xa; */"/>
                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
               </AuxValues>
 
@@ -668,6 +758,9 @@
                       <StringArray count="0"/>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Lista para mostrar los reactivos.&#xa; */"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -678,9 +771,13 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Redaccion"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para la redaccion del reactivo.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane7">
               <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Scrollpane para la redaccion del reactivo.&#xa; */"/>
                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
               </AuxValues>
 
@@ -691,6 +788,9 @@
                     <Property name="columns" type="int" value="20"/>
                     <Property name="rows" type="int" value="5"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Textarea para la redaccion del reactivo.&#xa; */"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -701,8 +801,14 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Respuesta correcta"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para la respuesta correcta.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JTextField" name="txtfRespCorrecta">
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Textfield para la respuesta correcta.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="lblRespAlumno">
               <Properties>
@@ -711,8 +817,14 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Respuesta del alumno"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para la respuesta del alumno.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JTextField" name="txtfRespAlumno">
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Textfield para la respuesta del alumno.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="lblCorrecto">
               <Properties>
@@ -720,6 +832,9 @@
                   <Image iconType="3" name="/recursos/bien.png"/>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para el icon de correcto o incorrecto.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnAnteriorCalificacion">
               <Properties>
@@ -732,8 +847,11 @@
                 <Property name="text" type="java.lang.String" value="Anterior"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAnteriorCalificacionActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RetrocederCalificacion"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Boton anterior para pasar a la seccion de examenes.&#xa; */"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
@@ -750,8 +868,11 @@
         <Property name="text" type="java.lang.String" value="Cancelar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CancelarConsulta"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Boton para cancelar.&#xa; */"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

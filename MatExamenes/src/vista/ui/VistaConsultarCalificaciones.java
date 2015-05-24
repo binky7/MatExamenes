@@ -1,7 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2015 Fernando Enrique Avendaño Hernández
+ *
+ * This file is part of MatExamenes.
+ *
+ * MatExamenes is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package vista.ui;
 
@@ -23,19 +37,38 @@ import vista.controlador.CVConsultarCalificaciones;
 import vista.interfaz.InterfaceVista;
 
 /**
+ * JPanel que mostrará la interfaz gráfica de Registrar Grupo
  *
- * @author FernandoEnrique
+ * @author Fernando Enrique Avendaño Hernández
+ * @version 1 18 Mayo 2015
  */
 public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         AncestorListener, InterfaceVista {
 
+    /**
+     * Controlador de la vista del caso de uso consultar calificaciones,
+     * funciona para manejar la información obtenida en la vista para
+     * comunicarse con las capas inferiores.
+     */
     private CVConsultarCalificaciones controlVista;
+    /**
+     * Interface de comunicación con la interfaz padre, la cuál sirve para
+     * comunicarse con ella y recibir mensajes para mostrar otras vistas, En ese
+     * caso es utilizada para comunicarse con el JFrame Principal.
+     */
     private InterfaceVista padre;
+    /**
+     * Almacena el icono del estado correcto.
+     */
     private final ImageIcon ICONO_BIEN;
+    /**
+     * Almacena el icno del estado incorrecto.
+     */
     private final ImageIcon ICONO_MAL;
 
     /**
-     * Creates new form VistaConsultarCalificaciones
+     * Crea un objeto VistaRegistrarGrupo e inicializa sus atributos, y agrega
+     * los listeners necesarios.
      */
     public VistaConsultarCalificaciones() {
         initComponents();
@@ -45,16 +78,26 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         lblCorrecto.setVisible(false);
     }
 
+    /**
+     * Asigna el controlador de vista que tendra la vista.
+     *
+     * @param controlVista Recibe un objeto de tipo CVConsultarCalificaciones.
+     */
     public void setControlador(CVConsultarCalificaciones controlVista) {
         this.controlVista = controlVista;
     }
 
+    /**
+     * Asigna el padre que tendra la vista.
+     *
+     * @param padre Recibe un objeto de tipo InterfaceVista.
+     */
     public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
 
     /**
-     * Limpia los campos de la vista
+     * Limpia los campos de la vista.
      */
     @Override
     public void limpiar() {
@@ -72,6 +115,10 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         tbpCalificaciones.setSelectedIndex(0);
     }
 
+    /**
+     * Obtiene los cursos disponibles dependiedo del usuario que este
+     * actualmente y los envia para que sean mostrados en la vista.
+     */
     public void consultarCursos() {
         UsuarioDTO actual = padre.obtenerUsuarioActual();
         List<CursoDTO> cursos = controlVista.obtenerCursos(actual);
@@ -84,6 +131,11 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         }
     }
 
+    /**
+     * Recibe la lista de cursos y la muestra en los componentes de la vista.
+     *
+     * @param cursos Lista de cursos que mostrara.
+     */
     public void mostrarCursos(List<CursoDTO> cursos) {
         DefaultListModel listModelCursos = new DefaultListModel();
         for (CursoDTO curso : cursos) {
@@ -92,6 +144,12 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         lstCursos.setModel(listModelCursos);
     }
 
+    /**
+     * Recibe el nombre del curso y obtiene los grupos disponibles para el curso
+     * seleccionado.
+     *
+     * @param nombreCurso Nombre del curso.
+     */
     public void consultarGrupos(String nombreCurso) {
         List<GrupoDTO> grupos = controlVista.obtenerGrupos(nombreCurso);
         if (grupos == null || grupos.isEmpty()) {
@@ -103,6 +161,11 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         }
     }
 
+    /**
+     * Recibe la lista de grupos que mostrara en los componentes de la vista.
+     *
+     * @param grupos Lista de grupos.
+     */
     public void mostrarGrupos(List<GrupoDTO> grupos) {
         DefaultTableModel modelo = (DefaultTableModel) tblGrupos.getModel();
         for (GrupoDTO grupo : grupos) {
@@ -114,6 +177,12 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         }
     }
 
+    /**
+     * Recibe el indice del grupo seleccionado y obtiene los alumnos de dicho
+     * grupo.
+     *
+     * @param indexGrupo Indice de grupo.
+     */
     public void consultarAlumnos(Integer indexGrupo) {
         List<UsuarioDTO> alumnos = controlVista.obtenerAlumnos(indexGrupo);
         if (alumnos == null || alumnos.isEmpty()) {
@@ -125,6 +194,11 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         }
     }
 
+    /**
+     * Recibe la lista de alumnos y los muestra en los componentes de la vista.
+     *
+     * @param alumnos Lista de alumnos.
+     */
     public void mostrarAlumnos(List<UsuarioDTO> alumnos) {
         DefaultTableModel modelo = (DefaultTableModel) tblAlumnos.getModel();
         for (UsuarioDTO alumno : alumnos) {
@@ -137,6 +211,12 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         }
     }
 
+    /**
+     * Recibe el indice del alumno de seleccionado y obtiene los examenes
+     * contestados por el alumno.
+     *
+     * @param indexAlumno Indice del alumno.
+     */
     public void consultarExamenes(Integer indexAlumno) {
         List<ExamenAsignadoDTO> examenes = controlVista.obtenerExamenes(indexAlumno);
         if (examenes == null || examenes.isEmpty()) {
@@ -148,6 +228,12 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         }
     }
 
+    /**
+     * Recibe la lista de examenes contestados y los muestra en los componentes
+     * de la vista.
+     *
+     * @param examenes Lista de examenes.
+     */
     public void mostrarExamenes(List<ExamenAsignadoDTO> examenes) {
         DefaultTableModel modelo = (DefaultTableModel) tblExamenes.getModel();
         for (ExamenAsignadoDTO examen : examenes) {
@@ -160,6 +246,12 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         }
     }
 
+    /**
+     * Recibe el indice del examen seleccionado y obtiene el examen que mostrara
+     * en los componentes de la vista.
+     *
+     * @param indexExamen Indice del examen.
+     */
     public void consultarExamen(Integer indexExamen) {
         ExamenAsignadoDTO examen = controlVista.obtenerExamen(indexExamen);
         if (examen == null) {
@@ -171,6 +263,12 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         }
     }
 
+    /**
+     * Recibe el examen que mostrara en los componentes de la vista, obitene los
+     * reactivos del mismo grupo.
+     *
+     * @param examen Examen
+     */
     public void mostrarExamen(ExamenAsignadoDTO examen) {
         txtfAlumno.setText(examen.getAlumno().getApellidoPaterno() + " "
                 + examen.getAlumno().getApellidoMaterno() + " "
@@ -204,9 +302,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
     }
 
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * Inicializa los atributos gráficos y los coloca en su posición.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -272,7 +368,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         btnSiguienteCursos.setText("Siguiente");
         btnSiguienteCursos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSiguienteCursosActionPerformed(evt);
+                AvanzarCursos(evt);
             }
         });
 
@@ -334,7 +430,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         btnAnteriorGrupos.setText("Anterior");
         btnAnteriorGrupos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnteriorGruposActionPerformed(evt);
+                RetrocederGrupos(evt);
             }
         });
 
@@ -343,7 +439,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         btnSiguienteGrupos.setText("Siguiente");
         btnSiguienteGrupos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSiguienteGruposActionPerformed(evt);
+                AvanzarGrupos(evt);
             }
         });
 
@@ -409,7 +505,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         btnAnteriorAlumnos.setText("Anterior");
         btnAnteriorAlumnos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnteriorAlumnosActionPerformed(evt);
+                RetrocederAlumnos(evt);
             }
         });
 
@@ -418,7 +514,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         btnSiguienteAlumnos.setText("Siguiente");
         btnSiguienteAlumnos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSiguienteAlumnosActionPerformed(evt);
+                AvanzarAlumnos(evt);
             }
         });
 
@@ -482,7 +578,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         btnAnteriorExamenes.setText("Anterior");
         btnAnteriorExamenes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnteriorExamenesActionPerformed(evt);
+                RetrocederExamenes(evt);
             }
         });
 
@@ -491,7 +587,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         btnSiguienteExamenes.setText("Siguiente");
         btnSiguienteExamenes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSiguienteExamenesActionPerformed(evt);
+                AvanzarExamenes(evt);
             }
         });
 
@@ -571,7 +667,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         btnAnteriorCalificacion.setText("Anterior");
         btnAnteriorCalificacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnteriorCalificacionActionPerformed(evt);
+                RetrocederCalificacion(evt);
             }
         });
 
@@ -605,9 +701,9 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
                 .addGroup(pnlExamenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblReactivos)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(68, 68, 68)
+                .addGap(43, 43, 43)
                 .addGroup(pnlExamenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRedaccion))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addGroup(pnlExamenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -683,7 +779,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
+                CancelarConsulta(evt);
             }
         });
 
@@ -720,7 +816,13 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSiguienteExamenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteExamenesActionPerformed
+    /**
+     * Obtiene el indice del examen que selecciono y lo envia para obtener el
+     * examen seleccionado.
+     *
+     * @param evt Recibe el evento del boton que lo activo.
+     */
+    private void AvanzarExamenes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AvanzarExamenes
         if (tblExamenes.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar un examen.",
                     "Advertencia", 2);
@@ -728,9 +830,15 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
             tbpCalificaciones.setSelectedIndex(4);
             consultarExamen(tblExamenes.getSelectedRow());
         }
-    }//GEN-LAST:event_btnSiguienteExamenesActionPerformed
+    }//GEN-LAST:event_AvanzarExamenes
 
-    private void btnSiguienteCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteCursosActionPerformed
+    /**
+     * Obtiene el nombre del curso seleccionado y lo envia para obtener los
+     * grupos de dicho curso.
+     *
+     * @param evt Recibe el evento del boton que lo activo.
+     */
+    private void AvanzarCursos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AvanzarCursos
         if (lstCursos.isSelectionEmpty()) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar un curso.",
                     "Advertencia", 2);
@@ -739,20 +847,36 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
             String nombreCurso = String.valueOf(lstCursos.getSelectedValue());
             consultarGrupos(nombreCurso);
         }
-    }//GEN-LAST:event_btnSiguienteCursosActionPerformed
+    }//GEN-LAST:event_AvanzarCursos
 
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+    /**
+     * Limpia la vista, libera la memoria y regresa a la vista principal.
+     *
+     * @param evt Recibe el evento del boton que lo activo.
+     */
+    private void CancelarConsulta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarConsulta
         padre.mostrarVista(Vista.HOME);
         limpiar();
         controlVista.liberarMemoria();
-    }//GEN-LAST:event_btnCancelarActionPerformed
+    }//GEN-LAST:event_CancelarConsulta
 
-    private void btnAnteriorGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorGruposActionPerformed
+    /**
+     * Regresa a la seccion de cursos y limpia la tabla de grupos.
+     *
+     * @param evt Recibe el evento del boton que lo activo.
+     */
+    private void RetrocederGrupos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetrocederGrupos
         tbpCalificaciones.setSelectedIndex(0);
         ((DefaultTableModel) tblGrupos.getModel()).setRowCount(0);
-    }//GEN-LAST:event_btnAnteriorGruposActionPerformed
+    }//GEN-LAST:event_RetrocederGrupos
 
-    private void btnSiguienteGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteGruposActionPerformed
+    /**
+     * Obtiene el indice del grupo seleccionado y lo envia para obtener los
+     * alumnos de dicho grupo.
+     *
+     * @param evt Recibe el evento del boton que lo activo.
+     */
+    private void AvanzarGrupos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AvanzarGrupos
         if (tblGrupos.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar un grupo.",
                     "Advertencia", 2);
@@ -760,14 +884,25 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
             tbpCalificaciones.setSelectedIndex(2);
             consultarAlumnos(tblGrupos.getSelectedRow());
         }
-    }//GEN-LAST:event_btnSiguienteGruposActionPerformed
+    }//GEN-LAST:event_AvanzarGrupos
 
-    private void btnAnteriorAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorAlumnosActionPerformed
+    /**
+     * Regresa a la seccion de grupos y limpia la tabla de alumnos.
+     *
+     * @param evt Recibe el evento del boton que lo activo.
+     */
+    private void RetrocederAlumnos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetrocederAlumnos
         tbpCalificaciones.setSelectedIndex(1);
         ((DefaultTableModel) tblAlumnos.getModel()).removeRow(0);
-    }//GEN-LAST:event_btnAnteriorAlumnosActionPerformed
+    }//GEN-LAST:event_RetrocederAlumnos
 
-    private void btnSiguienteAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteAlumnosActionPerformed
+    /**
+     * Obtiene el indice del alumno seleccionado y lo envia para obtener los
+     * exámenes de dicho alumno.
+     *
+     * @param evt Recibe el evento del boton que lo activo.
+     */
+    private void AvanzarAlumnos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AvanzarAlumnos
         if (tblAlumnos.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar un alumno.",
                     "Advertencia", 2);
@@ -775,63 +910,209 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
             tbpCalificaciones.setSelectedIndex(3);
             consultarExamenes(tblAlumnos.getSelectedRow());
         }
-    }//GEN-LAST:event_btnSiguienteAlumnosActionPerformed
+    }//GEN-LAST:event_AvanzarAlumnos
 
-    private void btnAnteriorExamenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorExamenesActionPerformed
+    /**
+     * Regresa a la sección de alumnos y limpia la tabla de exámenes.
+     *
+     * @param evt Recibe el evento del botón que lo activo.
+     */
+    private void RetrocederExamenes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetrocederExamenes
         tbpCalificaciones.setSelectedIndex(2);
         ((DefaultTableModel) tblExamenes.getModel()).setRowCount(0);
-    }//GEN-LAST:event_btnAnteriorExamenesActionPerformed
+    }//GEN-LAST:event_RetrocederExamenes
 
-    private void btnAnteriorCalificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorCalificacionActionPerformed
+    /**
+     * Regresa a la sección de exámenes y limpia los componentes de la sección
+     * de calificación.
+     *
+     * @param evt Recibe el evento del boton que lo activo.
+     */
+    private void RetrocederCalificacion(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetrocederCalificacion
         tbpCalificaciones.setSelectedIndex(3);
-    }//GEN-LAST:event_btnAnteriorCalificacionActionPerformed
+    }//GEN-LAST:event_RetrocederCalificacion
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Boton anterior para pasar a la seccion de grupos.
+    */
     private javax.swing.JButton btnAnteriorAlumnos;
+    /**
+    * Boton anterior para pasar a la seccion de examenes.
+    */
     private javax.swing.JButton btnAnteriorCalificacion;
+    /**
+    * Boton anterior para pasar a la seccion de alumnos.
+    */
     private javax.swing.JButton btnAnteriorExamenes;
+    /**
+    * Boton anterior para pasar a la seccion de crusos.
+    */
     private javax.swing.JButton btnAnteriorGrupos;
+    /**
+    * Boton para cancelar.
+    */
     private javax.swing.JButton btnCancelar;
+    /**
+    * Boton siguiente para pasar a la seccion de examenes.
+    */
     private javax.swing.JButton btnSiguienteAlumnos;
+    /**
+    * Boton siguiente para pasar a la seccion de grupos.
+    */
     private javax.swing.JButton btnSiguienteCursos;
+    /**
+    * Boton siguiente para pasar a la vista de calificacion.
+    */
     private javax.swing.JButton btnSiguienteExamenes;
+    /**
+    * Boton siguiente para pasar a la seccion de alumnos.
+    */
     private javax.swing.JButton btnSiguienteGrupos;
+    /**
+    * Scrollpane para la tabla de grupos.
+    */
     private javax.swing.JScrollPane jScrollPane1;
+    /**
+    * Scrollpane para la tabla de alumnos.
+    */
     private javax.swing.JScrollPane jScrollPane2;
+    /**
+    * Scrollpane para la tabla de examenes.
+    */
     private javax.swing.JScrollPane jScrollPane4;
+    /**
+    * Scrollpane para la lista de cursos.
+    */
     private javax.swing.JScrollPane jScrollPane5;
+    /**
+    * Scrollpane para la lista de reactivos.
+    */
     private javax.swing.JScrollPane jScrollPane6;
+    /**
+    * Scrollpane para la redaccion del reactivo.
+    */
     private javax.swing.JScrollPane jScrollPane7;
+    /**
+    * Label para el nombre del alumno.
+    */
     private javax.swing.JLabel lblAlumno;
+    /**
+    * Label para la tabla de alumnos.
+    */
     private javax.swing.JLabel lblAlumnos;
+    /**
+    * Label para la calificacion.
+    */
     private javax.swing.JLabel lblCalificacion;
+    /**
+    * Label para el icon de correcto o incorrecto.
+    */
     private javax.swing.JLabel lblCorrecto;
+    /**
+    * Label para la lista de cursos.
+    */
     private javax.swing.JLabel lblCursos;
+    /**
+    * Label para la tabla de examenes.
+    */
     private javax.swing.JLabel lblExamenes;
+    /**
+    * Label para la tabla de grupos.
+    */
     private javax.swing.JLabel lblGrupos;
+    /**
+    * Label para la lista de reactivos.
+    */
     private javax.swing.JLabel lblReactivos;
+    /**
+    * Label para la redaccion del reactivo.
+    */
     private javax.swing.JLabel lblRedaccion;
+    /**
+    * Label para la respuesta del alumno.
+    */
     private javax.swing.JLabel lblRespAlumno;
+    /**
+    * Label para la respuesta correcta.
+    */
     private javax.swing.JLabel lblRespCorrecta;
+    /**
+    * Label para el titulo de la vista.
+    */
     private javax.swing.JLabel lblTitulo;
+    /**
+    * Label para el titulo del examen.
+    */
     private javax.swing.JLabel lblTituloExamen;
+    /**
+    * Lista para mostrar los cursos.
+    */
     private javax.swing.JList lstCursos;
+    /**
+    * Lista para mostrar los reactivos.
+    */
     private javax.swing.JList lstReactivos;
+    /**
+    * Panel para la seccion de alumnos.
+    */
     private javax.swing.JPanel pnlAlumnos;
+    /**
+    * Panel para la seccion de cursos.
+    */
     private javax.swing.JPanel pnlCursos;
+    /**
+    * Panel para la seccion de calificacion.
+    */
     private javax.swing.JPanel pnlExamen;
+    /**
+    * Panel para la seccion de examenes.
+    */
     private javax.swing.JPanel pnlExamenes;
+    /**
+    * Panel para la seccion de grupos.
+    */
     private javax.swing.JPanel pnlGrupos;
+    /**
+    * Tabla para mostrar alumnos.
+    */
     private javax.swing.JTable tblAlumnos;
+    /**
+    * Tabla para mostrar examenes.
+    */
     private javax.swing.JTable tblExamenes;
+    /**
+    * Tabla para mostrar grupos.
+    */
     private javax.swing.JTable tblGrupos;
+    /**
+    * Tabbedpane para mostrar las secciones de consulta.
+    */
     private javax.swing.JTabbedPane tbpCalificaciones;
+    /**
+    * Textarea para la redaccion del reactivo.
+    */
     private javax.swing.JTextArea txtaRedaccion;
+    /**
+    * Textfield para el nombre del alumno.
+    */
     private javax.swing.JTextField txtfAlumno;
+    /**
+    * Textfield para la calificacion.
+    */
     private javax.swing.JTextField txtfCalificacion;
+    /**
+    * Textfield para la respuesta del alumno.
+    */
     private javax.swing.JTextField txtfRespAlumno;
+    /**
+    * Textfield para la respuesta correcta.
+    */
     private javax.swing.JTextField txtfRespCorrecta;
+    /**
+    * Textfield para el titulo del examen.
+    */
     private javax.swing.JTextField txtfTitulo;
     // End of variables declaration//GEN-END:variables
 
@@ -845,6 +1126,12 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         // No implementado.
     }
 
+    /**
+     * Muestra un mensaje de confirmación cuando se quiere cambiar de vista.
+     *
+     * @return Retorna una variable de tipo boleana que indicara si, se desea
+     * cambiar de vista o no.
+     */
     @Override
     public boolean confirmarCambio() {
         boolean cambiar = false;
@@ -868,6 +1155,11 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         //No implementado.
     }
 
+    /**
+     * Este método es invocado cuando se muestra por primera vez esta vista.
+     *
+     * @param event el objeto AncestorEvent generado por el evento
+     */
     @Override
     public void ancestorAdded(AncestorEvent event) {
         if (isShowing()) {
