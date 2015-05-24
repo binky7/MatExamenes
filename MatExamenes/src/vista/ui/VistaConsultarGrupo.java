@@ -44,17 +44,50 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements
      * capas inferiores.
      */
     private CVMantenerGrupos controladorVista;
+
     /**
      * Interface de comunicación con la interfaz padre, la cuál sirve para
      * comunicarse con ella y recibir mensajes para mostrar otras vistas, En ese
      * caso es utilizada para comunicarse con el JFrame Principal.
      */
     private InterfaceVista padre;
+
     /**
      * Lista de objetos de tipo GrupoDTO utilizada para mostrar la lista de
      * grupos disponibles.
      */
     private List<GrupoDTO> listaGrupos;
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Boton para cancelar.
+    */
+    private javax.swing.JButton btnCancelar;
+    /**
+    * Boton para eliminar.
+    */
+    private javax.swing.JButton btnEliminar;
+    /**
+    * Boton para modificar.
+    */
+    private javax.swing.JButton btnModificar;
+    /**
+    * Scrollpane para la tabla de grupos.
+    */
+    private javax.swing.JScrollPane jScrollPane1;
+    /**
+    * Label para la tabla grupos.
+    */
+    private javax.swing.JLabel lblGrupos;
+    /**
+    * Label para el titulo de la vista.
+    */
+    private javax.swing.JLabel lblTitulo;
+    /**
+    * Tabla para mostrar los grupos.
+    */
+    private javax.swing.JTable tblGrupos;
+    // End of variables declaration//GEN-END:variables
 
     /**
      * Crea un objeto VistaConsultarGrupo e inicializa sus atributos, agrega los
@@ -187,7 +220,7 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelarConsulta(evt);
+                Cancelar(evt);
             }
         });
 
@@ -286,38 +319,15 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements
         }
     }//GEN-LAST:event_EliminarGrupo
 
-    private void CancelarConsulta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarConsulta
+    /**
+     * Regresa a la vista principal y limpia la vista de consultar.
+     *
+     * @param evt Recibe el evento del boton que lo activo.
+     */
+    private void Cancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Cancelar
         padre.mostrarVista(Vista.HOME);
         limpiar();
-    }//GEN-LAST:event_CancelarConsulta
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-    * Boton para cancelar.
-    */
-    private javax.swing.JButton btnCancelar;
-    /**
-    * Boton para eliminar.
-    */
-    private javax.swing.JButton btnEliminar;
-    /**
-    * Boton para modificar.
-    */
-    private javax.swing.JButton btnModificar;
-    private javax.swing.JScrollPane jScrollPane1;
-    /**
-    * Label para la tabla grupos.
-    */
-    private javax.swing.JLabel lblGrupos;
-    /**
-    * Label para el titulo de la vista.
-    */
-    private javax.swing.JLabel lblTitulo;
-    /**
-    * Tabla para mostrar los grupos.
-    */
-    private javax.swing.JTable tblGrupos;
-    // End of variables declaration//GEN-END:variables
+    }//GEN-LAST:event_Cancelar
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {

@@ -33,7 +33,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
 
     //Usuario que inicio sesion
     private UsuarioDTO usuarioActual;
-    
+
     //Para manipular las vistas
     private final CardLayout manejadorVista = new CardLayout();
     private VistaHOME vistaHome;
@@ -51,7 +51,6 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     private VistaConsultarGrupo vistaConsultarGrupo;
     private VistaModificarGrupo vistaModificarGrupo;
     private VistaConsultarCalificaciones vistaConsultarCalificaciones;
-    private VistaConsultarCalificacionesExamen vistaConsultarCalificacionesExamen;
     private VistaRegistrarUsuario vistaRegistrarUsuario;
     private VistaConsultarUsuarios vistaConsultarUsuarios;
     private VistaModificarUsuario vistaModificarUsuario;
@@ -61,7 +60,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     private VistaGenerarEstadisticas vistaGenerarEstadisticas;
     private VistaBuscarExamenAsignado vistaBuscarExamenAsignado;
     private VistaContestarExamen vistaContestarExamen;
-    
+
     /**
      * Creates new form Principal
      */
@@ -70,68 +69,68 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         init();
         //manejadorVista.last(vistas);
         setTitle("MatExamenes");
-        
+
         //Agregar los listeners para los menus
         miRegistrarTema.addActionListener(this);
         miConsultarTemas.addActionListener(this);
-        
+
         miRegistrarCurso.addActionListener(this);
         miConsultarCursos.addActionListener(this);
-        
+
         miRegistrarUsuario.addActionListener(this);
         miConsultarUsuarios.addActionListener(this);
-        
+
         miRegistrarReactivo.addActionListener(this);
         miConsultarReactivos.addActionListener(this);
-        
+
         miRegistrarGrupo.addActionListener(this);
         miConsultarGrupos.addActionListener(this);
-        
+
         miRegistrarExamen.addActionListener(this);
         miConsultarExamenes.addActionListener(this);
         miAsignarExamenes.addActionListener(this);
         miContestarExamen.addActionListener(this);
-        
+
         miConsultarCalificaciones.addActionListener(this);
         miGenerarEstadisticas.addActionListener(this);
     }
-    
+
     public void setUsuarioActual(UsuarioDTO usuarioActual) {
         this.usuarioActual = usuarioActual;
     }
 
     /**
-     * Para crear los paneles, los controladores de vista y las relaciones
-     * entre esta vista y los paneles
+     * Para crear los paneles, los controladores de vista y las relaciones entre
+     * esta vista y los paneles
      */
     private void init() {
         //se deben agregar todos los paneles de vista a este panel
         vistas.setLayout(manejadorVista);
         initVistas();
-        initControladores();        
+        initControladores();
         agregarPadres();
         agregarAPrincipal();
     }
-    
+
     private void initVistas() {
         //Crear vistas
         vistaHome = new VistaHOME();
         vistaHome.setName(Vista.HOME.toString());
-        
+
         vistaRegistrarTema = new VistaRegistrarTema();
         vistaRegistrarTema.setName(Vista.RegistrarTema.toString());
         vistaConsultarTemas = new VistaConsultarTemas();
         vistaConsultarTemas.setName(Vista.ConsultarTemas.toString());
         vistaModificarTema = new VistaModificarTema();
         vistaModificarTema.setName(Vista.ModificarTema.toString());
-        
+
         vistaRegistrarCurso = new VistaRegistrarCurso();
         vistaRegistrarCurso.setName(Vista.RegistrarCurso.toString());
         vistaConsultarCursos = new VistaConsultarCursos();
         vistaConsultarCursos.setName(Vista.ConsultarCursos.toString());
         vistaModificarCurso = new VistaModificarCurso();
         vistaModificarCurso.setName(Vista.ModificarCurso.toString());
-        
+
         vistaRegistrarExamen = new VistaRegistrarExamen();
         vistaRegistrarExamen.setName(Vista.RegistrarExamen.toString());
         vistaConsultarExamenes = new VistaConsultarExamenes();
@@ -144,166 +143,157 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistaBuscarExamenAsignado.setName(Vista.BuscarExamenAsignado.toString());
         vistaContestarExamen = new VistaContestarExamen();
         vistaContestarExamen.setName(Vista.ContestarExamen.toString());
-        
+
         vistaRegistrarGrupo = new VistaRegistrarGrupo();
         vistaRegistrarGrupo.setName(Vista.RegistrarGrupo.toString());
         vistaConsultarGrupo = new VistaConsultarGrupo();
         vistaConsultarGrupo.setName(Vista.ConsultarGrupo.toString());
         vistaModificarGrupo = new VistaModificarGrupo();
         vistaModificarGrupo.setName(Vista.ModificarGrupo.toString());
-        
+
         vistaConsultarCalificaciones = new VistaConsultarCalificaciones();
-        vistaConsultarCalificaciones.setName(Vista
-                .ConsultarCalificaciones.toString());
-        vistaConsultarCalificacionesExamen = 
-                new VistaConsultarCalificacionesExamen();
-        vistaConsultarCalificacionesExamen.setName(Vista
-                .ConsultarCalificacionesExamen.toString());
-        
+        vistaConsultarCalificaciones.setName(Vista.ConsultarCalificaciones.toString());
+
         vistaRegistrarUsuario = new VistaRegistrarUsuario();
         vistaRegistrarUsuario.setName(Vista.RegistrarUsuario.toString());
         vistaConsultarUsuarios = new VistaConsultarUsuarios();
         vistaConsultarUsuarios.setName(Vista.ConsultarUsuarios.toString());
         vistaModificarUsuario = new VistaModificarUsuario();
         vistaModificarUsuario.setName(Vista.ModificarUsuario.toString());
-        
+
         vistaRegistrarReactivo = new VistaRegistrarReactivo();
         vistaRegistrarReactivo.setName(Vista.RegistrarReactivo.toString());
         vistaConsultarReactivos = new VistaConsultarReactivos();
         vistaConsultarReactivos.setName(Vista.ConsultarReactivos.toString());
         vistaModificarReactivo = new VistaModificarReactivo();
         vistaModificarReactivo.setName(Vista.ModificarReactivo.toString());
-        
+
         vistaGenerarEstadisticas = new VistaGenerarEstadisticas();
         vistaGenerarEstadisticas.setName(Vista.GenerarEstadisticas.toString());
     }
-    
+
     private void initControladores() {
         //Crear controladores vistas
         CVMantenerTemas cvMantenerTemas = new CVMantenerTemas();
         CVMantenerCursos cvMantenerCursos = new CVMantenerCursos();
         CVMantenerGrupos cvMantenerGrupos = new CVMantenerGrupos();
-        CVConsultarCalificaciones cvConsultarCalificaciones =
-                new CVConsultarCalificaciones();
+        CVConsultarCalificaciones cvConsultarCalificaciones
+                = new CVConsultarCalificaciones();
         CVMantenerUsuarios cvMantenerUsuarios = new CVMantenerUsuarios();
         CVMantenerReactivos cvMantenerReactivos = new CVMantenerReactivos();
         CVMantenerExamenes cvMantenerExamenes = new CVMantenerExamenes();
         CVAsignarExamenes cvAsignarExamenes = new CVAsignarExamenes();
         CVGenerarEstadisticas cvGenerarEstadisticas = new CVGenerarEstadisticas();
         CVContestarExamen cvContestarExamen = new CVContestarExamen();
-        
+
         //Asignar controladores a vistas
         vistaRegistrarTema.setControlador(cvMantenerTemas);
         vistaModificarTema.setControlador(cvMantenerTemas);
         vistaConsultarTemas.setControlador(cvMantenerTemas);
-        
+
         vistaRegistrarCurso.setControlador(cvMantenerCursos);
         vistaModificarCurso.setControlador(cvMantenerCursos);
         vistaConsultarCursos.setControlador(cvMantenerCursos);
-        
+
         vistaRegistrarGrupo.setControlador(cvMantenerGrupos);
         vistaConsultarGrupo.setControlador(cvMantenerGrupos);
         vistaModificarGrupo.setControlador(cvMantenerGrupos);
-        
+
         vistaConsultarCalificaciones.setControlador(cvConsultarCalificaciones);
-        vistaConsultarCalificacionesExamen
-                .setControlador(cvConsultarCalificaciones);
-        
+
         vistaRegistrarUsuario.setControlador(cvMantenerUsuarios);
         vistaConsultarUsuarios.setControlador(cvMantenerUsuarios);
         vistaModificarUsuario.setControlador(cvMantenerUsuarios);
-        
+
         vistaRegistrarReactivo.setControlador(cvMantenerReactivos);
         vistaConsultarReactivos.setControlador(cvMantenerReactivos);
         vistaModificarReactivo.setControlador(cvMantenerReactivos);
-        
+
         vistaRegistrarExamen.setControlador(cvMantenerExamenes);
         vistaConsultarExamenes.setControlador(cvMantenerExamenes);
         vistaModificarExamen.setControlador(cvMantenerExamenes);
         vistaAsignarExamenes.setControlador(cvAsignarExamenes);
         vistaBuscarExamenAsignado.setControlador(cvContestarExamen);
         vistaContestarExamen.setControlador(cvContestarExamen);
-        
+
         vistaGenerarEstadisticas.setControlador(cvGenerarEstadisticas);
     }
-    
+
     private void agregarPadres() {
         //Asignar padre a vistas
         vistaRegistrarTema.setPadre(this);
         vistaConsultarTemas.setPadre(this);
         vistaModificarTema.setPadre(this);
-        
+
         vistaRegistrarCurso.setPadre(this);
         vistaConsultarCursos.setPadre(this);
         vistaModificarCurso.setPadre(this);
-        
+
         vistaRegistrarGrupo.setPadre(this);
         vistaConsultarGrupo.setPadre(this);
         vistaModificarGrupo.setPadre(this);
-        
+
         vistaRegistrarExamen.setPadre(this);
         vistaConsultarExamenes.setPadre(this);
         vistaModificarExamen.setPadre(this);
         vistaAsignarExamenes.setPadre(this);
         vistaBuscarExamenAsignado.setPadre(this);
         vistaContestarExamen.setPadre(this);
-        
+
         vistaConsultarCalificaciones.setPadre(this);
-        vistaConsultarCalificacionesExamen.setPadre(this);
-        
+
         vistaRegistrarUsuario.setPadre(this);
         vistaConsultarUsuarios.setPadre(this);
         vistaModificarUsuario.setPadre(this);
-        
+
         vistaRegistrarReactivo.setPadre(this);
         vistaConsultarReactivos.setPadre(this);
         vistaModificarReactivo.setPadre(this);
 
         vistaGenerarEstadisticas.setPadre(this);
     }
-    
+
     private void agregarAPrincipal() {
         //Agregar un panel y su identificador. Para agregar mas identificadores
         //ir a vista.interfaz.InterfazVista y agregarlos al enum Vista
         vistas.add(vistaHome, Vista.HOME.toString());
-        
+
         vistas.add(vistaRegistrarTema, Vista.RegistrarTema.toString());
         vistas.add(vistaConsultarTemas, Vista.ConsultarTemas.toString());
         vistas.add(vistaModificarTema, Vista.ModificarTema.toString());
-        
+
         vistas.add(vistaRegistrarCurso, Vista.RegistrarCurso.toString());
         vistas.add(vistaConsultarCursos, Vista.ConsultarCursos.toString());
         vistas.add(vistaModificarCurso, Vista.ModificarCurso.toString());
-        
+
         vistas.add(vistaRegistrarGrupo, Vista.RegistrarGrupo.toString());
         vistas.add(vistaConsultarGrupo, Vista.ConsultarGrupo.toString());
         vistas.add(vistaModificarGrupo, Vista.ModificarGrupo.toString());
-        
+
         vistas.add(vistaRegistrarExamen, Vista.RegistrarExamen.toString());
         vistas.add(vistaConsultarExamenes, Vista.ConsultarExamenes.toString());
         vistas.add(vistaModificarExamen, Vista.ModificarExamen.toString());
         vistas.add(vistaAsignarExamenes, Vista.AsignarExamenes.toString());
         vistas.add(vistaBuscarExamenAsignado, Vista.BuscarExamenAsignado.toString());
         vistas.add(vistaContestarExamen, Vista.ContestarExamen.toString());
-        
+
         vistas.add(vistaConsultarCalificaciones, Vista.ConsultarCalificaciones
                 .toString());
-        vistas.add(vistaConsultarCalificacionesExamen, Vista
-                .ConsultarCalificacionesExamen.toString());
-        
+
         vistas.add(vistaRegistrarUsuario, Vista.RegistrarUsuario.toString());
         vistas.add(vistaConsultarUsuarios, Vista.ConsultarUsuarios.toString());
         vistas.add(vistaModificarUsuario, Vista.ModificarUsuario.toString());
-        
+
         vistas.add(vistaRegistrarReactivo, Vista.RegistrarReactivo.toString());
         vistas.add(vistaConsultarReactivos, Vista.ConsultarReactivos.toString());
         vistas.add(vistaModificarReactivo, Vista.ModificarReactivo.toString());
-        
+
         vistas.add(vistaGenerarEstadisticas, Vista.GenerarEstadisticas.toString());
     }
-    
+
     /**
      * Obtener la vista actualmente mostrada
+     *
      * @return vista actual
      */
     private JPanel getVistaActual() {
@@ -315,10 +305,10 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
                 break;
             }
         }
-        
+
         return vista;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -521,7 +511,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         ocultarTodos();
         mContestarExamen.setVisible(true);
     }
-    
+
     public void setVistaMaestro() {
         ocultarTodos();
         mCalificaciones.setVisible(true);
@@ -529,14 +519,15 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         mReactivos.setVisible(true);
         vistaConsultarReactivos.deshabilitarBtnEliminar();
     }
+
     /**
-     * 
+     *
      */
     public void setVistaAdmin() {
-       //no se oculta ninguna opcion del menu 
+        //no se oculta ninguna opcion del menu 
     }
-    
-    private void ocultarTodos(){
+
+    private void ocultarTodos() {
         mCalificaciones.setVisible(false);
         mContestarExamen.setVisible(false);
         mCursos.setVisible(false);
@@ -547,7 +538,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         mTemas.setVisible(false);
         mUsuarios.setVisible(false);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu9;
@@ -586,11 +577,11 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
         //Muestra la vista modificar necesaria y le envia el objeto entidad.
         manejadorVista.show(vistas, vista.toString());
-        
+
         //Obtener la vista que se acabo de mostrar.
         JPanel vistaModificar = getVistaActual();
         //Enviarle el objeto por medio de la interfaz.
-        ((InterfaceVista)vistaModificar).mostrarEntidad(entidad);
+        ((InterfaceVista) vistaModificar).mostrarEntidad(entidad);
     }
 
     @Override
@@ -623,15 +614,15 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         //Para cuando se haga click en un menu item
         JPanel actual = getVistaActual();
         boolean ok = true;
-        
-        if(actual.getName().startsWith("Registrar") || actual.getName()
+
+        if (actual.getName().startsWith("Registrar") || actual.getName()
                 .startsWith("Modificar")) {
-            ok = ((InterfaceVista)actual).confirmarCambio();
+            ok = ((InterfaceVista) actual).confirmarCambio();
         }
-        
-        if(ok) {
-            ((InterfaceVista)actual).limpiar();
-            manejadorVista.show(vistas, ((JMenuItem)e.getSource()).getName());
+
+        if (ok) {
+            ((InterfaceVista) actual).limpiar();
+            manejadorVista.show(vistas, ((JMenuItem) e.getSource()).getName());
         }
     }
 }

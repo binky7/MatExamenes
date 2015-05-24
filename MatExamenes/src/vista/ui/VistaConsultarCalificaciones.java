@@ -51,20 +51,206 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
      * comunicarse con las capas inferiores.
      */
     private CVConsultarCalificaciones controlVista;
+
     /**
      * Interface de comunicación con la interfaz padre, la cuál sirve para
      * comunicarse con ella y recibir mensajes para mostrar otras vistas, En ese
      * caso es utilizada para comunicarse con el JFrame Principal.
      */
     private InterfaceVista padre;
+
     /**
      * Almacena el icono del estado correcto.
      */
     private final ImageIcon ICONO_BIEN;
+
     /**
      * Almacena el icno del estado incorrecto.
      */
     private final ImageIcon ICONO_MAL;
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Boton anterior para pasar a la seccion de grupos.
+    */
+    private javax.swing.JButton btnAnteriorAlumnos;
+    /**
+    * Boton anterior para pasar a la seccion de examenes.
+    */
+    private javax.swing.JButton btnAnteriorCalificacion;
+    /**
+    * Boton anterior para pasar a la seccion de alumnos.
+    */
+    private javax.swing.JButton btnAnteriorExamenes;
+    /**
+    * Boton anterior para pasar a la seccion de crusos.
+    */
+    private javax.swing.JButton btnAnteriorGrupos;
+    /**
+    * Boton para cancelar.
+    */
+    private javax.swing.JButton btnCancelar;
+    /**
+    * Boton siguiente para pasar a la seccion de examenes.
+    */
+    private javax.swing.JButton btnSiguienteAlumnos;
+    /**
+    * Boton siguiente para pasar a la seccion de grupos.
+    */
+    private javax.swing.JButton btnSiguienteCursos;
+    /**
+    * Boton siguiente para pasar a la vista de calificacion.
+    */
+    private javax.swing.JButton btnSiguienteExamenes;
+    /**
+    * Boton siguiente para pasar a la seccion de alumnos.
+    */
+    private javax.swing.JButton btnSiguienteGrupos;
+    /**
+    * Scrollpane para la tabla de grupos.
+    */
+    private javax.swing.JScrollPane jScrollPane1;
+    /**
+    * Scrollpane para la tabla de alumnos.
+    */
+    private javax.swing.JScrollPane jScrollPane2;
+    /**
+    * Scrollpane para la tabla de examenes.
+    */
+    private javax.swing.JScrollPane jScrollPane4;
+    /**
+    * Scrollpane para la lista de cursos.
+    */
+    private javax.swing.JScrollPane jScrollPane5;
+    /**
+    * Scrollpane para la lista de reactivos.
+    */
+    private javax.swing.JScrollPane jScrollPane6;
+    /**
+    * Scrollpane para la redaccion del reactivo.
+    */
+    private javax.swing.JScrollPane jScrollPane7;
+    /**
+    * Label para el nombre del alumno.
+    */
+    private javax.swing.JLabel lblAlumno;
+    /**
+    * Label para la tabla de alumnos.
+    */
+    private javax.swing.JLabel lblAlumnos;
+    /**
+    * Label para la calificacion.
+    */
+    private javax.swing.JLabel lblCalificacion;
+    /**
+    * Label para el icon de correcto o incorrecto.
+    */
+    private javax.swing.JLabel lblCorrecto;
+    /**
+    * Label para la lista de cursos.
+    */
+    private javax.swing.JLabel lblCursos;
+    /**
+    * Label para la tabla de examenes.
+    */
+    private javax.swing.JLabel lblExamenes;
+    /**
+    * Label para la tabla de grupos.
+    */
+    private javax.swing.JLabel lblGrupos;
+    /**
+    * Label para la lista de reactivos.
+    */
+    private javax.swing.JLabel lblReactivos;
+    /**
+    * Label para la redaccion del reactivo.
+    */
+    private javax.swing.JLabel lblRedaccion;
+    /**
+    * Label para la respuesta del alumno.
+    */
+    private javax.swing.JLabel lblRespAlumno;
+    /**
+    * Label para la respuesta correcta.
+    */
+    private javax.swing.JLabel lblRespCorrecta;
+    /**
+    * Label para el titulo de la vista.
+    */
+    private javax.swing.JLabel lblTitulo;
+    /**
+    * Label para el titulo del examen.
+    */
+    private javax.swing.JLabel lblTituloExamen;
+    /**
+    * Lista para mostrar los cursos.
+    */
+    private javax.swing.JList lstCursos;
+    /**
+    * Lista para mostrar los reactivos.
+    */
+    private javax.swing.JList lstReactivos;
+    /**
+    * Panel para la seccion de alumnos.
+    */
+    private javax.swing.JPanel pnlAlumnos;
+    /**
+    * Panel para la seccion de cursos.
+    */
+    private javax.swing.JPanel pnlCursos;
+    /**
+    * Panel para la seccion de calificacion.
+    */
+    private javax.swing.JPanel pnlExamen;
+    /**
+    * Panel para la seccion de examenes.
+    */
+    private javax.swing.JPanel pnlExamenes;
+    /**
+    * Panel para la seccion de grupos.
+    */
+    private javax.swing.JPanel pnlGrupos;
+    /**
+    * Tabla para mostrar alumnos.
+    */
+    private javax.swing.JTable tblAlumnos;
+    /**
+    * Tabla para mostrar examenes.
+    */
+    private javax.swing.JTable tblExamenes;
+    /**
+    * Tabla para mostrar grupos.
+    */
+    private javax.swing.JTable tblGrupos;
+    /**
+    * Tabbedpane para mostrar las secciones de consulta.
+    */
+    private javax.swing.JTabbedPane tbpCalificaciones;
+    /**
+    * Textarea para la redaccion del reactivo.
+    */
+    private javax.swing.JTextArea txtaRedaccion;
+    /**
+    * Textfield para el nombre del alumno.
+    */
+    private javax.swing.JTextField txtfAlumno;
+    /**
+    * Textfield para la calificacion.
+    */
+    private javax.swing.JTextField txtfCalificacion;
+    /**
+    * Textfield para la respuesta del alumno.
+    */
+    private javax.swing.JTextField txtfRespAlumno;
+    /**
+    * Textfield para la respuesta correcta.
+    */
+    private javax.swing.JTextField txtfRespCorrecta;
+    /**
+    * Textfield para el titulo del examen.
+    */
+    private javax.swing.JTextField txtfTitulo;
+    // End of variables declaration//GEN-END:variables
 
     /**
      * Crea un objeto VistaRegistrarGrupo e inicializa sus atributos, y agrega
@@ -779,7 +965,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelarConsulta(evt);
+                Cancelar(evt);
             }
         });
 
@@ -854,11 +1040,11 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
      *
      * @param evt Recibe el evento del boton que lo activo.
      */
-    private void CancelarConsulta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarConsulta
+    private void Cancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Cancelar
         padre.mostrarVista(Vista.HOME);
         limpiar();
         controlVista.liberarMemoria();
-    }//GEN-LAST:event_CancelarConsulta
+    }//GEN-LAST:event_Cancelar
 
     /**
      * Regresa a la seccion de cursos y limpia la tabla de grupos.
@@ -931,190 +1117,6 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
     private void RetrocederCalificacion(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetrocederCalificacion
         tbpCalificaciones.setSelectedIndex(3);
     }//GEN-LAST:event_RetrocederCalificacion
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-    * Boton anterior para pasar a la seccion de grupos.
-    */
-    private javax.swing.JButton btnAnteriorAlumnos;
-    /**
-    * Boton anterior para pasar a la seccion de examenes.
-    */
-    private javax.swing.JButton btnAnteriorCalificacion;
-    /**
-    * Boton anterior para pasar a la seccion de alumnos.
-    */
-    private javax.swing.JButton btnAnteriorExamenes;
-    /**
-    * Boton anterior para pasar a la seccion de crusos.
-    */
-    private javax.swing.JButton btnAnteriorGrupos;
-    /**
-    * Boton para cancelar.
-    */
-    private javax.swing.JButton btnCancelar;
-    /**
-    * Boton siguiente para pasar a la seccion de examenes.
-    */
-    private javax.swing.JButton btnSiguienteAlumnos;
-    /**
-    * Boton siguiente para pasar a la seccion de grupos.
-    */
-    private javax.swing.JButton btnSiguienteCursos;
-    /**
-    * Boton siguiente para pasar a la vista de calificacion.
-    */
-    private javax.swing.JButton btnSiguienteExamenes;
-    /**
-    * Boton siguiente para pasar a la seccion de alumnos.
-    */
-    private javax.swing.JButton btnSiguienteGrupos;
-    /**
-    * Scrollpane para la tabla de grupos.
-    */
-    private javax.swing.JScrollPane jScrollPane1;
-    /**
-    * Scrollpane para la tabla de alumnos.
-    */
-    private javax.swing.JScrollPane jScrollPane2;
-    /**
-    * Scrollpane para la tabla de examenes.
-    */
-    private javax.swing.JScrollPane jScrollPane4;
-    /**
-    * Scrollpane para la lista de cursos.
-    */
-    private javax.swing.JScrollPane jScrollPane5;
-    /**
-    * Scrollpane para la lista de reactivos.
-    */
-    private javax.swing.JScrollPane jScrollPane6;
-    /**
-    * Scrollpane para la redaccion del reactivo.
-    */
-    private javax.swing.JScrollPane jScrollPane7;
-    /**
-    * Label para el nombre del alumno.
-    */
-    private javax.swing.JLabel lblAlumno;
-    /**
-    * Label para la tabla de alumnos.
-    */
-    private javax.swing.JLabel lblAlumnos;
-    /**
-    * Label para la calificacion.
-    */
-    private javax.swing.JLabel lblCalificacion;
-    /**
-    * Label para el icon de correcto o incorrecto.
-    */
-    private javax.swing.JLabel lblCorrecto;
-    /**
-    * Label para la lista de cursos.
-    */
-    private javax.swing.JLabel lblCursos;
-    /**
-    * Label para la tabla de examenes.
-    */
-    private javax.swing.JLabel lblExamenes;
-    /**
-    * Label para la tabla de grupos.
-    */
-    private javax.swing.JLabel lblGrupos;
-    /**
-    * Label para la lista de reactivos.
-    */
-    private javax.swing.JLabel lblReactivos;
-    /**
-    * Label para la redaccion del reactivo.
-    */
-    private javax.swing.JLabel lblRedaccion;
-    /**
-    * Label para la respuesta del alumno.
-    */
-    private javax.swing.JLabel lblRespAlumno;
-    /**
-    * Label para la respuesta correcta.
-    */
-    private javax.swing.JLabel lblRespCorrecta;
-    /**
-    * Label para el titulo de la vista.
-    */
-    private javax.swing.JLabel lblTitulo;
-    /**
-    * Label para el titulo del examen.
-    */
-    private javax.swing.JLabel lblTituloExamen;
-    /**
-    * Lista para mostrar los cursos.
-    */
-    private javax.swing.JList lstCursos;
-    /**
-    * Lista para mostrar los reactivos.
-    */
-    private javax.swing.JList lstReactivos;
-    /**
-    * Panel para la seccion de alumnos.
-    */
-    private javax.swing.JPanel pnlAlumnos;
-    /**
-    * Panel para la seccion de cursos.
-    */
-    private javax.swing.JPanel pnlCursos;
-    /**
-    * Panel para la seccion de calificacion.
-    */
-    private javax.swing.JPanel pnlExamen;
-    /**
-    * Panel para la seccion de examenes.
-    */
-    private javax.swing.JPanel pnlExamenes;
-    /**
-    * Panel para la seccion de grupos.
-    */
-    private javax.swing.JPanel pnlGrupos;
-    /**
-    * Tabla para mostrar alumnos.
-    */
-    private javax.swing.JTable tblAlumnos;
-    /**
-    * Tabla para mostrar examenes.
-    */
-    private javax.swing.JTable tblExamenes;
-    /**
-    * Tabla para mostrar grupos.
-    */
-    private javax.swing.JTable tblGrupos;
-    /**
-    * Tabbedpane para mostrar las secciones de consulta.
-    */
-    private javax.swing.JTabbedPane tbpCalificaciones;
-    /**
-    * Textarea para la redaccion del reactivo.
-    */
-    private javax.swing.JTextArea txtaRedaccion;
-    /**
-    * Textfield para el nombre del alumno.
-    */
-    private javax.swing.JTextField txtfAlumno;
-    /**
-    * Textfield para la calificacion.
-    */
-    private javax.swing.JTextField txtfCalificacion;
-    /**
-    * Textfield para la respuesta del alumno.
-    */
-    private javax.swing.JTextField txtfRespAlumno;
-    /**
-    * Textfield para la respuesta correcta.
-    */
-    private javax.swing.JTextField txtfRespCorrecta;
-    /**
-    * Textfield para el titulo del examen.
-    */
-    private javax.swing.JTextField txtfTitulo;
-    // End of variables declaration//GEN-END:variables
 
     @Override
     public void mostrarVista(Vista vista) {
