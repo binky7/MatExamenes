@@ -208,7 +208,6 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
                         + "por enviar." + "\n" + "Re enviando",
                         "Respaldo examen", JOptionPane.INFORMATION_MESSAGE);
                 calificarExamen(examen, alumno);
-                respaldo.eliminarRespaldo();
             } else if (usuarioRespaldo && System.currentTimeMillis() < (fin + HOLGURA) && !contestado) {
                 //El usuario que inicio es el mismo que tiene el respaldo,
                 //el tiempo actual es menor que el tiempo de terminación
@@ -225,7 +224,6 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
                 //el tiempo actual más la holgura supera el tiempo de terminación y
                 //el examen no fue contestado.
                 calificarExamen(examen, alumno);
-                respaldo.eliminarRespaldo();
             } else if (!usuarioRespaldo) {
                 //El usuario que inicio en el sistema no es igual al que genero el respaldo.
                 cvContestarExamen.calificarExamen(examen.getReactivos().size(),
