@@ -9,7 +9,11 @@ import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVAsignarExamenes;
@@ -29,7 +33,7 @@ import vista.interfaz.InterfaceVista;
  * @author Jesus Donaldo
  */
 public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
-        ActionListener {
+        ActionListener, WindowListener {
 
     //Usuario que inicio sesion
     private UsuarioDTO usuarioActual;
@@ -110,6 +114,9 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         initControladores();
         agregarPadres();
         agregarAPrincipal();
+        
+        addWindowListener(this);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
 
     private void initVistas() {
@@ -614,15 +621,59 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         //Para cuando se haga click en un menu item
         JPanel actual = getVistaActual();
         boolean ok = true;
-
-        if (actual.getName().startsWith("Registrar") || actual.getName()
-                .startsWith("Modificar")) {
-            ok = ((InterfaceVista) actual).confirmarCambio();
+        
+        String nombreMenu = ((JMenuItem)e.getSource()).getName();
+        
+        if((actual.getName().startsWith("Registrar") || actual.getName()
+                .startsWith("Modificar")) && !actual.getName().equals(nombreMenu)) {
+            ok = ((InterfaceVista)actual).confirmarCambio();
         }
-
-        if (ok) {
-            ((InterfaceVista) actual).limpiar();
-            manejadorVista.show(vistas, ((JMenuItem) e.getSource()).getName());
+        
+        if(ok && !actual.getName().equals(nombreMenu)) {
+            ((InterfaceVista)actual).limpiar();
+            manejadorVista.show(vistas, nombreMenu);
         }
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        int sel = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+                + "deseas salir? todos los cambios no guardados se perderán",
+                "Advertencia", JOptionPane.YES_NO_OPTION);
+        
+        if(sel == 0) {
+            System.exit(0);
+        }
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+        int sel = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+                + "deseas salir? todos los cambios no guardados se perderán",
+                "Advertencia", JOptionPane.YES_NO_OPTION);
+        
+        if(sel == 0) {
+            System.exit(0);
+        }
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
     }
 }

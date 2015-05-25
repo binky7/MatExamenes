@@ -77,7 +77,7 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
      */
     private javax.swing.JButton btnEliminar;
     /**
-     * Botón usado para modificar reactivo
+     * Botón usado para modificar reactivos
      */
     private javax.swing.JButton btnModificar;
     /**
@@ -98,7 +98,7 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
      */
     private javax.swing.JLabel lblCurso;
     /**
-     * Label para la tabla reactivos
+     * Label para la tblReactivos
      */
     private javax.swing.JLabel lblReactivos;
     /**
@@ -110,7 +110,7 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
      */
     private javax.swing.JLabel lblTitulo;
     /**
-     * Tabla usada para mostrar los reactivos
+     * Table utilizada para mostrar los reactivos
      */
     private javax.swing.JTable tblReactivos;
     // End of variables declaration//GEN-END:variables
@@ -400,14 +400,8 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
         tblReactivos.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblReactivos);
         if (tblReactivos.getColumnModel().getColumnCount() > 0) {
-            tblReactivos.getColumnModel().getColumn(0).setResizable(false);
             tblReactivos.getColumnModel().getColumn(0).setPreferredWidth(20);
-            tblReactivos.getColumnModel().getColumn(1).setResizable(false);
             tblReactivos.getColumnModel().getColumn(1).setPreferredWidth(20);
-            tblReactivos.getColumnModel().getColumn(2).setResizable(false);
-            tblReactivos.getColumnModel().getColumn(3).setResizable(false);
-            tblReactivos.getColumnModel().getColumn(4).setResizable(false);
-            tblReactivos.getColumnModel().getColumn(5).setResizable(false);
         }
 
         lblCurso.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -546,17 +540,11 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

@@ -513,7 +513,7 @@ implements InterfaceVista, FocusListener, AncestorListener, KeyListener {
         reactivo.setNombre(nombre);
         reactivo.setRedaccion(redaccion);
         reactivo.setRespuesta(respuesta);
-        reactivo.setOpciones(opcionesReactivo);
+        reactivo.setOpcionesIncorrectas(opcionesReactivo);
         reactivo.setAutor(padre.obtenerUsuarioActual());
         reactivo.setFechaCreacion(new Date());
         reactivo.setFechaModificacion(new Date());

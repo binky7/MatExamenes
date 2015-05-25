@@ -385,7 +385,7 @@ implements InterfaceVista, FocusListener, KeyListener {
         reactivo.setNombre(nombre);
         reactivo.setRedaccion(redaccion);
         reactivo.setRespuesta(respuesta);
-        reactivo.setOpciones(opcionesReactivo);
+        reactivo.setOpcionesIncorrectas(opcionesReactivo);
         reactivo.setFechaModificacion(new Date());
         
         //Si falló la validación regresar null
@@ -410,7 +410,7 @@ implements InterfaceVista, FocusListener, KeyListener {
         txtaRedaccion.setText(reactivo.getRedaccion());
         
         int i = 0;
-        int size = reactivo.getOpciones().size();
+        int size = reactivo.getOpcionesIncorrectas().size();
         
         //Mostrar Opciones
         for (Component comp : pnlOpciones.getComponents()) {
@@ -419,7 +419,7 @@ implements InterfaceVista, FocusListener, KeyListener {
 
                 if (i < size) {
                     //Mostrar todas las opciones del reactivo primero
-                    field.setText(reactivo.getOpciones().get(i));
+                    field.setText(reactivo.getOpcionesIncorrectas().get(i));
                 } else {
                     //Después mostrar la opción seleccionada como respuesta
                     field.setText(reactivo.getRespuesta());
@@ -435,6 +435,38 @@ implements InterfaceVista, FocusListener, KeyListener {
                 }
                 i++;
             }
+        }
+    }
+    
+    /**
+     * Muestra el estado del campo de texto dependiendo si la validacion fue
+     * verdadera o falsa.
+     *
+     * @param o El objeto campo de texto al cual se quiere cambiar el estado.
+     * @param estado Si es verdadero el estado sera correcto, si es falso el
+     * estado sera incorrecto.
+     * @param prefix El prefijo que se quiere agregar al nombre del objeto o al
+     * momento de comparar los campos
+     */
+    private void mostrarLabelEstado(Object o, boolean estado, String prefix) {
+        JTextComponent ob = (JTextComponent) o;
+        
+        try {
+            //Se utiliza la reflexión para crear un método de validación
+            //genérico
+            Field field = getClass().getDeclaredField(prefix + ob.getName());
+            JLabel label = (JLabel) field.get(this);
+            if (!label.isVisible()) {
+                label.setVisible(true);
+            }
+            //Si el estado es verdadero, mostrar ICONO_BIEN, si no mostrar ICONO_MAL
+            if (estado) {
+                label.setIcon(ICONO_BIEN);
+            } else {
+                label.setIcon(ICONO_MAL);
+            }
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(VistaRegistrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -911,38 +943,6 @@ implements InterfaceVista, FocusListener, KeyListener {
         }
         else {
             mostrarLabelEstado(ob, !Validador.estaVacio(ob.getText()), "");
-        }
-    }
-    
-    /**
-     * Muestra el estado del campo de texto dependiendo si la validacion fue
-     * verdadera o falsa.
-     *
-     * @param o El objeto campo de texto al cual se quiere cambiar el estado.
-     * @param estado Si es verdadero el estado sera correcto, si es falso el
-     * estado sera incorrecto.
-     * @param prefix El prefijo que se quiere agregar al nombre del objeto o al
-     * momento de comparar los campos
-     */
-    private void mostrarLabelEstado(Object o, boolean estado, String prefix) {
-        JTextComponent ob = (JTextComponent) o;
-        
-        try {
-            //Se utiliza la reflexión para crear un método de validación
-            //genérico
-            Field field = getClass().getDeclaredField(prefix + ob.getName());
-            JLabel label = (JLabel) field.get(this);
-            if (!label.isVisible()) {
-                label.setVisible(true);
-            }
-            //Si el estado es verdadero, mostrar ICONO_BIEN, si no mostrar ICONO_MAL
-            if (estado) {
-                label.setIcon(ICONO_BIEN);
-            } else {
-                label.setIcon(ICONO_MAL);
-            }
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(VistaRegistrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

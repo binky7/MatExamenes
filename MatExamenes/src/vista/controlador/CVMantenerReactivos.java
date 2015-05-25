@@ -198,7 +198,7 @@ public class CVMantenerReactivos {
         //Pasa los datos del reactivo de entrada al reactivo de éste objeto y
         //después lo actualiza mediante el delegate
         this.reactivo.setNombre(objReactivo.getNombre());
-        this.reactivo.setOpciones(objReactivo.getOpciones());
+        this.reactivo.setOpcionesIncorrectas(objReactivo.getOpcionesIncorrectas());
         this.reactivo.setRedaccion(objReactivo.getRedaccion());
         this.reactivo.setRespuesta(objReactivo.getRespuesta());
         this.reactivo.setFechaModificacion(objReactivo.getFechaModificacion());

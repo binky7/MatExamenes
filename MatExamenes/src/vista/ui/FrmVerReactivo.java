@@ -1,7 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2015 Jesús Donaldo Osornio Hernández
+ *
+ * This file is part of MatExamenes.
+ *
+ * MatExamenes is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package vista.ui;
 
@@ -15,15 +29,91 @@ import javax.swing.JTextField;
 import modelo.dto.ReactivoDTO;
 
 /**
- *
- * @author Jesus Donaldo
+ * JFrame que mostrará la interfaz gráfica para Ver Reactivo
+ * 
+ * @author Jesus Donaldo Osornio Hernández
+ * @version 1 18 Mayo 2015
  */
 public class FrmVerReactivo extends javax.swing.JFrame {
 
+    /**
+     * JFrame padre de este JFrame
+     */
     private JFrame padre;
     
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     /**
-     * Creates new form FrmVerReactivo
+     * Scroll pane para mostrar la redacción
+     */
+    private javax.swing.JScrollPane jScrollPane1;
+    /**
+     * Label para la opción 1
+     */
+    private javax.swing.JLabel lblOpciones1;
+    /**
+     * Label para la opción 2
+     */
+    private javax.swing.JLabel lblOpciones2;
+    /**
+     * Label para la opción 3
+     */
+    private javax.swing.JLabel lblOpciones3;
+    /**
+     * Label para la opción 4
+     */
+    private javax.swing.JLabel lblOpciones4;
+    /**
+     * Label para la redacción
+     */
+    private javax.swing.JLabel lblRedaccion;
+    /**
+     * Label para respuesta
+     */
+    private javax.swing.JLabel lblRespuesta;
+    /**
+     * Panel para agrupar opciones
+     */
+    private javax.swing.JPanel pnlOpciones;
+    /**
+     * Radio button para la opción 1
+     */
+    private javax.swing.JRadioButton rbtnOpt1;
+    /**
+     * Radio button para la opción 2
+     */
+    private javax.swing.JRadioButton rbtnOpt2;
+    /**
+     * Radio button para la opción 3
+     */
+    private javax.swing.JRadioButton rbtnOpt3;
+    /**
+     * Radio button para la opción 4
+     */
+    private javax.swing.JRadioButton rbtnOpt4;
+    /**
+     * Área de texto para mostrar la redacción
+     */
+    private javax.swing.JTextArea txtaRedaccion;
+    /**
+     * Campo de texto para mostrar la opción 1
+     */
+    private javax.swing.JTextField txtfOpt1;
+    /**
+     * Campo de texto para mostrar la opción 2
+     */
+    private javax.swing.JTextField txtfOpt2;
+    /**
+     * Campo de texto para mostrar la opción 3
+     */
+    private javax.swing.JTextField txtfOpt3;
+    /**
+     * Campo de texto para mostrar la opción 4
+     */
+    private javax.swing.JTextField txtfOpt4;
+    // End of variables declaration//GEN-END:variables
+
+    /**
+     * Crea un objeto FrmVerReactivo e inicializa sus atributos
      */
     public FrmVerReactivo() {
         initComponents();
@@ -42,12 +132,15 @@ public class FrmVerReactivo extends javax.swing.JFrame {
         setTitle("Ver Reactivo");
     }
 
+    /**
+     * Este método sirve para agregar los listeners a la ventana, para que al
+     * momento de cerrar la ventana se limpien los datos y se habilite el padre
+     */
     private void initListeners() {
         this.addWindowListener(new WindowListener() {
 
             @Override
             public void windowOpened(WindowEvent e) {
-                //ads
             }
 
             @Override
@@ -87,31 +180,49 @@ public class FrmVerReactivo extends javax.swing.JFrame {
         });
     }
     
+    /**
+     * Almacena el padre de este JFrame
+     *
+     * @param padre padre del JFrame.
+     */
     public void setPadre(JFrame padre) {
         this.padre = padre;
     }
     
+    /**
+     * Este método sirve para deshabilitar al padre, mostrar esta ventana y mostrar
+     * los datos del reactivo. Debe ser llamado al principio y sólo una vez.
+     * 
+     * @param reactivo el objeto ReactivoDTO a mostrar
+     */
     public void inicializar(ReactivoDTO reactivo) {
         
         padre.setEnabled(false);
         setVisible(true);
         mostrarReactivo(reactivo);
     }
-    
+   
+    /**
+     * Este método sirve para mostrar los datos del reactivo en los campos del
+     * frame
+     * 
+     * @param reactivo el objeto ReactivoDTO a mostrar
+     */
     private void mostrarReactivo(ReactivoDTO reactivo) {
-        
+        //Mostrar redacción
         txtaRedaccion.setText(reactivo.getRedaccion());
         
         int i = 0;
-        int size = reactivo.getOpciones().size();
+        int size = reactivo.getOpcionesIncorrectas().size();
         
         //Mostrar Opciones
         for (Component comp : pnlOpciones.getComponents()) {
             if (comp.getClass() == JTextField.class) {
                 JTextField field = (JTextField) comp;
 
+                //Mostrar primero opciones incorrectas y al final la respuesta
                 if (i < size) {
-                    field.setText(reactivo.getOpciones().get(i));
+                    field.setText(reactivo.getOpcionesIncorrectas().get(i));
                 } else {
                     field.setText(reactivo.getRespuesta());
                     try {
@@ -119,7 +230,6 @@ public class FrmVerReactivo extends javax.swing.JFrame {
                         JRadioButton button = (JRadioButton) fieldObj.get(this);
                         button.setSelected(true);
                     } catch (NoSuchFieldException | IllegalAccessException ex) {
-                        //System.out.println(ex);
                     }
                 }
                 i++;
@@ -127,6 +237,10 @@ public class FrmVerReactivo extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Este método sirve para limpiar la información en el frame y debe ser
+     * llamado siempre que se cierre este frame y se deje de utilizar.
+     */
     public void limpiar() {
 
         txtaRedaccion.setText("");
@@ -142,10 +256,9 @@ public class FrmVerReactivo extends javax.swing.JFrame {
             }
         }
     }
+    
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * Inicializa los atributos gráficos y los coloca en su posición.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -326,24 +439,4 @@ public class FrmVerReactivo extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblOpciones1;
-    private javax.swing.JLabel lblOpciones2;
-    private javax.swing.JLabel lblOpciones3;
-    private javax.swing.JLabel lblOpciones4;
-    private javax.swing.JLabel lblRedaccion;
-    private javax.swing.JLabel lblRespuesta;
-    private javax.swing.JPanel pnlOpciones;
-    private javax.swing.JRadioButton rbtnOpt1;
-    private javax.swing.JRadioButton rbtnOpt2;
-    private javax.swing.JRadioButton rbtnOpt3;
-    private javax.swing.JRadioButton rbtnOpt4;
-    private javax.swing.JTextArea txtaRedaccion;
-    private javax.swing.JTextField txtfOpt1;
-    private javax.swing.JTextField txtfOpt2;
-    private javax.swing.JTextField txtfOpt3;
-    private javax.swing.JTextField txtfOpt4;
-    // End of variables declaration//GEN-END:variables
 }
