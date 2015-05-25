@@ -280,9 +280,9 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         Object datos[] = new Object[5];
 
         for (UsuarioDTO usuario : usuarios) {
-            datos[0] = usuario.getNombre();
-            datos[1] = usuario.getApellidoPaterno();
-            datos[2] = usuario.getApellidoMaterno();
+            datos[0] = usuario.getApellidoPaterno();
+            datos[1] = usuario.getApellidoMaterno();
+            datos[2] = usuario.getNombre();
             datos[3] = usuario.getUsuario();
             datos[4] = usuario.getTipo().toString();
 
@@ -299,16 +299,16 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         int i = tblUsuarios.getSelectedRow();
         UsuarioDTO usuario = cvMantenerUsuarios.getUsuariosBuscados().get(i);
 
-        int opcion = JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar al usuario: "
+        int opcion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar al usuario: "
                 + usuario.getUsuario() + "?", "Eliminar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (opcion == JOptionPane.YES_OPTION) {
             boolean ok = cvMantenerUsuarios.eliminarUsuario(usuario);
             if (ok) {
-                JOptionPane.showMessageDialog(this, "Usuario Eliminado",
+                JOptionPane.showMessageDialog(this, "Usuario eliminado",
                         "Eliminar usuario", JOptionPane.INFORMATION_MESSAGE);
                 btnBuscar.doClick();
             } else {
-                JOptionPane.showMessageDialog(this, "Usuario no Eliminado",
+                JOptionPane.showMessageDialog(this, "Usuario no eliminado",
                         "Eliminar usuario", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -377,8 +377,13 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
      * @param evt Objeto que contiene información del evento.
      */
     private void cancelarConsultaUsuarios(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarConsultaUsuarios
-        padre.mostrarVista(Vista.HOME);
-        limpiar();
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desea cancelar la operación?\nTodos los cambios no "
+                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
+        if (ok == JOptionPane.YES_OPTION) {
+            padre.mostrarVista(Vista.HOME);
+            limpiar();
+        }
     }//GEN-LAST:event_cancelarConsultaUsuarios
 
     @Override

@@ -40,7 +40,7 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
      */
     private final FrmPrincipal p;
     private final CVLogin cvLogin;
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     /**
     * Botón usado para iniciar sesión.
@@ -182,33 +182,38 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
         UsuarioDTO usuario;
         usuario = encapsularUsuario();
 
-        int error = cvLogin.validarCredenciales(usuario);
-        if (error == -1) {
-            //Credenciales validas
-            UsuarioDTO usuarioValido = cvLogin.getUsuarioValidado();
-            JOptionPane.showMessageDialog(this, "Bienvenido "
-                    + usuarioValido.getNombre(), "Login", JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon(getClass().getResource("/recursos/usuario.png")));
-            p.setUsuarioActual(usuarioValido);
-            Tipo tipo = usuarioValido.getTipo();
-            if (tipo == Tipo.Admin) {
-                p.setVistaAdmin();
-            } else if (tipo == Tipo.Alumno) {
-                p.setVistaAlumno();
-            } else if (tipo == Tipo.Maestro) {
-                p.setVistaMaestro();
-            }
-            p.setVisible(true);
-            dispose();
-        } else if (error == 1) {
-            JOptionPane.showMessageDialog(this, "Password Incorrecto",
-                    "Login", JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon(getClass().getResource("/recursos/incorrecto.png")));
+        if (usuario == null) {
+            //Si no ingresaron algun dato.
+            JOptionPane.showMessageDialog(this, "Datos faltantes, favor de llenar todos los datos",
+                        "Login", JOptionPane.ERROR_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "Usuario no existente",
-                    "Login", JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon(getClass().getResource("/recursos/usuarioIncorrecto.png")));
+            int error = cvLogin.validarCredenciales(usuario);
+            if (error == -1) {
+                //Credenciales validas
+                UsuarioDTO usuarioValido = cvLogin.getUsuarioValidado();
+                JOptionPane.showMessageDialog(this, "Bienvenido "
+                        + usuarioValido.getNombre(), "Login", JOptionPane.INFORMATION_MESSAGE,
+                        new ImageIcon(getClass().getResource("/recursos/usuario.png")));
+                p.setUsuarioActual(usuarioValido);
+                Tipo tipo = usuarioValido.getTipo();
+                if (tipo == Tipo.Admin) {
+                    p.setVistaAdmin();
+                } else if (tipo == Tipo.Alumno) {
+                    p.setVistaAlumno();
+                } else if (tipo == Tipo.Maestro) {
+                    p.setVistaMaestro();
+                }
+                p.setVisible(true);
+                dispose();
+            } else if (error == 1) {
+                JOptionPane.showMessageDialog(this, "Password Incorrecto",
+                        "Login", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario no existente",
+                        "Login", JOptionPane.ERROR_MESSAGE);
+            }
         }
+
     }//GEN-LAST:event_login
 
     /**
@@ -218,15 +223,18 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
      * @return Un objeto tipo UsuarioDTO.
      */
     private UsuarioDTO encapsularUsuario() {
-        UsuarioDTO usuario = new UsuarioDTO();
+        UsuarioDTO unUsuario = new UsuarioDTO();
 
         String pass = String.valueOf(txtpPassword.getPassword());
-        String usuari = txtfUsuario.getText();
+        String usuario = txtfUsuario.getText();
+        if (pass.isEmpty() || usuario.isEmpty()) {
+            unUsuario = null;
+        } else {
+            unUsuario.setPassword(pass);
+            unUsuario.setUsuario(usuario);
+        }
 
-        usuario.setPassword(pass);
-        usuario.setUsuario(usuari);
-
-        return usuario;
+        return unUsuario;
     }
 
     @Override

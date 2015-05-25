@@ -50,6 +50,10 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
      */
     private static final int HOLGURA = 1000 * 40;
     /**
+     * Transforma los minutos a milisegundos.
+     */
+    private static final int MINUTOS_A_MILIS = 1000 * 60;
+    /**
      * Interface para interactuar con el JFrame principal.
      */
     private InterfaceVista padre;
@@ -198,7 +202,7 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
             cvContestarExamen.setExamenAsignado(eapk);
             ExamenAsignadoDTO examen = cvContestarExamen.getExamenAsignado();
             long inicio = examen.getFechaAsignacion().getTime();
-            long fin = inicio + (examen.getTiempo() * 60 * 1000);
+            long fin = inicio + (examen.getTiempo() * MINUTOS_A_MILIS);
             boolean usuarioRespaldo = padre.obtenerUsuarioActual().getId() == eapk.getIdAlumno();
             boolean contestado = respaldo.estaContestado();
 
@@ -213,7 +217,7 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
                 //el tiempo actual es menor que el tiempo de terminación
                 //más la holgura y el examen no fue contestado.
                 int ok = JOptionPane.showConfirmDialog(this, "¿Desea continuar "
-                        + "con el examen pendiente?" + "\n" + "Se perderan sus respuestas anteriores si selecciona no.",
+                        + "con el examen pendiente?" + "\n" + "Se perderán sus respuestas anteriores si selecciona no.",
                         "Respaldo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                 if (ok == JOptionPane.YES_OPTION) {
                     padre.mostrarVistaConEntidad(respaldo, Vista.ContestarExamen);

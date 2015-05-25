@@ -442,8 +442,8 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
      * @param evt Objeto que contiene la información del evento.
      */
     private void cancelarModificacion(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarModificacion
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cancelar la operación?\nTodos los cambios no "
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desea cancelar la operación?\nTodos los cambios no "
                 + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
         if (ok == JOptionPane.YES_OPTION) {
             padre.mostrarVista(Vista.ConsultarUsuarios);

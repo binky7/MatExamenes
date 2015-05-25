@@ -443,7 +443,6 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
      * @param evt Objeto que contiene informacion del evento.
      */
     private void guardarUsuario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarUsuario
-        // TODO add your handling code here:
         UsuarioDTO usuario = encapsularUsuario();
         if (usuario == null) {
             JOptionPane.showMessageDialog(this, mensajeDatosIncorrectos, "Registro usuario",
@@ -453,10 +452,10 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
         Integer id = cvMantenerUsuarios.guardarUsuario(usuario);
 
         if (id == null) {
-            JOptionPane.showMessageDialog(this, "Error al guardar", "Registro usuario",
+            JOptionPane.showMessageDialog(this, "Error al registrar", "Registro usuario",
                     JOptionPane.ERROR_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "Usuario Registrado", "Registro usuario",
+            JOptionPane.showMessageDialog(this, "Registro completo", "Registro usuario",
                     JOptionPane.INFORMATION_MESSAGE);
             limpiar();
         }
@@ -468,9 +467,8 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
      * @param evt Objeto que contiene información del evento.
      */
     private void cancelarRegistroUsuario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarRegistroUsuario
-        // TODO add your handling code here:
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cancelar la operación?\nTodos los cambios no "
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desea cancelar la operación?\nTodos los cambios no "
                 + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
         if (ok == JOptionPane.YES_OPTION) {
             padre.mostrarVista(Vista.HOME);
