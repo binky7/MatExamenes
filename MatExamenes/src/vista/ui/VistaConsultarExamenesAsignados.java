@@ -255,7 +255,7 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
      */
     private void mostrarExamenes(List<ExamenAsignadoDTO> examenesAsignados) {
         for (ExamenAsignadoDTO examen : examenesAsignados) {
-            DML.addElement(examen.getExamen().getTitulo());
+            DML.addElement(examen.getExamen().getNombre());
         }
     }
 

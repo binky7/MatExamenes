@@ -141,7 +141,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
             Object[] datos = new Object[5];
 
             datos[0] = examen.getId();
-            datos[1] = examen.getTitulo();
+            datos[1] = examen.getNombre();
             datos[2] = examen.getFechaCreacion();
             datos[3] = examen.getFechaModificacion();
             if (examen.getAutor() != null) {
@@ -336,10 +336,10 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
                 reactivo.setRespuestaReactivo(claveExamen.getReactivos().get(j).getRespuesta());
                 //La lista de opciones de los reactivos.
                 List<String> opciones = new ArrayList<>();
-                for (String opcion : claveExamen.getReactivos().get(j).getOpciones()) {
+                for (String opcion : claveExamen.getReactivos().get(j).getOpcionesIncorrectas()) {
                     opciones.add(opcion);
                 }
-                reactivo.setOpcionesReactivo(opciones);
+                reactivo.setOpcionesIncorrectas(opciones);
 
                 //Relacion entre reactivo y examenAsignado
                 examenAsignado.addReactivo(reactivo);

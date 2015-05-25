@@ -425,7 +425,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         for (ExamenAsignadoDTO examen : examenes) {
             Object[] fila = new Object[4];
             fila[0] = examen.getId().getIdExamen();
-            fila[1] = examen.getExamen().getTitulo();
+            fila[1] = examen.getExamen().getNombre();
             fila[2] = examen.getCalificacion();
             fila[3] = examen.getFechaAsignacion();
             modelo.addRow(fila);
@@ -459,7 +459,7 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         txtfAlumno.setText(examen.getAlumno().getApellidoPaterno() + " "
                 + examen.getAlumno().getApellidoMaterno() + " "
                 + examen.getAlumno().getNombre());
-        txtfTitulo.setText(examen.getExamen().getTitulo());
+        txtfTitulo.setText(examen.getExamen().getNombre());
         txtfCalificacion.setText(String.valueOf(examen.getCalificacion()));
         DefaultListModel modelo = new DefaultListModel();
         for (int i = 0; i < controlVista.obtenerReactivos().size(); i++) {

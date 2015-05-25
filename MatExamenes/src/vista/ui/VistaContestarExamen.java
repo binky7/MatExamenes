@@ -375,7 +375,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
             List<String> opciones = new ArrayList();
             for (int j = 0; j < OPCIONES - 1; j++) {
                 // -1 ya que una se agrega abajo la respuesta correcta
-                opciones.add(reactivos.get(i).getOpcionesReactivo().get(j));
+                opciones.add(reactivos.get(i).getOpcionesIncorrectas().get(j));
             }
             opciones.add(reactivos.get(i).getRespuestaReactivo());
             Collections.shuffle(opciones);
