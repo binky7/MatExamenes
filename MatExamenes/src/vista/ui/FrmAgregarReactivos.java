@@ -826,14 +826,14 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
                 limpiar();
                 dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Selecciona reactivos");
+                JOptionPane.showMessageDialog(this, "Seleccione reactivos");
             }
         } else {
             //Seleccion Aleatoria
             if (tblSeleccion.getRowCount() > 0) {
                 consultarReactivosAleatorios();
             } else {
-                JOptionPane.showMessageDialog(this, "Agrega alguna selección");
+                JOptionPane.showMessageDialog(this, "Agregue alguna selección");
             }
         }
     }//GEN-LAST:event_aceptarAgregarReactivos
@@ -848,8 +848,8 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
      */
     private void cancelarAgregarReactivos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarAgregarReactivos
 
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cancelar la operación?\nTodo el progreso "
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desea cancelar la operación?\nTodo el progreso "
                 + "se perderá", "Confirmación", JOptionPane.YES_NO_OPTION);
         
         if (ok == 0) {
@@ -873,7 +873,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
 
             mostrarReactivo(reactivo);
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona un reactivo");
+            JOptionPane.showMessageDialog(this, "Seleccione un reactivo");
         }
     }//GEN-LAST:event_verReactivo
 
@@ -913,11 +913,11 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
                 //selecciones
                 tblModel.addRow(seleccion);
             } else {
-                JOptionPane.showMessageDialog(this, "Debes seleccionar una "
+                JOptionPane.showMessageDialog(this, "Debe seleccionar una "
                         + "cantidad mayor a 0");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona primero un tema");
+            JOptionPane.showMessageDialog(this, "Seleccione primero un tema");
         }
     }//GEN-LAST:event_agregarSeleccion
 
@@ -947,7 +947,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
             tblModel.removeRow(tblSeleccion.getSelectedRow());
             model.addElement(nombreTema);
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona primero una fila");
+            JOptionPane.showMessageDialog(this, "Seleccione primero una fila");
         }
     }//GEN-LAST:event_removerSeleccion
 

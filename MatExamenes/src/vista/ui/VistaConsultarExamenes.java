@@ -167,13 +167,16 @@ implements InterfaceVista, AncestorListener {
         //Para limpiar el cmbCurso de información previa
         cmbCurso.removeAllItems();
         
+        //Agrega una selección vacía
+        cmbCurso.addItem("");
+        
         //Recorrer todos los elementos de la lista para mostrarlos en el comboBox
         for(CursoDTO curso : cursos) {
             cmbCurso.addItem(curso.getNombre());
         }
         
-        //Deselecciona el comboBox
-        cmbCurso.setSelectedIndex(-1);
+        //Selecciona el combo box en la selección vacía
+        cmbCurso.setSelectedIndex(0);
     }
     
     /**
@@ -396,9 +399,9 @@ implements InterfaceVista, AncestorListener {
         UsuarioDTO usuarioActual = padre.obtenerUsuarioActual();
         List<ExamenDTO> examenes = null;
         //Para validar que se haya seleccionado un curso
-        int seleccionado = cmbCurso.getSelectedIndex();
+        String seleccionado = (String) cmbCurso.getSelectedItem();
         //Obtener el valor de lo ingresado en el titulo
-        String titulo = txtfNombre.getText();
+        String nombre = txtfNombre.getText();
         //El curso seleccionado si hubiera...
         String curso = "";
         
@@ -414,29 +417,29 @@ implements InterfaceVista, AncestorListener {
             todos = false;
         }
 
-        if(seleccionado != -1) {
-            curso = cmbCurso.getSelectedItem().toString();
+        if(!seleccionado.equals("")) {
+            curso = seleccionado;
         }
         
-        if (seleccionado != -1 && !Validador.estaVacio(titulo)) {
+        if (!seleccionado.equals("") && !Validador.estaVacio(nombre)) {
 
-            examenes = controlVista.obtenerExamenesPorCursoYNombre(curso, titulo,
+            examenes = controlVista.obtenerExamenesPorCursoYNombre(curso, nombre,
                     todos, usuario);
             
-        } else if (seleccionado != -1 && Validador.estaVacio(titulo)) {
+        } else if (!seleccionado.equals("") && Validador.estaVacio(nombre)) {
 
             //Solo obtener los exámenes por curso
             examenes = controlVista.obtenerExamenesPorCurso(curso, todos, usuario);
             
-        } else if (!Validador.estaVacio(titulo) && seleccionado == -1) {
+        } else if (!Validador.estaVacio(nombre) && seleccionado.equals("")) {
 
             //Obtener exámenes por nombre
-            examenes = controlVista.obtenerExamenesPorNombre(titulo, todos,
+            examenes = controlVista.obtenerExamenesPorNombre(nombre, todos,
                     usuario);
         } else {
             //No selecciono curso ni nombre
-            JOptionPane.showMessageDialog(this, "Selecciona por lo menos "
-                    + "un curso o ingresa un título");
+            JOptionPane.showMessageDialog(this, "Seleccione por lo menos "
+                    + "un curso o ingrese un nombre");
             ok = false;
         }
         
@@ -518,12 +521,12 @@ implements InterfaceVista, AncestorListener {
                 }
             }
             else {
-                JOptionPane.showMessageDialog(this, "No cuentas con los permisos "
+                JOptionPane.showMessageDialog(this, "No cuenta con los permisos "
                         + "para realizar esta acción");
             }
         }
         else {
-            JOptionPane.showMessageDialog(this, "Selecciona primero un examen");
+            JOptionPane.showMessageDialog(this, "Seleccione primero un examen");
         }
     }//GEN-LAST:event_pasarControlVistaModificar
 
@@ -539,8 +542,8 @@ implements InterfaceVista, AncestorListener {
         //en caso afirmativo
         if(tblExamenes.getSelectedRow() != -1) {
             
-            int q = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                    + "quieres eliminar el examen seleccionado?",
+            int q = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                    + "desea eliminar el examen seleccionado?",
                     "Confirmación", JOptionPane.YES_NO_OPTION);
             if (q != 0) {
                 return;
@@ -563,7 +566,7 @@ implements InterfaceVista, AncestorListener {
             }
         }
         else {
-            JOptionPane.showMessageDialog(this, "Selecciona un examen");
+            JOptionPane.showMessageDialog(this, "Seleccione un examen");
         }
     }//GEN-LAST:event_eliminarExamen
 

@@ -62,7 +62,7 @@ import vista.interfaz.InterfaceVista;
  * @author Jesus Donaldo Osornio Hernández
  * @version 1 18 Mayo 2015
  */
-public class VistaRegistrarExamen extends javax.swing.JPanel implements
+public class VistaGenerarExamen extends javax.swing.JPanel implements
         InterfaceVista, InterfaceExamen, FocusListener, AncestorListener,
         KeyListener {
 
@@ -217,7 +217,7 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
      * inicializa los frames para agregar y ver reactivos y agrega los listeners
      * necesarios
      */
-    public VistaRegistrarExamen() {
+    public VistaGenerarExamen() {
         initComponents();
 
         ICONO_BIEN = new ImageIcon(getClass().getResource("/recursos/bien.png"));
@@ -564,7 +564,7 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
 
         lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitulo.setText("Registrar Examen");
+        lblTitulo.setText("Generar Examen");
 
         lblNombre.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblNombre.setText("Nombre del Examen:");
@@ -865,7 +865,7 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
             controlVista.removerClave(tbpClaves.getSelectedIndex());
             tbpClaves.remove(tbpClaves.getSelectedIndex());
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona una clave");
+            JOptionPane.showMessageDialog(this, "Seleccione una clave");
         }
     }//GEN-LAST:event_removerClave
 
@@ -918,8 +918,8 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
      */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cancelar la operación?\nTodos los cambios no "
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desea cancelar la operación?\nTodos los cambios no "
                 + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
             padre.mostrarVista(Vista.HOME);
@@ -953,10 +953,10 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
                         .getSelectedIndex());
                 removerReactivos(indexesReactivo, tab.getTabla());
             } else {
-                JOptionPane.showMessageDialog(this, "Selecciona un reactivo");
+                JOptionPane.showMessageDialog(this, "Seleccione un reactivo");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona una clave");
+            JOptionPane.showMessageDialog(this, "Seleccione una clave");
         }
 
     }//GEN-LAST:event_removerReactivos
@@ -977,11 +977,11 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
                 frmAgregarReactivos.inicializar(cmbCurso.getSelectedIndex(),
                         tbpClaves.getSelectedIndex());
             } else {
-                JOptionPane.showMessageDialog(this, "Selecciona una clave "
+                JOptionPane.showMessageDialog(this, "Seleccione una clave "
                         + "primero");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona un curso primero");
+            JOptionPane.showMessageDialog(this, "Seleccione un curso primero");
         }
     }//GEN-LAST:event_agregarReactivos
 
@@ -1007,10 +1007,10 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
 
                 mostrarReactivo(reactivo);
             } else {
-                JOptionPane.showMessageDialog(this, "Selecciona un reactivo");
+                JOptionPane.showMessageDialog(this, "Seleccione un reactivo");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona una clave");
+            JOptionPane.showMessageDialog(this, "Seleccione una clave");
         }
     }//GEN-LAST:event_verReactivo
 
@@ -1026,8 +1026,8 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
     private void desbloquearCurso(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desbloquearCurso
 
 
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres desbloquear los cursos?\nTodas las claves del examen "
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desea desbloquear los cursos?\nTodas las claves del examen "
                 + "se eliminarán", "Confirmación", JOptionPane.YES_NO_OPTION);
 
         if (ok == 0) {
@@ -1114,8 +1114,8 @@ public class VistaRegistrarExamen extends javax.swing.JPanel implements
     @Override
     public boolean confirmarCambio() {
         boolean cambiar = false;
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cambiar de pantalla?\nTodos los cambios no "
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desea cambiar de pantalla?\nTodos los cambios no "
                 + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
             cambiar = true;

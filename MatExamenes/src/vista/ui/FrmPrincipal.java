@@ -1,7 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2015 Jesús Donaldo Osornio Hernández
+ *
+ * This file is part of MatExamenes.
+ *
+ * MatExamenes is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package vista.ui;
 
@@ -29,49 +43,244 @@ import vista.controlador.CVMantenerUsuarios;
 import vista.interfaz.InterfaceVista;
 
 /**
- *
- * @author Jesus Donaldo
+ * JFrame que mostrará la interfaz gráfica de la interfaz Principal
+ * 
+ * @author Jesus Donaldo Osornio Hernández
+ * @version 1 18 Mayo 2015
  */
 public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         ActionListener, WindowListener {
 
-    //Usuario que inicio sesion
+    /**
+     * Usuario que inició sesión
+     */
     private UsuarioDTO usuarioActual;
 
-    //Para manipular las vistas
+    /**
+     * Layout para manipular las vistas
+     */
     private final CardLayout manejadorVista = new CardLayout();
+    /**
+     * Vista HOME
+     */
     private VistaHOME vistaHome;
+    /**
+     * Vista de Registrar Tema
+     */
     private VistaRegistrarTema vistaRegistrarTema;
+    /**
+     * Vista de Consultar Temas
+     */
     private VistaConsultarTemas vistaConsultarTemas;
+    /**
+     * Vista de Modificar Tema
+     */
     private VistaModificarTema vistaModificarTema;
-    private VistaRegistrarExamen vistaRegistrarExamen;
+    /**
+     * Vista de Generar Examen
+     */
+    private VistaGenerarExamen vistaGenerarExamen;
+    /**
+     * Vista de Consultar Exámenes
+     */
     private VistaConsultarExamenes vistaConsultarExamenes;
+    /**
+     * Vista de Modificar Examen
+     */
     private VistaModificarExamen vistaModificarExamen;
+    /**
+     * Vista de Asignar Exámenes
+     */
     private VistaAsignarExamenes vistaAsignarExamenes;
+    /**
+     * Vista de Registrar Curso
+     */
     private VistaRegistrarCurso vistaRegistrarCurso;
+    /**
+     * Vista de Consultar Cursos
+     */
     private VistaConsultarCursos vistaConsultarCursos;
+    /**
+     * Vista de Modificar Curso
+     */
     private VistaModificarCurso vistaModificarCurso;
+    /**
+     * Vista de Registrar Grupo
+     */
     private VistaRegistrarGrupo vistaRegistrarGrupo;
+    /**
+     * Vista de Consultar Grupos
+     */
     private VistaConsultarGrupo vistaConsultarGrupo;
+    /**
+     * Vista de Modificar Grupo
+     */
     private VistaModificarGrupo vistaModificarGrupo;
+    /**
+     * Vista de Consultar Calificaciones
+     */
     private VistaConsultarCalificaciones vistaConsultarCalificaciones;
+    /**
+     * Vista de Registrar Usuario
+     */
     private VistaRegistrarUsuario vistaRegistrarUsuario;
+    /**
+     * Vista de Consultar Usuarios
+     */
     private VistaConsultarUsuarios vistaConsultarUsuarios;
+    /**
+     * Vista de Modificar Usuario
+     */
     private VistaModificarUsuario vistaModificarUsuario;
+    /**
+     * Vista de Registrar Reactivo
+     */
     private VistaRegistrarReactivo vistaRegistrarReactivo;
+    /**
+     * Vista de Consultar Reactivos
+     */
     private VistaConsultarReactivos vistaConsultarReactivos;
+    /**
+     * Vista de Modificar Reactivo
+     */
     private VistaModificarReactivo vistaModificarReactivo;
+    /**
+     * Vista de Generar Estadísticas
+     */
     private VistaGenerarEstadisticas vistaGenerarEstadisticas;
+    /**
+     * Vista de Buscar Examen Asignado
+     */
     private VistaConsultarExamenesAsignados vistaBuscarExamenAsignado;
+    /**
+     * Vista de Contestar Examen
+     */
     private VistaContestarExamen vistaContestarExamen;
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu jMenu10;
+    private javax.swing.JMenu jMenu9;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
     /**
-     * Creates new form Principal
+     * Menú para calificaciones
+     */
+    private javax.swing.JMenu mCalificaciones;
+    /**
+     * Menú para contestar exámenes
+     */
+    private javax.swing.JMenu mContestarExamenes;
+    /**
+     * Menú para cursos
+     */
+    private javax.swing.JMenu mCursos;
+    /**
+     * Menú para estadísticas
+     */
+    private javax.swing.JMenu mEstadisticas;
+    /**
+     * Menú para exámenes
+     */
+    private javax.swing.JMenu mExamenes;
+    /**
+     * Menú para grupos
+     */
+    private javax.swing.JMenu mGrupos;
+    /**
+     * Menú para reactivos
+     */
+    private javax.swing.JMenu mReactivos;
+    /**
+     * Menú para temas
+     */
+    private javax.swing.JMenu mTemas;
+    /**
+     * Menú para usuarios
+     */
+    private javax.swing.JMenu mUsuarios;
+    /**
+     * Barra de menu del Principal
+     */
+    private javax.swing.JMenuBar mbPrincipal;
+    /**
+     * Opción Menú para Asignar Exámenes
+     */
+    private javax.swing.JMenuItem miAsignarExamenes;
+    /**
+     * Opción Menú para Consultar Calificaciones
+     */
+    private javax.swing.JMenuItem miConsultarCalificaciones;
+    /**
+     * Opción Menú para Consultar Cursos
+     */
+    private javax.swing.JMenuItem miConsultarCursos;
+    /**
+     * Opción Menú para Consultar Exámenes
+     */
+    private javax.swing.JMenuItem miConsultarExamenes;
+    /**
+     * Opción Menú para Consultar Grupos
+     */
+    private javax.swing.JMenuItem miConsultarGrupos;
+    /**
+     * Opción Menú para Consultar Reactivos
+     */
+    private javax.swing.JMenuItem miConsultarReactivos;
+    /**
+     * Opción Menú para Consultar Temas
+     */
+    private javax.swing.JMenuItem miConsultarTemas;
+    /**
+     * Opción Menú para Consultar Exámenes
+     */
+    private javax.swing.JMenuItem miConsultarUsuarios;
+    /**
+     * Opción Menú para Contestar Exámenes
+     */
+    private javax.swing.JMenuItem miContestarExamenes;
+    /**
+     * Opción Menú para Generar Estadísticas
+     */
+    private javax.swing.JMenuItem miGenerarEstadisticas;
+    /**
+     * Opción Menú para Registrar Curso
+     */
+    private javax.swing.JMenuItem miRegistrarCurso;
+    /**
+     * Opción Menú para Registrar Examen
+     */
+    private javax.swing.JMenuItem miRegistrarExamen;
+    /**
+     * Opción Menú para Registrar Grupo
+     */
+    private javax.swing.JMenuItem miRegistrarGrupo;
+    /**
+     * Opción Menú para Registrar Reactivo
+     */
+    private javax.swing.JMenuItem miRegistrarReactivo;
+    /**
+     * Opción Menú para Registrar Tema
+     */
+    private javax.swing.JMenuItem miRegistrarTema;
+    /**
+     * Opción Menú para Registrar Usuario
+     */
+    private javax.swing.JMenuItem miRegistrarUsuario;
+    /**
+     * Panel maestro que contendrá todas las vistas
+     */
+    private javax.swing.JPanel vistas;
+    // End of variables declaration//GEN-END:variables
+
+    /**
+     * Crea un objeto FrmPrincipal e inicializa sus atributos,
+     * agrega los listeners necesarios, asocia cada controlador de la vista a sus
+     * vistas correspondientes y se crea una relación de padre-hijo con este frame
      */
     public FrmPrincipal() {
         initComponents();
+        //Inicializa todo en este frame
         init();
-        //manejadorVista.last(vistas);
         setTitle("MatExamenes");
 
         //Agregar los listeners para los menus
@@ -99,17 +308,25 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         miGenerarEstadisticas.addActionListener(this);
     }
 
+    /**
+     * Para almacenar en la vista el objeto UsuarioDTO del usuario actual
+     * 
+     * @param usuarioActual el objeto UsuarioDTO que representa al usuario que
+     * inició sesión en el sistema
+     */
     public void setUsuarioActual(UsuarioDTO usuarioActual) {
         this.usuarioActual = usuarioActual;
     }
 
     /**
      * Para crear los paneles, los controladores de vista y las relaciones entre
-     * esta vista y los paneles
+     * esta vista y los paneles. Este método debe ser llamado al inicio en el
+     * constructor
      */
     private void init() {
         //se deben agregar todos los paneles de vista a este panel
         vistas.setLayout(manejadorVista);
+        //Inicialización de todo lo necesario para que la vista funcione
         initVistas();
         initControladores();
         agregarPadres();
@@ -119,8 +336,12 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
 
+    /**
+     * Este método es utilizado para crear los objetos que serán las vistas de
+     * cada caso de uso para poder ser mostradas en el Frame Principal.
+     */
     private void initVistas() {
-        //Crear vistas
+        //Crear vistas y asignarles un identificador de la enumeración Vista
         vistaHome = new VistaHOME();
         vistaHome.setName(Vista.HOME.toString());
 
@@ -138,8 +359,8 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistaModificarCurso = new VistaModificarCurso();
         vistaModificarCurso.setName(Vista.ModificarCurso.toString());
 
-        vistaRegistrarExamen = new VistaRegistrarExamen();
-        vistaRegistrarExamen.setName(Vista.RegistrarExamen.toString());
+        vistaGenerarExamen = new VistaGenerarExamen();
+        vistaGenerarExamen.setName(Vista.GenerarExamen.toString());
         vistaConsultarExamenes = new VistaConsultarExamenes();
         vistaConsultarExamenes.setName(Vista.ConsultarExamenes.toString());
         vistaModificarExamen = new VistaModificarExamen();
@@ -179,6 +400,11 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistaGenerarEstadisticas.setName(Vista.GenerarEstadisticas.toString());
     }
 
+    /**
+     * Este método es utilizado para crear controladores de la vista y asignarlos
+     * a diferentes vistas que compartan el mismo caso de uso.
+     * 
+     */
     private void initControladores() {
         //Crear controladores vistas
         CVMantenerTemas cvMantenerTemas = new CVMantenerTemas();
@@ -216,7 +442,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistaConsultarReactivos.setControlador(cvMantenerReactivos);
         vistaModificarReactivo.setControlador(cvMantenerReactivos);
 
-        vistaRegistrarExamen.setControlador(cvMantenerExamenes);
+        vistaGenerarExamen.setControlador(cvMantenerExamenes);
         vistaConsultarExamenes.setControlador(cvMantenerExamenes);
         vistaModificarExamen.setControlador(cvMantenerExamenes);
         vistaAsignarExamenes.setControlador(cvAsignarExamenes);
@@ -226,6 +452,10 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistaGenerarEstadisticas.setControlador(cvGenerarEstadisticas);
     }
 
+    /**
+     * Este método sirve para crear la relación entre este Frame y las vistas
+     * hijas, para poder así recibir mensajes de ellas.
+     */
     private void agregarPadres() {
         //Asignar padre a vistas
         vistaRegistrarTema.setPadre(this);
@@ -240,7 +470,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistaConsultarGrupo.setPadre(this);
         vistaModificarGrupo.setPadre(this);
 
-        vistaRegistrarExamen.setPadre(this);
+        vistaGenerarExamen.setPadre(this);
         vistaConsultarExamenes.setPadre(this);
         vistaModificarExamen.setPadre(this);
         vistaAsignarExamenes.setPadre(this);
@@ -260,9 +490,13 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistaGenerarEstadisticas.setPadre(this);
     }
 
+    /**
+     * Este método sirve para agregar todas las vistas creadas al Frame Principal
+     * por medio de un identificador que servirá para mostrar las vistas más
+     * adelante.
+     */
     private void agregarAPrincipal() {
-        //Agregar un panel y su identificador. Para agregar mas identificadores
-        //ir a vista.interfaz.InterfazVista y agregarlos al enum Vista
+        //Agregar un panel y su identificador.
         vistas.add(vistaHome, Vista.HOME.toString());
 
         vistas.add(vistaRegistrarTema, Vista.RegistrarTema.toString());
@@ -277,7 +511,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         vistas.add(vistaConsultarGrupo, Vista.ConsultarGrupo.toString());
         vistas.add(vistaModificarGrupo, Vista.ModificarGrupo.toString());
 
-        vistas.add(vistaRegistrarExamen, Vista.RegistrarExamen.toString());
+        vistas.add(vistaGenerarExamen, Vista.GenerarExamen.toString());
         vistas.add(vistaConsultarExamenes, Vista.ConsultarExamenes.toString());
         vistas.add(vistaModificarExamen, Vista.ModificarExamen.toString());
         vistas.add(vistaAsignarExamenes, Vista.AsignarExamenes.toString());
@@ -301,7 +535,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     /**
      * Obtener la vista actualmente mostrada
      *
-     * @return vista actual
+     * @return vista actual en forma de JPanel
      */
     private JPanel getVistaActual() {
         JPanel vista = null;
@@ -317,9 +551,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     }
 
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * Inicializa los atributos gráficos y los coloca en su posición.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -441,8 +673,8 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
 
         miRegistrarExamen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK));
         miRegistrarExamen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/nuevo24.png"))); // NOI18N
-        miRegistrarExamen.setText("Registrar Examen");
-        miRegistrarExamen.setName("RegistrarExamen"); // NOI18N
+        miRegistrarExamen.setText("Generar Examen");
+        miRegistrarExamen.setName("GenerarExamen"); // NOI18N
         mExamenes.add(miRegistrarExamen);
 
         miConsultarExamenes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/consulta24.png"))); // NOI18N
@@ -514,11 +746,23 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Este método sirve para acomodar el Principal en base a los permisos que
+     * tiene un usuario de tipo Alumno para realizar funciones en el sistema.
+     * Este método es llamado desde el Login para preparar al sistema según las
+     * funciones del usuario.
+     */
     public void setVistaAlumno() {
         ocultarTodos();
         mContestarExamenes.setVisible(true);
     }
 
+    /**
+     * Este método sirve para acomodar el Principal en base a los permisos que
+     * tiene un usuario de tipo Maestro para realizar funciones en el sistema.
+     * Este método es llamado desde el Login para preparar al sistema según las
+     * funciones del usuario.
+     */
     public void setVistaMaestro() {
         ocultarTodos();
         mCalificaciones.setVisible(true);
@@ -528,12 +772,19 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     }
 
     /**
-     *
+     * Este método sirve para acomodar el Principal en base a los permisos que
+     * tiene un usuario de tipo Administrador para realizar funciones en el sistema.
+     * Este método es llamado desde el Login para preparar al sistema según las
+     * funciones del usuario.
      */
     public void setVistaAdmin() {
         //no se oculta ninguna opcion del menu 
     }
 
+    /**
+     * Este método sirve para ocultar todos los menús del Principal y así hacer
+     * más rápida la selección de funcionalidades por usuario.
+     */
     private void ocultarTodos() {
         mCalificaciones.setVisible(false);
         mContestarExamenes.setVisible(false);
@@ -546,40 +797,17 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         mUsuarios.setVisible(false);
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu10;
-    private javax.swing.JMenu jMenu9;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator2;
-    private javax.swing.JMenu mCalificaciones;
-    private javax.swing.JMenu mContestarExamenes;
-    private javax.swing.JMenu mCursos;
-    private javax.swing.JMenu mEstadisticas;
-    private javax.swing.JMenu mExamenes;
-    private javax.swing.JMenu mGrupos;
-    private javax.swing.JMenu mReactivos;
-    private javax.swing.JMenu mTemas;
-    private javax.swing.JMenu mUsuarios;
-    private javax.swing.JMenuBar mbPrincipal;
-    private javax.swing.JMenuItem miAsignarExamenes;
-    private javax.swing.JMenuItem miConsultarCalificaciones;
-    private javax.swing.JMenuItem miConsultarCursos;
-    private javax.swing.JMenuItem miConsultarExamenes;
-    private javax.swing.JMenuItem miConsultarGrupos;
-    private javax.swing.JMenuItem miConsultarReactivos;
-    private javax.swing.JMenuItem miConsultarTemas;
-    private javax.swing.JMenuItem miConsultarUsuarios;
-    private javax.swing.JMenuItem miContestarExamenes;
-    private javax.swing.JMenuItem miGenerarEstadisticas;
-    private javax.swing.JMenuItem miRegistrarCurso;
-    private javax.swing.JMenuItem miRegistrarExamen;
-    private javax.swing.JMenuItem miRegistrarGrupo;
-    private javax.swing.JMenuItem miRegistrarReactivo;
-    private javax.swing.JMenuItem miRegistrarTema;
-    private javax.swing.JMenuItem miRegistrarUsuario;
-    private javax.swing.JPanel vistas;
-    // End of variables declaration//GEN-END:variables
-
+    /**
+     * Este método sirve para mostrar una vista con un objeto entidad enviados
+     * desde otra vista en el Principal. Este método es utilizado como
+     * intermediario de comunicación entre las vistas, ya que una vista puede
+     * decidir la siguiente vista a mostrar junto con información que le pueda
+     * enviar a través de este método.
+     * 
+     * @param entidad el objeto que se desea enviar a la vista destino,
+     * generalmente un dto.
+     * @param vista el identificador de la vista la cual se quiere mostrar
+     */
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
         //Muestra la vista modificar necesaria y le envia el objeto entidad.
@@ -591,6 +819,13 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         ((InterfaceVista) vistaModificar).mostrarEntidad(entidad);
     }
 
+    /**
+     * Este método sirve para mostrar una vista desde otra vista en el Principal.
+     * Este método es utilizado como intermediario de comunicación entre las vistas,
+     * ya que una vista puede decidir la siguiente vista a mostrar.
+     * 
+     * @param vista el identificador de la vista la cual se quiere mostrar
+     */
     @Override
     public void mostrarVista(Vista vista) {
         manejadorVista.show(vistas, vista.toString());
@@ -598,7 +833,6 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
 
     @Override
     public void mostrarEntidad(Object entidad) {
-        //No implementado
     }
 
     @Override
@@ -606,6 +840,11 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * 
+     * @return el objeto UsuarioDTO que representa al usuario que inició sesión
+     * en el sistema
+     */
     @Override
     public UsuarioDTO obtenerUsuarioActual() {
         return this.usuarioActual;
@@ -616,19 +855,32 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Este método es llamado cuando se selecciona cualquiera de los menús y 
+     * sirve para mostrar la vista en base al menú seleccionado.
+     * 
+     * @param e el objeto ActionEvent generado por el evento
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         //Para cuando se haga click en un menu item
+        //Obtener la vista actual
         JPanel actual = getVistaActual();
         boolean ok = true;
         
         String nombreMenu = ((JMenuItem)e.getSource()).getName();
         
+        //Si la vista actual no tiene que ver con Registrar, Modificar, Generar
+        //o Asignar simplemente se muestra la vista, en caso contrario se pide
+        //la confirmación a la vista actual para cambiar de panel.
         if((actual.getName().startsWith("Registrar") || actual.getName()
-                .startsWith("Modificar")) && !actual.getName().equals(nombreMenu)) {
+                .startsWith("Modificar") || actual.getName().startsWith("Generar")
+                || actual.getName().startsWith("Asignar")) && 
+                !actual.getName().equals(nombreMenu)) {
             ok = ((InterfaceVista)actual).confirmarCambio();
         }
         
+        //Si todo es correcto limpia la vista actual y muestra la nueva vista
         if(ok && !actual.getName().equals(nombreMenu)) {
             ((InterfaceVista)actual).limpiar();
             manejadorVista.show(vistas, nombreMenu);
@@ -639,9 +891,14 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     public void windowOpened(WindowEvent e) {
     }
 
+    /**
+     * Para cuando se cierra la ventana pedir confirmación.
+     * 
+     * @param e objeto generado por el evento
+     */
     @Override
     public void windowClosing(WindowEvent e) {
-        int sel = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+        int sel = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
                 + "deseas salir? todos los cambios no guardados se perderán",
                 "Advertencia", JOptionPane.YES_NO_OPTION);
         
@@ -650,9 +907,14 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         }
     }
 
+    /**
+     * Para cuando se cierra la ventana pedir confirmación.
+     * 
+     * @param e objeto generado por el evento
+     */
     @Override
     public void windowClosed(WindowEvent e) {
-        int sel = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
+        int sel = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
                 + "deseas salir? todos los cambios no guardados se perderán",
                 "Advertencia", JOptionPane.YES_NO_OPTION);
         

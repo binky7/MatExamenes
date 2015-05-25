@@ -215,7 +215,7 @@
               <Font name="Arial" size="18" style="1"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Registrar Examen"/>
+            <Property name="text" type="java.lang.String" value="Generar Examen"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblNombre">

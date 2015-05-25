@@ -807,7 +807,7 @@ implements InterfaceVista, InterfaceExamen, FocusListener, KeyListener {
             tbpClaves.remove(tbpClaves.getSelectedIndex());
         }
         else {
-            JOptionPane.showMessageDialog(this, "Selecciona una clave");
+            JOptionPane.showMessageDialog(this, "Seleccione una clave");
         }
     }//GEN-LAST:event_removerClave
 
@@ -858,8 +858,8 @@ implements InterfaceVista, InterfaceExamen, FocusListener, KeyListener {
      */
     private void pasarControlVistaConsulta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarControlVistaConsulta
         // TODO add your handling code here:
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-            + "quieres cancelar la operación?\nTodos los cambios no "
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+            + "desea cancelar la operación?\nTodos los cambios no "
             + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
             padre.mostrarVista(Vista.ConsultarExamenes);
@@ -893,10 +893,10 @@ implements InterfaceVista, InterfaceExamen, FocusListener, KeyListener {
                         .getSelectedIndex());
                 removerReactivos(indexesReactivo, tab.getTabla());
             } else {
-                JOptionPane.showMessageDialog(this, "Selecciona un reactivo");
+                JOptionPane.showMessageDialog(this, "Seleccione un reactivo");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona una clave");
+            JOptionPane.showMessageDialog(this, "Seleccione una clave");
         }
     }//GEN-LAST:event_removerReactivos
 
@@ -913,7 +913,7 @@ implements InterfaceVista, InterfaceExamen, FocusListener, KeyListener {
             //-1 le dice al frame que muestre los temas del curso del examen a modificar
             frmAgregarReactivos.inicializar(-1, tbpClaves.getSelectedIndex());
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona una clave "
+            JOptionPane.showMessageDialog(this, "Seleccione una clave "
                     + "primero");
         }
     }//GEN-LAST:event_agregarReactivos
@@ -941,10 +941,10 @@ implements InterfaceVista, InterfaceExamen, FocusListener, KeyListener {
 
                 mostrarReactivo(reactivo);
             } else {
-                JOptionPane.showMessageDialog(this, "Selecciona un reactivo");
+                JOptionPane.showMessageDialog(this, "Seleccione un reactivo");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona una clave");
+            JOptionPane.showMessageDialog(this, "Seleccione una clave");
         }
     }//GEN-LAST:event_verReactivo
 
@@ -1012,8 +1012,8 @@ implements InterfaceVista, InterfaceExamen, FocusListener, KeyListener {
     @Override
     public boolean confirmarCambio() {
         boolean cambiar = false;
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cambiar de pantalla?\nTodos los cambios no "
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desea cambiar de pantalla?\nTodos los cambios no "
                 + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
             cambiar = true;

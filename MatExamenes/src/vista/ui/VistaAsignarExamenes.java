@@ -1632,10 +1632,9 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
     @Override
     public boolean confirmarCambio() {
         boolean cambiar = false;
-
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que "
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
                 + "quiere cambiar de pantalla?\nTodos los cambios no "
-                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
+                + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
             cambiar = true;
         }

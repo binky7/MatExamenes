@@ -904,8 +904,8 @@ implements InterfaceVista, FocusListener, AncestorListener, KeyListener {
      */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
 
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cancelar la operación?\nTodos los cambios no "
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desea cancelar la operación?\nTodos los cambios no "
                 + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
             padre.mostrarVista(Vista.HOME);
@@ -929,8 +929,8 @@ implements InterfaceVista, FocusListener, AncestorListener, KeyListener {
     @Override
     public boolean confirmarCambio() {
         boolean cambiar = false;
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cambiar de pantalla?\nTodos los cambios no "
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desea cambiar de pantalla?\nTodos los cambios no "
                 + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
             cambiar = true;
