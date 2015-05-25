@@ -59,6 +59,7 @@ public class MantenerGruposDELEGATE {
     /**
      * Recibe el grupo a guardar y lo envia a la interface Persistencia.
      *
+     * @param grupo el Grupo.
      * @return regresa el id del grupo guardado o -1 si no se pudo guardar.
      */
     public int guardarGrupo(GrupoDTO grupo) {
