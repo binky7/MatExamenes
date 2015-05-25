@@ -147,11 +147,11 @@ public class CVContestarExamen {
                 //reactivo no respondido
             }
         }
-        calificacion[CALIFICACION] = (buenas / (double) nReactivos) * 10;
         calificacion[BUENAS] = buenas;
         calificacion[N_REACTIVOS] = nReactivos;
         String cali = String.format("%.1f", calificacion[CALIFICACION]);
-        examen.setCalificacion(Double.parseDouble(cali));
+        calificacion[CALIFICACION] = Double.parseDouble(cali);
+        examen.setCalificacion(calificacion[CALIFICACION]);
         return calificacion;
     }
 

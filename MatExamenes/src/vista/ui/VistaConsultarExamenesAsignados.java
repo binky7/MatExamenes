@@ -213,7 +213,7 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
                 JOptionPane.showMessageDialog(this, "Tienes un examen pendiente "
                         + "por enviar." + "\n" + "Re enviando",
                         "Respaldo examen", JOptionPane.INFORMATION_MESSAGE);
-                calificarExamen(examen, alumno);
+                mostrarCalificacion(examen, alumno);
             } else if (usuarioRespaldo && System.currentTimeMillis() < (fin + HOLGURA) && !contestado) {
                 //El usuario que inicio es el mismo que tiene el respaldo,
                 //el tiempo actual es menor que el tiempo de terminación
@@ -229,7 +229,7 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
                 //El usuario que inicio es el mismo que tiene el respaldo,
                 //el tiempo actual más la holgura supera el tiempo de terminación y
                 //el examen no fue contestado.
-                calificarExamen(examen, alumno);
+                mostrarCalificacion(examen, alumno);
             } else if (!usuarioRespaldo) {
                 //El usuario que inicio en el sistema no es igual al que genero el respaldo.
                 cvContestarExamen.calificarExamen(examen.getReactivos().size(),
@@ -263,20 +263,19 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
 
     /**
      * Califica el examen previamente resuelto por el alumno, con una
-     * calificación de 0 a 10.
+     * calificación de 0 a 10 y la muestra.
      *
      * @param examen El examen que se calificara.
      * @param alumno El respaldo del alumno obtenido de RespaldoJSON.
      * @see vista.controlador.RespaldoJSON
      */
-    private void calificarExamen(ExamenAsignadoDTO examen, ArrayList alumno) {
+    private void mostrarCalificacion(ExamenAsignadoDTO examen, ArrayList alumno) {
         double evaluacion[] = cvContestarExamen.calificarExamen(examen.getReactivos().size(),
                 (List<String>) alumno.get(RespaldoJSON.I_RESPUESTAS), cvContestarExamen.getExamenAsignado());
 
-        String cali = String.format("%.1f", evaluacion[CVContestarExamen.CALIFICACION]);
         String mensaje = "Reactivos correctos: " + (int) evaluacion[CVContestarExamen.BUENAS]
                 + "/" + (int) evaluacion[CVContestarExamen.N_REACTIVOS] + "\n"
-                + "Su calificación es de: " + cali;
+                + "Su calificación es de: " + evaluacion[CVContestarExamen.CALIFICACION];
 
         if (evaluacion[CVContestarExamen.CALIFICACION] == 10) {
             JOptionPane.showMessageDialog(this, mensaje,

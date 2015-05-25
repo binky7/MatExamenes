@@ -396,11 +396,10 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
     private void mostrarCalificacion() {
         double[] evaluacion = cvContestarExamen.calificarExamen(nReactivos,
                 respuestasAlumno, cvContestarExamen.getExamenAsignado());
-        String cali = String.format("%.1f", evaluacion[CVContestarExamen.CALIFICACION]);
 
         String mensaje = "Reactivos correctos: " + ((int) evaluacion[CVContestarExamen.BUENAS])
                 + "/" + ((int) evaluacion[CVContestarExamen.N_REACTIVOS]) + "\n"
-                + "Su calificación es de: " + cali;
+                + "Su calificación es de: " + evaluacion[CVContestarExamen.CALIFICACION];
 
         if (evaluacion[CVContestarExamen.CALIFICACION] == 10) {
             JOptionPane.showMessageDialog(this, mensaje,
