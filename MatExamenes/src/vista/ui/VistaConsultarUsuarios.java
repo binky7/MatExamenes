@@ -41,6 +41,11 @@ import vista.interfaz.InterfaceVista;
  */
 public class VistaConsultarUsuarios extends javax.swing.JPanel implements InterfaceVista {
 
+    /**
+     * Controlador de la vista del caso de uso Mantener Usuarios, funciona para
+     * manejar la información obtenida en la vista para comunicarse con las
+     * capas inferiores
+     */
     private CVMantenerUsuarios cvMantenerUsuarios;
     /**
      * Interface para interactuar con el JFrame principal.

@@ -39,6 +39,11 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
      * Objeto de la interfaz gráfica principal.
      */
     private final FrmPrincipal p;
+    /**
+     * Controlador de la vista del caso de uso Login, funciona para
+     * manejar la información obtenida en la vista para comunicarse con las
+     * capas inferiores
+     */
     private final CVLogin cvLogin;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

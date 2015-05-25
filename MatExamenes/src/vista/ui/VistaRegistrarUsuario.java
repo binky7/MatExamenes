@@ -47,6 +47,11 @@ import vista.interfaz.InterfaceVista;
 public class VistaRegistrarUsuario extends javax.swing.JPanel implements
         InterfaceVista, FocusListener, KeyListener {
 
+    /**
+     * Controlador de la vista del caso de uso Mantener Usuarios, funciona para
+     * manejar la información obtenida en la vista para comunicarse con las
+     * capas inferiores
+     */
     private CVMantenerUsuarios cvMantenerUsuarios;
     /**
      * Interface para interactuar con el JFrame principal.

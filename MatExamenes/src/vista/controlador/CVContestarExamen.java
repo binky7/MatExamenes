@@ -150,7 +150,8 @@ public class CVContestarExamen {
         calificacion[CALIFICACION] = (buenas / (double) nReactivos) * 10;
         calificacion[BUENAS] = buenas;
         calificacion[N_REACTIVOS] = nReactivos;
-        examen.setCalificacion(calificacion[0]);
+        String cali = String.format("%.1f", calificacion[CALIFICACION]);
+        examen.setCalificacion(Double.parseDouble(cali));
         return calificacion;
     }
 

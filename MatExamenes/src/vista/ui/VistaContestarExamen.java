@@ -79,6 +79,11 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
      * Interface para interactuar con el JFrame principal.
      */
     private InterfaceVista padre;
+    /**
+     * Controlador de la vista del caso de uso Contestar Exámenes, funciona para
+     * manejar la información obtenida en la vista para comunicarse con las
+     * capas inferiores
+     */
     private CVContestarExamen cvContestarExamen;
     /**
      * Alamacenara el numero máximo de reactivos.
@@ -391,7 +396,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
     private void mostrarCalificacion() {
         double[] evaluacion = cvContestarExamen.calificarExamen(nReactivos,
                 respuestasAlumno, cvContestarExamen.getExamenAsignado());
-        String cali = String.format("%.2f", evaluacion[CVContestarExamen.CALIFICACION]);
+        String cali = String.format("%.1f", evaluacion[CVContestarExamen.CALIFICACION]);
 
         String mensaje = "Reactivos correctos: " + ((int) evaluacion[CVContestarExamen.BUENAS])
                 + "/" + ((int) evaluacion[CVContestarExamen.N_REACTIVOS]) + "\n"
