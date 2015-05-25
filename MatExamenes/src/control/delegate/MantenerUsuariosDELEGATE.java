@@ -27,6 +27,10 @@ import modelo.dto.UsuarioDTO.Tipo;
 import remoteAccess.Enlace;
 
 /**
+ * Esta clase se encarga de enviar las peticiones del control vista del caso de
+ * uso de Mantener Usuarios a la interface Persistencia, la cuál oculta la forma
+ * en la cuál se tiene acceso a capas inferiores. El Delegate se encarga de
+ * delegar el trabajo a esta interface y obtener los datos que se le pidan.
  *
  * @author Fernando Enrique Avendaño Hernández, Alfredo Rouse Madrigal
  * @version 1 18 Mayo 2015

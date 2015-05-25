@@ -21,52 +21,58 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
+          <Component id="lblTitulo" min="-2" pref="800" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <EmptySpace min="157" pref="157" max="-2" attributes="0"/>
               <Component id="lblBusqueda" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-              <Component id="txtfNombre" min="-2" pref="150" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+              <Component id="txtfNombre" min="-2" pref="155" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
               <Component id="btnBuscar" min="-2" pref="108" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
           </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="138" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="btnEliminar" min="-2" pref="118" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnModificar" min="-2" pref="119" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnCancelar" min="-2" pref="115" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="jScrollPane1" min="-2" pref="545" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="117" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <EmptySpace min="138" pref="138" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="545" max="-2" attributes="0"/>
           </Group>
-          <Component id="lblTitulo" alignment="0" max="32767" attributes="0"/>
+          <Group type="102" attributes="0">
+              <EmptySpace min="319" pref="319" max="-2" attributes="0"/>
+              <Component id="btnEliminar" min="-2" pref="118" max="-2" attributes="0"/>
+              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+              <Component id="btnModificar" min="-2" pref="119" max="-2" attributes="0"/>
+              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+              <Component id="btnCancelar" min="-2" pref="115" max="-2" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <EmptySpace min="49" pref="49" max="-2" attributes="0"/>
               <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblBusqueda" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtfNombre" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="8" pref="8" max="-2" attributes="0"/>
+                              <Component id="lblBusqueda" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="btnBuscar" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
+                      <Component id="txtfNombre" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace pref="45" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="267" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnModificar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnEliminar" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="28" pref="28" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="btnEliminar" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnModificar" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnCancelar" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

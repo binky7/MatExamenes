@@ -24,12 +24,20 @@ import java.util.List;
 import modelo.dto.UsuarioDTO;
 
 /**
+ * Esta clase se encarga de enviar las peticiones de las vistas del caso de uso
+ * de Mantener Usuarios al delegate del mismo caso de uso, en el cuál se tiene
+ * acceso a capas inferiores para acceder a la base de datos. También mantiene
+ * en memoria los objetos dto que se utilizan para el caso de uso.
  *
  * @author Alfredo Rouse Madrigal
  * @version 1 18 Mayo 2015
  */
 public class CVMantenerUsuarios {
 
+    /**
+     * Objeto delegate del caso de uso Mantener Usuarios. Delega el trabajo a
+     * capas inferiores para acceder a los datos de la aplicación
+     */
     private final MantenerUsuariosDELEGATE mantenerUsuariosDELEGATE;
     /**
      * Lista de usuarios usada en ConsultarUsuarios resulatante de la busqueda.
@@ -62,7 +70,7 @@ public class CVMantenerUsuarios {
 
     /**
      * Retorna una lista de usuarios, seran buscados en base al parametro en
-     * nombre, apellido paterno, apellido materno, devolviendo solo el la primer
+     * nombre, apellido paterno, apellido materno, devolviendo solo la primer
      * coincidencia.
      *
      * @param nombre Puede ser un nombre o apellidos, por el cual se desea
@@ -124,11 +132,20 @@ public class CVMantenerUsuarios {
         return ok;
     }
 
+    /**
+     * Guarda el usuario que sera modificado.
+     *
+     * @param usuario El usuario a modificar.
+     */
     public void setUsuarioModificar(UsuarioDTO usuario) {
         this.usuarioAModificar = usuario;
     }
-    
-    public UsuarioDTO getUsuarioModificar(){
+
+    /**
+     *
+     * @return El usuario a modificar o modificado.
+     */
+    public UsuarioDTO getUsuarioModificar() {
         return this.usuarioAModificar;
     }
 

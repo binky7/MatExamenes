@@ -23,13 +23,20 @@ import control.delegate.LoginDELEGATE;
 import modelo.dto.UsuarioDTO;
 
 /**
+ * Esta clase se encarga de enviar las peticiones de las vistas del caso de uso
+ * de Login al delegate del mismo caso de uso, en el cuál se tiene acceso a
+ * capas inferiores para acceder a la base de datos. También mantiene en memoria
+ * los objetos dto que se utilizan para el caso de uso.
  *
  * @author Alfredo Rouse Madrigal
  * @version 1 18 Mayo 2015
  */
 public class CVLogin {
 
-    
+    /**
+     * Objeto delegate del caso de uso Mantener Usuarios. Delega el trabajo a
+     * capas inferiores para acceder a los datos de la aplicación
+     */
     private final LoginDELEGATE loginDELEGATE;
     /**
      * Objeto UsuarioDTO, se almacena el usuario cuando se validaron las

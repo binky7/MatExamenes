@@ -51,6 +51,41 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
      * Modelo para cambiar los datos de la tabla.
      */
     private final DefaultTableModel DTM;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Botón para la busqueda.
+    */
+    private javax.swing.JButton btnBuscar;
+    /**
+    * Botón para cancelar la consulta de usuarios.
+    */
+    private javax.swing.JButton btnCancelar;
+    /**
+    * Botón para eliminar un usuario.
+    */
+    private javax.swing.JButton btnEliminar;
+    /**
+    * Botón para modificar un usuario.
+    */
+    private javax.swing.JButton btnModificar;
+    private javax.swing.JScrollPane jScrollPane1;
+    /**
+    * Label utilizada para mostrar el texto de la busqueda.
+    */
+    private javax.swing.JLabel lblBusqueda;
+    /**
+    * Label utilizada para mostrar el título de la interfaz gráfic.
+    */
+    private javax.swing.JLabel lblTitulo;
+    /**
+    * Tabla para mostrar los resultados de la busqueda.
+    */
+    private javax.swing.JTable tblUsuarios;
+    /**
+    * Campo de texto para ingresar parte del nombre a buscar.
+    */
+    private javax.swing.JTextField txtfNombre;
+    // End of variables declaration//GEN-END:variables
 
     /**
      * Crea una nueva VistaConsultarUsuario e inicializa sus atributos.
@@ -178,45 +213,48 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(157, 157, 157)
                 .addComponent(lblBusqueda)
                 .addGap(27, 27, 27)
-                .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56)
-                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(138, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(117, 117, 117))
-            .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
+                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(138, 138, 138)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(319, 319, 319)
+                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addComponent(lblTitulo)
-                .addGap(73, 73, 73)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblBusqueda)
-                    .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(lblBusqueda))
+                            .addComponent(btnBuscar)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(77, 77, 77)
+                        .addComponent(txtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(45, 45, 45)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(53, 53, 53))
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -416,41 +454,5 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         DTM.setRowCount(0);
         txtfNombre.setText("");
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-    * Botón para la busqueda.
-    */
-    private javax.swing.JButton btnBuscar;
-    /**
-    * Botón para cancelar la consulta de usuarios.
-    */
-    private javax.swing.JButton btnCancelar;
-    /**
-    * Botón para eliminar un usuario.
-    */
-    private javax.swing.JButton btnEliminar;
-    /**
-    * Botón para modificar un usuario.
-    */
-    private javax.swing.JButton btnModificar;
-    private javax.swing.JScrollPane jScrollPane1;
-    /**
-    * Label utilizada para mostrar el texto de la busqueda.
-    */
-    private javax.swing.JLabel lblBusqueda;
-    /**
-    * Label utilizada para mostrar el título de la interfaz gráfic.
-    */
-    private javax.swing.JLabel lblTitulo;
-    /**
-    * Tabla para mostrar los resultados de la busqueda.
-    */
-    private javax.swing.JTable tblUsuarios;
-    /**
-    * Campo de texto para ingresar parte del nombre a buscar.
-    */
-    private javax.swing.JTextField txtfNombre;
-    // End of variables declaration//GEN-END:variables
 
 }

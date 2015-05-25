@@ -26,6 +26,10 @@ import modelo.dto.ExamenAsignadoPK;
 import modelo.dto.UsuarioDTO;
 
 /**
+ * Esta clase se encarga de enviar las peticiones de las vistas del caso de uso
+ * de Contestar Exámenes al delegate del mismo caso de uso, en el cuál se tiene
+ * acceso a capas inferiores para acceder a la base de datos. También mantiene
+ * en memoria los objetos dto que se utilizan para el caso de uso.
  *
  * @author Alfredo Rouse Madrigal
  * @version 1 18 Mayo 2015
@@ -44,13 +48,18 @@ public class CVContestarExamen {
      * Índice calificación alumno.
      */
     public static final int CALIFICACION = 0;
+
+    /**
+     * Objeto delegate del caso de uso Mantener Usuarios. Delega el trabajo a
+     * capas inferiores para acceder a los datos de la aplicación
+     */
     private final ContestarExamenDELEGATE contestarExamenDELEGATE;
     /**
      * Examen que el alumno se encuentra contestando o contesto.
      */
     private ExamenAsignadoDTO examenAsignado;
     /**
-     *
+     * Lista que almacena los exámenes asignados que posee el alumno.
      */
     List<ExamenAsignadoDTO> examenesAsignados;
 
