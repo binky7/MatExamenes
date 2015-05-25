@@ -39,7 +39,7 @@ public interface InterfaceVista {
         HOME, RegistrarTema, ConsultarTemas, ModificarTema,
         RegistrarCurso, ConsultarCursos, ModificarCurso, RegistrarGrupo,
         ConsultarGrupo, ModificarGrupo, RegistrarReactivo, ConsultarReactivos,
-        ModificarReactivo, RegistrarExamen, ConsultarExamenes, ModificarExamen,
+        ModificarReactivo, GenerarExamen, ConsultarExamenes, ModificarExamen,
         AsignarExamenes, ConsultarCalificaciones, ConsultarCalificacionesExamen,
         RegistrarUsuario,ConsultarUsuarios,ModificarUsuario, GenerarEstadisticas,
         ContestarExamen,BuscarExamenAsignado

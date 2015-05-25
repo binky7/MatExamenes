@@ -522,7 +522,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona dos exámenes");
+            JOptionPane.showMessageDialog(this, "Seleccione dos exámenes");
         }
     }
 
@@ -870,7 +870,14 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
 
     @Override
     public boolean confirmarCambio() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean cambiar = false;
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "quiere cambiar de pantalla?\nTodos los cambios no "
+                + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
+        if (ok == 0) {
+            cambiar = true;
+        }
+        return cambiar;
     }
 
     @Override

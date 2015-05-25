@@ -286,7 +286,7 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
             }
         } else {
             //Si no se seleccionó un tema primero mostrar un mensaje
-            JOptionPane.showMessageDialog(this, "Selecciona un Tema primero");
+            JOptionPane.showMessageDialog(this, "Seleccione un tema primero");
         }
     }
 
@@ -585,11 +585,11 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
                             "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "No cuentas con los permisos "
+                JOptionPane.showMessageDialog(this, "No cuenta con los permisos "
                         + "para realizar esta acción");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona primero un reactivo");
+            JOptionPane.showMessageDialog(this, "Seleccione primero un reactivo");
         }
     }//GEN-LAST:event_pasarControlVistaModificar
 
@@ -616,8 +616,8 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
         //Si hay por lo menos una selección mostrar la confirmación y eliminar
         //los reactivos en caso afirmativo
         if (indexesReactivos.size() > 0) {
-            int q = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                    + "quieres eliminar el(los) reactivo(s) seleccionado(s)?",
+            int q = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                    + "desea eliminar el(los) reactivo(s) seleccionado(s)?",
                     "Confirmación", JOptionPane.YES_NO_OPTION);
             if (q != 0) {
                 return;
@@ -642,7 +642,7 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
                         + "los reactivos", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona un reactivo");
+            JOptionPane.showMessageDialog(this, "Seleccione un reactivo");
         }
     }//GEN-LAST:event_eliminarReactivos
 

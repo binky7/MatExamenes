@@ -150,8 +150,8 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/recursos/nuevo24.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Registrar Examen"/>
-                <Property name="name" type="java.lang.String" value="RegistrarExamen" noResource="true"/>
+                <Property name="text" type="java.lang.String" value="Generar Examen"/>
+                <Property name="name" type="java.lang.String" value="GenerarExamen" noResource="true"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miConsultarExamenes">
