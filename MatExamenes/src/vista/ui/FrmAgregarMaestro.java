@@ -1,7 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2015 Fernando Enrique Avendaño Hernández
+ *
+ * This file is part of MatExamenes.
+ *
+ * MatExamenes is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package vista.ui;
 
@@ -18,18 +32,96 @@ import vista.controlador.CVMantenerGrupos;
 import vista.interfaz.InterfaceGrupo;
 
 /**
+ * JPanel que mostrará la interfaz gráfica de Agregar Maestros a un grupo.
  *
- * @author FernandoEnrique
+ * @author Fernando Enrique Avendaño Hernández
+ * @version 1 18 Mayo 2015
  */
 public class FrmAgregarMaestro extends javax.swing.JFrame {
 
+    /**
+     * Interface de comunicación con la interfaz padre, la cuál sirve para
+     * comunicarse con ella y recibir mensajes para mostrar otras vistas, En ese
+     * caso es utilizada para comunicarse con el JFrame Principal.
+     */
     private InterfaceGrupo padre;
-    private CVMantenerGrupos controladorVista;
-    private List<UsuarioDTO> listaMaestros;
-    private List<CursoDTO> listaCursos;
 
     /**
-     * Creates new form FrmAgregarMaestro
+     * Controlador de la vista del caso de uso mantener grupos, funciona para
+     * manejar la información obtenida en la vista para comunicarse con las
+     * capas inferiores.
+     */
+    private CVMantenerGrupos controladorVista;
+
+    /**
+     * Lista de maestros utilizada para guardar temporalmente los maestros que
+     * se manejan en la vista.
+     */
+    private List<UsuarioDTO> listaMaestros;
+
+    /**
+     * Lista de cursos utilizada para guardar temporalmente los cursos que se
+     * manejan en la vista.
+     */
+    private List<CursoDTO> listaCursos;
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Boton para agregar maestros.
+    */
+    private javax.swing.JButton btnAgregar;
+    /**
+    * Boton para la busqueda.
+    */
+    private javax.swing.JButton btnBuscar;
+    /**
+    * Boton para cancelar.
+    */
+    private javax.swing.JButton btnCancelar;
+    /**
+    * Panel para la vista agregar maestros.
+    */
+    private javax.swing.JPanel jPanel1;
+    /**
+    * Scrollpane para la tabla de maestros.
+    */
+    private javax.swing.JScrollPane jScrollPane1;
+    /**
+    * Srcollpane para la tabla de cursos.
+    */
+    private javax.swing.JScrollPane jScrollPane2;
+    /**
+    * Label para la busqueda.
+    */
+    private javax.swing.JLabel lblBusqueda;
+    /**
+    * Label para la tabla cursos.
+    */
+    private javax.swing.JLabel lblCursos;
+    /**
+    * Label para la tabla maestros.
+    */
+    private javax.swing.JLabel lblMaestros;
+    /**
+    * Label para el titulo de la vista.
+    */
+    private javax.swing.JLabel lblTitulo;
+    /**
+    * Tabla para mostrar los cursos.
+    */
+    private javax.swing.JTable tblCursos;
+    /**
+    * Tabla para mostrar los maestros.
+    */
+    private javax.swing.JTable tblMaestros;
+    /**
+    * Textfield para la busqueda.
+    */
+    private javax.swing.JTextField txtfBusqueda;
+    // End of variables declaration//GEN-END:variables
+
+    /**
+     * Crea un objeto FrmAgregarMaestros e inicializa todos sus atributos.
      */
     public FrmAgregarMaestro() {
         controladorVista = new CVMantenerGrupos();
@@ -39,6 +131,42 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
         listaMaestros = new ArrayList<>();
     }
 
+    /**
+     * Inicializa atributos necesarios para la vista y agrega los listeners
+     * necesarios.
+     *
+     * @param controladorVista el controlador de vista.
+     * @param padre el padre de la vista.
+     */
+    void inicializar(CVMantenerGrupos controladorVista, InterfaceGrupo padre) {
+        this.setVisible(true);
+        this.controladorVista = controladorVista;
+        this.padre = padre;
+        tblMaestros.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (tblMaestros.getSelectedRow() != -1) {
+                    listaCursos = controladorVista.obtenerCursos(tblMaestros.getSelectedRow());
+                    ((DefaultTableModel) tblCursos.getModel()).setRowCount(0);
+                    if (listaCursos.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "No hay cursos disponibles "
+                                + "para este maestro.", "Advertencia", 2);
+                    } else {
+                        for (CursoDTO listaCurso : listaCursos) {
+                            Object[] fila = new Object[2];
+                            fila[0] = false;
+                            fila[1] = listaCurso.getNombre();
+                            ((DefaultTableModel) tblCursos.getModel()).addRow(fila);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Limpia los componentes de la vista.
+     */
     private void limpiar() {
         txtfBusqueda.setText("");
         ((DefaultTableModel) tblCursos.getModel()).setRowCount(0);
@@ -46,9 +174,7 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * Inicializa los atributos gráficos y los coloca en su posición.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -64,7 +190,7 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
         btnAgregar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         lblMaestros = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
         tblCursos = new javax.swing.JTable();
         lblBusqueda = new javax.swing.JLabel();
 
@@ -77,7 +203,7 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
+                BuscarMaestros(evt);
             }
         });
 
@@ -108,7 +234,7 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
+                AgregarMaestros(evt);
             }
         });
 
@@ -117,7 +243,7 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
+                Cancelar(evt);
             }
         });
 
@@ -140,7 +266,7 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(tblCursos);
+        jScrollPane2.setViewportView(tblCursos);
 
         lblBusqueda.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblBusqueda.setText("Busqueda:");
@@ -163,7 +289,7 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(86, 86, 86)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblCursos)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(145, 145, 145)
@@ -196,7 +322,7 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblCursos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
@@ -224,12 +350,23 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+    /**
+     * Llama a limpiar para que la vista de limpie y cierra la vista.
+     *
+     * @param evt Recibe el evento del boton que lo activo.
+     */
+    private void Cancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Cancelar
         limpiar();
         this.setVisible(false);
-    }//GEN-LAST:event_btnCancelarActionPerformed
+    }//GEN-LAST:event_Cancelar
 
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+    /**
+     * Obtiene los indices del maestro y cursos seleccionados y los obtiene de
+     * las listas, los al controlador de la vista para que los agregue al grupo.
+     *
+     * @param evt Recibe el evento del boton que lo activo.
+     */
+    private void AgregarMaestros(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarMaestros
         int indexMaestro = tblMaestros.getSelectedRow();
         if (indexMaestro == -1) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar un maestro",
@@ -246,15 +383,22 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Debes seleccionar al menos"
                         + " un curso.", "Advertencia", 2);
             } else {
-                btnCancelarActionPerformed(evt);
+                Cancelar(evt);
                 HashMap<CursoDTO, UsuarioDTO> mapa = controladorVista.
                         agregarMaestro(indexesCursos, indexMaestro);
                 padre.mostrarMaestros(mapa);
             }
         }
-    }//GEN-LAST:event_btnAgregarActionPerformed
+    }//GEN-LAST:event_AgregarMaestros
 
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+    /**
+     * Envia el crtiterio de busqueda ingresado y lo envia al controlador de la
+     * vista para que obtenga los maestros que coincidan con la busqueda, los
+     * los muestra en la tabla.
+     *
+     * @param evt Recibe el evento del boton que lo activo.
+     */
+    private void BuscarMaestros(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarMaestros
         listaMaestros = controladorVista.obtenerMaestros(txtfBusqueda.getText());
         DefaultTableModel model = (DefaultTableModel) tblMaestros.getModel();
         for (int x = model.getRowCount() - 1; x > -1; x--) {
@@ -273,47 +417,6 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
             }
             tblMaestros.setModel(model);
         }
-    }//GEN-LAST:event_btnBuscarActionPerformed
+    }//GEN-LAST:event_BuscarMaestros
 
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnCancelar;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JLabel lblBusqueda;
-    private javax.swing.JLabel lblCursos;
-    private javax.swing.JLabel lblMaestros;
-    private javax.swing.JLabel lblTitulo;
-    private javax.swing.JTable tblCursos;
-    private javax.swing.JTable tblMaestros;
-    private javax.swing.JTextField txtfBusqueda;
-    // End of variables declaration//GEN-END:variables
-    void inicializar(CVMantenerGrupos controladorVista, InterfaceGrupo padre) {
-        this.setVisible(true);
-        this.controladorVista = controladorVista;
-        this.padre = padre;
-        tblMaestros.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (tblMaestros.getSelectedRow() != -1) {
-                    listaCursos = controladorVista.obtenerCursos(tblMaestros.getSelectedRow());
-                    ((DefaultTableModel) tblCursos.getModel()).setRowCount(0);
-                    if (listaCursos.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "No hay cursos disponibles "
-                                + "para este maestro.", "Advertencia", 2);
-                    } else {
-                        for (CursoDTO listaCurso : listaCursos) {
-                            Object[] fila = new Object[2];
-                            fila[0] = false;
-                            fila[1] = listaCurso.getNombre();
-                            ((DefaultTableModel) tblCursos.getModel()).addRow(fila);
-                        }
-                    }
-                }
-            }
-        });
-    }
 }

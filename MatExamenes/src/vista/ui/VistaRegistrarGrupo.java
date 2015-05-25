@@ -47,22 +47,104 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements
      * capas inferiores.
      */
     private CVMantenerGrupos controlVista;
+
     /**
      * Interface de comunicación con la interfaz padre, la cuál sirve para
      * comunicarse con ella y recibir mensajes para mostrar otras vistas, En ese
      * caso es utilizada para comunicarse con el JFrame Principal.
      */
     private InterfaceVista padre;
+
     /**
      * JPanel utilizado para realizar la busqueda de usuarios de tipo alumno y
      * agregarlos al grupo.
      */
     private FrmAgregarAlumnos vistaAgrAlumnos;
+
     /**
      * JPanel utilizado para realizar la busqueda de usuarios de tipo maestro y
      * agregarlos al grupo.
      */
     private FrmAgregarMaestro vistaAgrMaestro;
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Boton para agregar alumnos.
+    */
+    private javax.swing.JButton btnAgrAlumnos;
+    /**
+    * Boton para agregar maestros.
+    */
+    private javax.swing.JButton btnAgrMaestro;
+    /**
+    * Boton para cancelar.
+    */
+    private javax.swing.JButton btnCancelar;
+    /**
+    * Boton para guardar.
+    */
+    private javax.swing.JButton btnGuardar;
+    /**
+    * Boton para remover alumnos.
+    */
+    private javax.swing.JButton btnRmvAlumnos;
+    /**
+    * Boton para remover maestros.
+    */
+    private javax.swing.JButton btnRmvMaestro;
+    /**
+    * Combobox para el grado.
+    */
+    private javax.swing.JComboBox cmbGrado;
+    /**
+    * Combobox para el nombre.
+    */
+    private javax.swing.JComboBox cmbNombre;
+    /**
+    * Combobox para el turno.
+    */
+    private javax.swing.JComboBox cmbTurno;
+    /**
+    * Scrollpane para la table de maestros.
+    */
+    private javax.swing.JScrollPane jScrollPane1;
+    /**
+    * Scrollpane para la tabla de alumnos.
+    */
+    private javax.swing.JScrollPane jScrollPane2;
+    /**
+    * Label para la tabla alumnos.
+    */
+    private javax.swing.JLabel lblAlumnos;
+    /**
+    * Label para el grado.
+    */
+    private javax.swing.JLabel lblGrado;
+    /**
+    * Label para la tabla maestros.
+    */
+    private javax.swing.JLabel lblMaestros;
+    /**
+    * Label para el nombre.
+    */
+    private javax.swing.JLabel lblNombre;
+    /**
+    * Label para el titulo de la vista.
+    */
+    private javax.swing.JLabel lblTitulo;
+    /**
+    * Label para el turno.
+    */
+    private javax.swing.JLabel lblTurno;
+    /**
+    * Tabla para mostrar alumnos.
+    */
+    private javax.swing.JTable tblAlumnos;
+    /**
+    * Tabla para mostrar maestros.
+    */
+    private javax.swing.JTable tblMaestros;
+    // End of variables declaration//GEN-END:variables
 
     /**
      * Crea un objeto VistaRegistrarGrupo e inicializa sus atributos, establece
@@ -353,7 +435,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelarRegistro(evt);
+                Cancelar(evt);
             }
         });
 
@@ -480,7 +562,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements
      *
      * @param evt Recibe el evento del boton que lo activo.
      */
-    private void CancelarRegistro(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarRegistro
+    private void Cancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Cancelar
         int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
                 + "quieres cancelar la operación?\nTodos los cambios no "
                 + "guardados se perderán");
@@ -489,7 +571,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements
             controlVista.liberarMemoriaRegistrar();
             padre.mostrarVista(Vista.HOME);
         }
-    }//GEN-LAST:event_CancelarRegistro
+    }//GEN-LAST:event_Cancelar
 
     /**
      * Llama a encapsular grupo y lo manda al controlador de la vista para que
@@ -557,85 +639,6 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements
                     "Advertencia", 2);
         }
     }//GEN-LAST:event_RemoverMaestro
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-    * Boton para agregar alumnos.
-    */
-    private javax.swing.JButton btnAgrAlumnos;
-    /**
-    * Boton para agregar maestros.
-    */
-    private javax.swing.JButton btnAgrMaestro;
-    /**
-    * Boton para cancelar.
-    */
-    private javax.swing.JButton btnCancelar;
-    /**
-    * Boton para guardar.
-    */
-    private javax.swing.JButton btnGuardar;
-    /**
-    * Boton para remover alumnos.
-    */
-    private javax.swing.JButton btnRmvAlumnos;
-    /**
-    * Boton para remover maestros.
-    */
-    private javax.swing.JButton btnRmvMaestro;
-    /**
-    * Combobox para el grado.
-    */
-    private javax.swing.JComboBox cmbGrado;
-    /**
-    * Combobox para el nombre.
-    */
-    private javax.swing.JComboBox cmbNombre;
-    /**
-    * Combobox para el turno.
-    */
-    private javax.swing.JComboBox cmbTurno;
-    /**
-    * Scrollpane para la table de maestros.
-    */
-    private javax.swing.JScrollPane jScrollPane1;
-    /**
-    * Scrollpane para la tabla de alumnos.
-    */
-    private javax.swing.JScrollPane jScrollPane2;
-    /**
-    * Label para la tabla alumnos.
-    */
-    private javax.swing.JLabel lblAlumnos;
-    /**
-    * Label para el grado.
-    */
-    private javax.swing.JLabel lblGrado;
-    /**
-    * Label para la tabla maestros.
-    */
-    private javax.swing.JLabel lblMaestros;
-    /**
-    * Label para el nombre.
-    */
-    private javax.swing.JLabel lblNombre;
-    /**
-    * Label para el titulo de la vista.
-    */
-    private javax.swing.JLabel lblTitulo;
-    /**
-    * Label para el turno.
-    */
-    private javax.swing.JLabel lblTurno;
-    /**
-    * Tabla para mostrar alumnos.
-    */
-    private javax.swing.JTable tblAlumnos;
-    /**
-    * Tabla para mostrar maestros.
-    */
-    private javax.swing.JTable tblMaestros;
-    // End of variables declaration//GEN-END:variables
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
