@@ -214,7 +214,7 @@ public class Validador {
     public static boolean validarLongitud(int longitud, String campoTexto) {
         boolean ok = true;
 
-        if (campoTexto.length() > longitud) {
+        if (campoTexto.length() >= longitud) {
             ok = false;
         }
 

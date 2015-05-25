@@ -1,13 +1,26 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2015 E. Iván Mariscal Martínez
+ *
+ * This file is part of MatExámenes.
+ *
+ * MatExámenes is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * MatExámenes is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package vista.ui;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -21,31 +34,38 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.text.NumberFormatter;
 import modelo.dto.ClaveExamenDTO;
-import modelo.dto.ClaveExamenPK;
 import modelo.dto.CursoDTO;
 import modelo.dto.ExamenAsignadoDTO;
-import modelo.dto.ExamenAsignadoPK;
 import modelo.dto.ExamenDTO;
 import modelo.dto.GrupoDTO;
 import modelo.dto.ReactivoAsignadoDTO;
 import modelo.dto.ReactivoAsignadoPK;
-import modelo.dto.ReactivoDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVAsignarExamenes;
 import vista.interfaz.InterfaceVista;
 
 /**
  *
- * @author ivan
+ * @author E. Iván Mariscal Martínez
+ * @version 1 21 de mayo 2015
  */
 public class VistaAsignarExamenes extends javax.swing.JPanel
         implements InterfaceVista, AncestorListener {
 
+    /**
+     * Controlador de la vista del caso de uso asignar exámenes, maneja la
+     * información obtenida en la vista para comunicarse con las capas
+     * inferiores.
+     */
     private CVAsignarExamenes controlVista;
+
+    /**
+     * Interface para interactuar con el JFrame principal.
+     */
     private InterfaceVista padre;
 
     /**
-     * Creates new form VistaAsignarExamenes
+     * Crea un objeto VistaAsignarExamenes e inicializa sus atributos.
      */
     public VistaAsignarExamenes() {
         initComponents();
@@ -54,14 +74,33 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         lstClaves.setModel(new DefaultListModel());
     }
 
+    /**
+     * Almacena la interface del JFrame principal.
+     *
+     * @param padre Interface para interactuar con el JFrame principal.
+     */
     public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
 
+    /**
+     * Almacena el control de la vista.
+     *
+     * @param controlVista El objeto encargado de realizar las interacciones con
+     * la base de datos.
+     */
     public void setControlador(CVAsignarExamenes controlVista) {
         this.controlVista = controlVista;
     }
 
+    /**
+     * Obtiene los cursos almacenados en la base de datos dependiendo del tipo
+     * de usuario que sea el usuario actual.
+     *
+     * @return Regresa verdadero si la consulta de cursos se realiza
+     * exitósamente. Regresa falso si no se encuentran cursos en la base de
+     * datos.
+     */
     private boolean consultarCursos() {
         UsuarioDTO usuarioActual = padre.obtenerUsuarioActual();
         List<CursoDTO> listaCursos = controlVista.obtenerCursos(usuarioActual);
@@ -71,10 +110,15 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
             ok = true;
             mostrarCursos(listaCursos);
         }
-        
+
         return ok;
     }
 
+    /**
+     * Muestra los cursos en la vista.
+     *
+     * @param cursos Lista de cursos para mostrar en la vista.
+     */
     private void mostrarCursos(List<CursoDTO> listaCursos) {
         cbCursos.removeAllItems();
         for (CursoDTO curso : listaCursos) {
@@ -85,21 +129,11 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         cbCursos.setSelectedIndex(-1);
     }
 
-    private void consultarExamenes(CursoDTO curso) {
-        UsuarioDTO usuarioActual = padre.obtenerUsuarioActual();
-        List<ExamenDTO> listaExamenes = controlVista
-                .obtenerExamenesPorCurso(curso, usuarioActual);
-        DefaultTableModel model = (DefaultTableModel) tblExamenes.getModel();
-
-        model.setRowCount(0);
-
-        if (listaExamenes != null && !listaExamenes.isEmpty()) {
-            mostrarExamenes(listaExamenes);
-        } else {
-            JOptionPane.showMessageDialog(this, "No hay exámenes");
-        }
-    }
-
+    /**
+     * Muestra los exámenes en la vista.
+     *
+     * @param listaExamenes Lista de exámenes para mostrar en la vista.
+     */
     private void mostrarExamenes(List<ExamenDTO> listaExamenes) {
         DefaultTableModel model = (DefaultTableModel) tblExamenes.getModel();
 
@@ -120,6 +154,13 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         }
     }
 
+    /**
+     * Obtiene los grupos asociados al curso seleccionado dependiendo del tipo
+     * de usuario que sea el usuario actual.
+     *
+     * @return Regresa verdadero si la consulta de grupos se realiza
+     * exitósamente. Regresa falso si no se encuentran grupos disponibles.
+     */
     private boolean consultarGruposPorCurso() {
         UsuarioDTO usuarioActual = padre.obtenerUsuarioActual();
         List<GrupoDTO> listaGrupos = controlVista.obtenerGruposPorCurso(usuarioActual);
@@ -133,6 +174,11 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         }
     }
 
+    /**
+     * Muestra los grupos en la vista.
+     *
+     * @param listaGrupos Lista de grupos para mostrar en la vista.
+     */
     private void mostrarGrupos(List<GrupoDTO> listaGrupos) {
         DefaultListModel modeloLista = (DefaultListModel) lstGrupos.getModel();
         modeloLista.clear();
@@ -143,20 +189,24 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         }
     }
 
+    /**
+     * Obtiene las claves del examen seleccionado.
+     */
     private void consultarClaves() {
         ExamenDTO examen = controlVista.obtenerExamen(tblExamenes.getSelectedRow());
         if (examen != null) {
             List<ClaveExamenDTO> claves = examen.getClaves();
             if (claves != null) {
                 mostrarClaves(claves);
-            } else {
-                System.out.println("Error claves");
-            }
-        } else {
-            System.out.println("Error examen");
-        }
+            } 
+        } 
     }
 
+    /**
+     * Muestra las claves del examen seleccionado.
+     *
+     * @param claves Lista de claves para mostrar en la vista.
+     */
     private void mostrarClaves(List<ClaveExamenDTO> claves) {
         DefaultListModel modeloClaves = (DefaultListModel) lstClaves.getModel();
         modeloClaves.clear();
@@ -166,6 +216,12 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         }
     }
 
+    /**
+     * Obtiene los alumnos pertenecientes al grupo seleccionado.
+     *
+     * @return Regresa verdadero si la consulta se realiza exitósamente. Regresa
+     * falso si no se encuentran alumnos en el grupo seleccionado.
+     */
     private boolean consultarAlumnos() {
         int indexGrupo = lstGrupos.getSelectedIndex();
         List<UsuarioDTO> listaAlumnos = controlVista.obtenerAlumnosDeGrupo(indexGrupo);
@@ -182,6 +238,11 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         return ok;
     }
 
+    /**
+     * Muestra la lista de alumnos en la vista.
+     *
+     * @param alumnos Lista de alumnos para mostrar en la vista.
+     */
     private void mostrarAlumnos(List<UsuarioDTO> alumnos) {
         ((DefaultTableModel) tblAsignaciones.getModel()).setRowCount(0);
         DefaultTableModel modeloAlumnos = (DefaultTableModel) tblAlumnos.getModel();
@@ -200,57 +261,9 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         }
     }
 
-    private void agregarAsignacion(List<Integer> indexes) {
-        DefaultTableModel modeloAlumnos
-                = (DefaultTableModel) tblAlumnos.getModel();
-        DefaultTableModel modeloAsignaciones
-                = (DefaultTableModel) tblAsignaciones.getModel();
-
-        //Se copian los datos de las filas seleccionadas de
-        //la tabla de alumnos a la tabla de asignaciones
-        for (Integer index : indexes) {
-            Object datos[] = new Object[6];
-
-            datos[0] = false;
-            for (int i = 1; i < 5; i++) {
-                datos[i] = modeloAlumnos.getValueAt(index, i);
-            }
-            datos[5] = lstClaves.getSelectedValue();
-
-            modeloAsignaciones.addRow(datos);
-        }
-
-        //Se remueven las filas que ya han sido copiadas
-        for (int i = indexes.size() - 1; i >= 0; i--) {
-            modeloAlumnos.removeRow(indexes.get(i));
-        }
-    }
-
-    private void removerAsignacion(List<Integer> indexes) {
-        DefaultTableModel modeloAlumnos
-                = (DefaultTableModel) tblAlumnos.getModel();
-        DefaultTableModel modeloAsignaciones
-                = (DefaultTableModel) tblAsignaciones.getModel();
-
-        //Se copian los datos de las filas seleccionadas de
-        //la tabla de alumnos a la tabla de asignaciones
-        for (Integer index : indexes) {
-            Object datos[] = new Object[5];
-
-            datos[0] = false;
-            for (int i = 1; i < 5; i++) {
-                datos[i] = modeloAsignaciones.getValueAt(index, i);
-            }
-
-            modeloAlumnos.addRow(datos);
-        }
-
-        //Se remueven las filas que ya han sido copiadas
-        for (int i = indexes.size() - 1; i >= 0; i--) {
-            modeloAsignaciones.removeRow(indexes.get(i));
-        }
-    }
-
+    /**
+     * Se muestran los datos finales de la asignación del examen.
+     */
     private void mostrarDatos() {
         DefaultTableModel modeloAsignacionesFinal
                 = (DefaultTableModel) tblAsignacionesFinal.getModel();
@@ -272,24 +285,12 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         }
     }
 
-    private void asignarExamen() {
-        List<ExamenAsignadoDTO> listaExamenesAsignados = encapsularExamenAsignado();
-
-        if (listaExamenesAsignados != null && !listaExamenesAsignados.isEmpty()) {
-            boolean ok = controlVista.asignarExamenes(listaExamenesAsignados);
-
-            if (ok) {
-                JOptionPane.showMessageDialog(this, "Exámenes asignados");
-                limpiar();
-                padre.mostrarVista(Vista.HOME);
-            } else {
-                JOptionPane.showMessageDialog(this, "Error al asignar examenes.");
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al encapsular examenes.");
-        }
-    }
-
+    /**
+     * Crea una lista de objetos de tipo ExamenAsignadoDTO con sus atributos
+     * obtenidos de la vista.
+     *
+     * @return La lista de exámenes asignados.
+     */
     private List<ExamenAsignadoDTO> encapsularExamenAsignado() {
         List<ExamenAsignadoDTO> listaExamenesAsignados
                 = new ArrayList<ExamenAsignadoDTO>();
@@ -302,18 +303,18 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
             ExamenAsignadoDTO examenAsignado = new ExamenAsignadoDTO();
             String usuario = tblAsignacionesFinal.getValueAt(i, 3).toString();
             UsuarioDTO alumno = controlVista.obtenerAlumno(usuario);
-            //El alumno que tendra el examen.... (no le pongas null)
             examenAsignado.setAlumno(alumno);
-            //El examen que sera asignado al alumno
             examenAsignado.setExamen(examen);
-            //Aqui le pones el tiempo
             examenAsignado.setTiempo((Integer) jsTiempo.getValue());
 
+            //Obtiene la clave asignada; Se remueven los primeros 6 caracteres
+            //que contienen la palabra "Clave" para dejar sólo el número de clave.
             int idClave = Integer.parseInt(tblAsignacionesFinal.getValueAt(i, 4)
                     .toString()
                     .substring(6));
 
-            //Obtener la clave que se asignó de la lista de claves que tiene el examen
+            //Obtener la clave que se asignó de la lista de claves 
+            //que tiene el examen
             for (ClaveExamenDTO clave : listaClavesExamen) {
                 if (idClave == clave.getId().getClave()) {
                     claveExamen = clave;
@@ -326,19 +327,14 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
             //Para cada reactivo que se vaya a agregar
             for (int j = 0; j < claveExamen.getReactivos().size(); j++) {
                 ReactivoAsignadoDTO reactivo = new ReactivoAsignadoDTO();
-                //Se crea el id para el reactivo
                 ReactivoAsignadoPK pk = new ReactivoAsignadoPK();
-                //Aqui se pone el id del reactivo
                 pk.setIdReactivo(claveExamen.getReactivos().get(j).getId());
                 //Se guarda el id
                 reactivo.setId(pk);
-                //redaccion...
                 reactivo.setRedaccionReactivo(claveExamen.getReactivos().get(j).getRedaccion());
-                //respuesta...
                 reactivo.setRespuestaAlumno(null);
-                //respuesta reactivo...
                 reactivo.setRespuestaReactivo(claveExamen.getReactivos().get(j).getRespuesta());
-                //La lista de opciones de los reactivos...
+                //La lista de opciones de los reactivos.
                 List<String> opciones = new ArrayList<>();
                 for (String opcion : claveExamen.getReactivos().get(j).getOpciones()) {
                     opciones.add(opcion);
@@ -355,110 +351,8 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         return listaExamenesAsignados;
     }
 
-    private List<ReactivoAsignadoDTO> encapsularReactivosAsignados(
-            ExamenDTO examen, int idClave, ExamenAsignadoDTO examenAsignado) {
-        List<ClaveExamenDTO> listaClavesExamen = examen.getClaves();
-        ClaveExamenDTO claveExamen = null;
-
-        List<ReactivoAsignadoDTO> listaReactivosAsignados
-                = new ArrayList<ReactivoAsignadoDTO>();
-
-        //Obtener la clave que se asignó de la lista de claves que tiene el examen
-        for (ClaveExamenDTO clave : listaClavesExamen) {
-            if (idClave == clave.getId().getClave()) {
-                claveExamen = clave;
-            }
-        }
-
-        List<ReactivoDTO> listaReactivos = claveExamen.getReactivos();
-        //Se encapsulan los reactivos asignados a partir de la información
-        //de los reactivos de la clave del examen
-        for (ReactivoDTO reactivo : listaReactivos) {
-            ReactivoAsignadoDTO reactivoAsignado = new ReactivoAsignadoDTO();
-
-            ReactivoAsignadoPK claveReactivoAsignado = new ReactivoAsignadoPK();
-            claveReactivoAsignado.setIdExamenAsignado(examenAsignado.getId());
-            claveReactivoAsignado.setIdReactivo(reactivo.getId());
-            reactivoAsignado.setId(claveReactivoAsignado);
-
-            reactivoAsignado.setExamen(examenAsignado);
-            reactivoAsignado.setRedaccionReactivo(reactivo.getRedaccion());
-            reactivoAsignado.setOpcionesReactivo(reactivo.getOpciones());
-            reactivoAsignado.setRespuestaReactivo(reactivo.getRespuesta());
-
-            listaReactivosAsignados.add(reactivoAsignado);
-        }
-
-        return listaReactivosAsignados;
-    }
-
-    @Override
-    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mostrarVista(Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mostrarEntidad(Object entidad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean confirmarCambio() {
-        boolean cambiar = false;
-
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cancelar la operación?\nTodos los cambios no "
-                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
-        if (ok == 0) {
-            cambiar = true;
-        }
-        return cambiar;
-    }
-
-    @Override
-    public UsuarioDTO obtenerUsuarioActual() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void limpiar() {
-        cbCursos.removeAllItems();
-        ((DefaultTableModel) tblExamenes.getModel()).setRowCount(0);
-        ((DefaultListModel) lstGrupos.getModel()).clear();
-        ((DefaultListModel) lstClaves.getModel()).clear();
-        ((DefaultTableModel) tblAlumnos.getModel()).setRowCount(0);
-        ((DefaultTableModel) tblAsignaciones.getModel()).setRowCount(0);
-        jsTiempo.setValue(50);
-        tbpAsignarExamenes.setSelectedIndex(0);
-    }
-
-    @Override
-    public void ancestorAdded(AncestorEvent event) {
-        if(!consultarCursos()) {
-            JOptionPane.showMessageDialog(this, "No hay cursos disponibles.");
-            padre.mostrarVista(Vista.HOME);
-        }
-    }
-
-    @Override
-    public void ancestorRemoved(AncestorEvent event) {
-        //No implementado
-    }
-
-    @Override
-    public void ancestorMoved(AncestorEvent event) {
-        //No implementado
-    }
-
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * Inicializa los atributos gráficos y los coloca en su posición.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -466,7 +360,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
 
         lblTitulo = new javax.swing.JLabel();
         tbpAsignarExamenes = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        pnlExamenes = new javax.swing.JPanel();
         lblCursos = new javax.swing.JLabel();
         cbCursos = new javax.swing.JComboBox();
         lblExamenes = new javax.swing.JLabel();
@@ -474,21 +368,21 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         tblExamenes = new javax.swing.JTable();
         btnSiguienteExamenes = new javax.swing.JButton();
         btnConsultarExamenes = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        pnlGrupos = new javax.swing.JPanel();
         lblGrupos = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstGrupos = new javax.swing.JList();
         btnAnteriorGrupos = new javax.swing.JButton();
         btnSiguienteGrupos = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        pnlAsignaciones = new javax.swing.JPanel();
         lblClaves = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         lstClaves = new javax.swing.JList();
-        jLabel1 = new javax.swing.JLabel();
+        lblAlumnos = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tblAlumnos = new javax.swing.JTable();
         btnAsignarClave = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        lblAsignaciones = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tblAsignaciones = new javax.swing.JTable();
         btnRemoverAsignacion = new javax.swing.JButton();
@@ -498,18 +392,18 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         btnDeseleccionarAlumnos = new javax.swing.JButton();
         btnSeleccionarAsignaciones = new javax.swing.JButton();
         btnDeseleccionarAsignaciones = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        pnlTiempo = new javax.swing.JPanel();
+        lblTiempo = new javax.swing.JLabel();
         jsTiempo = new javax.swing.JSpinner();
-        jLabel4 = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
+        lblMinutos = new javax.swing.JLabel();
+        pnlDatosAsignacion = new javax.swing.JPanel();
+        lblGrupoFinal = new javax.swing.JLabel();
         txtfGrupo = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
+        lblExamenFinal = new javax.swing.JLabel();
         txtfCurso = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
+        lblCursoFinal = new javax.swing.JLabel();
         txtfExamen = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
+        lblAlumnosFinal = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
         tblAsignacionesFinal = new javax.swing.JTable();
         btnGuardar = new javax.swing.JButton();
@@ -523,11 +417,6 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         lblTitulo.setText("Asignar Exámenes");
 
         tbpAsignarExamenes.setPreferredSize(new java.awt.Dimension(780, 481));
-        tbpAsignarExamenes.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                tbpAsignarExamenesStateChanged(evt);
-            }
-        });
 
         lblCursos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblCursos.setText("Cursos");
@@ -536,16 +425,6 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         cbCursos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbCursos.setSelectedIndex(-1);
         cbCursos.setPreferredSize(new java.awt.Dimension(200, 30));
-        cbCursos.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cbCursosItemStateChanged(evt);
-            }
-        });
-        cbCursos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbCursosActionPerformed(evt);
-            }
-        });
 
         lblExamenes.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblExamenes.setText("Exámenes");
@@ -555,7 +434,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
 
             },
             new String [] {
-                "Id", "Título", "Fecha creación", "Fecha Modificación", "Autor"
+                "Id", "Nombre", "Fecha creación", "Fecha Modificación", "Autor"
             }
         ) {
             Class[] types = new Class [] {
@@ -605,27 +484,27 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         btnConsultarExamenes.setPreferredSize(new java.awt.Dimension(135, 30));
         btnConsultarExamenes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConsultarExamenesActionPerformed(evt);
+                consultarExamenes(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlExamenesLayout = new javax.swing.GroupLayout(pnlExamenes);
+        pnlExamenes.setLayout(pnlExamenesLayout);
+        pnlExamenesLayout.setHorizontalGroup(
+            pnlExamenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlExamenesLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSiguienteExamenes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(pnlExamenesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(pnlExamenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlExamenesLayout.createSequentialGroup()
                         .addComponent(jScrollPane1)
                         .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(pnlExamenesLayout.createSequentialGroup()
+                        .addGroup(pnlExamenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlExamenesLayout.createSequentialGroup()
                                 .addComponent(lblCursos)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(cbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -634,11 +513,11 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
                             .addComponent(lblExamenes))
                         .addGap(0, 352, Short.MAX_VALUE))))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        pnlExamenesLayout.setVerticalGroup(
+            pnlExamenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlExamenesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlExamenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblCursos)
                     .addComponent(btnConsultarExamenes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -651,7 +530,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
                 .addContainerGap())
         );
 
-        tbpAsignarExamenes.addTab("Exámenes", jPanel1);
+        tbpAsignarExamenes.addTab("Exámenes", pnlExamenes);
 
         lblGrupos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblGrupos.setText("Grupos");
@@ -685,45 +564,45 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlGruposLayout = new javax.swing.GroupLayout(pnlGrupos);
+        pnlGrupos.setLayout(pnlGruposLayout);
+        pnlGruposLayout.setHorizontalGroup(
+            pnlGruposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlGruposLayout.createSequentialGroup()
+                .addGroup(pnlGruposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlGruposLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAnteriorGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnSiguienteGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(pnlGruposLayout.createSequentialGroup()
+                        .addGroup(pnlGruposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlGruposLayout.createSequentialGroup()
                                 .addGap(265, 265, 265)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(pnlGruposLayout.createSequentialGroup()
                                 .addGap(359, 359, 359)
                                 .addComponent(lblGrupos)))
                         .addGap(0, 262, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        pnlGruposLayout.setVerticalGroup(
+            pnlGruposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlGruposLayout.createSequentialGroup()
                 .addGap(53, 53, 53)
                 .addComponent(lblGrupos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlGruposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAnteriorGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSiguienteGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
-        tbpAsignarExamenes.addTab("Grupos", jPanel2);
+        tbpAsignarExamenes.addTab("Grupos", pnlGrupos);
 
-        jPanel3.setPreferredSize(new java.awt.Dimension(775, 477));
+        pnlAsignaciones.setPreferredSize(new java.awt.Dimension(775, 477));
 
         lblClaves.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblClaves.setText("Claves");
@@ -737,8 +616,8 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         lstClaves.setPreferredSize(new java.awt.Dimension(120, 80));
         jScrollPane3.setViewportView(lstClaves);
 
-        jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel1.setText("Alumnos");
+        lblAlumnos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblAlumnos.setText("Alumnos");
 
         tblAlumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -785,12 +664,12 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         btnAsignarClave.setPreferredSize(new java.awt.Dimension(120, 23));
         btnAsignarClave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAsignarClaveActionPerformed(evt);
+                agregarAsignacion(evt);
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel2.setText("Asignaciones");
+        lblAsignaciones.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblAsignaciones.setText("Asignaciones");
 
         tblAsignaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -840,7 +719,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         btnRemoverAsignacion.setPreferredSize(new java.awt.Dimension(120, 23));
         btnRemoverAsignacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRemoverAsignacionActionPerformed(evt);
+                removerAsignacion(evt);
             }
         });
 
@@ -896,121 +775,121 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlAsignacionesLayout = new javax.swing.GroupLayout(pnlAsignaciones);
+        pnlAsignaciones.setLayout(pnlAsignacionesLayout);
+        pnlAsignacionesLayout.setHorizontalGroup(
+            pnlAsignacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAsignacionesLayout.createSequentialGroup()
+                .addGroup(pnlAsignacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlAsignacionesLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlAsignacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnAsignarClave, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(9, 9, 9)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGroup(pnlAsignacionesLayout.createSequentialGroup()
                         .addGap(517, 517, 517)
                         .addComponent(btnAnteriorAsignaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnSiguienteAsignaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAsignacionesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(pnlAsignacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlAsignacionesLayout.createSequentialGroup()
                         .addComponent(btnRemoverAsignacion, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(6, 6, 6)
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGroup(pnlAsignacionesLayout.createSequentialGroup()
                         .addGap(136, 136, 136)
-                        .addComponent(jLabel2)
+                        .addComponent(lblAsignaciones)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSeleccionarAsignaciones)
                         .addGap(18, 18, 18)
                         .addComponent(btnDeseleccionarAsignaciones)
                         .addGap(21, 21, 21))))
-            .addGroup(jPanel3Layout.createSequentialGroup()
+            .addGroup(pnlAsignacionesLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(lblClaves)
                 .addGap(91, 91, 91)
-                .addComponent(jLabel1)
+                .addComponent(lblAlumnos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSeleccionarAlumnos)
                 .addGap(18, 18, 18)
                 .addComponent(btnDeseleccionarAlumnos)
                 .addGap(23, 23, 23))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        pnlAsignacionesLayout.setVerticalGroup(
+            pnlAsignacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAsignacionesLayout.createSequentialGroup()
                 .addGap(9, 9, 9)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlAsignacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblClaves)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
+                    .addGroup(pnlAsignacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblAlumnos)
                         .addComponent(btnSeleccionarAlumnos)
                         .addComponent(btnDeseleccionarAlumnos)))
                 .addGap(2, 2, 2)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(pnlAsignacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlAsignacionesLayout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(6, 6, 6)
                         .addComponent(btnAsignarClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                .addGroup(pnlAsignacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAsignaciones)
                     .addComponent(btnDeseleccionarAsignaciones)
                     .addComponent(btnSeleccionarAsignaciones))
                 .addGap(2, 2, 2)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlAsignacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRemoverAsignacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlAsignacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAnteriorAsignaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSiguienteAsignaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
-        tbpAsignarExamenes.addTab("Asignaciones", jPanel3);
+        tbpAsignarExamenes.addTab("Asignaciones", pnlAsignaciones);
 
-        jLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel3.setText("Tiempo límite:");
+        lblTiempo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblTiempo.setText("Tiempo límite:");
 
         jsTiempo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jsTiempo.setModel(new javax.swing.SpinnerNumberModel(50, 50, 120, 1));
 
-        jLabel4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel4.setText("minutos");
+        lblMinutos.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        lblMinutos.setText("minutos");
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de la asignación"));
+        pnlDatosAsignacion.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de la asignación"));
 
-        jLabel5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel5.setText("Grupo:");
+        lblGrupoFinal.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblGrupoFinal.setText("Grupo:");
 
         txtfGrupo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtfGrupo.setEnabled(false);
         txtfGrupo.setPreferredSize(new java.awt.Dimension(150, 30));
 
-        jLabel6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel6.setText("Examen:");
+        lblExamenFinal.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblExamenFinal.setText("Examen:");
 
         txtfCurso.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtfCurso.setEnabled(false);
         txtfCurso.setPreferredSize(new java.awt.Dimension(150, 30));
 
-        jLabel7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel7.setText("Curso:");
+        lblCursoFinal.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblCursoFinal.setText("Curso:");
 
         txtfExamen.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtfExamen.setEnabled(false);
         txtfExamen.setPreferredSize(new java.awt.Dimension(150, 30));
 
-        jLabel8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel8.setText("Alumnos:");
+        lblAlumnosFinal.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblAlumnosFinal.setText("Alumnos:");
 
         tblAsignacionesFinal.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1046,44 +925,44 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
             tblAsignacionesFinal.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlDatosAsignacionLayout = new javax.swing.GroupLayout(pnlDatosAsignacion);
+        pnlDatosAsignacion.setLayout(pnlDatosAsignacionLayout);
+        pnlDatosAsignacionLayout.setHorizontalGroup(
+            pnlDatosAsignacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlDatosAsignacionLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlDatosAsignacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 723, Short.MAX_VALUE)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
+                    .addGroup(pnlDatosAsignacionLayout.createSequentialGroup()
+                        .addComponent(lblAlumnosFinal)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
+                    .addGroup(pnlDatosAsignacionLayout.createSequentialGroup()
+                        .addComponent(lblGrupoFinal)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtfGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel7)
+                        .addComponent(lblCursoFinal)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtfCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel6)
+                        .addComponent(lblExamenFinal)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtfExamen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        pnlDatosAsignacionLayout.setVerticalGroup(
+            pnlDatosAsignacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlDatosAsignacionLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
+                .addGroup(pnlDatosAsignacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblGrupoFinal)
                     .addComponent(txtfGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
+                    .addComponent(lblExamenFinal)
                     .addComponent(txtfCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
+                    .addComponent(lblCursoFinal)
                     .addComponent(txtfExamen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel8)
+                .addComponent(lblAlumnosFinal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(71, 71, 71))
@@ -1099,7 +978,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         btnGuardar.setPreferredSize(new java.awt.Dimension(115, 30));
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
+                asignarExamen(evt);
             }
         });
 
@@ -1113,42 +992,42 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
             }
         });
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlTiempoLayout = new javax.swing.GroupLayout(pnlTiempo);
+        pnlTiempo.setLayout(pnlTiempoLayout);
+        pnlTiempoLayout.setHorizontalGroup(
+            pnlTiempoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTiempoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                .addGroup(pnlTiempoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlDatosAsignacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(pnlTiempoLayout.createSequentialGroup()
+                        .addComponent(lblTiempo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jsTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4)
+                        .addComponent(lblMinutos)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTiempoLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnAnteriorTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        pnlTiempoLayout.setVerticalGroup(
+            pnlTiempoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTiempoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
+                .addGroup(pnlTiempoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTiempo)
                     .addComponent(jsTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(lblMinutos))
                 .addGap(29, 29, 29)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlDatosAsignacion, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(79, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTiempoLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlTiempoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAnteriorTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
@@ -1157,7 +1036,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         JFormattedTextField txt = ((JSpinner.NumberEditor) jsTiempo.getEditor()).getTextField();
         ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
 
-        tbpAsignarExamenes.addTab("Tiempo límite", jPanel4);
+        tbpAsignarExamenes.addTab("Tiempo límite", pnlTiempo);
 
         btnCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
@@ -1165,7 +1044,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         btnCancelar.setPreferredSize(new java.awt.Dimension(110, 30));
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
+                cancelarAsignarExamenes(evt);
             }
         });
 
@@ -1208,41 +1087,57 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         tbpAsignarExamenes.setTitleAt(3, "<html><font color=black>Tiempo límite</font></html>");
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+    /**
+     * Cancela la asignación de exámenes y regresa a la vista principal.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
+    private void cancelarAsignarExamenes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarAsignarExamenes
         // TODO add your handling code here:
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cancelar la operación?\nTodos los cambios no "
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desesa cancelar la operación?\nTodos los cambios no "
                 + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
             padre.mostrarVista(Vista.HOME);
             limpiar();
         }
-    }//GEN-LAST:event_btnCancelarActionPerformed
+    }//GEN-LAST:event_cancelarAsignarExamenes
 
-    private void tbpAsignarExamenesStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tbpAsignarExamenesStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tbpAsignarExamenesStateChanged
-
-    private void cbCursosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbCursosItemStateChanged
-        // TODO add your handling code here:
-        ((DefaultTableModel) tblExamenes.getModel()).setRowCount(0);
-    }//GEN-LAST:event_cbCursosItemStateChanged
-
-    private void cbCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCursosActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_cbCursosActionPerformed
-
-    private void btnConsultarExamenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarExamenesActionPerformed
+    /**
+     * Obtiene los exámenes del curso seleccionado dependiendo del tipo que sea
+     * el usuario actual.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
+    private void consultarExamenes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarExamenes
         // TODO add your handling code here:
         if (cbCursos.getSelectedIndex() != -1) {
             CursoDTO curso = controlVista.obtenerCurso(cbCursos.getSelectedIndex());
-            consultarExamenes(curso);
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecciona un curso");
-        }
-    }//GEN-LAST:event_btnConsultarExamenesActionPerformed
+            UsuarioDTO usuarioActual = padre.obtenerUsuarioActual();
+            List<ExamenDTO> listaExamenes = controlVista
+                    .obtenerExamenesPorCurso(curso, usuarioActual);
+            DefaultTableModel model = (DefaultTableModel) tblExamenes.getModel();
 
+            model.setRowCount(0);
+
+            if (listaExamenes != null && !listaExamenes.isEmpty()) {
+                mostrarExamenes(listaExamenes);
+            } else {
+                JOptionPane.showMessageDialog(this, "No hay exámenes disponibles.",
+                        "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione un curso.",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_consultarExamenes
+
+    /**
+     * Valida que se hayan seleccionado datos correctos y cambia a la pestaña de
+     * grupos.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
     private void btnSiguienteExamenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteExamenesActionPerformed
         // TODO add your handling code here:
         if (cbCursos.getSelectedIndex() != -1) {
@@ -1251,21 +1146,36 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
                     tbpAsignarExamenes.setSelectedIndex(1);
 
                 } else {
-                    JOptionPane.showMessageDialog(this, "No hay grupos asociados con el curso.");
+                    JOptionPane.showMessageDialog(this, "No hay grupos "
+                            + "asociados al curso.", "Advertencia",
+                            JOptionPane.WARNING_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Selecciona un examen");
+                JOptionPane.showMessageDialog(this, "Seleccione un examen.",
+                        "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona un curso");
+            JOptionPane.showMessageDialog(this, "Seleccione un curso.",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnSiguienteExamenesActionPerformed
 
+    /**
+     * Regresa a la pestaña de exámenes.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
     private void btnAnteriorGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorGruposActionPerformed
         // TODO add your handling code here:
         tbpAsignarExamenes.setSelectedIndex(0);
     }//GEN-LAST:event_btnAnteriorGruposActionPerformed
 
+    /**
+     * Valida que el grupo seleccionado tenga alumnos y cambia a la pestaña de
+     * asignaciones.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
     private void btnSiguienteGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteGruposActionPerformed
         // TODO add your handling code here:
         if (!lstGrupos.isSelectionEmpty()) {
@@ -1273,34 +1183,59 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
                 consultarClaves();
                 tbpAsignarExamenes.setSelectedIndex(2);
             } else {
-                JOptionPane.showMessageDialog(this, "El grupo seleccionado no tiene alumnos.");
+                JOptionPane.showMessageDialog(this, "El grupo seleccionado no "
+                        + "tiene alumnos.", "Advertencia",
+                        JOptionPane.WARNING_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona un grupo");
+            JOptionPane.showMessageDialog(this, "Seleccione un grupo.", "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnSiguienteGruposActionPerformed
 
+    /**
+     * Regresa a la pestaña de grupos.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
     private void btnAnteriorAsignacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorAsignacionesActionPerformed
         // TODO add your handling code here:
         tbpAsignarExamenes.setSelectedIndex(1);
     }//GEN-LAST:event_btnAnteriorAsignacionesActionPerformed
 
+    /**
+     * Valida que se hayan seleccionado datos correctos y cambia a la pestaña de
+     * tiempo límite.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
     private void btnSiguienteAsignacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteAsignacionesActionPerformed
         // TODO add your handling code here:
         if (tblAsignaciones.getRowCount() != 0) {
             tbpAsignarExamenes.setSelectedIndex(3);
             mostrarDatos();
         } else {
-            JOptionPane.showMessageDialog(this, "Agrega asignaciones");
+            JOptionPane.showMessageDialog(this, "Agregue asignaciones.",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnSiguienteAsignacionesActionPerformed
 
+    /**
+     * Regresa a la pestaña de asignaciones.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
     private void btnAnteriorTiempoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorTiempoActionPerformed
         // TODO add your handling code here:
         tbpAsignarExamenes.setSelectedIndex(2);
     }//GEN-LAST:event_btnAnteriorTiempoActionPerformed
 
-    private void btnAsignarClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarClaveActionPerformed
+    /**
+     * Se asignan la clave seleccionada a los alumnos seleccionados.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
+    private void agregarAsignacion(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarAsignacion
         // TODO add your handling code here:
         List<Integer> indexes = new ArrayList<>();
 
@@ -1318,18 +1253,47 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
 
             if (cont == 0 || indexes.isEmpty()) {
                 JOptionPane.showMessageDialog(this,
-                        "Selecciona al menos un alumno", "Advertencia", 1);
+                        "Seleccione por lo menos un alumno.", "Advertencia",
+                        JOptionPane.WARNING_MESSAGE);
             } else {
 
-                agregarAsignacion(indexes);
+                DefaultTableModel modeloAlumnos
+                        = (DefaultTableModel) tblAlumnos.getModel();
+                DefaultTableModel modeloAsignaciones
+                        = (DefaultTableModel) tblAsignaciones.getModel();
+
+                //Se copian los datos de las filas seleccionadas de
+                //la tabla de alumnos a la tabla de asignaciones
+                for (Integer index : indexes) {
+                    Object datos[] = new Object[6];
+
+                    datos[0] = false;
+                    for (int i = 1; i < 5; i++) {
+                        datos[i] = modeloAlumnos.getValueAt(index, i);
+                    }
+                    datos[5] = lstClaves.getSelectedValue();
+
+                    modeloAsignaciones.addRow(datos);
+                }
+
+                //Se remueven las filas que ya han sido copiadas
+                for (int i = indexes.size() - 1; i >= 0; i--) {
+                    modeloAlumnos.removeRow(indexes.get(i));
+                }
             }
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Selecciona una clave", "Advertencia", 1);
+                    "Seleccione una clave.", "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
         }
-    }//GEN-LAST:event_btnAsignarClaveActionPerformed
+    }//GEN-LAST:event_agregarAsignacion
 
-    private void btnRemoverAsignacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverAsignacionActionPerformed
+    /**
+     * Se remueven las asignaciones seleccionadas.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
+    private void removerAsignacion(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerAsignacion
         // TODO add your handling code here:
         List<Integer> indexes = new ArrayList<>();
 
@@ -1345,113 +1309,379 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
 
         if (cont == 0 || indexes.isEmpty()) {
             JOptionPane.showMessageDialog(this,
-                    "Selecciona al menos una asignación", "Advertencia", 1);
+                    "Seleccione por lo menos una asignación.", "Advertencia",
+                    JOptionPane.WARNING_MESSAGE);
         } else {
-            removerAsignacion(indexes);
+            DefaultTableModel modeloAlumnos
+                    = (DefaultTableModel) tblAlumnos.getModel();
+            DefaultTableModel modeloAsignaciones
+                    = (DefaultTableModel) tblAsignaciones.getModel();
+
+            //Se copian los datos de las filas seleccionadas de
+            //la tabla de alumnos a la tabla de asignaciones
+            for (Integer index : indexes) {
+                Object datos[] = new Object[5];
+
+                datos[0] = false;
+                for (int i = 1; i < 5; i++) {
+                    datos[i] = modeloAsignaciones.getValueAt(index, i);
+                }
+
+                modeloAlumnos.addRow(datos);
+            }
+
+            //Se remueven las filas que ya han sido copiadas
+            for (int i = indexes.size() - 1; i >= 0; i--) {
+                modeloAsignaciones.removeRow(indexes.get(i));
+            }
         }
-    }//GEN-LAST:event_btnRemoverAsignacionActionPerformed
+    }//GEN-LAST:event_removerAsignacion
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+    /**
+     * Almacena la lista de exámenes asignados en la base de datos.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
+    private void asignarExamen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asignarExamen
         // TODO add your handling code here:
-        asignarExamen();
-    }//GEN-LAST:event_btnGuardarActionPerformed
+        List<ExamenAsignadoDTO> listaExamenesAsignados = encapsularExamenAsignado();
 
+        if (listaExamenesAsignados != null && !listaExamenesAsignados.isEmpty()) {
+            boolean ok = controlVista.asignarExamenes(listaExamenesAsignados);
+
+            if (ok) {
+                JOptionPane.showMessageDialog(this, "Asignación de exámenes completa.");
+                limpiar();
+                padre.mostrarVista(Vista.HOME);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al asignar exámenes.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al encapsular examenes.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_asignarExamen
+
+    /**
+     * Selecciona todos los registros de la tabla tblAlumnos.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
     private void btnSeleccionarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarAlumnosActionPerformed
         // TODO add your handling code here:
         int cont = tblAlumnos.getRowCount();
 
         for (int i = 0; i < cont; i++) {
             if (tblAlumnos.getValueAt(i, 0).equals(false)) {
-                ((DefaultTableModel)tblAlumnos.getModel()).setValueAt(true, i, 0);
+                ((DefaultTableModel) tblAlumnos.getModel()).setValueAt(true, i, 0);
             }
         }
     }//GEN-LAST:event_btnSeleccionarAlumnosActionPerformed
 
+    /**
+     * Deselecciona todos los registros de la tabla tblAlumnos.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
     private void btnDeseleccionarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeseleccionarAlumnosActionPerformed
         // TODO add your handling code here:
         int cont = tblAlumnos.getRowCount();
 
         for (int i = 0; i < cont; i++) {
             if (tblAlumnos.getValueAt(i, 0).equals(true)) {
-                ((DefaultTableModel)tblAlumnos.getModel()).setValueAt(false, i, 0);
+                ((DefaultTableModel) tblAlumnos.getModel()).setValueAt(false, i, 0);
             }
         }
     }//GEN-LAST:event_btnDeseleccionarAlumnosActionPerformed
 
+    /**
+     * Selecciona todos los registros de la tabla tblAsignaciones.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
     private void btnSeleccionarAsignacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarAsignacionesActionPerformed
         // TODO add your handling code here:
         int cont = tblAsignaciones.getRowCount();
 
         for (int i = 0; i < cont; i++) {
             if (tblAsignaciones.getValueAt(i, 0).equals(false)) {
-                ((DefaultTableModel)tblAsignaciones.getModel()).setValueAt(true, i, 0);
+                ((DefaultTableModel) tblAsignaciones.getModel()).setValueAt(true, i, 0);
             }
         }
     }//GEN-LAST:event_btnSeleccionarAsignacionesActionPerformed
 
+    /**
+     * Deselecciona todos los registros de la tabla tblAsignaciones.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
     private void btnDeseleccionarAsignacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeseleccionarAsignacionesActionPerformed
         // TODO add your handling code here:
         int cont = tblAsignaciones.getRowCount();
 
         for (int i = 0; i < cont; i++) {
             if (tblAsignaciones.getValueAt(i, 0).equals(true)) {
-                ((DefaultTableModel)tblAsignaciones.getModel()).setValueAt(false, i, 0);
+                ((DefaultTableModel) tblAsignaciones.getModel()).setValueAt(false, i, 0);
             }
         }
     }//GEN-LAST:event_btnDeseleccionarAsignacionesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Para regresar a la pestaña de grupos.
+    */
     private javax.swing.JButton btnAnteriorAsignaciones;
+    /**
+    * Botón para regresar a la pestaña de exámenes.
+    */
     private javax.swing.JButton btnAnteriorGrupos;
+    /**
+    * Botón para regresar a la pestaña de asignaciones.
+    */
     private javax.swing.JButton btnAnteriorTiempo;
+    /**
+    * Botón para asignar una clave a alumnos seleccionados.
+    */
     private javax.swing.JButton btnAsignarClave;
+    /**
+    * Botón para cancelar la asignación de exámenes.
+    */
     private javax.swing.JButton btnCancelar;
+    /**
+    * Botón para consultar los exámenes del curso seleccionado.
+    */
     private javax.swing.JButton btnConsultarExamenes;
+    /**
+    * Botón para deseleccionar todas las filas de la tabla tblAlumnos.
+    */
     private javax.swing.JButton btnDeseleccionarAlumnos;
+    /**
+    * Botón para deseleccionar todas las filas de la tabla tblAsignaciones.
+    */
     private javax.swing.JButton btnDeseleccionarAsignaciones;
+    /**
+    * Botón para guardar la lista exámenes asignados.
+    */
     private javax.swing.JButton btnGuardar;
+    /**
+    * Botón para remover asignaciones seleccionadas.
+    */
     private javax.swing.JButton btnRemoverAsignacion;
+    /**
+    * Botón para seleccionar todas las filas de la tabla tblAlumnos.
+    */
     private javax.swing.JButton btnSeleccionarAlumnos;
+    /**
+    * Botón para seleccionar todas las filas de la tabla tblAsignaciones.
+    */
     private javax.swing.JButton btnSeleccionarAsignaciones;
+    /**
+    * Botón para pasar a la pestaña de tiempo.
+    */
     private javax.swing.JButton btnSiguienteAsignaciones;
+    /**
+    * Botón para pasar a la pestaña de grupos.
+    */
     private javax.swing.JButton btnSiguienteExamenes;
+    /**
+    * Botón para pasar a la pestaña de asignaciones.
+    */
     private javax.swing.JButton btnSiguienteGrupos;
+    /**
+    * ComboBox para mostrar los cursos.
+    */
     private javax.swing.JComboBox cbCursos;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    /**
+    * Se utiliza para seleccionar el tiempo límite del examen.
+    */
     private javax.swing.JSpinner jsTiempo;
+    /**
+    * Label para los alumnos.
+    */
+    private javax.swing.JLabel lblAlumnos;
+    /**
+    * Label de la tabla de alumnos de la asignación final.
+    */
+    private javax.swing.JLabel lblAlumnosFinal;
+    /**
+    * Label para las asignaciones.
+    */
+    private javax.swing.JLabel lblAsignaciones;
+    /**
+    * Label para las claves.
+    */
     private javax.swing.JLabel lblClaves;
+    /**
+    * Label para el campo de texto de curso de la asignación final.
+    */
+    private javax.swing.JLabel lblCursoFinal;
+    /**
+    * Label de la lista de cursos.
+    */
     private javax.swing.JLabel lblCursos;
+    /**
+    * Label para el campo de texto de examen de la asignación final.
+    */
+    private javax.swing.JLabel lblExamenFinal;
+    /**
+    * Label para la tabla de exámenes.
+    */
     private javax.swing.JLabel lblExamenes;
+    /**
+    * Label para el campo de texto del grupo de la asignación final.
+    */
+    private javax.swing.JLabel lblGrupoFinal;
+    /**
+    * Label para la lista de grupos.
+    */
     private javax.swing.JLabel lblGrupos;
+    private javax.swing.JLabel lblMinutos;
+    /**
+    * Label para la selección del tiempo límite del examen.
+    */
+    private javax.swing.JLabel lblTiempo;
+    /**
+    * Label para mostrar el título de la interfaz gráfica.
+    */
     private javax.swing.JLabel lblTitulo;
+    /**
+    * Lista para mostrar las claves del examen seleccionado.
+    */
     private javax.swing.JList lstClaves;
+    /**
+    * Lista para mostrar los grupos.
+    */
     private javax.swing.JList lstGrupos;
+    /**
+    * Panel para agrupar los componentes utilizados para mostrar las claves,
+    * los alumnos y las asignaciones.
+    */
+    private javax.swing.JPanel pnlAsignaciones;
+    /**
+    * Panel para agrupar los componentes utilizados para mostrar todos los datos
+    * de la asignación final.
+    */
+    private javax.swing.JPanel pnlDatosAsignacion;
+    /**
+    * Panel para agrupar los componentes utilizados para mostrar cursos y exámenes.
+    */
+    private javax.swing.JPanel pnlExamenes;
+    /**
+    * Panel para agrupar los componentes utilizados para mostrar los grupos.
+    */
+    private javax.swing.JPanel pnlGrupos;
+    /**
+    * Panel para agrupar todos los componentes utilizados para la selección del
+    * tiempo final y los datos finales de la asignación.
+    */
+    private javax.swing.JPanel pnlTiempo;
+    /**
+    * Tabla para mostrar los datos de los alumnos del grupo seleccionado.
+    */
     private javax.swing.JTable tblAlumnos;
+    /**
+    * Tabla para mostrar los datos de los alumnos seleccionado y su clave asignada.
+    */
     private javax.swing.JTable tblAsignaciones;
+    /**
+    * Tabla para mostrar los alumnos y su clave asignada de la asignación final.
+    */
     private javax.swing.JTable tblAsignacionesFinal;
+    /**
+    * Tabla para mostrar los datos de los exámenes.
+    */
     private javax.swing.JTable tblExamenes;
+    /**
+    * Panel de pestañas para agrupar los páneles utilizados para asignar exámenes.
+    */
     private javax.swing.JTabbedPane tbpAsignarExamenes;
+    /**
+    * Campo de texto para mostrar el curso de la asignación final.
+    */
     private javax.swing.JTextField txtfCurso;
+    /**
+    * Campo de texto para mostrar el título del examen de la asignación final.
+    */
     private javax.swing.JTextField txtfExamen;
+    /**
+    * Campo de texto para mostrar el grupo de la asignación final.
+    */
     private javax.swing.JTextField txtfGrupo;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
+    }
+
+    @Override
+    public void mostrarVista(Vista vista) {
+    }
+
+    @Override
+    public void mostrarEntidad(Object entidad) {
+    }
+
+    @Override
+    public boolean confirmarCambio() {
+        boolean cambiar = false;
+
+        int ok = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que "
+                + "quiere cambiar de pantalla?\nTodos los cambios no "
+                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
+        if (ok == 0) {
+            cambiar = true;
+        }
+        return cambiar;
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void limpiar() {
+        cbCursos.removeAllItems();
+        ((DefaultTableModel) tblExamenes.getModel()).setRowCount(0);
+        ((DefaultListModel) lstGrupos.getModel()).clear();
+        ((DefaultListModel) lstClaves.getModel()).clear();
+        ((DefaultTableModel) tblAlumnos.getModel()).setRowCount(0);
+        ((DefaultTableModel) tblAsignaciones.getModel()).setRowCount(0);
+        jsTiempo.setValue(50);
+        tbpAsignarExamenes.setSelectedIndex(0);
+    }
+
+    /**
+     * Este método es llamado cada vez que se muestra esta vista en el frame
+     * principal, sirve para realizar el método inicial al mostrar una vista,
+     * como una consulta.
+     *
+     * @param event El objeto AncestorEvent que se obtiene del evento.
+     */
+    @Override
+    public void ancestorAdded(AncestorEvent event) {
+        if (!consultarCursos()) {
+            JOptionPane.showMessageDialog(this, "No hay cursos disponibles.", 
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+            padre.mostrarVista(Vista.HOME);
+        }
+    }
+
+    @Override
+    public void ancestorRemoved(AncestorEvent event) {
+        //No implementado
+    }
+
+    @Override
+    public void ancestorMoved(AncestorEvent event) {
+        //No implementado
+    }
 }

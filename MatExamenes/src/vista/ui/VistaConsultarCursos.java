@@ -1,7 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2015 E. Iván Mariscal Martínez
+ *
+ * This file is part of MatExámenes.
+ *
+ * MatExámenes is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * MatExámenes is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package vista.ui;
 
@@ -18,16 +32,26 @@ import vista.interfaz.InterfaceVista;
 
 /**
  *
- * @author Jesus Donaldo
+ * @author E. Iván Mariscal Martínez
+ * @version 1 21 de mayo 2015
  */
 public class VistaConsultarCursos extends javax.swing.JPanel implements
         AncestorListener, InterfaceVista {
 
+    /**
+     * Controlador de la vista del caso de uso mantener cursos, maneja la
+     * información obtenida en la vista para comunicarse con las capas
+     * inferiores.
+     */
     private CVMantenerCursos controlVista;
+
+    /**
+     * Interface para interactuar con el JFrame principal.
+     */
     private InterfaceVista padre;
 
     /**
-     * Creates new form ConsultarCursos
+     * Crea un objeto VistaConsultarCursos e inicializa sus atributos.
      */
     public VistaConsultarCursos() {
         initComponents();
@@ -36,25 +60,35 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         lstCursos.setModel(new DefaultListModel());
 
         lstCursos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        int x = 0;
     }
 
-    @Override
-    public void limpiar() {
-        ((DefaultListModel) lstCursos.getModel()).clear();
-        controlVista.liberarMemoriaConsultar();
-    }
-
+    /**
+     * Almacena la interface del JFrame principal.
+     *
+     * @param padre Interface para interactuar con el JFrame principal.
+     */
     public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
 
+    /**
+     * Almacena el control de la vista.
+     *
+     * @param controlVista El objeto encargado de realizar las interacciones con
+     * la base de datos.
+     */
     public void setControlador(CVMantenerCursos controlVista) {
         this.controlVista = controlVista;
     }
 
-    public boolean consultarCursos() {
+    /**
+     * Obtiene los cursos almacenados en la base de datos.
+     *
+     * @return Regresa verdadero si la consulta de cursos se realiza
+     * exitósamente. Regresa falso si no se encuentran cursos en la base de
+     * datos.
+     */
+    private boolean consultarCursos() {
         List<CursoDTO> cursos = controlVista.obtenerCursos();
         boolean ok = false;
 
@@ -66,6 +100,11 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         return ok;
     }
 
+    /**
+     * Muestra los cursos en la vista.
+     *
+     * @param cursos Lista de cursos para mostrar en la vista.
+     */
     private void mostrarCursos(List<CursoDTO> cursos) {
         DefaultListModel listModelCursos
                 = (DefaultListModel) lstCursos.getModel();
@@ -76,57 +115,8 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         }
     }
 
-    @Override
-    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mostrarVista(Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mostrarEntidad(Object entidad) {
-        int index = lstCursos.getSelectedIndex();
-        String nombreCurso = ((CursoDTO) entidad).getNombre();
-
-        ((DefaultListModel) lstCursos.getModel()).setElementAt(nombreCurso, index);
-    }
-
-    @Override
-    public boolean confirmarCambio() {
-        return true;
-    }
-
-    @Override
-    public UsuarioDTO obtenerUsuarioActual() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void ancestorAdded(AncestorEvent event) {
-        if (!consultarCursos()) {
-            limpiar();
-            JOptionPane.showMessageDialog(this, "No hay cursos registrados.");
-            padre.mostrarVista(Vista.HOME);
-        }
-    }
-
-    @Override
-    public void ancestorRemoved(AncestorEvent event) {
-        //No implementado
-    }
-
-    @Override
-    public void ancestorMoved(AncestorEvent event) {
-        //No implementado
-    }
-
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * Inicializa los atributos gráficos y los coloca en su posición.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -178,7 +168,7 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         btnCancelar.setPreferredSize(new java.awt.Dimension(110, 30));
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
+                cancelarConsultarCursos(evt);
             }
         });
 
@@ -221,6 +211,11 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Pasa a la vista modificar para modificar el curso seleccionado.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
     private void pasarControlVistaModificar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarControlVistaModificar
         // TODO add your handling code here:
         if (!lstCursos.isSelectionEmpty()) {
@@ -233,15 +228,20 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
                 JOptionPane.showMessageDialog(this, "Ha ocurrido un error", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona un curso.");
+            JOptionPane.showMessageDialog(this, "Seleccione un curso.");
         }
     }//GEN-LAST:event_pasarControlVistaModificar
 
+    /**
+     * Elimina el curso seleccionado de la base de datos.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
     private void eliminarCurso(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarCurso
         // TODO add your handling code here:
         if (!lstCursos.isSelectionEmpty()) {
-            int banEliminar = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                    + "quieres eliminar el curso?", "Eliminación", JOptionPane.YES_NO_OPTION);
+            int banEliminar = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                    + "desea eliminar el curso?", "Eliminación", JOptionPane.YES_NO_OPTION);
             if (banEliminar == 0) {
                 int indexCurso = lstCursos.getSelectedIndex();
                 boolean ok = controlVista.eliminarCurso(indexCurso);
@@ -250,28 +250,110 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
                     ((DefaultListModel) lstCursos.getModel()).remove(indexCurso);
                     JOptionPane.showMessageDialog(this, "Curso eliminado.");
                 } else {
-                    JOptionPane.showMessageDialog(this, "Ha ocurrido un error", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "No se pudo eliminar el curso.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona un curso");
+            JOptionPane.showMessageDialog(this, "Seleccione un curso");
         }
     }//GEN-LAST:event_eliminarCurso
 
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+    /**
+     * Cancela la consulta de cursos y regresa a la vista principal.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
+    private void cancelarConsultarCursos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarConsultarCursos
         // TODO add your handling code here:
         padre.mostrarVista(Vista.HOME);
         limpiar();
-    }//GEN-LAST:event_btnCancelarActionPerformed
+    }//GEN-LAST:event_cancelarConsultarCursos
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Botón para cancelar la consulta de cursos.
+    */
     private javax.swing.JButton btnCancelar;
+    /**
+    * Botón para eliminar un curso.
+    */
     private javax.swing.JButton btnEliminar;
+    /**
+    * Botón para modificar un curso.
+    */
     private javax.swing.JButton btnModificar;
     private javax.swing.JScrollPane jScrollPane3;
+    /**
+    * Label para mostrar el título de la interfaz gráfica.
+    */
     private javax.swing.JLabel lblTitulo;
+    /**
+    * Lista para mostrar los cursos.
+    */
     private javax.swing.JList lstCursos;
     // End of variables declaration//GEN-END:variables
 
+    @Override
+    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
+    }
+
+    @Override
+    public void mostrarVista(Vista vista) {
+    }
+
+    /**
+     * Muestra el curso con los nuevos datos que se modificaron.
+     *
+     * @param entidad Objeto de tipo CursoDTO a mostrar en la vista.
+     */
+    @Override
+    public void mostrarEntidad(Object entidad) {
+        int index = lstCursos.getSelectedIndex();
+        String nombreCurso = ((CursoDTO) entidad).getNombre();
+
+        ((DefaultListModel) lstCursos.getModel()).setElementAt(nombreCurso, index);
+    }
+
+    @Override
+    public boolean confirmarCambio() {
+        return true;
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void limpiar() {
+        ((DefaultListModel) lstCursos.getModel()).clear();
+        controlVista.liberarMemoriaConsultar();
+    }
+
+    /**
+     * Este método es llamado cada vez que se muestra esta vista en el frame
+     * principal, sirve para realizar el método inicial al mostrar una vista,
+     * como una consulta.
+     *
+     * @param event el objeto AncestorEvent que se obtiene del evento
+     */
+    @Override
+    public void ancestorAdded(AncestorEvent event) {
+        if (!consultarCursos()) {
+            limpiar();
+            JOptionPane.showMessageDialog(this, "No hay cursos registrados.");
+            padre.mostrarVista(Vista.HOME);
+        }
+    }
+
+    @Override
+    public void ancestorRemoved(AncestorEvent event) {
+        //No implementado
+    }
+
+    @Override
+    public void ancestorMoved(AncestorEvent event) {
+        //No implementado
+    }
 }

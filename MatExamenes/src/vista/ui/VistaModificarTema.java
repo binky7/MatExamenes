@@ -1,12 +1,32 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2015 E. Iván Mariscal Martínez
+ *
+ * This file is part of MatExámenes.
+ *
+ * MatExámenes is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * MatExámenes is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package vista.ui;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,23 +44,48 @@ import vista.interfaz.InterfaceVista;
 
 /**
  *
- * @author Jesus Donaldo
+ * @author E. Iván Mariscal Martínez
+ * @version 1 21 de mayo 2015
  */
 public class VistaModificarTema extends javax.swing.JPanel implements
-        InterfaceVista, FocusListener {
-
-    private CVMantenerTemas controlVista;
-    private InterfaceVista padre;
-    private final ImageIcon ICONO_BIEN;
-    private final ImageIcon ICONO_MAL;
-    private String mensajeDatosIncorrectos;
+        InterfaceVista, FocusListener, KeyListener {
 
     /**
-     * Creates new form VistaModificarTema
+     * Controlador de la vista del caso de uso mantener temas, maneja la
+     * información obtenida en la vista para comunicarse con las capas
+     * inferiores.
+     */
+    private CVMantenerTemas controlVista;
+
+    /**
+     * Interface para interactuar con el JFrame principal.
+     */
+    private InterfaceVista padre;
+
+    /**
+     * Almacena el icono del estado correcto.
+     */
+    private final ImageIcon ICONO_BIEN;
+
+    /**
+     * Almacena el icno del estado incorrecto.
+     */
+    private final ImageIcon ICONO_MAL;
+
+    /**
+     * Almacena el mensaje de datos incorrectos.
+     */
+    private final String MENSAJE_DATOS_INCORRECTOS = "No se puede completar la "
+            + "operación, los siguientes campos necesitan ser corregidos:\n"
+            + "* Nombre del curso.";
+
+    /**
+     * Crea un objeto VistaModificarTema e inicializa sus atributos.
      */
     public VistaModificarTema() {
         initComponents();
         txtfNombreTema.addFocusListener(this);
+        txtfNombreTema.addKeyListener(this);
 
         ICONO_BIEN = new ImageIcon(getClass().getResource("/recursos/bien.png"));
         ICONO_MAL = new ImageIcon(getClass().getResource("/recursos/mal.png"));
@@ -48,26 +93,36 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         lblEstadoNombreTema.setVisible(false);
     }
 
+    /**
+     * Almacena la interface del JFrame principal.
+     *
+     * @param padre Interface para interactuar con el JFrame principal.
+     */
     public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
 
+    /**
+     * Almacena el control de la vista.
+     *
+     * @param controlVista El objeto encargado de realizar las interacciones con
+     * la base de datos.
+     */
     public void setControlador(CVMantenerTemas controlVista) {
         this.controlVista = controlVista;
     }
-
+    
     /**
-     * Limpia la vista y la memoria asociada a esta vista
+     * Crea un objeto tipo TemaDTO con sus atributos obtenidos de la vista.
+     * También se validan los datos.
+     *
+     * @return Un objeto de tipo TemaDTO si los datos cumplen con las
+     * validaciones. Regresa null si los datos no cumplen con las validaciones.
+     *
      */
-    @Override
-    public void limpiar() {
-        txtfNombreTema.setText("");
-        controlVista.liberarMemoriaModificar();
-        lblEstadoNombreTema.setVisible(false);
-    }
-
     private TemaDTO encapsularTema() {
         TemaDTO tema = null;
+        boolean ok = true;
 
         //Validar campos
         String txtNombre = txtfNombreTema.getText();
@@ -75,13 +130,37 @@ public class VistaModificarTema extends javax.swing.JPanel implements
             //Crear objeto tema
             tema = new TemaDTO();
             tema.setNombre(txtNombre);
-            mostrarLabelEstado(txtfNombreTema, true, "");
-        } else {
-            if (Validador.estaVacio(txtNombre)) {
-                mensajeDatosIncorrectos = "No ingresar datos vacíos.";
+
+            String temaActual = controlVista.getTemaSeleccionado().getNombre();
+            //Validar si escribió el mismo nombre de antes.
+            if (txtNombre.compareToIgnoreCase(temaActual) != 0) {
+
+                //Si escribió otro nombre verificar si ya existe.
+                boolean existe = controlVista.verificarExistencia(txtNombre);
+
+                if (existe) {
+                    ok = false;
+                    mostrarLabelEstado(txtfNombreTema, false,
+                            "Ya existe un tema con ese nombre.");
+                } else {
+                    mostrarLabelEstado(txtfNombreTema, true, "");
+                }
             } else {
-                mensajeDatosIncorrectos = "Ingresa sólo letras y/o números.";
+                mostrarLabelEstado(txtfNombreTema, true, "");
             }
+        } else {
+            ok = false;
+            if (Validador.estaVacio(txtNombre)) {
+                mostrarLabelEstado(txtfNombreTema, false,
+                        "No ingrese datos vacíos.");
+            } else {
+                mostrarLabelEstado(txtfNombreTema, false,
+                        "Ingrese sólo letras y/o números.");
+            }
+        }
+        
+        if(!ok) {
+            return null;
         }
 
         return tema;
@@ -105,6 +184,14 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         cbCursos.setSelectedItem(objCurso.getNombre());
     }
 
+    /**
+     * Muestra el estado del campo de texto dependiendo si la validacion fue
+     * verdadera o falsa.
+     *
+     * @param o El objeto campo de texto al cual se quiere cambiar el estado.
+     * @param estado Si es verdadero el estado será correcto, si es falso el
+     * estado será incorrecto.
+     */
     private void mostrarLabelEstado(Object o, boolean estado, String causa) {
         JTextField ob = (JTextField) o;
         try {
@@ -124,66 +211,8 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         }
     }
 
-    @Override
-    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
-        //No implementado
-    }
-
-    @Override
-    public void mostrarVista(Vista vista) {
-        //No implementado
-    }
-
-    @Override
-    public void mostrarEntidad(Object entidad) {
-        //Mostrar los datos de toda la entidad
-        //Este metodo equivaldria a mostrarTema(nombreTema) en el pseudocodigo
-        mostrarDatos((TemaDTO) entidad);
-    }
-
-    @Override
-    public boolean confirmarCambio() {
-        boolean cambiar = false;
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cancelar la operación?\nTodos los cambios no "
-                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
-        if (ok == 0) {
-            cambiar = true;
-        }
-        return cambiar;
-    }
-
-    @Override
-    public UsuarioDTO obtenerUsuarioActual() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void focusGained(FocusEvent e) {
-        lblEstadoNombreTema.setVisible(false);
-    }
-
-    @Override
-    public void focusLost(FocusEvent e) {
-        JTextField src = (JTextField) e.getSource();
-
-        String nombreTema = src.getText();
-        if (!Validador.esCurso(nombreTema)) {
-            if (Validador.estaVacio(nombreTema)) {
-                mensajeDatosIncorrectos = "No ingresar datos vacíos.";
-            } else {
-                mensajeDatosIncorrectos = "Ingresa sólo letras y/o números.";
-            }
-            mostrarLabelEstado(txtfNombreTema, false, mensajeDatosIncorrectos);
-        } else {
-            mostrarLabelEstado(txtfNombreTema, true, "");
-        }
-    }
-
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * Inicializa los atributos gráficos y los coloca en su posición.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -210,11 +239,6 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         txtfNombreTema.setName("lblEstadoNombreTema");
         txtfNombreTema.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtfNombreTema.setPreferredSize(new java.awt.Dimension(350, 30));
-        txtfNombreTema.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtfNombreTemaKeyTyped(evt);
-            }
-        });
 
         btnGuardar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/guardar24.png"))); // NOI18N
@@ -294,19 +318,16 @@ public class VistaModificarTema extends javax.swing.JPanel implements
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Este método se llama al seleccionar regresar en modificar, para volver a
-     * la vista consulta, esto limpia la vista modificar y libera la memoria
-     * asociada a ella, es el mismo procedimiento para cuando se modifica un
-     * tema existosamente
+     * Cancela la modificación de tema y regresa a la vista de consultar cursos.
      *
-     * @param evt
+     * @param evt Objeto que contiene información del evento.
      */
     private void pasarControlVistaConsulta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarControlVistaConsulta
         // Ejecutado cuando selecciona regresar, pero es lo mismo que al
         //Seleccionar modificar
         //Muestra la vista consultar temas
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cancelar la operación?\nTodos los cambios no "
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desea cancelar la operación?\nTodos los cambios no "
                 + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
 
         if (ok == 0) {
@@ -326,48 +347,213 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         //Encapsular objeto
         TemaDTO tema = encapsularTema();
         if (tema == null) {
-            mostrarLabelEstado(txtfNombreTema, false, mensajeDatosIncorrectos);
-            JOptionPane.showMessageDialog(this, mensajeDatosIncorrectos, "Advertencia",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        //Persistir el objeto en la base de datos
-        //Es necesario hacer un try catch en cada clase cuando se llame a
-        //este metodo
-        int indexCurso = cbCursos.getSelectedIndex();
-        boolean ok = controlVista.modificarTema(tema, indexCurso);
-        //No se pudo guardar porque habia un tema duplicado
-        if (!ok) {
-            mensajeDatosIncorrectos = "Ya existe un tema con ese nombre.";
-            mostrarLabelEstado(txtfNombreTema, false, mensajeDatosIncorrectos);
-            JOptionPane.showMessageDialog(this, mensajeDatosIncorrectos, "Advertencia",
+            JOptionPane.showMessageDialog(this, MENSAJE_DATOS_INCORRECTOS, "Advertencia",
                     JOptionPane.WARNING_MESSAGE);
         } else {
-            mostrarLabelEstado(txtfNombreTema, true, "");
-            JOptionPane.showMessageDialog(this, "Tema Modificado");
-//            padre.mostrarVistaConEntidad(tema, Vista.ConsultarTemas);
-            padre.mostrarVista(Vista.ConsultarTemas);
-            limpiar();
+            //Persistir el objeto en la base de datos
+            int indexCurso = cbCursos.getSelectedIndex();
+            boolean ok = controlVista.modificarTema(tema, indexCurso);
+            if (!ok) {
+                JOptionPane.showMessageDialog(this, "No se pudo modificar el tema.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Tema Modificado.");
+                padre.mostrarVista(Vista.ConsultarTemas);
+                limpiar();
+            }
         }
-    }//GEN-LAST:event_modificarTema
 
-    private void txtfNombreTemaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfNombreTemaKeyTyped
-        // TODO add your handling code here:
-        if (!Validador.validarLongitud(Validador.LONGITUD_TEMA, txtfNombreTema.getText())) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtfNombreTemaKeyTyped
+    }//GEN-LAST:event_modificarTema
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Botón para cancelar la modificación de temas.
+    */
     private javax.swing.JButton btnCancelar;
+    /**
+    * Botón para modificar el tema.
+    */
     private javax.swing.JButton btnGuardar;
+    /**
+    * ComboBox para los cursos.
+    */
     private javax.swing.JComboBox cbCursos;
+    /**
+    * Label para los cursos.
+    */
     private javax.swing.JLabel lblCursos;
+    /**
+    * Label de estado para el campo de texto del nombre del tema.
+    */
     private javax.swing.JLabel lblEstadoNombreTema;
+    /**
+    * Label para el  nombre del tema.
+    */
     private javax.swing.JLabel lblNombreTema;
+    /**
+    * Label para mostrar el título de la interfaz gráfica.
+    */
     private javax.swing.JLabel lblTitulo;
+    /**
+    * Campo de texto para el nombre del tema.
+    */
     private javax.swing.JTextField txtfNombreTema;
     // End of variables declaration//GEN-END:variables
 
+    @Override
+    public void limpiar() {
+        txtfNombreTema.setText("");
+        controlVista.liberarMemoriaModificar();
+        lblEstadoNombreTema.setVisible(false);
+    }
+
+    
+    @Override
+    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
+        //No implementado
+    }
+
+    @Override
+    public void mostrarVista(Vista vista) {
+        //No implementado
+    }
+
+    /**
+     * Muestra la información de la entidad obtenida en todos los campos de la
+     * vista, este objeto es enviado desde la Vista Consultar del caso de uso
+     * correspondiente a esta vista.
+     *
+     * @param entidad El objeto entidad que contiene la información a mostrar en
+     * la vista para ser modificada.
+     */
+    @Override
+    public void mostrarEntidad(Object entidad) {
+        //Mostrar los datos de toda la entidad
+        mostrarDatos((TemaDTO) entidad);
+    }
+
+    @Override
+    public boolean confirmarCambio() {
+        boolean cambiar = false;
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "quiere cambiar de pantalla?\nTodos los cambios no "
+                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
+        if (ok == 0) {
+            cambiar = true;
+        }
+        return cambiar;
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * Esconde la etiqueta de estado del campo de texto que obtiene el foco.
+     *
+     * @param e Objeto que contiene información del evento.
+     */
+    @Override
+    public void focusGained(FocusEvent e) {
+        lblEstadoNombreTema.setVisible(false);
+    }
+
+    /**
+     * Valida el estado de los campos de texto cuando se pierde el foco en los
+     * campos de texto.
+     *
+     * @param e Objeto que contiene información del evento.
+     */
+    @Override
+    public void focusLost(FocusEvent e) {
+        JTextField src = (JTextField) e.getSource();
+
+        String nombreTema = src.getText();
+        if (!Validador.esCurso(nombreTema)) {
+            if (Validador.estaVacio(nombreTema)) {
+                mostrarLabelEstado(txtfNombreTema, false,
+                        "No ingrese datos vacíos.");
+            } else {
+                mostrarLabelEstado(txtfNombreTema, false,
+                        "Ingrese sólo letras y/o números.");
+            }
+        } else {
+            //El nombre del tema ingresado cumple con las validaciones.
+
+            String temaActual = controlVista.getTemaSeleccionado().getNombre();
+            //Validar si escribió el mismo nombre de antes.
+            if (nombreTema.compareToIgnoreCase(temaActual) == 0) {
+                mostrarLabelEstado(txtfNombreTema, true, "");
+            } else {
+                //Si escribió otro nombre verificar si ya existe.
+                boolean ok = controlVista.verificarExistencia(nombreTema);
+
+                if (ok) {
+                    mostrarLabelEstado(txtfNombreTema, false,
+                            "Ya existe un tema con ese nombre.");
+                } else {
+                    mostrarLabelEstado(txtfNombreTema, true, "");
+                }
+            }
+        }
+    }
+
+    /**
+     * Valida que los campos no acepten más caracteres de los estipulados en la
+     * base de datos.
+     *
+     * @param e Objeto que contiene información del evento.
+     */
+    @Override
+    public void keyTyped(KeyEvent e) {
+        if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
+            String portapapeles = "";
+
+            try {
+                portapapeles = (String) Toolkit.getDefaultToolkit()
+                        .getSystemClipboard().getData(DataFlavor.stringFlavor);
+            } catch (UnsupportedFlavorException | IOException | ClassCastException ex) {
+                System.out.println(ex);
+            }
+
+            if (!Validador.validarLongitud(Validador.LONGITUD_TEMA, txtfNombreTema.getText() + portapapeles)) {
+                e.consume();
+                Toolkit.getDefaultToolkit().beep();
+            }
+        } else if (!Validador.validarLongitud(Validador.LONGITUD_TEMA, txtfNombreTema.getText())) {
+            e.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }
+
+    /**
+     * Valida que los campos no acepten más caracteres de los estipulados en la
+     * base de datos.
+     *
+     * @param e Objeto que contiene información del evento.
+     */
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
+            String portapapeles = "";
+
+            try {
+                portapapeles = (String) Toolkit.getDefaultToolkit()
+                        .getSystemClipboard().getData(DataFlavor.stringFlavor);
+            } catch (UnsupportedFlavorException | IOException | ClassCastException ex) {
+                System.out.println(ex);
+            }
+
+            if (!Validador.validarLongitud(Validador.LONGITUD_TEMA, txtfNombreTema.getText() + portapapeles)) {
+                e.consume();
+                Toolkit.getDefaultToolkit().beep();
+            }
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
 }

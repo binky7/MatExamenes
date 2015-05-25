@@ -1,12 +1,32 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2015 E. Iván Mariscal Martínez
+ *
+ * This file is part of MatExámenes.
+ *
+ * MatExámenes is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * MatExámenes is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 package vista.ui;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,8 +34,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import modelo.dto.CursoDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerCursos;
@@ -24,60 +42,143 @@ import vista.interfaz.InterfaceVista;
 
 /**
  *
- * @author ivan
+ * @author E. Iván Mariscal Martínez
+ * @version 1 21 de mayo 2015
  */
 public class VistaModificarCurso extends javax.swing.JPanel
-        implements InterfaceVista, FocusListener {
-
-    private CVMantenerCursos controlVista;
-    private InterfaceVista padre;
-    private final ImageIcon ICONO_BIEN;
-    private final ImageIcon ICONO_MAL;
-    private String mensajeDatosIncorrectos;
+        implements InterfaceVista, FocusListener, KeyListener {
 
     /**
-     * Creates new form VistaModificarCurso
+     * Controlador de la vista del caso de uso mantener cursos, maneja la
+     * información obtenida en la vista para comunicarse con las capas
+     * inferiores.
+     */
+    private CVMantenerCursos controlVista;
+    /**
+     * Interface para interactuar con el JFrame principal.
+     */
+    private InterfaceVista padre;
+
+    /**
+     * Almacena el icono del estado correcto.
+     */
+    private final ImageIcon ICONO_BIEN;
+
+    /**
+     * Almacena el icno del estado incorrecto.
+     */
+    private final ImageIcon ICONO_MAL;
+
+    /**
+     * Almacena el mensaje de datos incorrectos.
+     */
+    private final String MENSAJE_DATOS_INCORRECTOS = "No se puede completar la "
+            + "operación, los siguientes campos necesitan ser corregidos:\n"
+            + "* Nombre del curso.";
+
+    /**
+     * Crea un objeto VistaModificarCurso e inicializa sus atributos.
      */
     public VistaModificarCurso() {
         initComponents();
         txtfNombreCurso.addFocusListener(this);
+        txtfNombreCurso.addKeyListener(this);
+
         ICONO_BIEN = new ImageIcon(getClass().getResource("/recursos/bien.png"));
         ICONO_MAL = new ImageIcon(getClass().getResource("/recursos/mal.png"));
         lblEstadoNombreCurso.setVisible(false);
     }
 
+    /**
+     * Almacena el control de la vista.
+     *
+     * @param controlVista El objeto encargado de realizar las interacciones con
+     * la base de datos.
+     */
     public void setControlador(CVMantenerCursos controlVista) {
         this.controlVista = controlVista;
     }
 
+    /**
+     * Almacena la interface del JFrame principal.
+     *
+     * @param padre Interface para interactuar con el JFrame principal.
+     */
     public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
 
+    /**
+     * Muestra los datos del curso en la vista.
+     *
+     * @param curso El curso a mostrar en la vista.
+     */
     private void mostrarDatos(CursoDTO curso) {
         txtfNombreCurso.setText(curso.getNombre());
     }
-    
-    public CursoDTO encapsularCurso() {
+
+    /**
+     * Crea un objeto tipo CursoDTO con el nombre del curso obtenido del campo
+     * de texto. También se valida el dato.
+     *
+     * @return Un objeto de tipo CursoDTO si el campo de texto cumple con las
+     * validaciones. Regresa null si el campo de texto no cumple con las
+     * validaciones.
+     *
+     */
+    private CursoDTO encapsularCurso() {
         CursoDTO curso = null;
+        boolean ok = true;
 
         String nombreCurso = txtfNombreCurso.getText();
         if (Validador.esCurso(nombreCurso)) {
             curso = new CursoDTO();
             curso.setNombre(nombreCurso);
-            mostrarLabelEstado(txtfNombreCurso, true, "");
+            
+            String cursoActual = controlVista.getCursoSeleccionado().getNombre();
+            //Validar si escribió el mismo nombre de antes.
+            if (nombreCurso.compareToIgnoreCase(cursoActual) != 0) {
+                
+                //Si escribió otro nombre verificar si ya existe.
+                boolean existe = controlVista.verificarExistencia(nombreCurso);
+
+                if (existe) {
+                    ok = false;
+                    mostrarLabelEstado(txtfNombreCurso, false,
+                            "Ya existe un curso con ese nombre.");
+                } else {
+                    mostrarLabelEstado(txtfNombreCurso, true, "");
+                }
+            } else {
+                mostrarLabelEstado(txtfNombreCurso, true, "");
+            }
         } else {
+            ok = false;
             curso = null;
             if (Validador.estaVacio(nombreCurso)) {
-                mensajeDatosIncorrectos = "No ingresar datos vacíos.";
+                mostrarLabelEstado(txtfNombreCurso, false,
+                        "No ingrese datos vacíos.");
             } else {
-                mensajeDatosIncorrectos = "Ingresa sólo letras y/o números.";
+                mostrarLabelEstado(txtfNombreCurso, false,
+                        "Ingrese sólo letras y/o números.");
             }
+        }
+
+        if (!ok) {
+            return null;
         }
 
         return curso;
     }
 
+    /**
+     * Muestra el estado del campo de texto dependiendo si la validacion fue
+     * verdadera o falsa.
+     *
+     * @param o El objeto campo de texto al cual se quiere cambiar el estado.
+     * @param estado Si es verdadero el estado será correcto, si es falso el
+     * estado será incorrecto.
+     */
     private void mostrarLabelEstado(Object o, boolean estado, String causa) {
         JTextField ob = (JTextField) o;
         try {
@@ -97,96 +198,30 @@ public class VistaModificarCurso extends javax.swing.JPanel
         }
     }
 
-    @Override
-    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mostrarVista(Vista vista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mostrarEntidad(Object entidad) {
-        mostrarDatos((CursoDTO) entidad);
-    }
-
-    @Override
-    public boolean confirmarCambio() {
-        boolean cambiar = false;
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cancelar la operación?\nTodos los cambios no "
-                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
-        if (ok == 0) {
-            cambiar = true;
-        }
-        return cambiar;
-    }
-
-    @Override
-    public UsuarioDTO obtenerUsuarioActual() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void limpiar() {
-        txtfNombreCurso.setText("");
-        lblEstadoNombreCurso.setVisible(false);
-        controlVista.liberarMemoriaRegistrarModificar();
-    }
-
-    @Override
-    public void focusGained(FocusEvent e) {
-        lblEstadoNombreCurso.setVisible(false);
-    }
-
-    @Override
-    public void focusLost(FocusEvent e) {
-        JTextField src = (JTextField) e.getSource();
-
-        String nombreCurso = src.getText();
-        if (!Validador.esCurso(nombreCurso)) {
-            if (Validador.estaVacio(nombreCurso)) {
-                mensajeDatosIncorrectos = "No ingresar datos vacíos.";
-            } else {
-                mensajeDatosIncorrectos = "Ingresa sólo letras y/o números.";
-            }
-            mostrarLabelEstado(txtfNombreCurso, false, mensajeDatosIncorrectos);
-        }
-    }
-
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * Inicializa los atributos gráficos y los coloca en su posición.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        lblNombreCurso = new javax.swing.JLabel();
         txtfNombreCurso = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
         btnCancelar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         lblEstadoNombreCurso = new javax.swing.JLabel();
 
-        jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel1.setText("Nombre del curso:");
+        lblNombreCurso.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblNombreCurso.setText("Nombre del curso:");
 
         txtfNombreCurso.setName("lblEstadoNombreCurso");
         txtfNombreCurso.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtfNombreCurso.setPreferredSize(new java.awt.Dimension(350, 30));
-        txtfNombreCurso.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtfNombreCursoKeyTyped(evt);
-            }
-        });
 
-        jLabel4.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Modificar Curso");
+        lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitulo.setText("Modificar Curso");
 
         btnCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
@@ -194,7 +229,7 @@ public class VistaModificarCurso extends javax.swing.JPanel
         btnCancelar.setPreferredSize(new java.awt.Dimension(110, 30));
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
+                pasarControlVistaConsulta(evt);
             }
         });
 
@@ -218,7 +253,7 @@ public class VistaModificarCurso extends javax.swing.JPanel
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(537, 537, 537)
                         .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -226,7 +261,7 @@ public class VistaModificarCurso extends javax.swing.JPanel
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(117, 117, 117)
-                        .addComponent(jLabel1)
+                        .addComponent(lblNombreCurso)
                         .addGap(18, 18, 18)
                         .addComponent(txtfNombreCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -237,12 +272,12 @@ public class VistaModificarCurso extends javax.swing.JPanel
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
-                .addComponent(jLabel4)
+                .addComponent(lblTitulo)
                 .addGap(72, 72, 72)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtfNombreCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1))
+                        .addComponent(lblNombreCurso))
                     .addComponent(lblEstadoNombreCurso))
                 .addGap(280, 280, 280)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -251,15 +286,20 @@ public class VistaModificarCurso extends javax.swing.JPanel
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Método llamado cuando se acciona el botón de modificar.
+     *
+     * @param evt
+     */
     private void modificarCurso(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarCurso
         // TODO add your handling code here:
         CursoDTO curso = encapsularCurso();
 
         if (curso == null) {
-            mostrarLabelEstado(txtfNombreCurso, false, mensajeDatosIncorrectos);
-            JOptionPane.showMessageDialog(this, mensajeDatosIncorrectos, "Advertencia",
+            JOptionPane.showMessageDialog(this, MENSAJE_DATOS_INCORRECTOS, "Advertencia",
                     JOptionPane.WARNING_MESSAGE);
         } else {
+
             boolean ok = controlVista.modificarCurso(curso);
 
             if (ok) {
@@ -267,40 +307,206 @@ public class VistaModificarCurso extends javax.swing.JPanel
                 padre.mostrarVistaConEntidad(curso, Vista.ConsultarCursos);
                 limpiar();
             } else {
-                mensajeDatosIncorrectos = "Ya existe un curso con ese nombre.";
-                mostrarLabelEstado(txtfNombreCurso, false, mensajeDatosIncorrectos);
-                JOptionPane.showMessageDialog(this, mensajeDatosIncorrectos, "Advertencia",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No se pudo modificar el curso.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_modificarCurso
 
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+    /**
+     * Cancela la modificación de curso y regresa a la vista de consultar
+     * cursos.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
+    private void pasarControlVistaConsulta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarControlVistaConsulta
         // TODO add your handling code here:
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cancelar la operación?\nTodos los cambios no "
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desea cancelar la operación?\nTodos los cambios no "
                 + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
         if (ok == 0) {
             padre.mostrarVista(Vista.ConsultarCursos);
             limpiar();
         }
-    }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void txtfNombreCursoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfNombreCursoKeyTyped
-        // TODO add your handling code here:
-        if(!Validador.validarLongitud(Validador.LONGITUD_CURSO, txtfNombreCurso.getText())) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtfNombreCursoKeyTyped
+    }//GEN-LAST:event_pasarControlVistaConsulta
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Botón para cancelar la modificación de curso.
+    */
     private javax.swing.JButton btnCancelar;
+    /**
+    * Botón para guardar las modificaciones del curso.
+    */
     private javax.swing.JButton btnModificar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel4;
+    /**
+    * Label de estado del campo de texto del nombre del curso.
+    */
     private javax.swing.JLabel lblEstadoNombreCurso;
+    /**
+    * Label del nombre del curso.
+    */
+    private javax.swing.JLabel lblNombreCurso;
+    /**
+    * Label para mostrar el título de la interfaz gráfica.
+    */
+    private javax.swing.JLabel lblTitulo;
+    /**
+    * Campo de texto del nombre del curso.
+    */
     private javax.swing.JTextField txtfNombreCurso;
     // End of variables declaration//GEN-END:variables
 
+    @Override
+    public void mostrarVistaConEntidad(Object entidad, Vista vista) {
+    }
+
+    @Override
+    public void mostrarVista(Vista vista) {
+    }
+
+    /**
+     * Muestra la información de la entidad obtenida en todos los campos de la
+     * vista, este objeto es enviado desde la Vista Consultar del caso de uso
+     * correspondiente a esta vista.
+     *
+     * @param entidad El objeto entidad que contiene la información a mostrar en
+     * la vista para ser modificada.
+     */
+    @Override
+    public void mostrarEntidad(Object entidad) {
+        mostrarDatos((CursoDTO) entidad);
+    }
+
+    @Override
+    public boolean confirmarCambio() {
+        boolean cambiar = false;
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "quiere cambiar de pantalla?\nTodos los cambios no "
+                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
+        if (ok == 0) {
+            cambiar = true;
+        }
+        return cambiar;
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void limpiar() {
+        txtfNombreCurso.setText("");
+        lblEstadoNombreCurso.setVisible(false);
+        controlVista.liberarMemoriaRegistrarModificar();
+    }
+
+    /**
+     * Esconde la etiqueta de estado del campo de texto que obtiene el foco.
+     *
+     * @param e Objeto que contiene información del evento.
+     */
+    @Override
+    public void focusGained(FocusEvent e) {
+        lblEstadoNombreCurso.setVisible(false);
+    }
+
+    /**
+     * Valida el estado de los campos de texto cuando se pierde el foco en los
+     * campos de texto.
+     *
+     * @param e Objeto que contiene información del evento.
+     */
+    @Override
+    public void focusLost(FocusEvent e) {
+        JTextField src = (JTextField) e.getSource();
+
+        String nombreCurso = src.getText();
+        if (!Validador.esCurso(nombreCurso)) {
+            if (Validador.estaVacio(nombreCurso)) {
+                mostrarLabelEstado(txtfNombreCurso, false,
+                        "No ingrese datos vacíos.");
+            } else {
+                mostrarLabelEstado(txtfNombreCurso, false,
+                        "Ingrese sólo letras y/o números.");
+            }
+        } else {
+            //El nombre del curso ingresado cumple con las validaciones.
+            
+            String cursoActual = controlVista.getCursoSeleccionado().getNombre();
+            //Validar si escribió el mismo nombre de antes.
+            if (nombreCurso.compareToIgnoreCase(cursoActual) == 0) {
+                mostrarLabelEstado(txtfNombreCurso, true, "");
+            } else {
+                //Si escribió otro nombre verificar si ya existe.
+                boolean ok = controlVista.verificarExistencia(nombreCurso);
+
+                if (ok) {
+                    mostrarLabelEstado(txtfNombreCurso, false,
+                            "Ya existe un curso con ese nombre.");
+                } else {
+                    mostrarLabelEstado(txtfNombreCurso, true, "");
+                }
+            }
+        }
+    }
+
+    /**
+     * Valida que los campos no acepten mas de los caracteres estipulados en la
+     * base de datos.
+     *
+     * @param e Objeto que contiene información del evento.
+     */
+    @Override
+    public void keyTyped(KeyEvent e) {
+        if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
+            String portapapeles = "";
+
+            try {
+                portapapeles = (String) Toolkit.getDefaultToolkit()
+                        .getSystemClipboard().getData(DataFlavor.stringFlavor);
+            } catch (UnsupportedFlavorException | IOException | ClassCastException ex) {
+                System.out.println(ex);
+            }
+
+            if (!Validador.validarLongitud(Validador.LONGITUD_CURSO, txtfNombreCurso.getText() + portapapeles)) {
+                e.consume();
+                Toolkit.getDefaultToolkit().beep();
+            }
+        } else if (!Validador.validarLongitud(Validador.LONGITUD_CURSO, txtfNombreCurso.getText())) {
+            e.consume();
+            Toolkit.getDefaultToolkit().beep();
+        }
+    }
+
+    /**
+     * Valida que los campos no acepten mas de los caracteres estipulados en la
+     * base de datos.
+     *
+     * @param e Objeto que contiene información del evento.
+     */
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
+            String portapapeles = "";
+
+            try {
+                portapapeles = (String) Toolkit.getDefaultToolkit()
+                        .getSystemClipboard().getData(DataFlavor.stringFlavor);
+            } catch (UnsupportedFlavorException | IOException | ClassCastException ex) {
+                System.out.println(ex);
+            }
+
+            if (!Validador.validarLongitud(Validador.LONGITUD_CURSO, txtfNombreCurso.getText() + portapapeles)) {
+                e.consume();
+                Toolkit.getDefaultToolkit().beep();
+            }
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
 }

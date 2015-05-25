@@ -63,6 +63,9 @@
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="Asignar Ex&#xe1;menes"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para mostrar el t&#xed;tulo de la interfaz gr&#xe1;fica.&#xa; */"/>
+      </AuxValues>
     </Component>
     <Container class="javax.swing.JTabbedPane" name="tbpAsignarExamenes">
       <Properties>
@@ -70,16 +73,17 @@
           <Dimension value="[780, 481]"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="tbpAsignarExamenesStateChanged"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="tbpAsignarExamenes.setEnabledAt(0, false);&#xa;tbpAsignarExamenes.setEnabledAt(1, false);&#xa;tbpAsignarExamenes.setEnabledAt(2, false);&#xa;tbpAsignarExamenes.setEnabledAt(3, false);&#xa;tbpAsignarExamenes.setTitleAt(0, &quot;&lt;html&gt;&lt;font color=black&gt;Ex&#xe1;menes&lt;/font&gt;&lt;/html&gt;&quot;);&#xa;tbpAsignarExamenes.setTitleAt(1, &quot;&lt;html&gt;&lt;font color=black&gt;Grupos&lt;/font&gt;&lt;/html&gt;&quot;);&#xa;tbpAsignarExamenes.setTitleAt(2, &quot;&lt;html&gt;&lt;font color=black&gt;Asignaciones&lt;/font&gt;&lt;/html&gt;&quot;);&#xa;tbpAsignarExamenes.setTitleAt(3, &quot;&lt;html&gt;&lt;font color=black&gt;Tiempo l&#xed;mite&lt;/font&gt;&lt;/html&gt;&quot;);"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Panel de pesta&#xf1;as para agrupar los p&#xe1;neles utilizados para asignar ex&#xe1;menes.&#xa; */"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
-        <Container class="javax.swing.JPanel" name="jPanel1">
+        <Container class="javax.swing.JPanel" name="pnlExamenes">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Panel para agrupar los componentes utilizados para mostrar cursos y ex&#xe1;menes.&#xa; */"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Ex&#xe1;menes">
@@ -148,6 +152,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Cursos"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label de la lista de cursos.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JComboBox" name="cbCursos">
               <Properties>
@@ -167,10 +174,9 @@
                   <Dimension value="[200, 30]"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cbCursosItemStateChanged"/>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbCursosActionPerformed"/>
-              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * ComboBox para mostrar los cursos.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="lblExamenes">
               <Properties>
@@ -179,6 +185,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Ex&#xe1;menes"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para la tabla de ex&#xe1;menes.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane1">
               <AuxValues>
@@ -192,7 +201,7 @@
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="5" rowCount="0">
                         <Column editable="false" title="Id" type="java.lang.Integer"/>
-                        <Column editable="false" title="T&#xed;tulo" type="java.lang.String"/>
+                        <Column editable="false" title="Nombre" type="java.lang.String"/>
                         <Column editable="false" title="Fecha creaci&#xf3;n" type="java.lang.Object"/>
                         <Column editable="false" title="Fecha Modificaci&#xf3;n" type="java.lang.Object"/>
                         <Column editable="false" title="Autor" type="java.lang.String"/>
@@ -232,6 +241,9 @@
                       <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Tabla para mostrar los datos de los ex&#xe1;menes.&#xa; */"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -251,6 +263,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSiguienteExamenesActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n para pasar a la pesta&#xf1;a de grupos.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnConsultarExamenes">
               <Properties>
@@ -263,12 +278,18 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnConsultarExamenesActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="consultarExamenes"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n para consultar los ex&#xe1;menes del curso seleccionado.&#xa; */"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanel2">
+        <Container class="javax.swing.JPanel" name="pnlGrupos">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Panel para agrupar los componentes utilizados para mostrar los grupos.&#xa; */"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Grupos">
@@ -331,6 +352,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Grupos"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para la lista de grupos.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane2">
               <AuxValues>
@@ -355,6 +379,9 @@
                     </Property>
                     <Property name="selectionMode" type="int" value="0"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Lista para mostrar los grupos.&#xa; */"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -374,6 +401,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAnteriorGruposActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n para regresar a la pesta&#xf1;a de ex&#xe1;menes.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnSiguienteGrupos">
               <Properties>
@@ -391,15 +421,21 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSiguienteGruposActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n para pasar a la pesta&#xf1;a de asignaciones.&#xa; */"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanel3">
+        <Container class="javax.swing.JPanel" name="pnlAsignaciones">
           <Properties>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[775, 477]"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Panel para agrupar los componentes utilizados para mostrar las claves, &#xa; * los alumnos y las asignaciones.&#xa; */"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Asignaciones">
@@ -442,7 +478,7 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="136" max="-2" attributes="0"/>
-                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblAsignaciones" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="btnSeleccionarAsignaciones" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -455,7 +491,7 @@
                       <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                       <Component id="lblClaves" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="91" pref="91" max="-2" attributes="0"/>
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblAlumnos" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="btnSeleccionarAlumnos" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -471,7 +507,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="lblClaves" min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblAlumnos" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnSeleccionarAlumnos" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnDeseleccionarAlumnos" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -487,7 +523,7 @@
                       </Group>
                       <EmptySpace pref="21" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblAsignaciones" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnDeseleccionarAsignaciones" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnSeleccionarAsignaciones" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -514,6 +550,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Claves"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para las claves.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane3">
               <AuxValues>
@@ -538,16 +577,22 @@
                       <Dimension value="[120, 80]"/>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Lista para mostrar las claves del examen seleccionado.&#xa; */"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JLabel" name="jLabel1">
+            <Component class="javax.swing.JLabel" name="lblAlumnos">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="14" style="1"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Alumnos"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para los alumnos.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane4">
               <AuxValues>
@@ -602,6 +647,9 @@
                       <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Tabla para mostrar los datos de los alumnos del grupo seleccionado.&#xa; */"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -616,16 +664,22 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAsignarClaveActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="agregarAsignacion"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n para asignar una clave a alumnos seleccionados.&#xa; */"/>
+              </AuxValues>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel2">
+            <Component class="javax.swing.JLabel" name="lblAsignaciones">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="14" style="1"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Asignaciones"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para las asignaciones.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane5">
               <AuxValues>
@@ -686,6 +740,9 @@
                       <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Tabla para mostrar los datos de los alumnos seleccionado y su clave asignada.&#xa; */"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -700,8 +757,11 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRemoverAsignacionActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removerAsignacion"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n para remover asignaciones seleccionadas.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnSiguienteAsignaciones">
               <Properties>
@@ -719,6 +779,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSiguienteAsignacionesActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n para pasar a la pesta&#xf1;a de tiempo.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnAnteriorAsignaciones">
               <Properties>
@@ -736,6 +799,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAnteriorAsignacionesActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Para regresar a la pesta&#xf1;a de grupos.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnSeleccionarAlumnos">
               <Properties>
@@ -745,6 +811,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSeleccionarAlumnosActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n para seleccionar todas las filas de la tabla tblAlumnos.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnDeseleccionarAlumnos">
               <Properties>
@@ -754,6 +823,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeseleccionarAlumnosActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n para deseleccionar todas las filas de la tabla tblAlumnos.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnSeleccionarAsignaciones">
               <Properties>
@@ -763,6 +835,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSeleccionarAsignacionesActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n para seleccionar todas las filas de la tabla tblAsignaciones.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnDeseleccionarAsignaciones">
               <Properties>
@@ -772,10 +847,16 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeseleccionarAsignacionesActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n para deseleccionar todas las filas de la tabla tblAsignaciones.&#xa; */"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanel4">
+        <Container class="javax.swing.JPanel" name="pnlTiempo">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Panel para agrupar todos los componentes utilizados para la selecci&#xf3;n del &#xa; * tiempo final y los datos finales de la asignaci&#xf3;n.&#xa; */"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Tiempo l&#xed;mite">
@@ -790,13 +871,13 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jPanel5" max="32767" attributes="0"/>
+                          <Component id="pnlDatosAsignacion" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblTiempo" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jsTiempo" min="-2" pref="74" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblMinutos" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
@@ -815,12 +896,12 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblTiempo" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jsTiempo" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblMinutos" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-                      <Component id="jPanel5" min="-2" pref="312" max="-2" attributes="0"/>
+                      <Component id="pnlDatosAsignacion" min="-2" pref="312" max="-2" attributes="0"/>
                       <EmptySpace pref="79" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
@@ -835,13 +916,16 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="jLabel3">
+            <Component class="javax.swing.JLabel" name="lblTiempo">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="14" style="1"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Tiempo l&#xed;mite:"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para la selecci&#xf3;n del tiempo l&#xed;mite del examen.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JSpinner" name="jsTiempo">
               <Properties>
@@ -854,9 +938,10 @@
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="JFormattedTextField txt = ((JSpinner.NumberEditor) jsTiempo.getEditor()).getTextField();&#xa;((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);"/>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Se utiliza para seleccionar el tiempo l&#xed;mite del examen.&#xa; */"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel4">
+            <Component class="javax.swing.JLabel" name="lblMinutos">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="14" style="0"/>
@@ -864,7 +949,7 @@
                 <Property name="text" type="java.lang.String" value="minutos"/>
               </Properties>
             </Component>
-            <Container class="javax.swing.JPanel" name="jPanel5">
+            <Container class="javax.swing.JPanel" name="pnlDatosAsignacion">
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -872,6 +957,9 @@
                   </Border>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Panel para agrupar los componentes utilizados para mostrar todos los datos &#xa; * de la asignaci&#xf3;n final.&#xa; */"/>
+              </AuxValues>
 
               <Layout>
                 <DimensionLayout dim="0">
@@ -881,19 +969,19 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jScrollPane6" pref="723" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblAlumnosFinal" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblGrupoFinal" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="txtfGrupo" min="-2" pref="60" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblCursoFinal" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="txtfCurso" min="-2" pref="170" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblExamenFinal" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="txtfExamen" max="32767" attributes="0"/>
                               </Group>
@@ -907,15 +995,15 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblGrupoFinal" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtfGrupo" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblExamenFinal" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtfCurso" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblCursoFinal" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtfExamen" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblAlumnosFinal" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jScrollPane6" min="-2" pref="200" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
@@ -924,13 +1012,16 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="jLabel5">
+                <Component class="javax.swing.JLabel" name="lblGrupoFinal">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Arial" size="14" style="1"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Grupo:"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para el campo de texto del grupo de la asignaci&#xf3;n final.&#xa; */"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtfGrupo">
                   <Properties>
@@ -944,15 +1035,19 @@
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="txtfGrupo.setDisabledTextColor(Color.BLACK);"/>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Campo de texto para mostrar el grupo de la asignaci&#xf3;n final.&#xa; */"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel6">
+                <Component class="javax.swing.JLabel" name="lblExamenFinal">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Arial" size="14" style="1"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Examen:"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para el campo de texto de examen de la asignaci&#xf3;n final.&#xa; */"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtfCurso">
                   <Properties>
@@ -966,15 +1061,19 @@
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="txtfCurso.setDisabledTextColor(Color.BLACK);"/>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Campo de texto para mostrar el curso de la asignaci&#xf3;n final.&#xa; */"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel7">
+                <Component class="javax.swing.JLabel" name="lblCursoFinal">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Arial" size="14" style="1"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Curso:"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para el campo de texto de curso de la asignaci&#xf3;n final.&#xa; */"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtfExamen">
                   <Properties>
@@ -988,15 +1087,19 @@
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="txtfExamen.setDisabledTextColor(Color.BLACK);"/>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Campo de texto para mostrar el t&#xed;tulo del examen de la asignaci&#xf3;n final.&#xa; */"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel8">
+                <Component class="javax.swing.JLabel" name="lblAlumnosFinal">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Arial" size="14" style="1"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Alumnos:"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label de la tabla de alumnos de la asignaci&#xf3;n final.&#xa; */"/>
+                  </AuxValues>
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="jScrollPane6">
                   <AuxValues>
@@ -1050,6 +1153,9 @@
                           <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                         </Property>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Tabla para mostrar los alumnos y su clave asignada de la asignaci&#xf3;n final.&#xa; */"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -1069,8 +1175,11 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="asignarExamen"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n para guardar la lista ex&#xe1;menes asignados.&#xa; */"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnAnteriorTiempo">
               <Properties>
@@ -1088,6 +1197,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAnteriorTiempoActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n para regresar a la pesta&#xf1;a de asignaciones.&#xa; */"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
@@ -1107,8 +1219,11 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelarAsignarExamenes"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n para cancelar la asignaci&#xf3;n de ex&#xe1;menes.&#xa; */"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
