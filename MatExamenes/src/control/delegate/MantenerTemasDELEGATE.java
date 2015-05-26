@@ -188,4 +188,24 @@ public class MantenerTemasDELEGATE {
 
         return ok;
     }
+
+    /**
+     *
+     * Obtiene los temas que no pertenecen a ningún curso.
+     *
+     * @return Lista de temas que no pertenecen a ningún curso.
+     */
+    public List<TemaDTO> obtenerTemasSinAsignar() {
+        List<TemaDTO> listaTemas = null;
+
+        try {
+            listaTemas = Enlace.getPersistencia().obtenerTemasSinAsignar();
+        } catch (RemoteException ex) {
+            System.out.println(ex);
+        } catch (NotBoundException ex) {
+            System.out.println(ex);
+        }
+
+        return listaTemas;
+    }
 }

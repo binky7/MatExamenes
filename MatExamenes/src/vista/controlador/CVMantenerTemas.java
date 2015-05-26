@@ -56,6 +56,11 @@ public class CVMantenerTemas {
     private TemaDTO temaSeleccionado;
 
     /**
+     *
+     */
+    private boolean temaSinAsignar;
+
+    /**
      * Objeto de tipo CursoDTO utilizado en modificar.
      */
     private CursoDTO cursoSeleccionado;
@@ -127,6 +132,7 @@ public class CVMantenerTemas {
             listaTemasBusqueda = mantenerTemasDELEGATE
                     .obtenerTemasDeCurso(objCurso);
             this.listaTemas = listaTemasBusqueda;
+            temaSinAsignar = false;
         }
 
         return listaTemasBusqueda;
@@ -168,23 +174,34 @@ public class CVMantenerTemas {
             ok = mantenerTemasDELEGATE.modificarTema(tema);
             if (ok) {
                 CursoDTO objCurso = listaCursos.get(indexCurso);
-
-                if (objCurso.getId() != this.cursoSeleccionado.getId()) {
+                if (this.cursoSeleccionado != null) {
+                    if (objCurso.getId() != this.cursoSeleccionado.getId()) {
                     //Cambió el curso.
 
-                    //Eliminar la relación que existía entre el tema y el curso
-                    //anterior.
-                    List<TemaDTO> temasDeCurso
-                            = obtenerTemasDeCurso(listaCursos.indexOf(this.cursoSeleccionado));
-                    if (temasDeCurso != null && !temasDeCurso.isEmpty()) {
-                        temasDeCurso.remove(tema);
-                        this.cursoSeleccionado.setTemas(temasDeCurso);
-                        mantenerTemasDELEGATE.actualizarCurso(this.cursoSeleccionado);
-                    }
+                        //Eliminar la relación que existía entre el tema y el curso
+                        //anterior.
+                        List<TemaDTO> temasDeCurso
+                                = obtenerTemasDeCurso(listaCursos.indexOf(this.cursoSeleccionado));
+                        if (temasDeCurso != null && !temasDeCurso.isEmpty()) {
+                            temasDeCurso.remove(tema);
+                            this.cursoSeleccionado.setTemas(temasDeCurso);
+                            mantenerTemasDELEGATE.actualizarCurso(this.cursoSeleccionado);
+                        }
 
+                        //Crear la relación entre el tema y el nuevo curso que
+                        //se le asignó.
+                        temasDeCurso = obtenerTemasDeCurso(indexCurso);
+                        if (temasDeCurso == null || temasDeCurso.isEmpty()) {
+                            temasDeCurso = new ArrayList<TemaDTO>();
+                        }
+                        temasDeCurso.add(tema);
+                        objCurso.setTemas(temasDeCurso);
+                        mantenerTemasDELEGATE.actualizarCurso(objCurso);
+                    }
+                } else {
                     //Crear la relación entre el tema y el nuevo curso que
                     //se le asignó.
-                    temasDeCurso = obtenerTemasDeCurso(indexCurso);
+                    List<TemaDTO> temasDeCurso = obtenerTemasDeCurso(indexCurso);
                     if (temasDeCurso == null || temasDeCurso.isEmpty()) {
                         temasDeCurso = new ArrayList<TemaDTO>();
                     }
@@ -246,6 +263,7 @@ public class CVMantenerTemas {
      */
     public void liberarMemoriaModificar() {
         temaSeleccionado = null;
+        temaSinAsignar = false;
     }
 
     /**
@@ -264,7 +282,27 @@ public class CVMantenerTemas {
 
         return existe;
     }
-    
+
+    /**
+     *
+     * Obtiene los temas que no pertenecen a ningún curso.
+     *
+     * @return Lista de temas que no pertenecen a ningún curso.
+     */
+    public List<TemaDTO> obtenerTemasSinAsignar() {
+        List<TemaDTO> listaTemasBusqueda = null;
+
+        //Se obtienen los temas sin asignar y se sustituye la lista
+        listaTemasBusqueda = mantenerTemasDELEGATE.obtenerTemasSinAsignar();
+        listaTemas = listaTemasBusqueda;
+
+        if (listaTemasBusqueda != null && !listaTemasBusqueda.isEmpty()) {
+            temaSinAsignar = true;
+        }
+
+        return listaTemasBusqueda;
+    }
+
     /**
      * Regresa el atributo temaSeleccionado con los datos del tema actual en
      * modificación.
@@ -273,5 +311,13 @@ public class CVMantenerTemas {
      */
     public TemaDTO getTemaSeleccionado() {
         return this.temaSeleccionado;
+    }
+
+    /**
+     *
+     * @return Regresa verdadero si el tema seleccionado no tiene curso.
+     */
+    public boolean esTemaSinAsignar() {
+        return this.temaSinAsignar;
     }
 }

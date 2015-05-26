@@ -146,7 +146,7 @@ public class VistaModificarTema extends javax.swing.JPanel implements
     public void setControlador(CVMantenerTemas controlVista) {
         this.controlVista = controlVista;
     }
-    
+
     /**
      * Crea un objeto tipo TemaDTO con sus atributos obtenidos de la vista.
      * También se validan los datos.
@@ -193,8 +193,8 @@ public class VistaModificarTema extends javax.swing.JPanel implements
                         "Ingrese sólo letras y/o números.");
             }
         }
-        
-        if(!ok) {
+
+        if (!ok) {
             return null;
         }
 
@@ -214,9 +214,13 @@ public class VistaModificarTema extends javax.swing.JPanel implements
                 cbCursos.addItem(curso.getNombre());
             }
         }
-        CursoDTO objCurso = controlVista.obtenerCursoPorTema(tema);
         txtfNombreTema.setText(tema.getNombre());
-        cbCursos.setSelectedItem(objCurso.getNombre());
+        //Si el tema actual está asignado a un curso se busca el curso
+        //al que pertenece.
+        if (!controlVista.esTemaSinAsignar()) {
+            CursoDTO objCurso = controlVista.obtenerCursoPorTema(tema);
+            cbCursos.setSelectedItem(objCurso.getNombre());
+        }
     }
 
     /**
@@ -400,7 +404,6 @@ public class VistaModificarTema extends javax.swing.JPanel implements
 
     }//GEN-LAST:event_modificarTema
 
-
     @Override
     public void limpiar() {
         txtfNombreTema.setText("");
@@ -408,7 +411,6 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         lblEstadoNombreTema.setVisible(false);
     }
 
-    
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
         //No implementado

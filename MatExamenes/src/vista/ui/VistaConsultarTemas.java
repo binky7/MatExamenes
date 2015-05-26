@@ -138,6 +138,87 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
     }
 
     /**
+     * Obtiene los cursos almacenados en la base de datos.
+     *
+     * @return Regresa verdadero si la consulta de cursos se realiza
+     * exitósamente. Regresa falso si no se encuentran cursos en la base de
+     * datos.
+     */
+    private boolean consultarCursos() {
+        List<CursoDTO> cursos = controlVista.obtenerCursos();
+        boolean ok = false;
+
+        if (cursos != null && !cursos.isEmpty()) {
+            ok = true;
+            mostrarCursos(cursos);
+        }
+
+        return ok;
+    }
+
+    /**
+     * Obtiene los cursos almacenados en la base de datos. Se llama
+     * automaticamente después de seleccionar un curso.
+     */
+    private void consultarTemas() {
+
+        List<TemaDTO> temas;
+
+        if (lstCursos.getSelectedIndex() == -1) {
+            //Evitar que ocurra algo al cambiar de panel
+            return;
+        }
+
+        //Traer los temas sin asignar
+        if (lstCursos.getSelectedValue().toString().equals("Otros")) {
+            temas = controlVista.obtenerTemasSinAsignar();
+        } else {
+
+            temas = controlVista.obtenerTemasDeCurso(lstCursos
+                    .getSelectedIndex());
+        }
+        if (temas != null && !temas.isEmpty()) {
+            mostrarTemas(temas);
+        } else {
+            JOptionPane.showMessageDialog(this, "El curso seleccionado no tiene temas.",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+            ((DefaultListModel) lstTemas.getModel()).clear();
+        }
+    }
+
+    /**
+     * Muestra los cursos en la vista.
+     *
+     * @param cursos Lista de cursos para mostrar en la vista.
+     */
+    private void mostrarCursos(List<CursoDTO> cursos) {
+        DefaultListModel listModel = (DefaultListModel) lstCursos.getModel();
+        DefaultListModel modeloTemas = (DefaultListModel) lstTemas.getModel();
+        modeloTemas.clear();
+
+        listModel.clear();
+        //Mostrar cada curso, no remover, si no buscar por medio del for
+        for (CursoDTO curso : cursos) {
+            listModel.addElement(curso.getNombre());
+        }
+    }
+
+    /**
+     * Mostrar los temas que se consultaron en lstTemas
+     *
+     * @param temas los objetos tema a mostrar
+     */
+    private void mostrarTemas(List<TemaDTO> temas) {
+        DefaultListModel listModel = (DefaultListModel) lstTemas.getModel();
+
+        listModel.clear();
+        //Mostrar cada tema, no remover, si no buscar por medio del for
+        for (TemaDTO tema : temas) {
+            listModel.addElement(tema.getNombre());
+        }
+    }
+
+    /**
      * Inicializa los atributos gráficos y los coloca en su posición.
      */
     @SuppressWarnings("unchecked")
@@ -320,7 +401,6 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         limpiar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-
     @Override
     public void limpiar() {
         //Limpiar las listas
@@ -328,82 +408,6 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         ((DefaultListModel) lstTemas.getModel()).clear();
         //Liberar memoria dto
         controlVista.liberarMemoriaConsultar();
-    }
-
-    /**
-     * Obtiene los cursos almacenados en la base de datos.
-     *
-     * @return Regresa verdadero si la consulta de cursos se realiza
-     * exitósamente. Regresa falso si no se encuentran cursos en la base de
-     * datos.
-     */
-    private boolean consultarCursos() {
-        List<CursoDTO> cursos = controlVista.obtenerCursos();
-        boolean ok = false;
-
-        if (cursos != null && !cursos.isEmpty()) {
-            ok = true;
-            mostrarCursos(cursos);
-        }
-
-        return ok;
-    }
-
-    /**
-     * Obtiene los cursos almacenados en la base de datos. Se llama
-     * automaticamente después de seleccionar un curso.
-     */
-    private void consultarTemas() {
-
-        List<TemaDTO> temas;
-
-        if (lstCursos.getSelectedIndex() == -1) {
-            //Evitar que ocurra algo al cambiar de panel
-            return;
-        }
-
-        temas = controlVista.obtenerTemasDeCurso(lstCursos
-                .getSelectedIndex());
-
-        if (temas != null && !temas.isEmpty()) {
-            mostrarTemas(temas);
-        } else {
-            JOptionPane.showMessageDialog(this, "El curso seleccionado no tiene temas.",
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
-            ((DefaultListModel) lstTemas.getModel()).clear();
-        }
-    }
-
-    /**
-     * Muestra los cursos en la vista.
-     *
-     * @param cursos Lista de cursos para mostrar en la vista.
-     */
-    private void mostrarCursos(List<CursoDTO> cursos) {
-        DefaultListModel listModel = (DefaultListModel) lstCursos.getModel();
-        DefaultListModel modeloTemas = (DefaultListModel) lstTemas.getModel();
-        modeloTemas.clear();
-
-        listModel.clear();
-        //Mostrar cada curso, no remover, si no buscar por medio del for
-        for (CursoDTO curso : cursos) {
-            listModel.addElement(curso.getNombre());
-        }
-    }
-
-    /**
-     * Mostrar los temas que se consultaron en lstTemas
-     *
-     * @param temas los objetos tema a mostrar
-     */
-    private void mostrarTemas(List<TemaDTO> temas) {
-        DefaultListModel listModel = (DefaultListModel) lstTemas.getModel();
-
-        listModel.clear();
-        //Mostrar cada tema, no remover, si no buscar por medio del for
-        for (TemaDTO tema : temas) {
-            listModel.addElement(tema.getNombre());
-        }
     }
 
     /**
@@ -421,6 +425,7 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
                     "Advertencia", JOptionPane.WARNING_MESSAGE);
             padre.mostrarVista(Vista.HOME);
         }
+        ((DefaultListModel) lstCursos.getModel()).addElement("Otros");
     }
 
     @Override
