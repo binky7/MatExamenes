@@ -43,6 +43,7 @@ import javafx.scene.image.WritableImage;
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -62,7 +63,7 @@ import vista.interfaz.InterfaceVista;
 
 /**
  * JPanel que mostrará la interfaz gráfica de Generar Estadísticas
- * 
+ *
  * @author Jesus Donaldo Osornio Hernández
  * @version 1 18 Mayo 2015
  */
@@ -70,15 +71,15 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         implements InterfaceVista, AncestorListener {
 
     /**
-     * Controlador de la vista del caso de uso Generar Estadísticas, funciona para
-     * manejar la información obtenida en la vista para comunicarse con las capas
-     * inferiores
+     * Controlador de la vista del caso de uso Generar Estadísticas, funciona
+     * para manejar la información obtenida en la vista para comunicarse con las
+     * capas inferiores
      */
     private CVGenerarEstadisticas controlVista;
     /**
      * Interface de comunicación con la interfaz padre, la cuál sirve para
-     * comunicarse con ella y recibir mensajes para mostrar otras vistas.
-     * En ese caso es utilizada para comunicarse con el JFrame Principal
+     * comunicarse con ella y recibir mensajes para mostrar otras vistas. En ese
+     * caso es utilizada para comunicarse con el JFrame Principal
      */
     private InterfaceVista padre;
 
@@ -177,7 +178,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     public VistaGenerarEstadisticas() {
         initComponents();
         initFX();
-        
+
         tipoEstadistica = new ButtonGroup();
 
         tipoEstadistica.add(rbtnGrupos);
@@ -190,8 +191,8 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     }
 
     /**
-     * Este método sirve para inicializar el thread JavaFX para mostrar la gráfica
-     * y debe ser llamado al principio, en el constructor.
+     * Este método sirve para inicializar el thread JavaFX para mostrar la
+     * gráfica y debe ser llamado al principio, en el constructor.
      */
     private void initFX() {
         //Crea los paneles JavaFX necesarios
@@ -199,7 +200,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         fxpnlGrafica.setBounds(0, 0, 800, 500);
         JFXPanel fxpnlBoton = new JFXPanel();
         fxpnlBoton.setBounds(620, 520, 150, 30);
-        
+
         //Asigna un listener al boton JavaFX para guardar la gráfica como imagen
         //en el equipo
         Platform.runLater(new Runnable() {
@@ -227,11 +228,14 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         frmGrafica.setSize(800, 600);
         frmGrafica.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frmGrafica.setResizable(false);
+        frmGrafica.setLocationRelativeTo(null);
+        frmGrafica.setIconImage(new ImageIcon(getClass().getResource("/recursos/icono16.png")).getImage());
+
     }
-    
+
     /**
-     * Este método inicializa y agrega los listeners necesarios para que la vista
-     * funcione.
+     * Este método inicializa y agrega los listeners necesarios para que la
+     * vista funcione.
      */
     private void initListeners() {
         //Para guardar el primer seleccionado como primer examen
@@ -321,9 +325,10 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
             }
         });
     }
-    
+
     /**
      * Almacena el control de la vista
+     *
      * @param controlVista El objeto encargado de realizar comunicar la vista
      * con las capas inferiores para acceder a los datos
      */
@@ -333,6 +338,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
 
     /**
      * Almacena la interface del JFrame principal.
+     *
      * @param padre Interface para interactuar con el JFrame principal.
      */
     public void setPadre(InterfaceVista padre) {
@@ -348,12 +354,11 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     private void consultarCursos() {
         //la lista de cursos obtenida desde la base de datos por el controlVista
         List<CursoDTO> cursos = controlVista.obtenerCursos();
-        
+
         //Si hay cursos...
-        if(cursos != null && !cursos.isEmpty()) {
+        if (cursos != null && !cursos.isEmpty()) {
             mostrarCursos(cursos);
-        }
-        else {
+        } else {
             //Si no hay mostrar un mensaje, regresar a la vista principal y
             //limpiar la vista actual
             JOptionPane.showMessageDialog(this, "No hay cursos");
@@ -363,20 +368,21 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     }
 
     /**
-     * Este método es utilizado para mostrar una lista de cursos en el componente
-     * comboBox de la vista para mostrar los cursos disponibles.
+     * Este método es utilizado para mostrar una lista de cursos en el
+     * componente comboBox de la vista para mostrar los cursos disponibles.
+     *
      * @param cursos una lista de cursos CursoDTO a ser mostrada en el comboBox
      * de la vista
      */
     private void mostrarCursos(List<CursoDTO> cursos) {
         //Para limpiar el cmbCurso de información previa
         cmbCurso.removeAllItems();
-        
+
         //Recorrer todos los elementos de la lista para mostrarlos en el comboBox
-        for(CursoDTO curso : cursos) {
+        for (CursoDTO curso : cursos) {
             cmbCurso.addItem(curso.getNombre());
         }
-        
+
         //Deselecciona el comboBox y permite la funcionalidad correcta del
         //listener del cmbCurso al igualar la bandera a falso
         cmbCurso.setSelectedIndex(-1);
@@ -385,9 +391,9 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
 
     /**
      * Este método es utilizado para consultar y mostrar los exámenes en base al
-     * curso seleccionado, mediante la utilización del
-     * controlVista. En caso de que no exista ningún examen se mostrará un
-     * mensaje y se permitirá volver a realizar otra selección.
+     * curso seleccionado, mediante la utilización del controlVista. En caso de
+     * que no exista ningún examen se mostrará un mensaje y se permitirá volver
+     * a realizar otra selección.
      */
     private void consultarExamenes() {
         //La lista de exámenes obtenidos por el controlVista
@@ -409,8 +415,9 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     /**
      * Este método es utilizado para mostrar una lista de exámenes en el
      * componente table de la vista para mostrar los exámenes ingresados.
-     * @param examenes una lista de examenes ExamenDTO a ser mostrada en la table
-     * de la vista
+     *
+     * @param examenes una lista de examenes ExamenDTO a ser mostrada en la
+     * table de la vista
      */
     private void mostrarExamenes(List<ExamenDTO> examenes) {
         DefaultTableModel model = (DefaultTableModel) tblExamenes.getModel();
@@ -436,10 +443,10 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     }
 
     /**
-     * Este método es utilizado para mostrar el objeto BarChart gráficamente como
-     * una gráfica de barras en el frame emergente, inhabilitando esta vista por
-     * el momento que el frame esté activo.
-     * 
+     * Este método es utilizado para mostrar el objeto BarChart gráficamente
+     * como una gráfica de barras en el frame emergente, inhabilitando esta
+     * vista por el momento que el frame esté activo.
+     *
      * @param grafica el objeto BarChart que se mostrará como gráfica de barras
      */
     private void mostrarGrafica(BarChart grafica) {
@@ -466,10 +473,10 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
      * resultado es mostrar la gráfica en una ventana emergente si todo salió
      * bien o mostrar un mensaje indicando la razón de porque no se generó la
      * gráfica
-     * 
+     *
      * @param tipo el tipo de gráfica que se va a generar, los valores aceptados
      * son (Grupo, Grado, Turno) para cada tipo de estadística respectivamente
-     * 
+     *
      * @param ejeX la etiqueta que llevará el ejeX
      * @param ejeY la etiqueta que llevará el ejeY
      * @param titulo la etiqueta que llevará el título de la gráfica
@@ -527,13 +534,13 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     }
 
     /**
-     * Este método es utilizado para crear un objeto BarChart (gráfica de barras)
-     * manipulable en la interfaz en base a un objeto tablaEstadísticas que 
-     * contiene los datos de calificación y exámenes a graficar.
-     * 
+     * Este método es utilizado para crear un objeto BarChart (gráfica de
+     * barras) manipulable en la interfaz en base a un objeto tablaEstadísticas
+     * que contiene los datos de calificación y exámenes a graficar.
+     *
      * @param tabla el objeto TablaEstadisticas que contiene las calificaciones
      * y los grupos/grados/turnos junto con los dos exámenes a graficar
-     * 
+     *
      * @param ejeX la etiqueta del eje X
      * @param ejeY la etiqueta del eje Y
      * @param titulo la etiqueta del título de la gráfica
@@ -568,8 +575,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
                         //tabla. La cual contiene las calificaciones de un examen
                         //en todos los grupos/grados/turnos según sea el caso
                         XYChart.Series<String, Number> s
-                                = (XYChart.Series<String, Number>) 
-                                grafica.getData().get(row);
+                                = (XYChart.Series<String, Number>) grafica.getData().get(row);
                         //pone el nombre a cada serie con el nombre del examen...
                         s.setName(tblExamenes.getValueAt(indexesExamen.get(row), 2)
                                 .toString());
@@ -592,8 +598,8 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
 
     /**
      * Este método sirve para guardar la gráfica como una imagen png en la
-     * ubicación especificada por el usuario. Este método es llamado al seleccionar
-     * Guardar en el JFrame emergente.
+     * ubicación especificada por el usuario. Este método es llamado al
+     * seleccionar Guardar en el JFrame emergente.
      */
     private void guardarGrafica() {
         //Crear una imagen de la gráfica
@@ -602,8 +608,8 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         //Elegir el archivo para guardar...
         JFileChooser chooser = new JFileChooser();
         FileFilter filter = new FileNameExtensionFilter("PNG file",
-                new String[] {"png"});
-        
+                new String[]{"png"});
+
         //Inicializar atributos del diálogo de archivos
         chooser.addChoosableFileFilter(filter);
         chooser.setFileFilter(filter);
@@ -613,21 +619,21 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
                 + "seleccionada");
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setMultiSelectionEnabled(false);
-        
+
         //Mostrar el diálogo de archivos
         chooser.showOpenDialog(null);
         //Obtener el archivo en el que se quiere guardar la imagen
         File file = chooser.getSelectedFile();
-        
+
         try {
             //Si el archivo no termina en .png concatenárselo
-            if(file != null) {
+            if (file != null) {
                 String path = file.getAbsolutePath();
-                if(!path.endsWith(".png")) {
+                if (!path.endsWith(".png")) {
                     path += ".png";
                     file = new File(path);
                 }
-                
+
                 //Escribir la imagen en la ruta especificada
                 ImageIO.write(SwingFXUtils.fromFXImage(imagen, null), "png", file);
             }
@@ -812,13 +818,13 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
 
     /**
      * Este método sirve para generar una gráfica de barrras en base a las
-     * selecciones de exámenes y tipo de estadística hechas por el usuario.
-     * Este método es llamado al seleccionar la opción Generar
-     * 
+     * selecciones de exámenes y tipo de estadística hechas por el usuario. Este
+     * método es llamado al seleccionar la opción Generar
+     *
      * @param evt en objeto ActionEvent generado por el evento
      */
     private void generarGrafica(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarGrafica
-       //Obtener la selección del tipo de estadística
+        //Obtener la selección del tipo de estadística
         ButtonModel seleccion = tipoEstadistica.getSelection();
 
         //Si hay selección comparar con cada botón para hacer la gráfica correcta
@@ -845,9 +851,9 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-            + "desea cancelar la operación?\nTodos los cambios no "
-            + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
-        if (ok == 0) {
+                + "desea cancelar la operación?\nTodos los cambios no "
+                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
+        if (ok == JOptionPane.YES_OPTION) {
             padre.mostrarVista(Vista.HOME);
             limpiar();
         }
@@ -874,7 +880,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
                 + "quiere cambiar de pantalla?\nTodos los cambios no "
                 + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
-        if (ok == 0) {
+        if (ok == JOptionPane.YES_OPTION) {
             cambiar = true;
         }
         return cambiar;
@@ -898,7 +904,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
 
     /**
      * Este método es invocado cuando se muestra por primera vez esta vista
-     * 
+     *
      * @param event el objeto AncestorEvent generado por el evento
      */
     @Override

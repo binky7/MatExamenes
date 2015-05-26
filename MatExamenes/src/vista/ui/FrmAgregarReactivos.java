@@ -79,101 +79,29 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
     private boolean noSelect;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-     * Botón usado para aceptar el agregar reactivos
-     */
     private javax.swing.JButton btnAceptar;
-    /**
-     * Botón usado para agregar una selección
-     */
     private javax.swing.JButton btnAgregarSeleccion;
-    /**
-     * Botón usado para cancelar el agregar reactivos
-     */
     private javax.swing.JButton btnCancelar;
-    /**
-     * Botón usado para remover una selección
-     */
     private javax.swing.JButton btnRemoverSeleccion;
-    /**
-     * Botón usado para ver un reactivo
-     */
     private javax.swing.JButton btnVer;
-    /**
-     * Panel de la pestaña de selección manual
-     */
     private javax.swing.JPanel jPanel3;
-    /**
-     * Panel de la pestaña de selección automática
-     */
     private javax.swing.JPanel jPanel4;
-    /**
-     * Scroll pane para mostrar tblReactivos
-     */
     private javax.swing.JScrollPane jScrollPane3;
-    /**
-     * Scroll pane para mostrar lstTemasManual
-     */
     private javax.swing.JScrollPane jScrollPane4;
-    /**
-     * Scroll pane para mostrar lstTemasAuto
-     */
     private javax.swing.JScrollPane jScrollPane7;
-    /**
-     * Scroll pane para mostrar tblSeleccion
-     */
     private javax.swing.JScrollPane jScrollPane8;
-    /**
-     * Label para spnCantidad
-     */
     private javax.swing.JLabel lblCantidad;
-    /**
-     * Label para tblReactivos
-     */
     private javax.swing.JLabel lblReactivos;
-    /**
-     * Label para tblSeleccion
-     */
     private javax.swing.JLabel lblSeleccion;
-    /**
-     * Label para lstTemasAuto
-     */
     private javax.swing.JLabel lblTemasAuto;
-    /**
-     * Label para lstTemasManual
-     */
     private javax.swing.JLabel lblTemasManual;
-    /**
-     * Label para mostrar el total de reactivos por tema
-     */
     private javax.swing.JLabel lblTotal;
-    /**
-     * Label para mostrar la leyenda de total de reactivos por tema
-     */
     private javax.swing.JLabel lblTotalReactivos;
-    /**
-     * List para mostrar los temas en la selección aleatoria.
-     */
     private javax.swing.JList lstTemasAuto;
-    /**
-     * List para mostrar los temas en la selección manual
-     */
     private javax.swing.JList lstTemasManual;
-    /**
-     * Spinner para seleccionar la cantidad
-     */
     private javax.swing.JSpinner spnCantidad;
-    /**
-     * Table para mostrar los reactivos
-     */
     private javax.swing.JTable tblReactivos;
-    /**
-     * Table para mostrar las selecciones
-     */
     private javax.swing.JTable tblSeleccion;
-    /**
-     * Tabbed pane que muestra las dos tipos de selecciones de reactivos
-     */
     private javax.swing.JTabbedPane tbpSeleccion;
     // End of variables declaration//GEN-END:variables
 
@@ -576,40 +504,32 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(lblTemasManual)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)))
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(lblReactivos)
-                        .addGap(162, 162, 162))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addGap(57, 57, 57)
+                .addComponent(lblTemasManual)
+                .addGap(222, 222, 222)
+                .addComponent(lblReactivos))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(11, 11, 11)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTemasManual)
+                    .addComponent(lblReactivos))
+                .addGap(11, 11, 11)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(lblReactivos)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
+                        .addGap(3, 3, 3)
                         .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblTemasManual))
-                .addContainerGap(47, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         tbpSeleccion.addTab("Selección Manual", jPanel3);
@@ -798,6 +718,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -852,7 +773,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
                 + "desea cancelar la operación?\nTodo el progreso "
                 + "se perderá", "Confirmación", JOptionPane.YES_NO_OPTION);
         
-        if (ok == 0) {
+        if (ok == JOptionPane.YES_OPTION) {
             ((JFrame) padre.getPadre()).setEnabled(true);
             limpiar();
             dispose();

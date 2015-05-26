@@ -537,10 +537,10 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
     @Override
     public boolean confirmarCambio() {
         boolean cambiar = false;
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cambiar de pantalla?\nTodos los cambios no "
-                + "guardados se perderán");
-        if (ok == 0) {
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desea cambiar de pantalla?\nTodos los cambios no "
+                + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
+        if (ok == JOptionPane.YES_OPTION) {
             cambiar = true;
         }
         return cambiar;

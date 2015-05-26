@@ -563,10 +563,10 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements
      * @param evt Recibe el evento del boton que lo activo.
      */
     private void Cancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Cancelar
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cancelar la operación?\nTodos los cambios no "
-                + "guardados se perderán");
-        if (ok == 0) {
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desea cancelar la operación?\nTodos los cambios no "
+                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
+        if (ok == JOptionPane.YES_OPTION) {
             limpiar();
             controlVista.liberarMemoriaRegistrar();
             padre.mostrarVista(Vista.HOME);
@@ -659,10 +659,10 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements
     @Override
     public boolean confirmarCambio() {
         boolean cambiar = false;
-        int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                + "quieres cambiar de pantalla?\nTodos los cambios no "
-                + "guardados se perderán");
-        if (ok == 0) {
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desea cambiar de pantalla?\nTodos los cambios no "
+                + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
+        if (ok == JOptionPane.YES_OPTION) {
             cambiar = true;
         }
         return cambiar;

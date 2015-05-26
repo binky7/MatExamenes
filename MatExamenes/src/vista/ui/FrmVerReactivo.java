@@ -42,73 +42,22 @@ public class FrmVerReactivo extends javax.swing.JFrame {
     private JFrame padre;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-     * Scroll pane para mostrar la redacción
-     */
     private javax.swing.JScrollPane jScrollPane1;
-    /**
-     * Label para la opción 1
-     */
     private javax.swing.JLabel lblOpciones1;
-    /**
-     * Label para la opción 2
-     */
     private javax.swing.JLabel lblOpciones2;
-    /**
-     * Label para la opción 3
-     */
     private javax.swing.JLabel lblOpciones3;
-    /**
-     * Label para la opción 4
-     */
     private javax.swing.JLabel lblOpciones4;
-    /**
-     * Label para la redacción
-     */
     private javax.swing.JLabel lblRedaccion;
-    /**
-     * Label para respuesta
-     */
     private javax.swing.JLabel lblRespuesta;
-    /**
-     * Panel para agrupar opciones
-     */
     private javax.swing.JPanel pnlOpciones;
-    /**
-     * Radio button para la opción 1
-     */
     private javax.swing.JRadioButton rbtnOpt1;
-    /**
-     * Radio button para la opción 2
-     */
     private javax.swing.JRadioButton rbtnOpt2;
-    /**
-     * Radio button para la opción 3
-     */
     private javax.swing.JRadioButton rbtnOpt3;
-    /**
-     * Radio button para la opción 4
-     */
     private javax.swing.JRadioButton rbtnOpt4;
-    /**
-     * Área de texto para mostrar la redacción
-     */
     private javax.swing.JTextArea txtaRedaccion;
-    /**
-     * Campo de texto para mostrar la opción 1
-     */
     private javax.swing.JTextField txtfOpt1;
-    /**
-     * Campo de texto para mostrar la opción 2
-     */
     private javax.swing.JTextField txtfOpt2;
-    /**
-     * Campo de texto para mostrar la opción 3
-     */
     private javax.swing.JTextField txtfOpt3;
-    /**
-     * Campo de texto para mostrar la opción 4
-     */
     private javax.swing.JTextField txtfOpt4;
     // End of variables declaration//GEN-END:variables
 
@@ -292,7 +241,7 @@ public class FrmVerReactivo extends javax.swing.JFrame {
         txtaRedaccion.setRows(5);
         jScrollPane1.setViewportView(txtaRedaccion);
 
-        pnlOpciones.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Opciones:", 0, 0, new java.awt.Font("Arial", 1, 14))); // NOI18N
+        pnlOpciones.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Opciones:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
         pnlOpciones.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
 
         txtfOpt1.setEditable(false);
@@ -437,6 +386,7 @@ public class FrmVerReactivo extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
 }

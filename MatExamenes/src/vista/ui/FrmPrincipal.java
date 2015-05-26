@@ -21,10 +21,14 @@ package vista.ui;
 
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -44,7 +48,7 @@ import vista.interfaz.InterfaceVista;
 
 /**
  * JFrame que mostrará la interfaz gráfica de la interfaz Principal
- * 
+ *
  * @author Jesus Donaldo Osornio Hernández
  * @version 1 18 Mayo 2015
  */
@@ -273,16 +277,16 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     // End of variables declaration//GEN-END:variables
 
     /**
-     * Crea un objeto FrmPrincipal e inicializa sus atributos,
-     * agrega los listeners necesarios, asocia cada controlador de la vista a sus
-     * vistas correspondientes y se crea una relación de padre-hijo con este frame
+     * Crea un objeto FrmPrincipal e inicializa sus atributos, agrega los
+     * listeners necesarios, asocia cada controlador de la vista a sus vistas
+     * correspondientes y se crea una relación de padre-hijo con este frame
      */
     public FrmPrincipal() {
         initComponents();
         //Inicializa todo en este frame
         init();
         setTitle("MatExamenes");
-
+        agregarIconos();
         //Agregar los listeners para los menus
         miRegistrarTema.addActionListener(this);
         miConsultarTemas.addActionListener(this);
@@ -303,19 +307,29 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         miConsultarExamenes.addActionListener(this);
         miAsignarExamenes.addActionListener(this);
         miContestarExamenes.addActionListener(this);
-        
+
         miConsultarCalificaciones.addActionListener(this);
         miGenerarEstadisticas.addActionListener(this);
     }
 
     /**
      * Para almacenar en la vista el objeto UsuarioDTO del usuario actual
-     * 
+     *
      * @param usuarioActual el objeto UsuarioDTO que representa al usuario que
      * inició sesión en el sistema
      */
     public void setUsuarioActual(UsuarioDTO usuarioActual) {
         this.usuarioActual = usuarioActual;
+    }
+
+    /**
+     * Agrega los iconos a la interfaz gráfica y a la barra de tareas.
+     */
+    private void agregarIconos() {
+        List<Image> icons = new ArrayList<>();
+        icons.add(new ImageIcon(getClass().getResource("/recursos/icono16.png")).getImage());
+        icons.add(new ImageIcon(getClass().getResource("/recursos/icono32.png")).getImage());
+        this.setIconImages(icons);
     }
 
     /**
@@ -331,7 +345,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         initControladores();
         agregarPadres();
         agregarAPrincipal();
-        
+
         addWindowListener(this);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
@@ -401,9 +415,9 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     }
 
     /**
-     * Este método es utilizado para crear controladores de la vista y asignarlos
-     * a diferentes vistas que compartan el mismo caso de uso.
-     * 
+     * Este método es utilizado para crear controladores de la vista y
+     * asignarlos a diferentes vistas que compartan el mismo caso de uso.
+     *
      */
     private void initControladores() {
         //Crear controladores vistas
@@ -491,9 +505,9 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     }
 
     /**
-     * Este método sirve para agregar todas las vistas creadas al Frame Principal
-     * por medio de un identificador que servirá para mostrar las vistas más
-     * adelante.
+     * Este método sirve para agregar todas las vistas creadas al Frame
+     * Principal por medio de un identificador que servirá para mostrar las
+     * vistas más adelante.
      */
     private void agregarAPrincipal() {
         //Agregar un panel y su identificador.
@@ -773,9 +787,9 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
 
     /**
      * Este método sirve para acomodar el Principal en base a los permisos que
-     * tiene un usuario de tipo Administrador para realizar funciones en el sistema.
-     * Este método es llamado desde el Login para preparar al sistema según las
-     * funciones del usuario.
+     * tiene un usuario de tipo Administrador para realizar funciones en el
+     * sistema. Este método es llamado desde el Login para preparar al sistema
+     * según las funciones del usuario.
      */
     public void setVistaAdmin() {
         mContestarExamenes.setVisible(false);
@@ -803,7 +817,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
      * intermediario de comunicación entre las vistas, ya que una vista puede
      * decidir la siguiente vista a mostrar junto con información que le pueda
      * enviar a través de este método.
-     * 
+     *
      * @param entidad el objeto que se desea enviar a la vista destino,
      * generalmente un dto.
      * @param vista el identificador de la vista la cual se quiere mostrar
@@ -820,10 +834,11 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     }
 
     /**
-     * Este método sirve para mostrar una vista desde otra vista en el Principal.
-     * Este método es utilizado como intermediario de comunicación entre las vistas,
-     * ya que una vista puede decidir la siguiente vista a mostrar.
-     * 
+     * Este método sirve para mostrar una vista desde otra vista en el
+     * Principal. Este método es utilizado como intermediario de comunicación
+     * entre las vistas, ya que una vista puede decidir la siguiente vista a
+     * mostrar.
+     *
      * @param vista el identificador de la vista la cual se quiere mostrar
      */
     @Override
@@ -841,7 +856,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     }
 
     /**
-     * 
+     *
      * @return el objeto UsuarioDTO que representa al usuario que inició sesión
      * en el sistema
      */
@@ -856,9 +871,9 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     }
 
     /**
-     * Este método es llamado cuando se selecciona cualquiera de los menús y 
+     * Este método es llamado cuando se selecciona cualquiera de los menús y
      * sirve para mostrar la vista en base al menú seleccionado.
-     * 
+     *
      * @param e el objeto ActionEvent generado por el evento
      */
     @Override
@@ -867,22 +882,22 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         //Obtener la vista actual
         JPanel actual = getVistaActual();
         boolean ok = true;
-        
-        String nombreMenu = ((JMenuItem)e.getSource()).getName();
-        
+
+        String nombreMenu = ((JMenuItem) e.getSource()).getName();
+
         //Si la vista actual no tiene que ver con Registrar, Modificar, Generar
         //o Asignar simplemente se muestra la vista, en caso contrario se pide
         //la confirmación a la vista actual para cambiar de panel.
-        if((actual.getName().startsWith("Registrar") || actual.getName()
+        if ((actual.getName().startsWith("Registrar") || actual.getName()
                 .startsWith("Modificar") || actual.getName().startsWith("Generar")
-                || actual.getName().startsWith("Asignar")) && 
-                !actual.getName().equals(nombreMenu)) {
-            ok = ((InterfaceVista)actual).confirmarCambio();
+                || actual.getName().startsWith("Asignar"))
+                && !actual.getName().equals(nombreMenu)) {
+            ok = ((InterfaceVista) actual).confirmarCambio();
         }
-        
+
         //Si todo es correcto limpia la vista actual y muestra la nueva vista
-        if(ok && !actual.getName().equals(nombreMenu)) {
-            ((InterfaceVista)actual).limpiar();
+        if (ok && !actual.getName().equals(nombreMenu)) {
+            ((InterfaceVista) actual).limpiar();
             manejadorVista.show(vistas, nombreMenu);
         }
     }
@@ -893,7 +908,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
 
     /**
      * Para cuando se cierra la ventana pedir confirmación.
-     * 
+     *
      * @param e objeto generado por el evento
      */
     @Override
@@ -901,15 +916,15 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         int sel = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
                 + "deseas salir? todos los cambios no guardados se perderán",
                 "Advertencia", JOptionPane.YES_NO_OPTION);
-        
-        if(sel == 0) {
+
+        if (sel == 0) {
             System.exit(0);
         }
     }
 
     /**
      * Para cuando se cierra la ventana pedir confirmación.
-     * 
+     *
      * @param e objeto generado por el evento
      */
     @Override
@@ -917,8 +932,8 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         int sel = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
                 + "deseas salir? todos los cambios no guardados se perderán",
                 "Advertencia", JOptionPane.YES_NO_OPTION);
-        
-        if(sel == 0) {
+
+        if (sel == 0) {
             System.exit(0);
         }
     }

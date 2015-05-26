@@ -351,7 +351,7 @@ public class VistaModificarCurso extends javax.swing.JPanel
         int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
                 + "desea cancelar la operación?\nTodos los cambios no "
                 + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
-        if (ok == 0) {
+        if (ok == JOptionPane.YES_OPTION) {
             padre.mostrarVista(Vista.ConsultarCursos);
             limpiar();
         }
@@ -385,7 +385,7 @@ public class VistaModificarCurso extends javax.swing.JPanel
         int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
                 + "quiere cambiar de pantalla?\nTodos los cambios no "
                 + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
-        if (ok == 0) {
+        if (ok == JOptionPane.YES_OPTION) {
             cambiar = true;
         }
         return cambiar;

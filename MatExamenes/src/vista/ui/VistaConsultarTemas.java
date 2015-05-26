@@ -347,7 +347,7 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         if (lstTemas.getSelectedIndex() != -1) {
             int banEliminar = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
                     + "desea eliminar el tema?", "Eliminación", JOptionPane.YES_NO_OPTION);
-            if (banEliminar == 0) {
+            if (banEliminar == JOptionPane.YES_OPTION) {
                 ok = controlVista.eliminarTema(lstTemas.getSelectedIndex());
                 if (ok) {
                     JOptionPane.showMessageDialog(this, "Tema eliminado.");

@@ -503,7 +503,14 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
 
     @Override
     public boolean confirmarCambio() {
-        return true;
+        boolean cambiar = false;
+        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                + "desea cambiar de pantalla?\nTodos los cambios no "
+                + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
+        if (ok == JOptionPane.YES_OPTION) {
+            cambiar = true;
+        }
+        return cambiar;
     }
 
     @Override
