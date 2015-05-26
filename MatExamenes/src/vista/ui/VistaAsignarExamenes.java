@@ -64,6 +64,195 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
      */
     private InterfaceVista padre;
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Para regresar a la pestaña de grupos.
+    */
+    private javax.swing.JButton btnAnteriorAsignaciones;
+    /**
+    * Botón para regresar a la pestaña de exámenes.
+    */
+    private javax.swing.JButton btnAnteriorGrupos;
+    /**
+    * Botón para regresar a la pestaña de asignaciones.
+    */
+    private javax.swing.JButton btnAnteriorTiempo;
+    /**
+    * Botón para asignar una clave a alumnos seleccionados.
+    */
+    private javax.swing.JButton btnAsignarClave;
+    /**
+    * Botón para cancelar la asignación de exámenes.
+    */
+    private javax.swing.JButton btnCancelar;
+    /**
+    * Botón para consultar los exámenes del curso seleccionado.
+    */
+    private javax.swing.JButton btnConsultarExamenes;
+    /**
+    * Botón para deseleccionar todas las filas de la tabla tblAlumnos.
+    */
+    private javax.swing.JButton btnDeseleccionarAlumnos;
+    /**
+    * Botón para deseleccionar todas las filas de la tabla tblAsignaciones.
+    */
+    private javax.swing.JButton btnDeseleccionarAsignaciones;
+    /**
+    * Botón para guardar la lista exámenes asignados.
+    */
+    private javax.swing.JButton btnGuardar;
+    /**
+    * Botón para remover asignaciones seleccionadas.
+    */
+    private javax.swing.JButton btnRemoverAsignacion;
+    /**
+    * Botón para seleccionar todas las filas de la tabla tblAlumnos.
+    */
+    private javax.swing.JButton btnSeleccionarAlumnos;
+    /**
+    * Botón para seleccionar todas las filas de la tabla tblAsignaciones.
+    */
+    private javax.swing.JButton btnSeleccionarAsignaciones;
+    /**
+    * Botón para pasar a la pestaña de tiempo.
+    */
+    private javax.swing.JButton btnSiguienteAsignaciones;
+    /**
+    * Botón para pasar a la pestaña de grupos.
+    */
+    private javax.swing.JButton btnSiguienteExamenes;
+    /**
+    * Botón para pasar a la pestaña de asignaciones.
+    */
+    private javax.swing.JButton btnSiguienteGrupos;
+    /**
+    * ComboBox para mostrar los cursos.
+    */
+    private javax.swing.JComboBox cbCursos;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    /**
+    * Se utiliza para seleccionar el tiempo límite del examen.
+    */
+    private javax.swing.JSpinner jsTiempo;
+    /**
+    * Label para los alumnos.
+    */
+    private javax.swing.JLabel lblAlumnos;
+    /**
+    * Label de la tabla de alumnos de la asignación final.
+    */
+    private javax.swing.JLabel lblAlumnosFinal;
+    /**
+    * Label para las asignaciones.
+    */
+    private javax.swing.JLabel lblAsignaciones;
+    /**
+    * Label para las claves.
+    */
+    private javax.swing.JLabel lblClaves;
+    /**
+    * Label para el campo de texto de curso de la asignación final.
+    */
+    private javax.swing.JLabel lblCursoFinal;
+    /**
+    * Label de la lista de cursos.
+    */
+    private javax.swing.JLabel lblCursos;
+    /**
+    * Label para el campo de texto de examen de la asignación final.
+    */
+    private javax.swing.JLabel lblExamenFinal;
+    /**
+    * Label para la tabla de exámenes.
+    */
+    private javax.swing.JLabel lblExamenes;
+    /**
+    * Label para el campo de texto del grupo de la asignación final.
+    */
+    private javax.swing.JLabel lblGrupoFinal;
+    /**
+    * Label para la lista de grupos.
+    */
+    private javax.swing.JLabel lblGrupos;
+    private javax.swing.JLabel lblMinutos;
+    /**
+    * Label para la selección del tiempo límite del examen.
+    */
+    private javax.swing.JLabel lblTiempo;
+    /**
+    * Label para mostrar el título de la interfaz gráfica.
+    */
+    private javax.swing.JLabel lblTitulo;
+    /**
+    * Lista para mostrar las claves del examen seleccionado.
+    */
+    private javax.swing.JList lstClaves;
+    /**
+    * Lista para mostrar los grupos.
+    */
+    private javax.swing.JList lstGrupos;
+    /**
+    * Panel para agrupar los componentes utilizados para mostrar las claves,
+    * los alumnos y las asignaciones.
+    */
+    private javax.swing.JPanel pnlAsignaciones;
+    /**
+    * Panel para agrupar los componentes utilizados para mostrar todos los datos
+    * de la asignación final.
+    */
+    private javax.swing.JPanel pnlDatosAsignacion;
+    /**
+    * Panel para agrupar los componentes utilizados para mostrar cursos y exámenes.
+    */
+    private javax.swing.JPanel pnlExamenes;
+    /**
+    * Panel para agrupar los componentes utilizados para mostrar los grupos.
+    */
+    private javax.swing.JPanel pnlGrupos;
+    /**
+    * Panel para agrupar todos los componentes utilizados para la selección del
+    * tiempo final y los datos finales de la asignación.
+    */
+    private javax.swing.JPanel pnlTiempo;
+    /**
+    * Tabla para mostrar los datos de los alumnos del grupo seleccionado.
+    */
+    private javax.swing.JTable tblAlumnos;
+    /**
+    * Tabla para mostrar los datos de los alumnos seleccionado y su clave asignada.
+    */
+    private javax.swing.JTable tblAsignaciones;
+    /**
+    * Tabla para mostrar los alumnos y su clave asignada de la asignación final.
+    */
+    private javax.swing.JTable tblAsignacionesFinal;
+    /**
+    * Tabla para mostrar los datos de los exámenes.
+    */
+    private javax.swing.JTable tblExamenes;
+    /**
+    * Panel de pestañas para agrupar los páneles utilizados para asignar exámenes.
+    */
+    private javax.swing.JTabbedPane tbpAsignarExamenes;
+    /**
+    * Campo de texto para mostrar el curso de la asignación final.
+    */
+    private javax.swing.JTextField txtfCurso;
+    /**
+    * Campo de texto para mostrar el título del examen de la asignación final.
+    */
+    private javax.swing.JTextField txtfExamen;
+    /**
+    * Campo de texto para mostrar el grupo de la asignación final.
+    */
+    private javax.swing.JTextField txtfGrupo;
+    // End of variables declaration//GEN-END:variables
+
     /**
      * Crea un objeto VistaAsignarExamenes e inicializa sus atributos.
      */
@@ -1427,195 +1616,6 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         }
     }//GEN-LAST:event_btnDeseleccionarAsignacionesActionPerformed
 
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-    * Para regresar a la pestaña de grupos.
-    */
-    private javax.swing.JButton btnAnteriorAsignaciones;
-    /**
-    * Botón para regresar a la pestaña de exámenes.
-    */
-    private javax.swing.JButton btnAnteriorGrupos;
-    /**
-    * Botón para regresar a la pestaña de asignaciones.
-    */
-    private javax.swing.JButton btnAnteriorTiempo;
-    /**
-    * Botón para asignar una clave a alumnos seleccionados.
-    */
-    private javax.swing.JButton btnAsignarClave;
-    /**
-    * Botón para cancelar la asignación de exámenes.
-    */
-    private javax.swing.JButton btnCancelar;
-    /**
-    * Botón para consultar los exámenes del curso seleccionado.
-    */
-    private javax.swing.JButton btnConsultarExamenes;
-    /**
-    * Botón para deseleccionar todas las filas de la tabla tblAlumnos.
-    */
-    private javax.swing.JButton btnDeseleccionarAlumnos;
-    /**
-    * Botón para deseleccionar todas las filas de la tabla tblAsignaciones.
-    */
-    private javax.swing.JButton btnDeseleccionarAsignaciones;
-    /**
-    * Botón para guardar la lista exámenes asignados.
-    */
-    private javax.swing.JButton btnGuardar;
-    /**
-    * Botón para remover asignaciones seleccionadas.
-    */
-    private javax.swing.JButton btnRemoverAsignacion;
-    /**
-    * Botón para seleccionar todas las filas de la tabla tblAlumnos.
-    */
-    private javax.swing.JButton btnSeleccionarAlumnos;
-    /**
-    * Botón para seleccionar todas las filas de la tabla tblAsignaciones.
-    */
-    private javax.swing.JButton btnSeleccionarAsignaciones;
-    /**
-    * Botón para pasar a la pestaña de tiempo.
-    */
-    private javax.swing.JButton btnSiguienteAsignaciones;
-    /**
-    * Botón para pasar a la pestaña de grupos.
-    */
-    private javax.swing.JButton btnSiguienteExamenes;
-    /**
-    * Botón para pasar a la pestaña de asignaciones.
-    */
-    private javax.swing.JButton btnSiguienteGrupos;
-    /**
-    * ComboBox para mostrar los cursos.
-    */
-    private javax.swing.JComboBox cbCursos;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
-    /**
-    * Se utiliza para seleccionar el tiempo límite del examen.
-    */
-    private javax.swing.JSpinner jsTiempo;
-    /**
-    * Label para los alumnos.
-    */
-    private javax.swing.JLabel lblAlumnos;
-    /**
-    * Label de la tabla de alumnos de la asignación final.
-    */
-    private javax.swing.JLabel lblAlumnosFinal;
-    /**
-    * Label para las asignaciones.
-    */
-    private javax.swing.JLabel lblAsignaciones;
-    /**
-    * Label para las claves.
-    */
-    private javax.swing.JLabel lblClaves;
-    /**
-    * Label para el campo de texto de curso de la asignación final.
-    */
-    private javax.swing.JLabel lblCursoFinal;
-    /**
-    * Label de la lista de cursos.
-    */
-    private javax.swing.JLabel lblCursos;
-    /**
-    * Label para el campo de texto de examen de la asignación final.
-    */
-    private javax.swing.JLabel lblExamenFinal;
-    /**
-    * Label para la tabla de exámenes.
-    */
-    private javax.swing.JLabel lblExamenes;
-    /**
-    * Label para el campo de texto del grupo de la asignación final.
-    */
-    private javax.swing.JLabel lblGrupoFinal;
-    /**
-    * Label para la lista de grupos.
-    */
-    private javax.swing.JLabel lblGrupos;
-    private javax.swing.JLabel lblMinutos;
-    /**
-    * Label para la selección del tiempo límite del examen.
-    */
-    private javax.swing.JLabel lblTiempo;
-    /**
-    * Label para mostrar el título de la interfaz gráfica.
-    */
-    private javax.swing.JLabel lblTitulo;
-    /**
-    * Lista para mostrar las claves del examen seleccionado.
-    */
-    private javax.swing.JList lstClaves;
-    /**
-    * Lista para mostrar los grupos.
-    */
-    private javax.swing.JList lstGrupos;
-    /**
-    * Panel para agrupar los componentes utilizados para mostrar las claves,
-    * los alumnos y las asignaciones.
-    */
-    private javax.swing.JPanel pnlAsignaciones;
-    /**
-    * Panel para agrupar los componentes utilizados para mostrar todos los datos
-    * de la asignación final.
-    */
-    private javax.swing.JPanel pnlDatosAsignacion;
-    /**
-    * Panel para agrupar los componentes utilizados para mostrar cursos y exámenes.
-    */
-    private javax.swing.JPanel pnlExamenes;
-    /**
-    * Panel para agrupar los componentes utilizados para mostrar los grupos.
-    */
-    private javax.swing.JPanel pnlGrupos;
-    /**
-    * Panel para agrupar todos los componentes utilizados para la selección del
-    * tiempo final y los datos finales de la asignación.
-    */
-    private javax.swing.JPanel pnlTiempo;
-    /**
-    * Tabla para mostrar los datos de los alumnos del grupo seleccionado.
-    */
-    private javax.swing.JTable tblAlumnos;
-    /**
-    * Tabla para mostrar los datos de los alumnos seleccionado y su clave asignada.
-    */
-    private javax.swing.JTable tblAsignaciones;
-    /**
-    * Tabla para mostrar los alumnos y su clave asignada de la asignación final.
-    */
-    private javax.swing.JTable tblAsignacionesFinal;
-    /**
-    * Tabla para mostrar los datos de los exámenes.
-    */
-    private javax.swing.JTable tblExamenes;
-    /**
-    * Panel de pestañas para agrupar los páneles utilizados para asignar exámenes.
-    */
-    private javax.swing.JTabbedPane tbpAsignarExamenes;
-    /**
-    * Campo de texto para mostrar el curso de la asignación final.
-    */
-    private javax.swing.JTextField txtfCurso;
-    /**
-    * Campo de texto para mostrar el título del examen de la asignación final.
-    */
-    private javax.swing.JTextField txtfExamen;
-    /**
-    * Campo de texto para mostrar el grupo de la asignación final.
-    */
-    private javax.swing.JTextField txtfGrupo;
-    // End of variables declaration//GEN-END:variables
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {

@@ -59,6 +59,33 @@ public class VistaModificarCurso extends javax.swing.JPanel
      */
     private InterfaceVista padre;
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Botón para cancelar la modificación de curso.
+    */
+    private javax.swing.JButton btnCancelar;
+    /**
+    * Botón para guardar las modificaciones del curso.
+    */
+    private javax.swing.JButton btnModificar;
+    /**
+    * Label de estado del campo de texto del nombre del curso.
+    */
+    private javax.swing.JLabel lblEstadoNombreCurso;
+    /**
+    * Label del nombre del curso.
+    */
+    private javax.swing.JLabel lblNombreCurso;
+    /**
+    * Label para mostrar el título de la interfaz gráfica.
+    */
+    private javax.swing.JLabel lblTitulo;
+    /**
+    * Campo de texto del nombre del curso.
+    */
+    private javax.swing.JTextField txtfNombreCurso;
+    // End of variables declaration//GEN-END:variables
+
     /**
      * Almacena el icono del estado correcto.
      */
@@ -330,33 +357,6 @@ public class VistaModificarCurso extends javax.swing.JPanel
         }
     }//GEN-LAST:event_pasarControlVistaConsulta
 
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-    * Botón para cancelar la modificación de curso.
-    */
-    private javax.swing.JButton btnCancelar;
-    /**
-    * Botón para guardar las modificaciones del curso.
-    */
-    private javax.swing.JButton btnModificar;
-    /**
-    * Label de estado del campo de texto del nombre del curso.
-    */
-    private javax.swing.JLabel lblEstadoNombreCurso;
-    /**
-    * Label del nombre del curso.
-    */
-    private javax.swing.JLabel lblNombreCurso;
-    /**
-    * Label para mostrar el título de la interfaz gráfica.
-    */
-    private javax.swing.JLabel lblTitulo;
-    /**
-    * Campo de texto del nombre del curso.
-    */
-    private javax.swing.JTextField txtfNombreCurso;
-    // End of variables declaration//GEN-END:variables
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {

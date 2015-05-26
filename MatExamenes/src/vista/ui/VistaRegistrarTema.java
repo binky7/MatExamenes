@@ -64,6 +64,41 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
      */
     private InterfaceVista padre;
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Botón para cancelar el registro de temas.
+    */
+    private javax.swing.JButton btnCancelar;
+    /**
+    * ComboBox para los cursos.
+    */
+    private javax.swing.JComboBox cbCursos;
+    /**
+    * Botón para guardar el tema.
+    */
+    private javax.swing.JButton jButton1;
+    /**
+    * Label para los cursos.
+    */
+    private javax.swing.JLabel lblCursos;
+    /**
+    * Label de estado para el campo de texto del nombre del tema.
+    */
+    private javax.swing.JLabel lblEstadoNombreTema;
+    /**
+    * Label para el nombre del tema.
+    */
+    private javax.swing.JLabel lblNombreTema;
+    /**
+    * Label para mostrar el título de la interfaz gráfica.
+    */
+    private javax.swing.JLabel lblTitulo;
+    /**
+    * Campo de texto para el nombre del tema.
+    */
+    private javax.swing.JTextField txtfNombreTema;
+    // End of variables declaration//GEN-END:variables
+
     /**
      * Almacena el icono del estado correcto.
      */
@@ -364,41 +399,6 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
         }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-    * Botón para cancelar el registro de temas.
-    */
-    private javax.swing.JButton btnCancelar;
-    /**
-    * ComboBox para los cursos.
-    */
-    private javax.swing.JComboBox cbCursos;
-    /**
-    * Botón para guardar el tema.
-    */
-    private javax.swing.JButton jButton1;
-    /**
-    * Label para los cursos.
-    */
-    private javax.swing.JLabel lblCursos;
-    /**
-    * Label de estado para el campo de texto del nombre del tema.
-    */
-    private javax.swing.JLabel lblEstadoNombreTema;
-    /**
-    * Label para el nombre del tema.
-    */
-    private javax.swing.JLabel lblNombreTema;
-    /**
-    * Label para mostrar el título de la interfaz gráfica.
-    */
-    private javax.swing.JLabel lblTitulo;
-    /**
-    * Campo de texto para el nombre del tema.
-    */
-    private javax.swing.JTextField txtfNombreTema;
-    // End of variables declaration//GEN-END:variables
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {

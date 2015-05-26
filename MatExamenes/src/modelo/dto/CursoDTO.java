@@ -45,12 +45,10 @@ public class CursoDTO implements Serializable, Comparable<CursoDTO> {
      * El id del curso.
      */
     private int id;
-
     /**
      * El nombre del curso.
      */
     private String nombre;
-
     /**
      * La lista de temas del curso.
      */
@@ -60,14 +58,14 @@ public class CursoDTO implements Serializable, Comparable<CursoDTO> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true, length = 11)
     /**
-     * @return el id del curso.
+     * @return El id del curso.
      */
     public int getId() {
         return id;
     }
 
     /**
-     * @param id el id del curso a guardar.
+     * @param id El id a guardar.
      */
     public void setId(int id) {
         this.id = id;
@@ -75,14 +73,14 @@ public class CursoDTO implements Serializable, Comparable<CursoDTO> {
 
     @Column(name = "nombre", nullable = false, unique = true, length = 50)
     /**
-     * @return el nombre del curso.
+     * @return El nombre del curso.
      */
     public String getNombre() {
         return nombre;
     }
 
     /**
-     * @param nombre el nombre del curso a guardar.
+     * @param nombre El nombre a guardar.
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -95,25 +93,25 @@ public class CursoDTO implements Serializable, Comparable<CursoDTO> {
             inverseJoinColumns = @JoinColumn(name = "idTema")
     )
     /**
-     * @return la lista de temas del curso.
+     * @return La lista de temas del curso.
      */
     public List<TemaDTO> getTemas() {
         return temas;
     }
 
     /**
-     * @param temas la lista de temas del curso a guardar.
+     * @param temas La lista de temas del curso a guardar.
      */
     public void setTemas(List<TemaDTO> temas) {
         this.temas = temas;
     }
 
     /**
-     * Sobreescribir el método equals para poder ser utilizado al ordenar con
-     * Collections.
+     * Sobreescribir el método hashCode para poder ser utilizado al ordenar con
+     * Collections
      *
-     * @param o el objeto a comparar con este
-     * @return true si el objeto es igual a éste, false si no.
+     * @param o
+     * @return el hashCode de este objeto
      */
     @Override
     public boolean equals(Object o) {
@@ -138,12 +136,7 @@ public class CursoDTO implements Serializable, Comparable<CursoDTO> {
 
     /**
      * Método necesario para poder utilizar la búsqueda binaria de Collections,
-     * se debe regresar un valor entero para poder ser ordenado, Debe involucrar
-     * los mismos atributos que aparezcan en equals y hashCode, y estos
-     * atributos deben identificar a la entidad como única, ademas de que sea un
-     * atributo fácilmente obtenible de la vista, por eso se escogió el nombre
-     * del tema en vez del id, ya que en la vista se tendrán los nombres, no los
-     * ids, de todas formas el nombre también identifica a la entidad
+     * se debe regresar un valor entero para poder ser ordenado.
      *
      * @param o
      * @return

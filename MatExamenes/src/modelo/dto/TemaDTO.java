@@ -35,12 +35,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tema")
 public class TemaDTO implements Serializable, Comparable<TemaDTO> {
-
+    
     /**
      * El id del tema.
      */
     private int id;
-
     /**
      * El nombre del tema.
      */
@@ -57,7 +56,7 @@ public class TemaDTO implements Serializable, Comparable<TemaDTO> {
     }
 
     /**
-     * @param id el id del tema a guardar.
+     * @param id El id a guardar.
      */
     public void setId(int id) {
         this.id = id;
@@ -65,58 +64,56 @@ public class TemaDTO implements Serializable, Comparable<TemaDTO> {
 
     @Column(name = "nombre", nullable = false, unique = true, length = 150)
     /**
-     * @return el nombre del tema.
+     * @return El nombre del tema.
      */
     public String getNombre() {
         return nombre;
     }
 
     /**
-     * @param nombre el nombre del tema a guardar.
+     * @param nombre El nombre a guardar.
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    
     /**
      * Sobreescribir el método equals para poder ser utilizado al ordenar con
-     * Collections.
-     *
+     * Collections
+     * 
      * @param o el objeto a comparar con este
-     * @return true si el objeto es igual a éste, false si no.
+     * @return true si el objeto es igual a éste, false si no
      */
-    @Override
+     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof TemaDTO)) {
+        if (!(o instanceof TemaDTO))
             return false;
-        }
         TemaDTO t = (TemaDTO) o;
-
+        
         return t.nombre.equals(nombre);
     }
 
     /**
      * Sobreescribir el método hashCode para poder ser utilizado al ordenar con
      * Collections
-     *
+     * 
      * @return el hashCode de este objeto
      */
     @Override
     public int hashCode() {
         return 37 * nombre.hashCode();
     }
-
+    
     /**
      * Método necesario para poder utilizar la búsqueda binaria de Collections,
      * se debe regresar un valor entero para poder ser ordenado, Debe involucrar
      * los mismos atributos que aparezcan en equals y hashCode, y estos
-     * atributos deben identificar a la entidad como única, ademas de que sea un
-     * atributo fácilmente obtenible de la vista, por eso se escogió el nombre
-     * del tema en vez del id, ya que en la vista se tendrán los nombres, no los
-     * ids, de todas formas el nombre también identifica a la entidad
-     *
+     * atributos deben identificar a la entidad como única, ademas de que sea
+     * un atributo fácilmente obtenible de la vista, por eso se escogió el
+     * nombre del tema en vez del id, ya que en la vista se tendrán los nombres,
+     * no los ids, de todas formas el nombre también identifica a la entidad
      * @param o
-     * @return
+     * @return 
      */
     @Override
     public int compareTo(TemaDTO o) {

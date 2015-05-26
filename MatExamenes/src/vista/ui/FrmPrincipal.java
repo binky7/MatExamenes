@@ -778,7 +778,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
      * funciones del usuario.
      */
     public void setVistaAdmin() {
-        //no se oculta ninguna opcion del menu 
+        mContestarExamenes.setVisible(false);
     }
 
     /**

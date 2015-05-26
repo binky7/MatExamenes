@@ -50,6 +50,30 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
      */
     private InterfaceVista padre;
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Botón para cancelar la consulta de cursos.
+    */
+    private javax.swing.JButton btnCancelar;
+    /**
+    * Botón para eliminar un curso.
+    */
+    private javax.swing.JButton btnEliminar;
+    /**
+    * Botón para modificar un curso.
+    */
+    private javax.swing.JButton btnModificar;
+    private javax.swing.JScrollPane jScrollPane3;
+    /**
+    * Label para mostrar el título de la interfaz gráfica.
+    */
+    private javax.swing.JLabel lblTitulo;
+    /**
+    * Lista para mostrar los cursos.
+    */
+    private javax.swing.JList lstCursos;
+    // End of variables declaration//GEN-END:variables
+
     /**
      * Crea un objeto VistaConsultarCursos e inicializa sus atributos.
      */
@@ -177,37 +201,36 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(276, 276, 276)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(286, Short.MAX_VALUE))
+                        .addGap(10, 10, 10)
+                        .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(661, 661, 661)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(235, 235, 235)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(10, 10, 10))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(lblTitulo)
                 .addGap(45, 45, 45)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
-                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(66, 66, 66))
+                .addGap(52, 52, 52)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -228,7 +251,8 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
                 JOptionPane.showMessageDialog(this, "Ha ocurrido un error", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un curso.");
+            JOptionPane.showMessageDialog(this, "Seleccione un curso.", 
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_pasarControlVistaModificar
 
@@ -250,11 +274,13 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
                     ((DefaultListModel) lstCursos.getModel()).remove(indexCurso);
                     JOptionPane.showMessageDialog(this, "Curso eliminado.");
                 } else {
-                    JOptionPane.showMessageDialog(this, "No se pudo eliminar el curso.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "No se pudo eliminar el "
+                            + "curso.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un curso");
+            JOptionPane.showMessageDialog(this, "Seleccione un curso", 
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_eliminarCurso
 
@@ -269,30 +295,6 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
         limpiar();
     }//GEN-LAST:event_cancelarConsultarCursos
 
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-    * Botón para cancelar la consulta de cursos.
-    */
-    private javax.swing.JButton btnCancelar;
-    /**
-    * Botón para eliminar un curso.
-    */
-    private javax.swing.JButton btnEliminar;
-    /**
-    * Botón para modificar un curso.
-    */
-    private javax.swing.JButton btnModificar;
-    private javax.swing.JScrollPane jScrollPane3;
-    /**
-    * Label para mostrar el título de la interfaz gráfica.
-    */
-    private javax.swing.JLabel lblTitulo;
-    /**
-    * Lista para mostrar los cursos.
-    */
-    private javax.swing.JList lstCursos;
-    // End of variables declaration//GEN-END:variables
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
@@ -342,7 +344,8 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
     public void ancestorAdded(AncestorEvent event) {
         if (!consultarCursos()) {
             limpiar();
-            JOptionPane.showMessageDialog(this, "No hay cursos registrados.");
+            JOptionPane.showMessageDialog(this, "No hay cursos registrados.", 
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
             padre.mostrarVista(Vista.HOME);
         }
     }

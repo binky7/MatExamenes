@@ -60,6 +60,34 @@ public class VistaRegistrarCurso extends javax.swing.JPanel
      */
     private InterfaceVista padre;
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Botón para cancelar Registrar Curso
+    */
+    private javax.swing.JButton btnCancelar;
+    /**
+    * Botón para guadar el curso.
+    */
+    private javax.swing.JButton btnGuardar;
+    /**
+    * Label para mostrar el estado del campo de texto del
+    * nombre del curso.
+    */
+    private javax.swing.JLabel lblEstadoNombreCurso;
+    /**
+    * Label para el nombre del curso.
+    */
+    private javax.swing.JLabel lblNombreCurso;
+    /**
+    * Label para mostrar el título de la interfaz gráfica.
+    */
+    private javax.swing.JLabel lblTitulo;
+    /**
+    * Campo de texto para el nombre del curso.
+    */
+    private javax.swing.JTextField txtfNombreCurso;
+    // End of variables declaration//GEN-END:variables
+
     /**
      * Almacena el icono del estado correcto.
      */
@@ -305,34 +333,6 @@ public class VistaRegistrarCurso extends javax.swing.JPanel
         }
     }//GEN-LAST:event_cancelarRegistrarCurso
 
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-    * Botón para cancelar Registrar Curso
-    */
-    private javax.swing.JButton btnCancelar;
-    /**
-    * Botón para guadar el curso.
-    */
-    private javax.swing.JButton btnGuardar;
-    /**
-    * Label para mostrar el estado del campo de texto del
-    * nombre del curso.
-    */
-    private javax.swing.JLabel lblEstadoNombreCurso;
-    /**
-    * Label para el nombre del curso.
-    */
-    private javax.swing.JLabel lblNombreCurso;
-    /**
-    * Label para mostrar el título de la interfaz gráfica.
-    */
-    private javax.swing.JLabel lblTitulo;
-    /**
-    * Campo de texto para el nombre del curso.
-    */
-    private javax.swing.JTextField txtfNombreCurso;
-    // End of variables declaration//GEN-END:variables
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
