@@ -38,7 +38,7 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
     /**
      * Objeto de la interfaz gráfica principal.
      */
-    private final FrmPrincipal p;
+    private final FrmPrincipal frmPrincipal;
     /**
      * Controlador de la vista del caso de uso Login, funciona para
      * manejar la información obtenida en la vista para comunicarse con las
@@ -78,7 +78,7 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
      */
     public FrmLogin() {
         initComponents();
-        p = new FrmPrincipal();
+        frmPrincipal = new FrmPrincipal();
         cvLogin = new CVLogin();
         txtfUsuario.addKeyListener(this);
         txtpPassword.addKeyListener(this);
@@ -199,16 +199,16 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
                 JOptionPane.showMessageDialog(this, "Bienvenido "
                         + usuarioValido.getNombre(), "Login", JOptionPane.INFORMATION_MESSAGE,
                         new ImageIcon(getClass().getResource("/recursos/usuario.png")));
-                p.setUsuarioActual(usuarioValido);
+                frmPrincipal.setUsuarioActual(usuarioValido);
                 Tipo tipo = usuarioValido.getTipo();
                 if (tipo == Tipo.Admin) {
-                    p.setVistaAdmin();
+                    frmPrincipal.setVistaAdmin();
                 } else if (tipo == Tipo.Alumno) {
-                    p.setVistaAlumno();
+                    frmPrincipal.setVistaAlumno();
                 } else if (tipo == Tipo.Maestro) {
-                    p.setVistaMaestro();
+                    frmPrincipal.setVistaMaestro();
                 }
-                p.setVisible(true);
+                frmPrincipal.setVisible(true);
                 dispose();
             } else if (error == 1) {
                 JOptionPane.showMessageDialog(this, "Password Incorrecto",
