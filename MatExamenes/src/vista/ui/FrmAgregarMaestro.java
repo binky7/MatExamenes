@@ -126,7 +126,7 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
     public FrmAgregarMaestro() {
         controladorVista = new CVMantenerGrupos();
         initComponents();
-        this.setTitle("Agregar Alumnos");
+        this.setTitle("Agregar Maestro");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         listaMaestros = new ArrayList<>();
     }
