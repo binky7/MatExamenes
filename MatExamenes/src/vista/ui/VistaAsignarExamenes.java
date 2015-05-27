@@ -719,7 +719,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
                 .addContainerGap())
         );
 
-        tbpAsignarExamenes.addTab("Exámenes", pnlExamenes);
+        tbpAsignarExamenes.addTab("Seleccionar examen", pnlExamenes);
 
         lblGrupos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblGrupos.setText("Grupos");
@@ -789,7 +789,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
                 .addContainerGap())
         );
 
-        tbpAsignarExamenes.addTab("Grupos", pnlGrupos);
+        tbpAsignarExamenes.addTab("Seleccionar grupo", pnlGrupos);
 
         pnlAsignaciones.setPreferredSize(new java.awt.Dimension(775, 477));
 
@@ -1043,7 +1043,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
                 .addContainerGap())
         );
 
-        tbpAsignarExamenes.addTab("Asignaciones", pnlAsignaciones);
+        tbpAsignarExamenes.addTab("Asignar claves", pnlAsignaciones);
 
         lblTiempo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblTiempo.setText("Tiempo límite:");
@@ -1225,7 +1225,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         JFormattedTextField txt = ((JSpinner.NumberEditor) jsTiempo.getEditor()).getTextField();
         ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
 
-        tbpAsignarExamenes.addTab("Tiempo límite", pnlTiempo);
+        tbpAsignarExamenes.addTab("Definir tiempo límite", pnlTiempo);
 
         btnCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
@@ -1270,10 +1270,10 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         tbpAsignarExamenes.setEnabledAt(1, false);
         tbpAsignarExamenes.setEnabledAt(2, false);
         tbpAsignarExamenes.setEnabledAt(3, false);
-        tbpAsignarExamenes.setTitleAt(0, "<html><font color=black>Exámenes</font></html>");
-        tbpAsignarExamenes.setTitleAt(1, "<html><font color=black>Grupos</font></html>");
-        tbpAsignarExamenes.setTitleAt(2, "<html><font color=black>Asignaciones</font></html>");
-        tbpAsignarExamenes.setTitleAt(3, "<html><font color=black>Tiempo límite</font></html>");
+        tbpAsignarExamenes.setTitleAt(0, "<html><font color=black>Seleccionar examen</font></html>");
+        tbpAsignarExamenes.setTitleAt(1, "<html><font color=black>Seleccionar grupo</font></html>");
+        tbpAsignarExamenes.setTitleAt(2, "<html><font color=black>Asignar claves</font></html>");
+        tbpAsignarExamenes.setTitleAt(3, "<html><font color=black>Definir tiempo límite</font></html>");
     }// </editor-fold>//GEN-END:initComponents
 
     /**

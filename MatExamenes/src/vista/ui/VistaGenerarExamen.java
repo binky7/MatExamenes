@@ -339,7 +339,7 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
         mensajeDatosIncorrectos = "";
 
         //Datos del examen
-        String titulo = txtfNombre.getText();
+        String nombre = txtfNombre.getText();
         String instrucciones = txtaInstrucciones.getText();
         Permiso opPermiso = null;
 
@@ -348,9 +348,9 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
 
         //Si el campo está vacío agregar el mensaje correspondiente y mostrar el
         //label correspondiente a un lado del campo
-        if (Validador.estaVacio(titulo)) {
+        if (Validador.estaVacio(nombre)) {
             ok = false;
-            mensajeDatosIncorrectos = "* Título del Examen\n";
+            mensajeDatosIncorrectos = "* Nombre del Examen\n";
             mostrarLabelEstado(txtfNombre, false);
         } else {
             mostrarLabelEstado(txtfNombre, true);
@@ -416,7 +416,7 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
         //Almacenar todos los datos obtenidos en el examen
         examen.setInstrucciones(instrucciones);
         examen.setPermiso(opPermiso);
-        examen.setNombre(titulo);
+        examen.setNombre(nombre);
         examen.setAutor(padre.obtenerUsuarioActual());
         examen.setFechaCreacion(new Date());
         examen.setFechaModificacion(new Date());

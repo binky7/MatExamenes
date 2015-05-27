@@ -42,22 +42,73 @@ public class FrmVerReactivo extends javax.swing.JFrame {
     private JFrame padre;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+     * Scroll pane para la redacción del reactivo
+     */
     private javax.swing.JScrollPane jScrollPane1;
+    /**
+     * Label para txtfOpt1
+     */
     private javax.swing.JLabel lblOpciones1;
+    /**
+     * Label para txtfOpt2
+     */
     private javax.swing.JLabel lblOpciones2;
+    /**
+     * Label para txtfOpt3
+     */
     private javax.swing.JLabel lblOpciones3;
+    /**
+     * Label para txtfOpt4
+     */
     private javax.swing.JLabel lblOpciones4;
+    /**
+     * Label para txtaRedaccion
+     */
     private javax.swing.JLabel lblRedaccion;
+    /**
+     * Label para respuesta
+     */
     private javax.swing.JLabel lblRespuesta;
+    /**
+     * Panel para agrupar opciones
+     */
     private javax.swing.JPanel pnlOpciones;
+    /**
+     * Radio button para la opción 1
+     */
     private javax.swing.JRadioButton rbtnOpt1;
+    /**
+     * Radio button para la opción 2
+     */
     private javax.swing.JRadioButton rbtnOpt2;
+    /**
+     * Radio button para la opción 3
+     */
     private javax.swing.JRadioButton rbtnOpt3;
+    /**
+     * Radio button para la opción 4
+     */
     private javax.swing.JRadioButton rbtnOpt4;
+    /**
+     * Área de texto para mostrar la redacción del reactivo
+     */
     private javax.swing.JTextArea txtaRedaccion;
+    /**
+     * Campo de texto para mostrar la opción 1
+     */
     private javax.swing.JTextField txtfOpt1;
+    /**
+     * Campo de texto para mostrar la opción 2
+     */
     private javax.swing.JTextField txtfOpt2;
+    /**
+     * Campo de texto para mostrar la opción 3
+     */
     private javax.swing.JTextField txtfOpt3;
+    /**
+     * Campo de texto para mostrar la opción 4
+     */
     private javax.swing.JTextField txtfOpt4;
     // End of variables declaration//GEN-END:variables
 

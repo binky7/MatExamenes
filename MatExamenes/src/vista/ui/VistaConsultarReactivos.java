@@ -589,7 +589,7 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
                         + "para realizar esta acción");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione primero un reactivo");
+            JOptionPane.showMessageDialog(this, "Seleccione un reactivo");
         }
     }//GEN-LAST:event_pasarControlVistaModificar
 

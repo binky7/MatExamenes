@@ -33,24 +33,23 @@ import vista.interfaz.InterfaceVista;
 
 /**
  * JPanel que mostrará la interfaz gráfica de Consultar Exámenes
- * 
+ *
  * @author Jesus Donaldo Osornio Hernández
  * @version 1 18 Mayo 2015
  */
 public class VistaConsultarExamenes extends javax.swing.JPanel
-implements InterfaceVista, AncestorListener {
+        implements InterfaceVista, AncestorListener {
 
-    
     /**
      * Controlador de la vista del caso de uso mantener exámenes, funciona para
-     * manejar la información obtenida en la vista para comunicarse con las capas
-     * inferiores
+     * manejar la información obtenida en la vista para comunicarse con las
+     * capas inferiores
      */
     private CVMantenerExamenes controlVista;
     /**
      * Interface de comunicación con la interfaz padre, la cuál sirve para
-     * comunicarse con ella y recibir mensajes para mostrar otras vistas.
-     * En ese caso es utilizada para comunicarse con el JFrame Principal
+     * comunicarse con ella y recibir mensajes para mostrar otras vistas. En ese
+     * caso es utilizada para comunicarse con el JFrame Principal
      */
     private InterfaceVista padre;
 
@@ -105,34 +104,35 @@ implements InterfaceVista, AncestorListener {
      */
     private javax.swing.JTextField txtfNombre;
     // End of variables declaration//GEN-END:variables
-    
+
     /**
      * Crea un objeto VistaConsultarExamenes e inicializa sus atributos
      */
     public VistaConsultarExamenes() {
         initComponents();
-        
+
         addAncestorListener(this);
     }
 
     /**
      * Almacena la interface del JFrame principal.
+     *
      * @param padre Interface para interactuar con el JFrame principal.
      */
     public void setPadre(InterfaceVista padre) {
         this.padre = padre;
     }
-    
+
     /**
      * Almacena el control de la vista
+     *
      * @param controlVista El objeto encargado de realizar comunicar la vista
      * con las capas inferiores para acceder a los datos
      */
     public void setControlador(CVMantenerExamenes controlVista) {
         this.controlVista = controlVista;
     }
-  
-    
+
     /**
      * Este método es utilizado para consultar y mostrar los cursos disponibles
      * en la base de datos, mediante la utilización del controlVista. En caso de
@@ -142,12 +142,11 @@ implements InterfaceVista, AncestorListener {
     private void consultarCursos() {
         //la lista de cursos obtenida desde la base de datos por el controlVista
         List<CursoDTO> cursos = controlVista.obtenerCursos();
-        
+
         //Si hay cursos...
-        if(cursos != null && !cursos.isEmpty()) {
+        if (cursos != null && !cursos.isEmpty()) {
             mostrarCursos(cursos);
-        }
-        else {
+        } else {
             //Si no hay mostrar un mensaje, regresar a la vista principal y
             //limpiar la vista actual
             JOptionPane.showMessageDialog(this, "No hay cursos");
@@ -155,30 +154,30 @@ implements InterfaceVista, AncestorListener {
             limpiar();
         }
     }
-    
-    
+
     /**
-     * Este método es utilizado para mostrar una lista de cursos en el componente
-     * comboBox de la vista para mostrar los cursos disponibles.
+     * Este método es utilizado para mostrar una lista de cursos en el
+     * componente comboBox de la vista para mostrar los cursos disponibles.
+     *
      * @param cursos una lista de cursos CursoDTO a ser mostrada en el comboBox
      * de la vista
      */
     private void mostrarCursos(List<CursoDTO> cursos) {
         //Para limpiar el cmbCurso de información previa
         cmbCurso.removeAllItems();
-        
+
         //Agrega una selección vacía
         cmbCurso.addItem("");
-        
+
         //Recorrer todos los elementos de la lista para mostrarlos en el comboBox
-        for(CursoDTO curso : cursos) {
+        for (CursoDTO curso : cursos) {
             cmbCurso.addItem(curso.getNombre());
         }
-        
+
         //Selecciona el combo box en la selección vacía
         cmbCurso.setSelectedIndex(0);
     }
-    
+
     /**
      * Inicializa los atributos gráficos y los coloca en su posición.
      */
@@ -404,7 +403,7 @@ implements InterfaceVista, AncestorListener {
         String nombre = txtfNombre.getText();
         //El curso seleccionado si hubiera...
         String curso = "";
-        
+
         //Parámetro para la cosulta, null si es administrador
         UsuarioDTO usuario = null;
         //Parámetro para la consulta, true si es administrador
@@ -417,20 +416,20 @@ implements InterfaceVista, AncestorListener {
             todos = false;
         }
 
-        if(!seleccionado.equals("")) {
+        if (!seleccionado.equals("")) {
             curso = seleccionado;
         }
-        
+
         if (!seleccionado.equals("") && !Validador.estaVacio(nombre)) {
 
             examenes = controlVista.obtenerExamenesPorCursoYNombre(curso, nombre,
                     todos, usuario);
-            
+
         } else if (!seleccionado.equals("") && Validador.estaVacio(nombre)) {
 
             //Solo obtener los exámenes por curso
             examenes = controlVista.obtenerExamenesPorCurso(curso, todos, usuario);
-            
+
         } else if (!Validador.estaVacio(nombre) && seleccionado.equals("")) {
 
             //Obtener exámenes por nombre
@@ -442,138 +441,152 @@ implements InterfaceVista, AncestorListener {
                     + "un curso o ingrese un nombre");
             ok = false;
         }
-        
+
         if (ok) {
             if (examenes != null && !examenes.isEmpty()) {
                 mostrarExamenes(examenes);
             } else {
-                JOptionPane.showMessageDialog(this, "No hay examenes");
-                ((DefaultTableModel)tblExamenes.getModel()).setRowCount(0);
+                JOptionPane.showMessageDialog(this, "No se encontraron resultados");
+                ((DefaultTableModel) tblExamenes.getModel()).setRowCount(0);
             }
         }
-        
+
     }//GEN-LAST:event_consultarExamenes
 
     /**
      * Este método es utilizado para mostrar una lista de exámenes en el
      * componente table de la vista para mostrar los exámenes ingresados.
-     * @param examenes una lista de examenes ExamenDTO a ser mostrada en la table
-     * de la vista
+     *
+     * @param examenes una lista de examenes ExamenDTO a ser mostrada en la
+     * table de la vista
      */
     private void mostrarExamenes(List<ExamenDTO> examenes) {
         DefaultTableModel model = (DefaultTableModel) tblExamenes.getModel();
-        
+
         model.setRowCount(0);
         //Mostrar cada reactivo, no remover, si no buscar por medio del for
-        for(ExamenDTO examen : examenes) {
+        for (ExamenDTO examen : examenes) {
             Object[] datos = new Object[5];
-            
+
             datos[0] = examen.getId();
             datos[1] = examen.getNombre();
             datos[2] = examen.getFechaCreacion();
             datos[3] = examen.getFechaModificacion();
-            if(examen.getAutor() != null) {
+            if (examen.getAutor() != null) {
                 datos[4] = examen.getAutor().getUsuario();
-            }
-            else {
+            } else {
                 datos[4] = "Sin autor";
             }
-            
+
             model.addRow(datos);
         }
     }
-   
+
     /**
      * Este método sirve para pasar el control a la Vista Modificar
      * correspondiente al mismo caso de uso al que pertence esta vista. Se manda
      * llamar al seleccionar la opción Modificar en la vista.
+     *
      * @param evt un objeto de tipo ActionEvent generado al ocurrir el evento
      */
     private void pasarControlVistaModificar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarControlVistaModificar
         //Si hay una fila seleccionada en tblExamenes
-        if(tblExamenes.getSelectedRow() != -1) {
+        if (tblExamenes.getSelectedRow() != -1) {
             int indexExamen = tblExamenes.getSelectedRow();
             //Obtener el autor del examen de la tabla
             String autorExamen = (String) tblExamenes.getValueAt(tblExamenes
                     .getSelectedRow(), 4);
-            
+
             UsuarioDTO usuarioActual = padre.obtenerUsuarioActual();
-            
+
             //Si el usuario actual es maestro y es el autor del examen o si
             //el usuario actual es administrador modificar el examen
-            if((usuarioActual.getTipo() == UsuarioDTO.Tipo.Maestro && 
-                    autorExamen.equals(usuarioActual.getUsuario())) ||
-                    (usuarioActual.getTipo() == UsuarioDTO.Tipo.Admin)) {
+            if ((usuarioActual.getTipo() == UsuarioDTO.Tipo.Maestro
+                    && autorExamen.equals(usuarioActual.getUsuario()))
+                    || (usuarioActual.getTipo() == UsuarioDTO.Tipo.Admin)) {
                 //Obtener el examen correspondiente del controlVista
                 ExamenDTO examen = controlVista
                         .obtenerExamen(indexExamen);
-                
-                if(examen != null) {
+
+                if (examen != null) {
                     //Llamar al padre para que muestre la vista Modificar Examen
                     //Enviándole el objeto examen a modificar
                     padre.mostrarVistaConEntidad(examen, Vista.ModificarExamen);
-                }
-                else {
+                } else {
                     //Este error no debería pasar, significa problemas en las
                     //capas inferiores
                     JOptionPane.showMessageDialog(this, "Ha ocurrido un error",
                             "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            }
-            else {
+            } else {
                 JOptionPane.showMessageDialog(this, "No cuenta con los permisos "
                         + "para realizar esta acción");
             }
-        }
-        else {
+        } else {
             JOptionPane.showMessageDialog(this, "Seleccione primero un examen");
         }
     }//GEN-LAST:event_pasarControlVistaModificar
 
     /**
-     * Este método elimina el examen seleccionado en la tblExamenes mediante
-     * una llamada al controlVista, pide un mensaje de confirmación antes de 
+     * Este método elimina el examen seleccionado en la tblExamenes mediante una
+     * llamada al controlVista, pide un mensaje de confirmación antes de
      * eliminar. Es llamado al seleccionar la opción de Eliminar
-     * @param evt 
+     *
+     * @param evt
      */
     private void eliminarExamen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarExamen
 
         //si se seleccionó una fila mostrar la confirmación y eliminar el examen
         //en caso afirmativo
-        if(tblExamenes.getSelectedRow() != -1) {
-            
-            int q = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                    + "desea eliminar el examen seleccionado?",
-                    "Confirmación", JOptionPane.YES_NO_OPTION);
-            if (q != 0) {
-                return;
-            }
-            
-            boolean ok = controlVista.eliminarExamen(tblExamenes
-                    .getSelectedRow());
-            
+        if (tblExamenes.getSelectedRow() != -1) {
+            //Obtener el autor del examen de la tabla
+            String autorExamen = (String) tblExamenes.getValueAt(tblExamenes
+                    .getSelectedRow(), 4);
+
+            UsuarioDTO usuarioActual = padre.obtenerUsuarioActual();
+
+            //Si el usuario actual es maestro y es el autor del examen o si
+            //el usuario actual es administrador modificar el examen
+            if ((usuarioActual.getTipo() == UsuarioDTO.Tipo.Maestro
+                    && autorExamen.equals(usuarioActual.getUsuario()))
+                    || (usuarioActual.getTipo() == UsuarioDTO.Tipo.Admin)) {
+
+                int q = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                        + "desea eliminar el examen seleccionado?",
+                        "Confirmación", JOptionPane.YES_NO_OPTION);
+                if (q != 0) {
+                    return;
+                }
+
+                boolean ok = controlVista.eliminarExamen(tblExamenes
+                        .getSelectedRow());
+
             //Si la eliminación se llevó correctamente mostrar el mensaje y
-            //eliminar la fila de la tabla
-            if(ok) {
-                JOptionPane.showMessageDialog(this, "Examen eliminado");
-                ((DefaultTableModel)tblExamenes.getModel())
-                        .removeRow(tblExamenes.getSelectedRow());
+                //eliminar la fila de la tabla
+                if (ok) {
+                    JOptionPane.showMessageDialog(this, "Examen eliminado");
+                    ((DefaultTableModel) tblExamenes.getModel())
+                            .removeRow(tblExamenes.getSelectedRow());
+                } else {
+                    //Mostrar el mensaje en caso de un error al eliminar
+                    JOptionPane.showMessageDialog(this, "No se pudo eliminar "
+                            + "el examen", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "No cuenta con los permisos "
+                        + "para realizar esta acción");
             }
-            else {
-                //Mostrar el mensaje en caso de un error al eliminar
-                JOptionPane.showMessageDialog(this, "No se pudo eliminar "
-                        + "el examen", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "Seleccione un examen");
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione primero un examen");
         }
     }//GEN-LAST:event_eliminarExamen
 
     /**
-     * Este método es llamado cuando se selecciona el botón de Cancelar,
-     * lo que hace es pedir una confirmación de la operación mediante un mensaje,
-     * en caso de que se acepte se vuelve a la vista principal.
+     * Este método es llamado cuando se selecciona el botón de Cancelar, lo que
+     * hace es pedir una confirmación de la operación mediante un mensaje, en
+     * caso de que se acepte se vuelve a la vista principal.
+     *
      * @param evt el objeto ActionEvent generado por el evento, no es utilizado
      */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -596,18 +609,18 @@ implements InterfaceVista, AncestorListener {
      * Muestra la información de la entidad modificada en la tabla, este objeto
      * es enviado desde la Vista Consultar del caso de uso correspondiente a
      * esta vista
-     * 
-     * @param entidad el objeto entidad que contiene la información a mostrar
-     * en la vista después de ser modificada
+     *
+     * @param entidad el objeto entidad que contiene la información a mostrar en
+     * la vista después de ser modificada
      */
     @Override
     public void mostrarEntidad(Object entidad) {
         //Mostrar los datos del examen en la vista
         ExamenDTO examen = (ExamenDTO) entidad;
-        
+
         int row = tblExamenes.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) tblExamenes.getModel();
-        
+
         model.setValueAt(examen.getNombre(), row, 1);
         model.setValueAt(examen.getFechaModificacion(), row, 3);
     }
@@ -627,19 +640,19 @@ implements InterfaceVista, AncestorListener {
         //Limpiar componentes
         cmbCurso.removeAllItems();
         txtfNombre.setText("");
-        ((DefaultTableModel)tblExamenes.getModel()).setRowCount(0);
-        
+        ((DefaultTableModel) tblExamenes.getModel()).setRowCount(0);
+
         controlVista.liberarMemoriaConsultar();
     }
 
     /**
      * Este método es invocado cuando se muestra por primera vez esta vista
-     * 
+     *
      * @param event el objeto AncestorEvent generado por el evento
      */
     @Override
     public void ancestorAdded(AncestorEvent event) {
-        if(isShowing()) {
+        if (isShowing()) {
             consultarCursos();
         }
     }
