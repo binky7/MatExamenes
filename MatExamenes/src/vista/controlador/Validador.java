@@ -19,12 +19,14 @@
  */
 package vista.controlador;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 /**
- * Clase Validador que es utilizada para validar las cadenas de texto y comprobar
- * que cumplen con la longitud máxima, caracteres aceptados, etc.
+ * Clase Validador que es utilizada para validar las cadenas de texto y
+ * comprobar que cumplen con la longitud máxima, caracteres aceptados, etc.
  *
  * @author Jesus Donaldo Osornio Hernández
  * @version 1 18 Mayo 2015
@@ -63,6 +65,11 @@ public class Validador {
      * Longitud máxima de los datos del usuario
      */
     public static final int LONGITUD_DATOS_USUARIO = 50;
+
+    /**
+     * Expresion regular para verificar que sea una ipv4.
+     */
+    private static final String EXPRESION_IP = "^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$";
 
     /**
      * Valida que el campo no esté vacío, incluyendo espacios.
@@ -204,7 +211,7 @@ public class Validador {
 
     /**
      * Valida que la longitud ingresada se cumpla en el campo ingresado.
-     * 
+     *
      * @param longitud el total máximo de caracteres que se espera que un campo
      * de texto tenga
      * @param campoTexto la cadena de texto a validar
@@ -220,4 +227,21 @@ public class Validador {
 
         return ok;
     }
+
+    /**
+     * Valid la estructura de la ip ingresada para que concuerde con una ipv4.
+     *
+     * @param ip La ip a validar.
+     * @return Verdadero si la ip ingresada fue exitosamente validada como una
+     * ip.<br>
+     * Falso de otra forma.
+     */
+    public static boolean esIp(String ip) {
+        Pattern pattern;
+        Matcher matcher;
+        pattern = Pattern.compile(EXPRESION_IP);
+        matcher = pattern.matcher(ip);
+        return matcher.matches();
+    }
+
 }

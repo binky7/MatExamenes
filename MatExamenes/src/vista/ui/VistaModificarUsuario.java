@@ -40,6 +40,7 @@ import vista.controlador.Validador;
 import vista.interfaz.InterfaceVista;
 
 /**
+ * Interfaz gráfica para modificar usuarios.
  *
  * @author Alfredo Rouse Madrigal
  * @version 1 18 Mayo 2015
@@ -89,7 +90,7 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
      * Almacena el mensaje de datos faltantes.
      */
     private String mensajeDatosIncorrectos;
-        // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     /**
     * Botón para cancelar la modificación.
     */
@@ -406,7 +407,7 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         lblEstadoAMaterno.setToolTipText("Ingresar solo letras");
 
         lblEstadoUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
-        lblEstadoUsuario.setToolTipText("Ingresar letras y/o numeros");
+        lblEstadoUsuario.setToolTipText("Ingresar letras y/o números");
 
         lblEstadoPassword.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
         lblEstadoPassword.setToolTipText("No caracteres especiales, mayor de 3 caracteres");

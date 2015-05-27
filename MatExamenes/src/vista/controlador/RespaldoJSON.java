@@ -23,10 +23,16 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 import modelo.dto.ExamenAsignadoPK;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -60,11 +66,12 @@ public class RespaldoJSON {
     /**
      * Contiene la ruta por defecto donde se guardaran los archivos de respaldo.
      */
-    private static final String RUTA_ARCHIVO = System.getProperty("user.home");
+    private static final String RUTA_ARCHIVO = System.getProperty("user.home")
+            + System.getProperty("file.separator") + "Documents";
     /**
-     * Contiene el nombre del archivo que se le dara al respaldo.
+     * Contiene el nombre del archivo que se le dara al respaldo del examen.
      */
-    private static final String ARCHIVO = "respaldoMatExamenes.me";
+    private static final String ARCHIVO_EXAMEN = "respaldoMatExamenes.me";
     /**
      * Indice de la lista de respuestas, utilizado cuando obtenemos el respaldo
      * en una lista.
@@ -79,6 +86,18 @@ public class RespaldoJSON {
      * String usado para iniciar las respuestas de los respaldos.
      */
     private static final String RESPUESTA_INICIAL = ".";
+    /**
+     * Contiene el nombre del archivo que se le dara al de la conexión.
+     */
+    private static final String ARCHIVO_CONEXION = "respaldoConexionMatExamenes.conf";
+    /**
+     * Utilizada para identificar el ip en el objeto JSON.
+     */
+    public static final String IP = "ip";
+    /**
+     * Utilizada para identificar el puerto en el objeto JSON.
+     */
+    public static final String PUERTO = "puerto";
     /**
      * ArrayList Usado para guardar los objetos ExamenAsignadoPK y una List de
      * las respuestas de los alumnos.
@@ -120,7 +139,7 @@ public class RespaldoJSON {
         alumnoJSON.put(CONTESTADO, String.valueOf(false));
         alumnoJSON.put(RESPUESTAS, respuestasJSON);
 
-        File file = new File(RUTA_ARCHIVO, ARCHIVO);
+        File file = new File(RUTA_ARCHIVO, ARCHIVO_EXAMEN);
         if (file.exists()) {
             file.delete();
         }
@@ -146,7 +165,7 @@ public class RespaldoJSON {
         respuestasJSON.set(numeroReactivo, respuesta);
         alumnoJSON.put(RESPUESTAS, respuestasJSON);
         File file;
-        file = new File(RUTA_ARCHIVO, ARCHIVO);
+        file = new File(RUTA_ARCHIVO, ARCHIVO_EXAMEN);
         if (file.exists()) {
             file.delete();
         }
@@ -169,7 +188,7 @@ public class RespaldoJSON {
     public boolean existeRespaldo() {
         boolean ok = false;
         File file;
-        file = new File(RUTA_ARCHIVO, ARCHIVO);
+        file = new File(RUTA_ARCHIVO, ARCHIVO_EXAMEN);
         if (file.exists()) {
             ok = true;
             try {
@@ -189,7 +208,7 @@ public class RespaldoJSON {
      */
     private void cargarRespaldo() throws IOException {
         File file;
-        file = new File(RUTA_ARCHIVO, ARCHIVO);
+        file = new File(RUTA_ARCHIVO, ARCHIVO_EXAMEN);
         String datos = "";
 
         respaldo = new ArrayList();
@@ -246,7 +265,7 @@ public class RespaldoJSON {
      */
     public void eliminarRespaldo() {
         File file;
-        file = new File(RUTA_ARCHIVO, ARCHIVO);
+        file = new File(RUTA_ARCHIVO, ARCHIVO_EXAMEN);
         file.delete();
     }
 
@@ -257,7 +276,7 @@ public class RespaldoJSON {
      * Falso de lo contrario.
      */
     public boolean estaContestado() {
-        return Boolean.parseBoolean((String)alumnoJSON.get(CONTESTADO));
+        return Boolean.parseBoolean((String) alumnoJSON.get(CONTESTADO));
     }
 
     /**
@@ -268,7 +287,7 @@ public class RespaldoJSON {
     public void setContestado() throws IOException {
         alumnoJSON.put(CONTESTADO, String.valueOf(true));
         File file;
-        file = new File(RUTA_ARCHIVO, ARCHIVO);
+        file = new File(RUTA_ARCHIVO, ARCHIVO_EXAMEN);
 
         if (file.exists()) {
             file.delete();
@@ -280,5 +299,64 @@ public class RespaldoJSON {
 
         dos.flush();
         dos.close();
+    }
+
+    /**
+     * Actualiza el archivo de respaldo de configuración de conexión con los
+     * nuevos valores.
+     *
+     * @param ip La nueva IP.
+     * @param puerto El nuevo puerto.
+     * @throws IOException Si hay problemas de escritura en el respaldo.
+     */
+    public void actualizarIpPuerto(String ip, String puerto) throws IOException {
+        File file;
+        file = new File(RUTA_ARCHIVO, ARCHIVO_CONEXION);
+        if (file.exists()) {
+            file.delete();
+        }
+
+        JSONObject ob = new JSONObject();
+
+        ob.put(IP, ip);
+        ob.put(PUERTO, puerto);
+
+        FileWriter fw = new FileWriter(file);
+        PrintWriter pw = new PrintWriter(fw);
+
+        pw.print(ob.toJSONString());
+
+        pw.close();
+        fw.close();
+    }
+
+    /**
+     * Obtiene en un Objeto Map el ip y puerto del archivo de configuración de
+     * conexión.
+     *
+     * @return Objeto Map con el ip y puerto.
+     * @throws FileNotFoundException Si el archivo no existe.
+     */
+    public Map<String, String> obtenerIpPuerto() throws FileNotFoundException {
+        Map<String, String> map = new HashMap<>();
+
+        File file = new File(RUTA_ARCHIVO, ARCHIVO_CONEXION);
+
+        Scanner sc = new Scanner(file);
+        JSONObject ob;
+        JSONParser parse = new JSONParser();
+        Object obj = null;
+        String datos = sc.nextLine();
+        sc.close();
+        try {
+            obj = parse.parse(datos);
+        } catch (ParseException ex) {
+        }
+        ob = (JSONObject) obj;
+
+        map.put(IP, ((String) ob.get(IP)));
+        map.put(PUERTO, ((String) ob.get(PUERTO)));
+
+        return map;
     }
 }

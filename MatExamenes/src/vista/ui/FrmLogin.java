@@ -22,13 +22,17 @@ package vista.ui;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import modelo.dto.UsuarioDTO;
 import modelo.dto.UsuarioDTO.Tipo;
+import remoteAccess.Enlace;
 import vista.controlador.CVLogin;
+import vista.controlador.RespaldoJSON;
 
 /**
  * JFrame que mostrara la interfaz gráfica del Login.
@@ -41,13 +45,18 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
     /**
      * Objeto de la interfaz gráfica principal.
      */
-    private final FrmPrincipal frmPrincipal;
+    private FrmPrincipal frmPrincipal;
     /**
      * Controlador de la vista del caso de uso Login, funciona para manejar la
      * información obtenida en la vista para comunicarse con las capas
      * inferiores
      */
-    private final CVLogin cvLogin;
+    private CVLogin cvLogin;
+
+    /**
+     * JFrame usada para combiar la configuración de la conexión con el servidor.
+     */
+    private FrmConfiguracionConexion configuracion;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     /**
@@ -66,6 +75,18 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
     * Label texto usuario.
     */
     private javax.swing.JLabel lblUsuario;
+    /**
+    * Menu para la configuración.
+    */
+    private javax.swing.JMenu mConfiguracion;
+    /**
+    * Barra de menú de Login.
+    */
+    private javax.swing.JMenuBar mbLogin;
+    /**
+    * MenuItem de la conexión
+    */
+    private javax.swing.JMenuItem miConexion;
     /**
     * Campo de texto utilizado para ingresar el usuario.
     */
@@ -86,6 +107,14 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
         cvLogin = new CVLogin();
         txtfUsuario.addKeyListener(this);
         txtpPassword.addKeyListener(this);
+        RespaldoJSON respaldo = new RespaldoJSON();
+        Map<String, String> map = null;
+        try {
+            map = respaldo.obtenerIpPuerto();
+        } catch (FileNotFoundException ex) {
+        }
+        Enlace.setIp(map.get(RespaldoJSON.IP));
+        Enlace.setPuerto(Integer.parseInt(map.get(RespaldoJSON.PUERTO)));
     }
 
     /**
@@ -132,6 +161,9 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
         lblPassword = new javax.swing.JLabel();
         txtpPassword = new javax.swing.JPasswordField();
         lblTitulo = new javax.swing.JLabel();
+        mbLogin = new javax.swing.JMenuBar();
+        mConfiguracion = new javax.swing.JMenu();
+        miConexion = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
@@ -150,18 +182,32 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
         txtfUsuario.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtfUsuario.setPreferredSize(new java.awt.Dimension(100, 30));
 
-        lblUsuario.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        lblUsuario.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblUsuario.setText("Usuario:");
 
-        lblPassword.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        lblPassword.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblPassword.setText("Password:");
 
         txtpPassword.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtpPassword.setPreferredSize(new java.awt.Dimension(100, 25));
 
-        lblTitulo.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        lblTitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("Login");
+
+        mConfiguracion.setText("Configuración");
+
+        miConexion.setText("Conexión");
+        miConexion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miConexionActionPerformed(evt);
+            }
+        });
+        mConfiguracion.add(miConexion);
+
+        mbLogin.add(mConfiguracion);
+
+        setJMenuBar(mbLogin);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -185,7 +231,7 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
                         .addComponent(lblPassword)
                         .addGap(90, 90, 90)
                         .addComponent(txtpPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addContainerGap(101, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,7 +250,7 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
                         .addGap(7, 7, 7)
                         .addComponent(lblPassword))
                     .addComponent(txtpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
         );
@@ -214,7 +260,8 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Método llamado cuando se acciona el botón de Login.
+     * Método llamado cuando se acciona el botón de Login.<br>
+     * Se encargara de validar las credenciales.
      *
      * @param evt Objeto que contiene información sobre evento.
      */
@@ -253,8 +300,24 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
                         "Login", JOptionPane.ERROR_MESSAGE);
             }
         }
-
+        if (configuracion != null) {
+            configuracion = null;
+        }
     }//GEN-LAST:event_login
+
+    /**
+     * Método llamado cuando selecciona el MenuItem de Conexión, mostrara el
+     * FrmConfiguracionConexion.
+     *
+     * @param evt Objeto que contiene información sobre evento.
+     */
+    private void miConexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miConexionActionPerformed
+        if (configuracion == null) {
+            configuracion = new FrmConfiguracionConexion();
+        }
+        configuracion.setVisible(true);
+        configuracion.actualizarRespaldoConexion();
+    }//GEN-LAST:event_miConexionActionPerformed
 
     @Override
     public void keyTyped(KeyEvent e) {

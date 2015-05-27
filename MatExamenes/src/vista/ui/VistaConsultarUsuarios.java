@@ -319,16 +319,22 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
             ok = true;
         }
         if (ok) {
-            List<UsuarioDTO> usuarios;
-            usuarios
-                    = cvMantenerUsuarios.obtenerUsuariosPorNombreOApellidos(apellido);
-            if (usuarios.isEmpty()) {
-                DTM.setNumRows(0);
-                JOptionPane.showMessageDialog(this, "No se encontraron coincidencias",
-                        "Busqueda", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                mostrarUsuariosTabla(usuarios);
+            try {
+                List<UsuarioDTO> usuarios;
+                usuarios
+                        = cvMantenerUsuarios.obtenerUsuariosPorNombreOApellidos(apellido);
+                if (usuarios.isEmpty()) {
+                    DTM.setNumRows(0);
+                    JOptionPane.showMessageDialog(this, "No se encontraron coincidencias",
+                            "Busqueda", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    mostrarUsuariosTabla(usuarios);
+                }
+            } catch (NullPointerException e) {
+                JOptionPane.showMessageDialog(this, "Probleas en conexión",
+                            "Busqueda", JOptionPane.INFORMATION_MESSAGE);
             }
+
         }
     }//GEN-LAST:event_buscarUsuarios
 

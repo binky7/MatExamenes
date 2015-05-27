@@ -32,9 +32,9 @@
           <Group type="102" attributes="0">
               <EmptySpace min="232" pref="232" max="-2" attributes="0"/>
               <Component id="lblApellidoMaterno" min="-2" pref="130" max="-2" attributes="0"/>
-              <EmptySpace min="81" pref="81" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
               <Component id="txtfApellidoMaterno" min="-2" pref="150" max="-2" attributes="0"/>
-              <EmptySpace min="4" pref="4" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="lblEstadoAMaterno" min="-2" max="-2" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
@@ -403,7 +403,7 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/recursos/bien.png"/>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Ingresar letras y/o numeros"/>
+        <Property name="toolTipText" type="java.lang.String" value="Ingresar letras y/o n&#xfa;meros"/>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para mostrar el estado del campo de texto usuario.&#xa; */"/>

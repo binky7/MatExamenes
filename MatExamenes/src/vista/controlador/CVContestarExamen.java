@@ -136,20 +136,18 @@ public class CVContestarExamen {
         int buenas = 0;
         double calificacion[] = new double[3];
         for (int i = 0; i < nReactivos; i++) {
-            try {
-                examen.getReactivos().get(i).setRespuestaAlumno(respuestasAlumno.get(i));
-                String respuesta = examen.getReactivos().get(i).getRespuestaReactivo();
-                String respuestaAlumno = examen.getReactivos().get(i).getRespuestaAlumno();
-                if (respuesta.compareTo(respuestaAlumno) == 0) {
-                    buenas++;
-                }
-            } catch (IndexOutOfBoundsException e) {
-                //reactivo no respondido
+            examen.getReactivos().get(i).setRespuestaAlumno(respuestasAlumno.get(i));
+            String respuesta = examen.getReactivos().get(i).getRespuestaReactivo();
+            String respuestaAlumno = examen.getReactivos().get(i).getRespuestaAlumno();
+            if (respuesta.compareTo(respuestaAlumno) == 0) {
+                buenas++;
             }
+
         }
+        calificacion[CALIFICACION] = (buenas / (double) nReactivos) * 10;
         calificacion[BUENAS] = buenas;
         calificacion[N_REACTIVOS] = nReactivos;
-        String cali = String.format("%.1f", calificacion[CALIFICACION]);
+        String cali = String.format("%2.1f", calificacion[CALIFICACION]);
         calificacion[CALIFICACION] = Double.parseDouble(cali);
         examen.setCalificacion(calificacion[CALIFICACION]);
         return calificacion;

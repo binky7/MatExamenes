@@ -25,9 +25,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 /**
- * Esta clase se encarga de hacer la conexión remota con un registro en la 
+ * Esta clase se encarga de hacer la conexión remota con un registro en la
  * aplicación de persistencia por medio de la interface Persistencia
- * 
+ *
  * @author Jesus Donaldo Osornio Hernández
  * @version 1 18 Mayo 2015
  */
@@ -38,11 +38,19 @@ public class Enlace {
      * persistencia.
      */
     private static Persistencia persistencia;
-    
+    /**
+     * La ip del servidor.
+     */
+    public static String ip;
+    /**
+     * Puerto por el que escuchara el servidor.
+     */
+    public static int puerto;
+
     /**
      * Obtiene una nueva interface Persistencia si no existe, enlazando esta
      * aplicación con la aplicación de persistencia remotamente
-     * 
+     *
      * @return una interface Persistencia que permitirá acceder a la aplicación
      * de persistencia
      * @throws RemoteException en caso de que haya error de conexión remota
@@ -51,9 +59,25 @@ public class Enlace {
     public static Persistencia getPersistencia() throws RemoteException,
             NotBoundException {
         if (persistencia == null) {
-            Registry registro = LocateRegistry.getRegistry("127.0.0.1", 9000);
+            Registry registro = LocateRegistry.getRegistry(ip, puerto);
             persistencia = (Persistencia) registro.lookup("MatExPersist");
         }
         return persistencia;
+    }
+
+    /**
+     * 
+     * @param puerto El puerto por el que escuchara el servidor.
+     */
+    public static void setPuerto(int puerto) {
+        Enlace.puerto = puerto;
+    }
+
+    /**
+     * 
+     * @param ip La ip del servidor.
+     */
+    public static void setIp(String ip) {
+        Enlace.ip = ip;
     }
 }

@@ -40,6 +40,7 @@ import vista.controlador.Validador;
 import vista.interfaz.InterfaceVista;
 
 /**
+ * Interfaz gráfica para registrar usuarios.
  *
  * @author Alfredo Rouse Madrigal
  * @version 1 18 Mayo 2015
@@ -193,32 +194,6 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
     }
 
     /**
-     * Muestra el estado del campo de texto dependiendo si la validacion fue
-     * verdadera o falsa.
-     *
-     * @param o El objeto campo de texto al cual se quiere cambiar el estado.
-     * @param estado Si es verdadero el estado sera correcto, si es falso el
-     * estado sera incorrecto.
-     */
-    private void mostrarLabelEstado(Object o, boolean estado) {
-        JTextField ob = (JTextField) o;
-        try {
-            Field field = getClass().getDeclaredField(ob.getName());
-            JLabel label = (JLabel) field.get(this);
-            if (!label.isVisible()) {
-                label.setVisible(true);
-            }
-            if (estado) {
-                label.setIcon(ICONO_BIEN);
-            } else {
-                label.setIcon(ICONO_MAL);
-            }
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(VistaRegistrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
      * Almacena la interface del JFrame principal.
      *
      * @param padre Interface para interactuar con el JFrame principal.
@@ -318,6 +293,32 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
         }
 
         return ok;
+    }
+
+    /**
+     * Muestra el estado del campo de texto dependiendo si la validacion fue
+     * verdadera o falsa.
+     *
+     * @param o El objeto campo de texto al cual se quiere cambiar el estado.
+     * @param estado Si es verdadero el estado sera correcto, si es falso el
+     * estado sera incorrecto.
+     */
+    private void mostrarLabelEstado(Object o, boolean estado) {
+        JTextField ob = (JTextField) o;
+        try {
+            Field field = getClass().getDeclaredField(ob.getName());
+            JLabel label = (JLabel) field.get(this);
+            if (!label.isVisible()) {
+                label.setVisible(true);
+            }
+            if (estado) {
+                label.setIcon(ICONO_BIEN);
+            } else {
+                label.setIcon(ICONO_MAL);
+            }
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(VistaRegistrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -441,7 +442,7 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
         lblEstadoAMaterno.setToolTipText("Ingresar solo letras");
 
         lblEstadoUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
-        lblEstadoUsuario.setToolTipText("Ingresar letras y/o numeros");
+        lblEstadoUsuario.setToolTipText("Ingresar letras y/o números");
 
         lblEstadoPassword.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
         lblEstadoPassword.setToolTipText("No caracteres especiales, mayor de 3 caracteres");
@@ -474,7 +475,7 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
                 .addComponent(lblApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(81, 81, 81)
                 .addComponent(txtfApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblEstadoAMaterno))
             .addGroup(layout.createSequentialGroup()
                 .addGap(232, 232, 232)
