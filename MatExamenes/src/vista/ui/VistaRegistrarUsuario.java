@@ -1,14 +1,14 @@
 /*
  * Copyright (C) 2015 Alfredo Rouse Madrigal
  *
- * This file is part of MatExamenes.
+ * This file is part of MatExámenes.
  *
- * MatExamenes is free software; you can redistribute it and/or modify it under
+ * MatExámenes is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
  *
- * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * MatExámenes is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
@@ -89,6 +89,93 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
      * Almacena el mensaje de datos faltantes.
      */
     private String mensajeDatosIncorrectos;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Botón para cancelar.
+    */
+    private javax.swing.JButton btnCancelar;
+    /**
+    * Botón para guardar.
+    */
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.ButtonGroup grupoBotones;
+    /**
+    * Label para el apellido materno.
+    */
+    private javax.swing.JLabel lblApellidoMaterno;
+    /**
+    * Label para el apellido paterno.
+    */
+    private javax.swing.JLabel lblApellidoPaterno;
+    /**
+    * Label para mostrar el estado del campo de texto apellido materno.
+    */
+    private javax.swing.JLabel lblEstadoAMaterno;
+    /**
+    * Label para mostrar el estado del campo de texto apellido paterno.
+    */
+    private javax.swing.JLabel lblEstadoAPaterno;
+    /**
+    * Label para mostrar el estdo del campo de texto nombre.
+    */
+    private javax.swing.JLabel lblEstadoNombre;
+    /**
+    * Label para mostrar el estado del campo de texto password.
+    */
+    private javax.swing.JLabel lblEstadoPassword;
+    /**
+    * Label para mostrar el estado del campo de texto usuario.
+    */
+    private javax.swing.JLabel lblEstadoUsuario;
+    /**
+    * Label para el nombre.
+    */
+    private javax.swing.JLabel lblNombre;
+    /**
+    * Lael para el password.
+    */
+    private javax.swing.JLabel lblPassword;
+    /**
+    * Label para el tipo de usuario.
+    */
+    private javax.swing.JLabel lblTipo;
+    /**
+    * Label de título de la interfaz gráfica.
+    */
+    private javax.swing.JLabel lblTitulo;
+    /**
+    * Label para el usuario.
+    */
+    private javax.swing.JLabel lblUsuario;
+    /**
+    * Botón radio para el tipo alumno.
+    */
+    private javax.swing.JRadioButton rbtnAlumno;
+    /**
+    * Botón radio para el tipo maestro.
+    */
+    private javax.swing.JRadioButton rbtnMaestro;
+    /**
+    * Campo de texto para el apellido materno.
+    */
+    private javax.swing.JTextField txtfApellidoMaterno;
+    /**
+    * Campo de texto para el apellido paterno.
+    */
+    private javax.swing.JTextField txtfApellidoPaterno;
+    /**
+    * Campo de texto para el nombre.
+    */
+    private javax.swing.JTextField txtfNombre;
+    /**
+    * Campo de texto para el usuario.
+    */
+    private javax.swing.JTextField txtfUsuario;
+    /**
+    * Campo de texto para el password.
+    */
+    private javax.swing.JPasswordField txtpPassword;
+    // End of variables declaration//GEN-END:variables
 
     /**
      * Crea un objeto VistaRegistrarUsuario e inicializa sus atributos.
@@ -103,6 +190,32 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
         txtfUsuario.addKeyListener(this);
         txtfUsuario.addKeyListener(this);
         limpiar();
+    }
+
+    /**
+     * Muestra el estado del campo de texto dependiendo si la validacion fue
+     * verdadera o falsa.
+     *
+     * @param o El objeto campo de texto al cual se quiere cambiar el estado.
+     * @param estado Si es verdadero el estado sera correcto, si es falso el
+     * estado sera incorrecto.
+     */
+    private void mostrarLabelEstado(Object o, boolean estado) {
+        JTextField ob = (JTextField) o;
+        try {
+            Field field = getClass().getDeclaredField(ob.getName());
+            JLabel label = (JLabel) field.get(this);
+            if (!label.isVisible()) {
+                label.setVisible(true);
+            }
+            if (estado) {
+                label.setIcon(ICONO_BIEN);
+            } else {
+                label.setIcon(ICONO_MAL);
+            }
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+            Logger.getLogger(VistaRegistrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -481,32 +594,6 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
         }
     }//GEN-LAST:event_cancelarRegistroUsuario
 
-    /**
-     * Muestra el estado del campo de texto dependiendo si la validacion fue
-     * verdadera o falsa.
-     *
-     * @param o El objeto campo de texto al cual se quiere cambiar el estado.
-     * @param estado Si es verdadero el estado sera correcto, si es falso el
-     * estado sera incorrecto.
-     */
-    private void mostrarLabelEstado(Object o, boolean estado) {
-        JTextField ob = (JTextField) o;
-        try {
-            Field field = getClass().getDeclaredField(ob.getName());
-            JLabel label = (JLabel) field.get(this);
-            if (!label.isVisible()) {
-                label.setVisible(true);
-            }
-            if (estado) {
-                label.setIcon(ICONO_BIEN);
-            } else {
-                label.setIcon(ICONO_MAL);
-            }
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
-            Logger.getLogger(VistaRegistrarUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     @Override
     public void limpiar() {
         txtfNombre.setText("");
@@ -640,92 +727,5 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
     @Override
     public void keyReleased(KeyEvent e) {
     }
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-    * Botón para cancelar.
-    */
-    private javax.swing.JButton btnCancelar;
-    /**
-    * Botón para guardar.
-    */
-    private javax.swing.JButton btnGuardar;
-    private javax.swing.ButtonGroup grupoBotones;
-    /**
-    * Label para el apellido materno.
-    */
-    private javax.swing.JLabel lblApellidoMaterno;
-    /**
-    * Label para el apellido paterno.
-    */
-    private javax.swing.JLabel lblApellidoPaterno;
-    /**
-    * Label para mostrar el estado del campo de texto apellido materno.
-    */
-    private javax.swing.JLabel lblEstadoAMaterno;
-    /**
-    * Label para mostrar el estado del campo de texto apellido paterno.
-    */
-    private javax.swing.JLabel lblEstadoAPaterno;
-    /**
-    * Label para mostrar el estdo del campo de texto nombre.
-    */
-    private javax.swing.JLabel lblEstadoNombre;
-    /**
-    * Label para mostrar el estado del campo de texto password.
-    */
-    private javax.swing.JLabel lblEstadoPassword;
-    /**
-    * Label para mostrar el estado del campo de texto usuario.
-    */
-    private javax.swing.JLabel lblEstadoUsuario;
-    /**
-    * Label para el nombre.
-    */
-    private javax.swing.JLabel lblNombre;
-    /**
-    * Lael para el password.
-    */
-    private javax.swing.JLabel lblPassword;
-    /**
-    * Label para el tipo de usuario.
-    */
-    private javax.swing.JLabel lblTipo;
-    /**
-    * Label de título de la interfaz gráfica.
-    */
-    private javax.swing.JLabel lblTitulo;
-    /**
-    * Label para el usuario.
-    */
-    private javax.swing.JLabel lblUsuario;
-    /**
-    * Botón radio para el tipo alumno.
-    */
-    private javax.swing.JRadioButton rbtnAlumno;
-    /**
-    * Botón radio para el tipo maestro.
-    */
-    private javax.swing.JRadioButton rbtnMaestro;
-    /**
-    * Campo de texto para el apellido materno.
-    */
-    private javax.swing.JTextField txtfApellidoMaterno;
-    /**
-    * Campo de texto para el apellido paterno.
-    */
-    private javax.swing.JTextField txtfApellidoPaterno;
-    /**
-    * Campo de texto para el nombre.
-    */
-    private javax.swing.JTextField txtfNombre;
-    /**
-    * Campo de texto para el usuario.
-    */
-    private javax.swing.JTextField txtfUsuario;
-    /**
-    * Campo de texto para el password.
-    */
-    private javax.swing.JPasswordField txtpPassword;
-    // End of variables declaration//GEN-END:variables
 
 }

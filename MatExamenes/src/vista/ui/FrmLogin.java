@@ -1,14 +1,14 @@
 /*
  * Copyright (C) 2015 Alfredo Rouse Madrigal
  *
- * This file is part of MatExamenes.
+ * This file is part of MatExámenes.
  *
- * MatExamenes is free software; you can redistribute it and/or modify it under
+ * MatExámenes is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
  *
- * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * MatExámenes is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
@@ -86,6 +86,37 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
         cvLogin = new CVLogin();
         txtfUsuario.addKeyListener(this);
         txtpPassword.addKeyListener(this);
+    }
+
+    /**
+     * Agrega los iconos a la interfaz gráfica y a la barra de tareas.
+     */
+    private void agregarIconos() {
+        List<Image> icons = new ArrayList<>();
+        icons.add(new ImageIcon(getClass().getResource("/recursos/icono16.png")).getImage());
+        icons.add(new ImageIcon(getClass().getResource("/recursos/icono32.png")).getImage());
+        this.setIconImages(icons);
+    }
+
+    /**
+     * Crea un objeto tipo UsuarioDTO con el usuario y password obtenidos de los
+     * campos de texto.
+     *
+     * @return Un objeto tipo UsuarioDTO.
+     */
+    private UsuarioDTO encapsularUsuario() {
+        UsuarioDTO unUsuario = new UsuarioDTO();
+
+        String pass = String.valueOf(txtpPassword.getPassword());
+        String usuario = txtfUsuario.getText();
+        if (pass.isEmpty() || usuario.isEmpty()) {
+            unUsuario = null;
+        } else {
+            unUsuario.setPassword(pass);
+            unUsuario.setUsuario(usuario);
+        }
+
+        return unUsuario;
     }
 
     /**
@@ -183,16 +214,6 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Agrega los iconos a la interfaz gráfica y a la barra de tareas.
-     */
-    private void agregarIconos() {
-        List<Image> icons = new ArrayList<>();
-        icons.add(new ImageIcon(getClass().getResource("/recursos/icono16.png")).getImage());
-        icons.add(new ImageIcon(getClass().getResource("/recursos/icono32.png")).getImage());
-        this.setIconImages(icons);
-    }
-
-    /**
      * Método llamado cuando se acciona el botón de Login.
      *
      * @param evt Objeto que contiene información sobre evento.
@@ -234,27 +255,6 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
         }
 
     }//GEN-LAST:event_login
-
-    /**
-     * Crea un objeto tipo UsuarioDTO con el usuario y password obtenidos de los
-     * campos de texto.
-     *
-     * @return Un objeto tipo UsuarioDTO.
-     */
-    private UsuarioDTO encapsularUsuario() {
-        UsuarioDTO unUsuario = new UsuarioDTO();
-
-        String pass = String.valueOf(txtpPassword.getPassword());
-        String usuario = txtfUsuario.getText();
-        if (pass.isEmpty() || usuario.isEmpty()) {
-            unUsuario = null;
-        } else {
-            unUsuario.setPassword(pass);
-            unUsuario.setUsuario(usuario);
-        }
-
-        return unUsuario;
-    }
 
     @Override
     public void keyTyped(KeyEvent e) {

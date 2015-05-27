@@ -1,14 +1,14 @@
 /*
  * Copyright (C) 2015 Alfredo Rouse Madrigal
  *
- * This file is part of MatExamenes.
+ * This file is part of MatExámenes.
  *
- * MatExamenes is free software; you can redistribute it and/or modify it under
+ * MatExámenes is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
  *
- * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * MatExámenes is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
@@ -131,6 +131,60 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
      * El cronómetro encargado del llevar el tiempo.
      */
     private Cronometro cronometro;
+        // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Boton usado para cambiar de reactivo.
+    */
+    private javax.swing.JButton btnSiguiente;
+    /**
+    * Botón usado para terminar el examen.
+    */
+    private javax.swing.JButton btnTerminarExamen;
+    /**
+    * ScrollPane para el panel de reactivos.
+    */
+    private javax.swing.JScrollPane jScrollPane1;
+    /**
+    * ScrollPane para la redacción del reactivo.
+    */
+    private javax.swing.JScrollPane jScrollPane2;
+    /**
+    * Label para mostrar las instrucciones del examen.
+    */
+    private javax.swing.JLabel lblInstrucciones;
+    /**
+    * Label para mostrar el tiempo restante del examen.
+    */
+    private javax.swing.JLabel lblTiempo;
+    /**
+    * Panel para mostrar los reactivos del examen.
+    */
+    private javax.swing.JPanel pnlReactivos;
+    /**
+    * Agrupa los Botónes de radio.
+    */
+    private javax.swing.ButtonGroup rbtnGrupoRespuestas;
+    /**
+    * Botón de la opción uno.
+    */
+    private javax.swing.JRadioButton rbtnOpcion1;
+    /**
+    * Botón de la opción dos.
+    */
+    private javax.swing.JRadioButton rbtnOpcion2;
+    /**
+    * Botón de la opción tres.
+    */
+    private javax.swing.JRadioButton rbtnOpcion3;
+    /**
+    * Botón de la opción cuatro.
+    */
+    private javax.swing.JRadioButton rbtnOpcion4;
+    /**
+    * Campo de texto para mostrar la redacción del reactivo.
+    */
+    private javax.swing.JTextArea txtaRedaccion;
+    // End of variables declaration//GEN-END:variables
 
     /**
      * Crea una nueva VistaContestarExamen e inicializa sus atributos.
@@ -197,129 +251,6 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
     public void setControlador(CVContestarExamen cvContestarExamen) {
         this.cvContestarExamen = cvContestarExamen;
     }
-
-    /**
-     * Inicializa los atributos gráficos y los coloca en su posición.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        rbtnGrupoRespuestas = new javax.swing.ButtonGroup();
-        lblTiempo = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtaRedaccion = new javax.swing.JTextArea();
-        rbtnOpcion1 = new javax.swing.JRadioButton();
-        rbtnOpcion2 = new javax.swing.JRadioButton();
-        rbtnOpcion3 = new javax.swing.JRadioButton();
-        btnSiguiente = new javax.swing.JButton();
-        rbtnOpcion4 = new javax.swing.JRadioButton();
-        btnTerminarExamen = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        pnlReactivos = new javax.swing.JPanel();
-        lblInstrucciones = new javax.swing.JLabel();
-
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        lblTiempo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblTiempo.setText("Tiempo restante:");
-        add(lblTiempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(603, 23, -1, -1));
-
-        txtaRedaccion.setEditable(false);
-        txtaRedaccion.setBackground(new java.awt.Color(240, 240, 240));
-        txtaRedaccion.setColumns(20);
-        txtaRedaccion.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        txtaRedaccion.setRows(5);
-        txtaRedaccion.setToolTipText("");
-        jScrollPane2.setViewportView(txtaRedaccion);
-
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 249, 740, 125));
-
-        rbtnGrupoRespuestas.add(rbtnOpcion1);
-        rbtnOpcion1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        rbtnOpcion1.setText("opcion1");
-        add(rbtnOpcion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 376, -1, -1));
-
-        rbtnGrupoRespuestas.add(rbtnOpcion2);
-        rbtnOpcion2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        rbtnOpcion2.setText("opcion2");
-        add(rbtnOpcion2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 417, -1, -1));
-
-        rbtnGrupoRespuestas.add(rbtnOpcion3);
-        rbtnOpcion3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        rbtnOpcion3.setText("opcion3");
-        add(rbtnOpcion3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 458, -1, -1));
-
-        btnSiguiente.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnSiguiente.setText("Siguiente");
-        btnSiguiente.setPreferredSize(new java.awt.Dimension(77, 30));
-        btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                siguienteReactivo(evt);
-            }
-        });
-        add(btnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(461, 534, 101, -1));
-
-        rbtnGrupoRespuestas.add(rbtnOpcion4);
-        rbtnOpcion4.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        rbtnOpcion4.setText("opcion4");
-        add(rbtnOpcion4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 493, -1, -1));
-
-        btnTerminarExamen.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnTerminarExamen.setText("Terminar Examen");
-        btnTerminarExamen.setToolTipText("");
-        btnTerminarExamen.setPreferredSize(new java.awt.Dimension(77, 30));
-        btnTerminarExamen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                terminarExamen(evt);
-            }
-        });
-        add(btnTerminarExamen, new org.netbeans.lib.awtextra.AbsoluteConstraints(572, 534, 138, -1));
-
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reactivos", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 12))); // NOI18N
-        jScrollPane1.setMaximumSize(null);
-        jScrollPane1.setMinimumSize(null);
-
-        pnlReactivos.setMaximumSize(null);
-        pnlReactivos.setMinimumSize(null);
-        jScrollPane1.setViewportView(pnlReactivos);
-
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 58, 740, 130));
-
-        lblInstrucciones.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblInstrucciones.setText("jLabel1");
-        add(lblInstrucciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 214, -1, -1));
-    }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * Método llamado cuando se acciona el botón siguiente.
-     *
-     * @param evt Objeto que contiene información del evento.
-     */
-    private void siguienteReactivo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguienteReactivo
-        siguienteReactivo();
-    }//GEN-LAST:event_siguienteReactivo
-
-    /**
-     * Método llamado cuando se acciona el botón terminar examen.
-     *
-     * @param evt Objeto que contiene información del evento.
-     */
-    private void terminarExamen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terminarExamen
-        int ok;
-        if (examenTerminado()) {
-            ok = JOptionPane.showConfirmDialog(this, "¿Esta seguro que desea terminar el examen?",
-                    "Examen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        } else {
-            ok = JOptionPane.showConfirmDialog(this, "¿Esta seguro que desea terminar el examen?"
-                    + "\n" + "Aún tiene reactivos pendientes", "Examen",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        }
-
-        if (ok == JOptionPane.YES_OPTION) {
-            mostrarCalificacion();
-        }
-    }//GEN-LAST:event_terminarExamen
 
     /**
      * Verifica si hay algun reactivo no contestado.
@@ -569,6 +500,159 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         cronometro.start();
     }
 
+    /**
+     * Guarda la respuesta que el alumno selecciono en la lista
+     * respuestasAlumno.
+     *
+     * @param numeroReactivo Índice de la lista en donde se guardara la
+     * respuesta.
+     * @param respuesta Respuesta seleccionada por el alumno.
+     */
+    private void guardarRespuestaAlumno(int numeroReactivo, String respuesta) {
+        respuestasAlumno.add(numeroReactivo, respuesta);
+    }
+
+    /**
+     * Inicializa los atributos gráficos y los coloca en su posición.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        rbtnGrupoRespuestas = new javax.swing.ButtonGroup();
+        lblTiempo = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtaRedaccion = new javax.swing.JTextArea();
+        rbtnOpcion1 = new javax.swing.JRadioButton();
+        rbtnOpcion2 = new javax.swing.JRadioButton();
+        rbtnOpcion3 = new javax.swing.JRadioButton();
+        btnSiguiente = new javax.swing.JButton();
+        rbtnOpcion4 = new javax.swing.JRadioButton();
+        btnTerminarExamen = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        pnlReactivos = new javax.swing.JPanel();
+        lblInstrucciones = new javax.swing.JLabel();
+
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblTiempo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblTiempo.setText("Tiempo restante:");
+        add(lblTiempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(603, 23, -1, -1));
+
+        txtaRedaccion.setEditable(false);
+        txtaRedaccion.setBackground(new java.awt.Color(240, 240, 240));
+        txtaRedaccion.setColumns(20);
+        txtaRedaccion.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtaRedaccion.setRows(5);
+        txtaRedaccion.setToolTipText("");
+        jScrollPane2.setViewportView(txtaRedaccion);
+
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 249, 740, 125));
+
+        rbtnGrupoRespuestas.add(rbtnOpcion1);
+        rbtnOpcion1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        rbtnOpcion1.setText("opcion1");
+        add(rbtnOpcion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 376, -1, -1));
+
+        rbtnGrupoRespuestas.add(rbtnOpcion2);
+        rbtnOpcion2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        rbtnOpcion2.setText("opcion2");
+        add(rbtnOpcion2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 417, -1, -1));
+
+        rbtnGrupoRespuestas.add(rbtnOpcion3);
+        rbtnOpcion3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        rbtnOpcion3.setText("opcion3");
+        add(rbtnOpcion3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 458, -1, -1));
+
+        btnSiguiente.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnSiguiente.setText("Siguiente");
+        btnSiguiente.setPreferredSize(new java.awt.Dimension(77, 30));
+        btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                siguienteReactivo(evt);
+            }
+        });
+        add(btnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(461, 534, 101, -1));
+
+        rbtnGrupoRespuestas.add(rbtnOpcion4);
+        rbtnOpcion4.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        rbtnOpcion4.setText("opcion4");
+        add(rbtnOpcion4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 493, -1, -1));
+
+        btnTerminarExamen.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnTerminarExamen.setText("Terminar Examen");
+        btnTerminarExamen.setToolTipText("");
+        btnTerminarExamen.setPreferredSize(new java.awt.Dimension(77, 30));
+        btnTerminarExamen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                terminarExamen(evt);
+            }
+        });
+        add(btnTerminarExamen, new org.netbeans.lib.awtextra.AbsoluteConstraints(572, 534, 138, -1));
+
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reactivos", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 12))); // NOI18N
+        jScrollPane1.setMaximumSize(null);
+        jScrollPane1.setMinimumSize(null);
+
+        pnlReactivos.setMaximumSize(null);
+        pnlReactivos.setMinimumSize(null);
+        jScrollPane1.setViewportView(pnlReactivos);
+
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 58, 740, 130));
+
+        lblInstrucciones.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblInstrucciones.setText("jLabel1");
+        add(lblInstrucciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 214, -1, -1));
+    }// </editor-fold>//GEN-END:initComponents
+
+    /**
+     * Método llamado cuando se acciona el botón siguiente.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
+    private void siguienteReactivo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguienteReactivo
+        siguienteReactivo();
+    }//GEN-LAST:event_siguienteReactivo
+
+    /**
+     * Método llamado cuando se acciona el botón terminar examen.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
+    private void terminarExamen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terminarExamen
+        int ok;
+        if (examenTerminado()) {
+            ok = JOptionPane.showConfirmDialog(this, "¿Esta seguro que desea terminar el examen?",
+                    "Examen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        } else {
+            ok = JOptionPane.showConfirmDialog(this, "¿Esta seguro que desea terminar el examen?"
+                    + "\n" + "Aún tiene reactivos pendientes", "Examen",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        }
+
+        if (ok == JOptionPane.YES_OPTION) {
+            mostrarCalificacion();
+        }
+    }//GEN-LAST:event_terminarExamen
+
+    /**
+     * Actualiza el texto que muestra el Label cada segundo.
+     *
+     * @param txtLabel El Texto que mostrara el Label.
+     */
+    @Override
+    public void actualizarLblTiempo(String txtLabel) {
+        lblTiempo.setText(txtLabel);
+    }
+
+    /**
+     * Método llamado cuando se termina el tiempo del examen.<br>
+     */
+    @Override
+    public void tiempoTerminado() {
+        mostrarCalificacion();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof JButton) {
@@ -593,18 +677,6 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
             }
         }
         verificarReactivos();
-    }
-
-    /**
-     * Guarda la respuesta que el alumno selecciono en la lista
-     * respuestasAlumno.
-     *
-     * @param numeroReactivo Índice de la lista en donde se guardara la
-     * respuesta.
-     * @param respuesta Respuesta seleccionada por el alumno.
-     */
-    private void guardarRespuestaAlumno(int numeroReactivo, String respuesta) {
-        respuestasAlumno.add(numeroReactivo, respuesta);
     }
 
     @Override
@@ -667,77 +739,4 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         cronometro = null;
         pnlReactivos.removeAll();
     }
-
-    /**
-     * Actualiza el texto que muestra el Label cada segundo.
-     *
-     * @param txtLabel El Texto que mostrara el Label.
-     */
-    @Override
-    public void actualizarLblTiempo(String txtLabel) {
-        lblTiempo.setText(txtLabel);
-    }
-
-    /**
-     * Método llamado cuando se termina el tiempo del examen.<br>
-     */
-    @Override
-    public void tiempoTerminado() {
-        mostrarCalificacion();
-    }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-    * Boton usado para cambiar de reactivo.
-    */
-    private javax.swing.JButton btnSiguiente;
-    /**
-    * Botón usado para terminar el examen.
-    */
-    private javax.swing.JButton btnTerminarExamen;
-    /**
-    * ScrollPane para el panel de reactivos.
-    */
-    private javax.swing.JScrollPane jScrollPane1;
-    /**
-    * ScrollPane para la redacción del reactivo.
-    */
-    private javax.swing.JScrollPane jScrollPane2;
-    /**
-    * Label para mostrar las instrucciones del examen.
-    */
-    private javax.swing.JLabel lblInstrucciones;
-    /**
-    * Label para mostrar el tiempo restante del examen.
-    */
-    private javax.swing.JLabel lblTiempo;
-    /**
-    * Panel para mostrar los reactivos del examen.
-    */
-    private javax.swing.JPanel pnlReactivos;
-    /**
-    * Agrupa los Botónes de radio.
-    */
-    private javax.swing.ButtonGroup rbtnGrupoRespuestas;
-    /**
-    * Botón de la opción uno.
-    */
-    private javax.swing.JRadioButton rbtnOpcion1;
-    /**
-    * Botón de la opción dos.
-    */
-    private javax.swing.JRadioButton rbtnOpcion2;
-    /**
-    * Botón de la opción tres.
-    */
-    private javax.swing.JRadioButton rbtnOpcion3;
-    /**
-    * Botón de la opción cuatro.
-    */
-    private javax.swing.JRadioButton rbtnOpcion4;
-    /**
-    * Campo de texto para mostrar la redacción del reactivo.
-    */
-    private javax.swing.JTextArea txtaRedaccion;
-    // End of variables declaration//GEN-END:variables
 }

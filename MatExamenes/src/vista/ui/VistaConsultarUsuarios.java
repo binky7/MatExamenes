@@ -1,14 +1,14 @@
 /*
  * Copyright (C) 2015 Alfredo Rouse Madrigal
  *
- * This file is part of MatExamenes.
+ * This file is part of MatExámenes.
  *
- * MatExamenes is free software; you can redistribute it and/or modify it under
+ * MatExámenes is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
  *
- * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * MatExámenes is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
@@ -51,7 +51,6 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
      * Interface para interactuar con el JFrame principal.
      */
     private InterfaceVista padre;
-
     /**
      * Modelo para cambiar los datos de la tabla.
      */
@@ -117,6 +116,26 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
      */
     public void setControlador(CVMantenerUsuarios cvMantenerUsuarios) {
         this.cvMantenerUsuarios = cvMantenerUsuarios;
+    }
+
+    /**
+     * Muesta los datos de los usuarios en la tabla.
+     *
+     * @param usuarios Lista de usuarios para mostrar en la tabla.
+     */
+    private void mostrarUsuariosTabla(List<UsuarioDTO> usuarios) {
+        DTM.setRowCount(0);
+        Object datos[] = new Object[5];
+
+        for (UsuarioDTO usuario : usuarios) {
+            datos[0] = usuario.getApellidoPaterno();
+            datos[1] = usuario.getApellidoMaterno();
+            datos[2] = usuario.getNombre();
+            datos[3] = usuario.getUsuario();
+            datos[4] = usuario.getTipo().toString();
+
+            DTM.addRow(datos);
+        }
     }
 
     /**
@@ -312,26 +331,6 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
             }
         }
     }//GEN-LAST:event_buscarUsuarios
-
-    /**
-     * Muesta los datos de los usuarios en la tabla.
-     *
-     * @param usuarios Lista de usuarios para mostrar en la tabla.
-     */
-    private void mostrarUsuariosTabla(List<UsuarioDTO> usuarios) {
-        DTM.setRowCount(0);
-        Object datos[] = new Object[5];
-
-        for (UsuarioDTO usuario : usuarios) {
-            datos[0] = usuario.getApellidoPaterno();
-            datos[1] = usuario.getApellidoMaterno();
-            datos[2] = usuario.getNombre();
-            datos[3] = usuario.getUsuario();
-            datos[4] = usuario.getTipo().toString();
-
-            DTM.addRow(datos);
-        }
-    }
 
     /**
      * Método llamado cuando se acciona el botón eliminar.

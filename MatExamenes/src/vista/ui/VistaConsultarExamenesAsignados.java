@@ -1,14 +1,14 @@
 /*
  * Copyright (C) 2015 Alfredo Rouse Madrigal
  *
- * This file is part of MatExamenes.
+ * This file is part of MatExámenes.
  *
- * MatExamenes is free software; you can redistribute it and/or modify it under
+ * MatExámenes is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
  *
- * MatExamenes is distributed in the hope that it will be useful, but WITHOUT
+ * MatExámenes is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
@@ -71,7 +71,32 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
      * Utilizado para cargar, y obtener respaldo anteriores.
      */
     private RespaldoJSON respaldo;
-
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    /**
+    * Botón usado para realizar la busqueda de los Exámenes asignados.
+    */
+    private javax.swing.JButton btnBuscar;
+    /**
+    * Botón que iniciara el examen.
+    */
+    private javax.swing.JButton btnIniciar;
+    /**
+    * ScrollPane de la lista de exámenes.
+    */
+    private javax.swing.JScrollPane jScrollPane1;
+    /**
+    * Label para el nombre del examen.
+    */
+    private javax.swing.JLabel lblNombreExamen;
+    /**
+    * Label para el título de la interfaz gráfica.
+    */
+    private javax.swing.JLabel lblTitulo;
+    /**
+    * Lista que mostrara los Exámenes Asignados al alumno.
+    */
+    private javax.swing.JList lstExamenesEncontrados;
+    // End of variables declaration//GEN-END:variables
     /**
      * Crea una nueva VistaBuscarExamenAsignado e inicializa sus atributos.
      */
@@ -100,6 +125,51 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
      */
     public void setControlador(CVContestarExamen cvContestarExamen) {
         this.cvContestarExamen = cvContestarExamen;
+    }
+
+    /**
+     * Muestra los exámenes que el alumno tiene asignados en la lista.
+     *
+     * @param examenesAsignados Lista de ExamenAsignadoDTO previamente obtenida
+     * de la base de datos, de la cual se obtendra su título para mostrar en la
+     * lista.
+     */
+    private void mostrarExamenes(List<ExamenAsignadoDTO> examenesAsignados) {
+        for (ExamenAsignadoDTO examen : examenesAsignados) {
+            DML.addElement(examen.getExamen().getNombre());
+        }
+    }
+
+    /**
+     * Califica el examen previamente resuelto por el alumno, con una
+     * calificación de 0 a 10 y la muestra.
+     *
+     * @param examen El examen que se calificara.
+     * @param alumno El respaldo del alumno obtenido de RespaldoJSON.
+     * @see vista.controlador.RespaldoJSON
+     */
+    private void mostrarCalificacion(ExamenAsignadoDTO examen, ArrayList alumno) {
+        double evaluacion[] = cvContestarExamen.calificarExamen(examen.getReactivos().size(),
+                (List<String>) alumno.get(RespaldoJSON.I_RESPUESTAS), cvContestarExamen.getExamenAsignado());
+
+        String mensaje = "Reactivos correctos: " + (int) evaluacion[CVContestarExamen.BUENAS]
+                + "/" + (int) evaluacion[CVContestarExamen.N_REACTIVOS] + "\n"
+                + "Su calificación es de: " + evaluacion[CVContestarExamen.CALIFICACION];
+
+        if (evaluacion[CVContestarExamen.CALIFICACION] == 10) {
+            JOptionPane.showMessageDialog(this, mensaje,
+                    "Calificación", JOptionPane.INFORMATION_MESSAGE,
+                    new ImageIcon(getClass().getResource(IMAGEN_LIKE)));
+        } else {
+            JOptionPane.showMessageDialog(this, mensaje,
+                    "Calificación", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        if (cvContestarExamen.actualizarExamen(cvContestarExamen.getExamenAsignado())) {
+            respaldo.eliminarRespaldo();
+        } else {
+            JOptionPane.showMessageDialog(this, "Exmen no actualizado");
+        }
     }
 
     /**
@@ -249,51 +319,6 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
     }//GEN-LAST:event_buscarExamenes
 
     /**
-     * Muestra los exámenes que el alumno tiene asignados en la lista.
-     *
-     * @param examenesAsignados Lista de ExamenAsignadoDTO previamente obtenida
-     * de la base de datos, de la cual se obtendra su título para mostrar en la
-     * lista.
-     */
-    private void mostrarExamenes(List<ExamenAsignadoDTO> examenesAsignados) {
-        for (ExamenAsignadoDTO examen : examenesAsignados) {
-            DML.addElement(examen.getExamen().getNombre());
-        }
-    }
-
-    /**
-     * Califica el examen previamente resuelto por el alumno, con una
-     * calificación de 0 a 10 y la muestra.
-     *
-     * @param examen El examen que se calificara.
-     * @param alumno El respaldo del alumno obtenido de RespaldoJSON.
-     * @see vista.controlador.RespaldoJSON
-     */
-    private void mostrarCalificacion(ExamenAsignadoDTO examen, ArrayList alumno) {
-        double evaluacion[] = cvContestarExamen.calificarExamen(examen.getReactivos().size(),
-                (List<String>) alumno.get(RespaldoJSON.I_RESPUESTAS), cvContestarExamen.getExamenAsignado());
-
-        String mensaje = "Reactivos correctos: " + (int) evaluacion[CVContestarExamen.BUENAS]
-                + "/" + (int) evaluacion[CVContestarExamen.N_REACTIVOS] + "\n"
-                + "Su calificación es de: " + evaluacion[CVContestarExamen.CALIFICACION];
-
-        if (evaluacion[CVContestarExamen.CALIFICACION] == 10) {
-            JOptionPane.showMessageDialog(this, mensaje,
-                    "Calificación", JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon(getClass().getResource(IMAGEN_LIKE)));
-        } else {
-            JOptionPane.showMessageDialog(this, mensaje,
-                    "Calificación", JOptionPane.INFORMATION_MESSAGE);
-        }
-
-        if (cvContestarExamen.actualizarExamen(cvContestarExamen.getExamenAsignado())) {
-            respaldo.eliminarRespaldo();
-        } else {
-            JOptionPane.showMessageDialog(this, "Exmen no actualizado");
-        }
-    }
-
-    /**
      * Inicia el examen seleccionado de la lista.
      *
      * @param evt Objeto que contiene información sobre el evento.
@@ -339,32 +364,5 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
     public void limpiar() {
         DML.setSize(0);
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-    * Botón usado para realizar la busqueda de los Exámenes asignados.
-    */
-    private javax.swing.JButton btnBuscar;
-    /**
-    * Botón que iniciara el examen.
-    */
-    private javax.swing.JButton btnIniciar;
-    /**
-    * ScrollPane de la lista de exámenes.
-    */
-    private javax.swing.JScrollPane jScrollPane1;
-    /**
-    * Label para el nombre del examen.
-    */
-    private javax.swing.JLabel lblNombreExamen;
-    /**
-    * Label para el título de la interfaz gráfica.
-    */
-    private javax.swing.JLabel lblTitulo;
-    /**
-    * Lista que mostrara los Exámenes Asignados al alumno.
-    */
-    private javax.swing.JList lstExamenesEncontrados;
-    // End of variables declaration//GEN-END:variables
 
 }
