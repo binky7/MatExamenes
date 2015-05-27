@@ -19,8 +19,11 @@
  */
 package vista.ui;
 
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import modelo.dto.UsuarioDTO;
@@ -40,9 +43,9 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
      */
     private final FrmPrincipal frmPrincipal;
     /**
-     * Controlador de la vista del caso de uso Login, funciona para
-     * manejar la información obtenida en la vista para comunicarse con las
-     * capas inferiores
+     * Controlador de la vista del caso de uso Login, funciona para manejar la
+     * información obtenida en la vista para comunicarse con las capas
+     * inferiores
      */
     private final CVLogin cvLogin;
 
@@ -78,6 +81,7 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
      */
     public FrmLogin() {
         initComponents();
+        agregarIconos();
         frmPrincipal = new FrmPrincipal();
         cvLogin = new CVLogin();
         txtfUsuario.addKeyListener(this);
@@ -179,6 +183,16 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
+     * Agrega los iconos a la interfaz gráfica y a la barra de tareas.
+     */
+    private void agregarIconos() {
+        List<Image> icons = new ArrayList<>();
+        icons.add(new ImageIcon(getClass().getResource("/recursos/icono16.png")).getImage());
+        icons.add(new ImageIcon(getClass().getResource("/recursos/icono32.png")).getImage());
+        this.setIconImages(icons);
+    }
+
+    /**
      * Método llamado cuando se acciona el botón de Login.
      *
      * @param evt Objeto que contiene información sobre evento.
@@ -190,7 +204,7 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
         if (usuario == null) {
             //Si no ingresaron algun dato.
             JOptionPane.showMessageDialog(this, "Datos faltantes, favor de llenar todos los datos",
-                        "Login", JOptionPane.ERROR_MESSAGE);
+                    "Login", JOptionPane.ERROR_MESSAGE);
         } else {
             int error = cvLogin.validarCredenciales(usuario);
             if (error == -1) {

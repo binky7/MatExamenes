@@ -216,7 +216,7 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements
             }
         });
 
-        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/botonCancelar_1.png"))); // NOI18N
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/cancelar24.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -304,7 +304,7 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements
         } else {
             int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
                     + "quieres eliminar este grupo?\nEste proceso es irreversible");
-            if (ok == 0) {
+            if (ok == JOptionPane.YES_OPTION) {
                 if (controladorVista.eliminarGrupo(index)) {
                     JOptionPane.showMessageDialog(this, "Grupo eliminado "
                             + "correctamente", "Exito", 1);
@@ -356,7 +356,7 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements
         int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
                 + "quieres cambiar de pantalla?\nTodos los cambios no "
                 + "guardados se perderán");
-        if (ok == 0) {
+        if (ok == JOptionPane.YES_OPTION) {
             cambiar = true;
         }
         return cambiar;

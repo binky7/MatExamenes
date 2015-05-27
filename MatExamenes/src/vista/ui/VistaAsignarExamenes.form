@@ -74,7 +74,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="tbpAsignarExamenes.setEnabledAt(0, false);&#xa;tbpAsignarExamenes.setEnabledAt(1, false);&#xa;tbpAsignarExamenes.setEnabledAt(2, false);&#xa;tbpAsignarExamenes.setEnabledAt(3, false);&#xa;tbpAsignarExamenes.setTitleAt(0, &quot;&lt;html&gt;&lt;font color=black&gt;Ex&#xe1;menes&lt;/font&gt;&lt;/html&gt;&quot;);&#xa;tbpAsignarExamenes.setTitleAt(1, &quot;&lt;html&gt;&lt;font color=black&gt;Grupos&lt;/font&gt;&lt;/html&gt;&quot;);&#xa;tbpAsignarExamenes.setTitleAt(2, &quot;&lt;html&gt;&lt;font color=black&gt;Asignaciones&lt;/font&gt;&lt;/html&gt;&quot;);&#xa;tbpAsignarExamenes.setTitleAt(3, &quot;&lt;html&gt;&lt;font color=black&gt;Tiempo l&#xed;mite&lt;/font&gt;&lt;/html&gt;&quot;);"/>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="tbpAsignarExamenes.setEnabledAt(0, false);&#xa;tbpAsignarExamenes.setEnabledAt(1, false);&#xa;tbpAsignarExamenes.setEnabledAt(2, false);&#xa;tbpAsignarExamenes.setEnabledAt(3, false);&#xa;tbpAsignarExamenes.setTitleAt(0, &quot;&lt;html&gt;&lt;font color=black&gt;Seleccionar examen&lt;/font&gt;&lt;/html&gt;&quot;);&#xa;tbpAsignarExamenes.setTitleAt(1, &quot;&lt;html&gt;&lt;font color=black&gt;Seleccionar grupo&lt;/font&gt;&lt;/html&gt;&quot;);&#xa;tbpAsignarExamenes.setTitleAt(2, &quot;&lt;html&gt;&lt;font color=black&gt;Asignar claves&lt;/font&gt;&lt;/html&gt;&quot;);&#xa;tbpAsignarExamenes.setTitleAt(3, &quot;&lt;html&gt;&lt;font color=black&gt;Definir tiempo l&#xed;mite&lt;/font&gt;&lt;/html&gt;&quot;);"/>
         <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Panel de pesta&#xf1;as para agrupar los p&#xe1;neles utilizados para asignar ex&#xe1;menes.&#xa; */"/>
       </AuxValues>
 
@@ -86,8 +86,8 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Ex&#xe1;menes">
-                <Property name="tabTitle" type="java.lang.String" value="Ex&#xe1;menes"/>
+              <JTabbedPaneConstraints tabName="Seleccionar examen">
+                <Property name="tabTitle" type="java.lang.String" value="Seleccionar examen"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -292,8 +292,8 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Grupos">
-                <Property name="tabTitle" type="java.lang.String" value="Grupos"/>
+              <JTabbedPaneConstraints tabName="Seleccionar grupo">
+                <Property name="tabTitle" type="java.lang.String" value="Seleccionar grupo"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -438,8 +438,8 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Asignaciones">
-                <Property name="tabTitle" type="java.lang.String" value="Asignaciones"/>
+              <JTabbedPaneConstraints tabName="Asignar claves">
+                <Property name="tabTitle" type="java.lang.String" value="Asignar claves"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -859,8 +859,8 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Tiempo l&#xed;mite">
-                <Property name="tabTitle" type="java.lang.String" value="Tiempo l&#xed;mite"/>
+              <JTabbedPaneConstraints tabName="Definir tiempo l&#xed;mite">
+                <Property name="tabTitle" type="java.lang.String" value="Definir tiempo l&#xed;mite"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

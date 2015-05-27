@@ -445,7 +445,6 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
 
     @Override
     public boolean confirmarCambio() {
-
         return true;
     }
 
