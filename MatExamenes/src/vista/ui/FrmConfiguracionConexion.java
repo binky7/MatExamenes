@@ -46,8 +46,6 @@ import vista.controlador.Validador;
  */
 public class FrmConfiguracionConexion extends javax.swing.JFrame implements FocusListener {
 
-    private RespaldoJSON respaldo;
-    private Map<String, String> mapRespaldo;
     /**
      * Almacena el icono del estado correcto.
      */
@@ -56,6 +54,16 @@ public class FrmConfiguracionConexion extends javax.swing.JFrame implements Focu
      * Almacena el icno del estado incorrecto.
      */
     private final ImageIcon ICONO_MAL;
+    /**
+     * Utilizado para obtener la ip y puerto almacenada en el archivo de
+     * configuración.
+     */
+    private RespaldoJSON respaldo;
+    /**
+     * Guarda la ip y el puerto obtenidos del respaldo.
+     */
+    private Map<String, String> mapRespaldo;
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     /**
@@ -66,7 +74,13 @@ public class FrmConfiguracionConexion extends javax.swing.JFrame implements Focu
     * Botón de guardar.
     */
     private javax.swing.JButton btnGuardar;
+    /**
+    * Label para mostrar el estado del campo de texto de la ip
+    */
     private javax.swing.JLabel lblEstadoIp;
+    /**
+    * Label para mostrar el estado del campo de texto puerto
+    */
     private javax.swing.JLabel lblEstadoPuerto;
     /**
     * Label del ip.
@@ -183,7 +197,7 @@ public class FrmConfiguracionConexion extends javax.swing.JFrame implements Focu
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
+                cancelarConfiguracion(evt);
             }
         });
 
@@ -214,7 +228,7 @@ public class FrmConfiguracionConexion extends javax.swing.JFrame implements Focu
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
+                guardarConfiguracion(evt);
             }
         });
 
@@ -290,16 +304,16 @@ public class FrmConfiguracionConexion extends javax.swing.JFrame implements Focu
      *
      * @param evt Objeto que contiene información sobre evento.
      */
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+    private void cancelarConfiguracion(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarConfiguracion
         this.setVisible(false);
-    }//GEN-LAST:event_btnCancelarActionPerformed
+    }//GEN-LAST:event_cancelarConfiguracion
 
     /**
      * Guarda en el archivo de configuración de conexión los nuevos IP y Puerto.
      *
      * @param evt Objeto que contiene información sobre evento.
      */
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+    private void guardarConfiguracion(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarConfiguracion
         String puerto = txtfPuerto.getText();
         String ip = txtfIp.getText();
         if (Validador.esIp(ip) && Validador.esNumero(puerto)) {
@@ -316,7 +330,7 @@ public class FrmConfiguracionConexion extends javax.swing.JFrame implements Focu
                     + "de los datos.", "Modificación",
                     JOptionPane.WARNING_MESSAGE);
         }
-    }//GEN-LAST:event_btnGuardarActionPerformed
+    }//GEN-LAST:event_guardarConfiguracion
 
     /**
      * Método llamado cuando se teclea en el campo de texto de la ip.<br>

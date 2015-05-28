@@ -116,7 +116,7 @@
         <Property name="text" type="java.lang.String" value="Cancelar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelarConfiguracion"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n de cancelar.&#xa; */"/>
@@ -187,7 +187,7 @@
         <Property name="text" type="java.lang.String" value="Guardar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="guardarConfiguracion"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Bot&#xf3;n de guardar.&#xa; */"/>
@@ -200,6 +200,9 @@
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="Solo n&#xfa;meros."/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para mostrar el estado del campo de texto de la ip&#xa; */"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblEstadoPuerto">
       <Properties>
@@ -208,6 +211,9 @@
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="Siga la estructura ipv4 xxx.xxx.xxx.xxx"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Label para mostrar el estado del campo de texto puerto&#xa; */"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
