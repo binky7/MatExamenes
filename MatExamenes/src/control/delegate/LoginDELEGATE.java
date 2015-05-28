@@ -65,6 +65,7 @@ public class LoginDELEGATE {
 
         } catch (RemoteException | NotBoundException ex) {
             error = -2;
+            System.out.println(ex);
         }
 
         return error;

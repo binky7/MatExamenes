@@ -257,6 +257,9 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
             }
 
         });
+        
+        //Para hacer wrap de palabras en las instrucciones
+        txtaInstrucciones.setWrapStyleWord(true);
     }
 
     /**

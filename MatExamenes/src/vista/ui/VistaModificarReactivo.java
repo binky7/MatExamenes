@@ -239,6 +239,9 @@ implements InterfaceVista, FocusListener, KeyListener {
         lblEstadoOpt4.setVisible(false);
         
         init();
+        
+        //Para hacer wrap de palabras en la redacción
+        txtaRedaccion.setWrapStyleWord(true);
     }
 
     /**
@@ -555,7 +558,7 @@ implements InterfaceVista, FocusListener, KeyListener {
         cmbTema.setEnabled(false);
         cmbTema.setPreferredSize(new java.awt.Dimension(78, 25));
 
-        pnlOpciones.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Opciones:", 0, 0, new java.awt.Font("Arial", 1, 14))); // NOI18N
+        pnlOpciones.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Opciones:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 14))); // NOI18N
         pnlOpciones.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
 
         txtfOpt1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
