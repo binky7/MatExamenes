@@ -55,8 +55,8 @@ public class CVLogin {
      * Valida las credenciales ingresadas por los usuarios.
      *
      * @param usuarioValidar
-     * @return -1 si la validacion fue exitosa, 1 si el password no coincide, y
-     * 0 si el usuario no existe.
+     * @return -1 si la validacion fue exitosa, 1 si el password no coincide, 
+     * 0 si el usuario no existe y -2 si hay problemas con la conexión.
      */
     public int validarCredenciales(UsuarioDTO usuarioValidar) {
         int error = loginDELEGATE.validarCredenciales(usuarioValidar);

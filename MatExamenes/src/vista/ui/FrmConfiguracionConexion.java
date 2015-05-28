@@ -22,8 +22,6 @@ package vista.ui;
 import java.awt.Image;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -150,6 +148,7 @@ public class FrmConfiguracionConexion extends javax.swing.JFrame implements Focu
         try {
             mapRespaldo = respaldo.obtenerIpPuerto();
         } catch (FileNotFoundException ex) {
+        } catch (IOException ex) {
         }
         txtfIp.setText(mapRespaldo.get(RespaldoJSON.IP));
         txtfPuerto.setText(mapRespaldo.get(RespaldoJSON.PUERTO));
@@ -298,6 +297,7 @@ public class FrmConfiguracionConexion extends javax.swing.JFrame implements Focu
                 respaldo.actualizarIpPuerto(ip, puerto);
                 Enlace.setPuerto(Integer.parseInt(puerto));
                 Enlace.setIp(ip);
+                this.setVisible(false);
             } catch (IOException ex) {
             }
 

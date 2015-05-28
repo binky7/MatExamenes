@@ -63,6 +63,7 @@ public class RespaldoJSON {
      * Utilizada para identificar el estado del examen en el objeto JSON.
      */
     private static final String CONTESTADO = "contestado";
+
     /**
      * Contiene la ruta por defecto donde se guardaran los archivos de respaldo.
      */
@@ -98,6 +99,15 @@ public class RespaldoJSON {
      * Utilizada para identificar el puerto en el objeto JSON.
      */
     public static final String PUERTO = "puerto";
+    /**
+     * Puerto por defecto a establecer cuando no se encuentra el archivo de
+     * respaldo configuración de conexión.
+     */
+    private static final String PUERTO_DEFECTO = "9000";
+    /**
+     * Ip del localhost.
+     */
+    private static final String LOCAL_HOST = "127.0.0.1";
     /**
      * ArrayList Usado para guardar los objetos ExamenAsignadoPK y una List de
      * las respuestas de los alumnos.
@@ -336,12 +346,16 @@ public class RespaldoJSON {
      *
      * @return Objeto Map con el ip y puerto.
      * @throws FileNotFoundException Si el archivo no existe.
+     * @throws IOException Cuando el archivo no existe y se cre uno por defecto.
      */
-    public Map<String, String> obtenerIpPuerto() throws FileNotFoundException {
+    public Map<String, String> obtenerIpPuerto() throws FileNotFoundException, IOException {
         Map<String, String> map = new HashMap<>();
 
         File file = new File(RUTA_ARCHIVO, ARCHIVO_CONEXION);
 
+        if (!file.exists()) {
+            actualizarIpPuerto(LOCAL_HOST, PUERTO_DEFECTO);
+        }
         Scanner sc = new Scanner(file);
         JSONObject ob;
         JSONParser parse = new JSONParser();

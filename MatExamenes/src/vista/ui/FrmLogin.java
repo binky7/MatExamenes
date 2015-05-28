@@ -23,9 +23,12 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import modelo.dto.UsuarioDTO;
@@ -112,6 +115,7 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
         try {
             map = respaldo.obtenerIpPuerto();
         } catch (FileNotFoundException ex) {
+        } catch (IOException ex) {
         }
         Enlace.setIp(map.get(RespaldoJSON.IP));
         Enlace.setPuerto(Integer.parseInt(map.get(RespaldoJSON.PUERTO)));
@@ -295,8 +299,11 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
             } else if (error == 1) {
                 JOptionPane.showMessageDialog(this, "Password Incorrecto",
                         "Login", JOptionPane.ERROR_MESSAGE);
-            } else {
+            } else if(error == 0){
                 JOptionPane.showMessageDialog(this, "Usuario no existente",
+                        "Login", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Problemas con la conexión",
                         "Login", JOptionPane.ERROR_MESSAGE);
             }
         }

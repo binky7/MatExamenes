@@ -45,8 +45,8 @@ public class LoginDELEGATE {
      * correcto.
      *
      * @param usuarioValidar
-     * @return -1 si la validacion fue exitosa, 1 si el password no coincide, y
-     * 0 si el usuario no existe.
+     * @return -1 si la validacion fue exitosa, 1 si el password no coincide, 
+     * 0 si el usuario no existe y -2 si hay problemas con la conexión.
      */
     public int validarCredenciales(UsuarioDTO usuarioValidar) {
         int error = -1;
@@ -64,6 +64,7 @@ public class LoginDELEGATE {
             }
 
         } catch (RemoteException | NotBoundException ex) {
+            error = -2;
         }
 
         return error;
