@@ -246,7 +246,7 @@ public class VistaConsultarExamenes extends javax.swing.JPanel
         lblNombre.setText("Nombre del Examen:");
 
         txtfNombre.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        txtfNombre.setToolTipText("filtrar la búsqueda por título del examen");
+        txtfNombre.setToolTipText("filtrar la búsqueda por nombre del examen");
         txtfNombre.setPreferredSize(new java.awt.Dimension(6, 30));
 
         btnBuscar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N

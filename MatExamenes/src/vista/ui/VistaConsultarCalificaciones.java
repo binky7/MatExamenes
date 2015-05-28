@@ -262,6 +262,9 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         ICONO_MAL = new ImageIcon(getClass().getResource("/recursos/mal.png"));
         addAncestorListener(this);
         lblCorrecto.setVisible(false);
+        
+        //Para hacer wrap de palabras en la redacción
+        txtaRedaccion.setWrapStyleWord(true);
     }
 
     /**
@@ -604,11 +607,20 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
+        tblGrupos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblGrupos.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblGrupos);
 
         btnAnteriorGrupos.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -676,11 +688,20 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
+        tblAlumnos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblAlumnos.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tblAlumnos);
 
         btnAnteriorAlumnos.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -744,17 +765,26 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
 
             },
             new String [] {
-                "Id", "Titulo", "Calificacion", "Fecha de Asignacion"
+                "Id", "Nombre", "Calificacion", "Fecha de Asignacion"
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
+        tblExamenes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblExamenes.getTableHeader().setReorderingAllowed(false);
         jScrollPane4.setViewportView(tblExamenes);
 
         btnAnteriorExamenes.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -817,10 +847,10 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         lblAlumno.setText("Alumno:");
 
         lblTituloExamen.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblTituloExamen.setText("Titulo del examen:");
+        lblTituloExamen.setText("Nombre del examen:");
 
         lblCalificacion.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblCalificacion.setText("Calificacion:");
+        lblCalificacion.setText("Calificación:");
 
         txtfAlumno.setEnabled(false);
 
@@ -834,17 +864,23 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         jScrollPane6.setViewportView(lstReactivos);
 
         lblRedaccion.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblRedaccion.setText("Redaccion");
+        lblRedaccion.setText("Redacción");
 
+        txtaRedaccion.setEditable(false);
         txtaRedaccion.setColumns(20);
+        txtaRedaccion.setLineWrap(true);
         txtaRedaccion.setRows(5);
         jScrollPane7.setViewportView(txtaRedaccion);
 
         lblRespCorrecta.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblRespCorrecta.setText("Respuesta correcta");
 
+        txtfRespCorrecta.setEditable(false);
+
         lblRespAlumno.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblRespAlumno.setText("Respuesta del alumno");
+
+        txtfRespAlumno.setEditable(false);
 
         lblCorrecto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
 

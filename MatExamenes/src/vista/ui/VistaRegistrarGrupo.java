@@ -362,12 +362,20 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements
             Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         tblMaestros.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblMaestros.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblMaestros);
 
         tblAlumnos.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -382,11 +390,20 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements
             Class[] types = new Class [] {
                 java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
+        tblAlumnos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblAlumnos.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tblAlumnos);
 
         btnAgrMaestro.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -528,7 +545,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements
                         .addComponent(btnRmvAlumnos))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnGuardar)
                     .addComponent(btnCancelar))
                 .addGap(56, 56, 56))

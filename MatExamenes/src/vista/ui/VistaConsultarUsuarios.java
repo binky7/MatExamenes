@@ -158,7 +158,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         setPreferredSize(new java.awt.Dimension(800, 600));
 
         btnBuscar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/buscar24.png"))); // NOI18N
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/buscar24_2.png"))); // NOI18N
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,6 +182,8 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
                 return canEdit [columnIndex];
             }
         });
+        tblUsuarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblUsuarios.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblUsuarios);
 
         btnModificar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N

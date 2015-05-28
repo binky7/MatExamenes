@@ -117,9 +117,9 @@
                   <Component id="jScrollPane2" min="-2" pref="150" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btnGuardar" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnCancelar" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
           </Group>
@@ -209,15 +209,20 @@
             </Property>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="5" rowCount="0">
-                <Column editable="true" title="Id" type="java.lang.Integer"/>
-                <Column editable="true" title="Nom" type="java.lang.String"/>
-                <Column editable="true" title="Apellido P." type="java.lang.String"/>
-                <Column editable="true" title="Apellido M." type="java.lang.String"/>
-                <Column editable="true" title="Curso" type="java.lang.String"/>
+                <Column editable="false" title="Id" type="java.lang.Integer"/>
+                <Column editable="false" title="Nom" type="java.lang.String"/>
+                <Column editable="false" title="Apellido P." type="java.lang.String"/>
+                <Column editable="false" title="Apellido M." type="java.lang.String"/>
+                <Column editable="false" title="Curso" type="java.lang.String"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
@@ -244,7 +249,7 @@
               <JTableSelectionModel selectionMode="0"/>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+              <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
             </Property>
           </Properties>
           <AuxValues>
@@ -269,10 +274,10 @@
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="5" rowCount="0">
                 <Column editable="true" title="[x]" type="java.lang.Boolean"/>
-                <Column editable="true" title="Id" type="java.lang.Integer"/>
-                <Column editable="true" title="Nom" type="java.lang.String"/>
-                <Column editable="true" title="Apellido P." type="java.lang.String"/>
-                <Column editable="true" title="Apellido M." type="java.lang.String"/>
+                <Column editable="false" title="Id" type="java.lang.Integer"/>
+                <Column editable="false" title="Nom" type="java.lang.String"/>
+                <Column editable="false" title="Apellido P." type="java.lang.String"/>
+                <Column editable="false" title="Apellido M." type="java.lang.String"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -297,10 +302,18 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
               </TableColumnModel>
             </Property>
+            <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
+              <JTableSelectionModel selectionMode="0"/>
+            </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+              <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
             </Property>
           </Properties>
           <AuxValues>

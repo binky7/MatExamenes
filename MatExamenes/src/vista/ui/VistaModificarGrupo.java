@@ -403,11 +403,20 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
+        tblMaestros.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblMaestros.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblMaestros);
 
         tblAlumnos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -422,11 +431,20 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
             Class[] types = new Class [] {
                 java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
+        tblAlumnos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblAlumnos.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tblAlumnos);
 
         btnAgrMaestros.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
