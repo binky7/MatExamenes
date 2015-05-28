@@ -249,6 +249,9 @@ implements InterfaceVista, FocusListener, AncestorListener, KeyListener {
         lblEstadoOpt4.setVisible(false);
         
         init();
+        
+        //Para hacer wrap de palabras en la redacción
+        txtaRedaccion.setWrapStyleWord(true);
     }
 
     /**

@@ -228,6 +228,9 @@ implements InterfaceVista, InterfaceExamen, FocusListener, KeyListener {
         //Agrega los listeners
         txtfNombre.addKeyListener(this);
         txtaInstrucciones.addKeyListener(this);
+        
+        //Para hacer wrap de palabras en las instrucciones
+        txtaInstrucciones.setWrapStyleWord(true);
     }
 
     /**
