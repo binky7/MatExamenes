@@ -131,7 +131,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
      * El cronómetro encargado del llevar el tiempo.
      */
     private Cronometro cronometro;
-        // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     /**
     * Boton usado para cambiar de reactivo.
     */
@@ -148,10 +148,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
     * ScrollPane para la redacción del reactivo.
     */
     private javax.swing.JScrollPane jScrollPane2;
-    /**
-    * Label para mostrar las instrucciones del examen.
-    */
-    private javax.swing.JLabel lblInstrucciones;
+    private javax.swing.JScrollPane jScrollPane3;
     /**
     * Label para mostrar el tiempo restante del examen.
     */
@@ -180,6 +177,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
     * Botón de la opción cuatro.
     */
     private javax.swing.JRadioButton rbtnOpcion4;
+    private javax.swing.JTextArea txtaInstrucciones;
     /**
     * Campo de texto para mostrar la redacción del reactivo.
     */
@@ -419,7 +417,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
      */
     private void tiempoRestanteExamen(Date fechaAsignacion, int duracion) {
         long asignadoMilis = fechaAsignacion.getTime();
-        long actualMilis = System.currentTimeMillis();
+        long actualMilis = cvContestarExamen.obtenerTiempoServidor();
         long terminacionMilis = asignadoMilis + (duracion * 60 * 1000);
         long diferenciaMilis = terminacionMilis - actualMilis;
         int seg = (int) diferenciaMilis / 1000;
@@ -509,7 +507,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
      * @param respuesta Respuesta seleccionada por el alumno.
      */
     private void guardarRespuestaAlumno(int numeroReactivo, String respuesta) {
-        respuestasAlumno.add(numeroReactivo, respuesta);
+        respuestasAlumno.set(numeroReactivo, respuesta);
     }
 
     /**
@@ -531,13 +529,12 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         btnTerminarExamen = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         pnlReactivos = new javax.swing.JPanel();
-        lblInstrucciones = new javax.swing.JLabel();
-
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtaInstrucciones = new javax.swing.JTextArea();
+        txtaInstrucciones.setEditable(false);
 
         lblTiempo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblTiempo.setText("Tiempo restante:");
-        add(lblTiempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(603, 23, -1, -1));
 
         txtaRedaccion.setEditable(false);
         txtaRedaccion.setBackground(new java.awt.Color(240, 240, 240));
@@ -547,24 +544,20 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         txtaRedaccion.setToolTipText("");
         jScrollPane2.setViewportView(txtaRedaccion);
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 249, 740, 125));
-
         rbtnGrupoRespuestas.add(rbtnOpcion1);
         rbtnOpcion1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         rbtnOpcion1.setText("opcion1");
-        add(rbtnOpcion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 376, -1, -1));
 
         rbtnGrupoRespuestas.add(rbtnOpcion2);
         rbtnOpcion2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         rbtnOpcion2.setText("opcion2");
-        add(rbtnOpcion2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 417, -1, -1));
 
         rbtnGrupoRespuestas.add(rbtnOpcion3);
         rbtnOpcion3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         rbtnOpcion3.setText("opcion3");
-        add(rbtnOpcion3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 458, -1, -1));
 
         btnSiguiente.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnSiguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/siguiente24.png"))); // NOI18N
         btnSiguiente.setText("Siguiente");
         btnSiguiente.setPreferredSize(new java.awt.Dimension(77, 30));
         btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
@@ -572,14 +565,13 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
                 siguienteReactivo(evt);
             }
         });
-        add(btnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(461, 534, 101, -1));
 
         rbtnGrupoRespuestas.add(rbtnOpcion4);
         rbtnOpcion4.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         rbtnOpcion4.setText("opcion4");
-        add(rbtnOpcion4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 493, -1, -1));
 
         btnTerminarExamen.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnTerminarExamen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
         btnTerminarExamen.setText("Terminar Examen");
         btnTerminarExamen.setToolTipText("");
         btnTerminarExamen.setPreferredSize(new java.awt.Dimension(77, 30));
@@ -588,7 +580,6 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
                 terminarExamen(evt);
             }
         });
-        add(btnTerminarExamen, new org.netbeans.lib.awtextra.AbsoluteConstraints(572, 534, 138, -1));
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reactivos", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 12))); // NOI18N
         jScrollPane1.setMaximumSize(null);
@@ -598,11 +589,69 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         pnlReactivos.setMinimumSize(null);
         jScrollPane1.setViewportView(pnlReactivos);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 58, 740, 130));
+        txtaInstrucciones.setColumns(20);
+        txtaInstrucciones.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtaInstrucciones.setRows(1);
+        jScrollPane3.setViewportView(txtaInstrucciones);
 
-        lblInstrucciones.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblInstrucciones.setText("jLabel1");
-        add(lblInstrucciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 214, -1, -1));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(603, 603, 603)
+                .addComponent(lblTiempo))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(rbtnOpcion1))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(rbtnOpcion2))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(rbtnOpcion3))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(rbtnOpcion4))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(450, 450, 450)
+                .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(btnTerminarExamen, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(lblTiempo)
+                .addGap(1, 1, 1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addComponent(rbtnOpcion1)
+                .addGap(17, 17, 17)
+                .addComponent(rbtnOpcion2)
+                .addGap(17, 17, 17)
+                .addComponent(rbtnOpcion3)
+                .addGap(17, 17, 17)
+                .addComponent(rbtnOpcion4)
+                .addGap(17, 17, 17)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTerminarExamen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -684,7 +733,8 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         limpiar();
         inicializarObjetos();
         ExamenAsignadoDTO examen = cvContestarExamen.getExamenAsignado();
-        lblInstrucciones.setText(examen.getExamen().getInstrucciones());
+        txtaInstrucciones.setText(examen.getExamen().getInstrucciones());
+        txtaInstrucciones.setCaretPosition(INICIO_TEXT_AREA);
         contarReactivos(examen);
         iniciarBanderas();
         ordenarOpcionesReactivos();

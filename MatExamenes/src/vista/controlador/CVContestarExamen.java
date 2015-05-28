@@ -152,5 +152,8 @@ public class CVContestarExamen {
         examen.setCalificacion(calificacion[CALIFICACION]);
         return calificacion;
     }
-
+    
+    public long obtenerTiempoServidor(){
+        return contestarExamenDELEGATE.obtenerTiempoServidor();
+    }
 }

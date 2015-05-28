@@ -171,7 +171,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
 
             },
             new String [] {
-                "Nombre", "Apellido Paterno", "Apellido Materno", "Usuario", "Tipo Usuario"
+                "Apellido Paterno", "Apellido Materno", "Nombre", "Usuario", "Tipo Usuario"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -213,7 +213,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
 
         txtfNombre.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtfNombre.setNextFocusableComponent(btnBuscar);
-        txtfNombre.setPreferredSize(new java.awt.Dimension(100, 25));
+        txtfNombre.setPreferredSize(new java.awt.Dimension(100, 30));
         txtfNombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtfNombreKeyPressed(evt);

@@ -48,24 +48,12 @@ public class VistaHOME extends javax.swing.JPanel implements InterfaceVista {
         lblTitulo = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(800, 600));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("MatExámenes");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(148, 148, 148)
-                .addComponent(lblTitulo)
-                .addContainerGap(408, Short.MAX_VALUE))
-        );
+        add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 148, 800, -1));
     }// </editor-fold>//GEN-END:initComponents
 
 

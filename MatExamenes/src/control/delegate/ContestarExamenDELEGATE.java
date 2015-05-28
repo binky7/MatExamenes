@@ -92,4 +92,13 @@ public class ContestarExamenDELEGATE {
         return ok;
     }
 
+    public long obtenerTiempoServidor() {
+        long tiempo = 0;
+        try {
+            tiempo = Enlace.getPersistencia().obtenerTiempoServidor();
+        } catch (RemoteException | NotBoundException ex) {
+        }
+
+        return tiempo;
+    }
 }

@@ -284,7 +284,7 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
                         + "por enviar." + "\n" + "Re enviando",
                         "Respaldo examen", JOptionPane.INFORMATION_MESSAGE);
                 mostrarCalificacion(examen, alumno);
-            } else if (usuarioRespaldo && System.currentTimeMillis() < (fin + HOLGURA) && !contestado) {
+            } else if (usuarioRespaldo && cvContestarExamen.obtenerTiempoServidor() < (fin + HOLGURA) && !contestado) {
                 //El usuario que inicio es el mismo que tiene el respaldo,
                 //el tiempo actual es menor que el tiempo de terminación
                 //más la holgura y el examen no fue contestado.
@@ -295,7 +295,7 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
                     padre.mostrarVistaConEntidad(respaldo, Vista.ContestarExamen);
                     limpiar();
                 }
-            } else if (usuarioRespaldo && (System.currentTimeMillis() + HOLGURA) > fin && !contestado) {
+            } else if (usuarioRespaldo && (cvContestarExamen.obtenerTiempoServidor() + HOLGURA) > fin && !contestado) {
                 //El usuario que inicio es el mismo que tiene el respaldo,
                 //el tiempo actual más la holgura supera el tiempo de terminación y
                 //el examen no fue contestado.

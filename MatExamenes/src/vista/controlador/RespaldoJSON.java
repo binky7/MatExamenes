@@ -72,7 +72,7 @@ public class RespaldoJSON {
     /**
      * Contiene el nombre del archivo que se le dara al respaldo del examen.
      */
-    private static final String ARCHIVO_EXAMEN = "respaldoMatExamenes.me";
+    private static final String ARCHIVO_EXAMEN = "respaldoMatExamenes.data";
     /**
      * Indice de la lista de respuestas, utilizado cuando obtenemos el respaldo
      * en una lista.

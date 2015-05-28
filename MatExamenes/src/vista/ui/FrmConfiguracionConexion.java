@@ -195,9 +195,19 @@ public class FrmConfiguracionConexion extends javax.swing.JFrame implements Focu
 
         txtfIp.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtfIp.setPreferredSize(new java.awt.Dimension(100, 30));
+        txtfIp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfIpKeyTyped(evt);
+            }
+        });
 
         txtfPuerto.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtfPuerto.setPreferredSize(new java.awt.Dimension(100, 30));
+        txtfPuerto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtfPuertoKeyTyped(evt);
+            }
+        });
 
         btnGuardar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/guardar24.png"))); // NOI18N
@@ -307,6 +317,34 @@ public class FrmConfiguracionConexion extends javax.swing.JFrame implements Focu
                     JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    /**
+     * Método llamado cuando se teclea en el campo de texto de la ip.<br>
+     * Si lo tecleado no fue un número o un punto(.), no se escribira.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
+    private void txtfIpKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfIpKeyTyped
+        char tecla = evt.getKeyChar();
+        if (tecla != '.') {
+            if (!Validador.esNumero(String.valueOf(tecla))) {
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_txtfIpKeyTyped
+
+    /**
+     * Método llamado cuando se teclea en el campo de texto del puerto.<br>
+     * Si lo tecleado no fue un número, no se escribira.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
+    private void txtfPuertoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfPuertoKeyTyped
+        char tecla = evt.getKeyChar();
+        if (!Validador.esNumero(String.valueOf(tecla))) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtfPuertoKeyTyped
 
     @Override
     public void focusGained(FocusEvent e) {
