@@ -161,11 +161,15 @@ public class FrmConfiguracionConexion extends javax.swing.JFrame implements Focu
     public void actualizarRespaldoConexion() {
         try {
             mapRespaldo = respaldo.obtenerIpPuerto();
+            txtfIp.setText(mapRespaldo.get(RespaldoJSON.IP));
+            txtfPuerto.setText(mapRespaldo.get(RespaldoJSON.PUERTO));
         } catch (FileNotFoundException ex) {
         } catch (IOException ex) {
+        } catch (NullPointerException ex) {
+            txtfIp.setText(RespaldoJSON.LOCAL_HOST);
+            txtfPuerto.setText(RespaldoJSON.PUERTO_DEFECTO);
         }
-        txtfIp.setText(mapRespaldo.get(RespaldoJSON.IP));
-        txtfPuerto.setText(mapRespaldo.get(RespaldoJSON.PUERTO));
+
     }
 
     /**

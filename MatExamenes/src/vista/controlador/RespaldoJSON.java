@@ -67,8 +67,7 @@ public class RespaldoJSON {
     /**
      * Contiene la ruta por defecto donde se guardaran los archivos de respaldo.
      */
-    private static final String RUTA_ARCHIVO = System.getProperty("user.home")
-            + System.getProperty("file.separator") + "Documents";
+    private static String rutaArchivo;
     /**
      * Contiene el nombre del archivo que se le dara al respaldo del examen.
      */
@@ -103,11 +102,11 @@ public class RespaldoJSON {
      * Puerto por defecto a establecer cuando no se encuentra el archivo de
      * respaldo configuración de conexión.
      */
-    private static final String PUERTO_DEFECTO = "9000";
+    public static final String PUERTO_DEFECTO = "9000";
     /**
      * Ip del localhost.
      */
-    private static final String LOCAL_HOST = "127.0.0.1";
+    public static final String LOCAL_HOST = "127.0.0.1";
     /**
      * ArrayList Usado para guardar los objetos ExamenAsignadoPK y una List de
      * las respuestas de los alumnos.
@@ -128,6 +127,15 @@ public class RespaldoJSON {
     public RespaldoJSON() {
         alumnoJSON = new JSONObject();
         respuestasJSON = new JSONArray();
+        String home = System.getProperty("user.home");
+        String dir = "MatExamenes";
+        String separador = System.getProperty("file.separator");
+        File file = new File(home + separador + dir);
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        rutaArchivo = home + separador + dir;
+
     }
 
     /**
@@ -149,7 +157,7 @@ public class RespaldoJSON {
         alumnoJSON.put(CONTESTADO, String.valueOf(false));
         alumnoJSON.put(RESPUESTAS, respuestasJSON);
 
-        File file = new File(RUTA_ARCHIVO, ARCHIVO_EXAMEN);
+        File file = new File(rutaArchivo, ARCHIVO_EXAMEN);
         if (file.exists()) {
             file.delete();
         }
@@ -175,7 +183,7 @@ public class RespaldoJSON {
         respuestasJSON.set(numeroReactivo, respuesta);
         alumnoJSON.put(RESPUESTAS, respuestasJSON);
         File file;
-        file = new File(RUTA_ARCHIVO, ARCHIVO_EXAMEN);
+        file = new File(rutaArchivo, ARCHIVO_EXAMEN);
         if (file.exists()) {
             file.delete();
         }
@@ -198,7 +206,7 @@ public class RespaldoJSON {
     public boolean existeRespaldo() {
         boolean ok = false;
         File file;
-        file = new File(RUTA_ARCHIVO, ARCHIVO_EXAMEN);
+        file = new File(rutaArchivo, ARCHIVO_EXAMEN);
         if (file.exists()) {
             ok = true;
             try {
@@ -218,8 +226,8 @@ public class RespaldoJSON {
      */
     private void cargarRespaldo() throws IOException {
         File file;
-        file = new File(RUTA_ARCHIVO, ARCHIVO_EXAMEN);
-        String datos = "";
+        file = new File(rutaArchivo, ARCHIVO_EXAMEN);
+        String datos;
 
         respaldo = new ArrayList();
         JSONParser parse = new JSONParser();
@@ -275,7 +283,7 @@ public class RespaldoJSON {
      */
     public void eliminarRespaldo() {
         File file;
-        file = new File(RUTA_ARCHIVO, ARCHIVO_EXAMEN);
+        file = new File(rutaArchivo, ARCHIVO_EXAMEN);
         file.delete();
     }
 
@@ -297,7 +305,7 @@ public class RespaldoJSON {
     public void setContestado() throws IOException {
         alumnoJSON.put(CONTESTADO, String.valueOf(true));
         File file;
-        file = new File(RUTA_ARCHIVO, ARCHIVO_EXAMEN);
+        file = new File(rutaArchivo, ARCHIVO_EXAMEN);
 
         if (file.exists()) {
             file.delete();
@@ -321,7 +329,7 @@ public class RespaldoJSON {
      */
     public void actualizarIpPuerto(String ip, String puerto) throws IOException {
         File file;
-        file = new File(RUTA_ARCHIVO, ARCHIVO_CONEXION);
+        file = new File(rutaArchivo, ARCHIVO_CONEXION);
         if (file.exists()) {
             file.delete();
         }
@@ -351,7 +359,7 @@ public class RespaldoJSON {
     public Map<String, String> obtenerIpPuerto() throws FileNotFoundException, IOException {
         Map<String, String> map = new HashMap<>();
 
-        File file = new File(RUTA_ARCHIVO, ARCHIVO_CONEXION);
+        File file = new File(rutaArchivo, ARCHIVO_CONEXION);
 
         if (!file.exists()) {
             actualizarIpPuerto(LOCAL_HOST, PUERTO_DEFECTO);

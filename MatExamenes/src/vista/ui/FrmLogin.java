@@ -55,7 +55,8 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
     private CVLogin cvLogin;
 
     /**
-     * JFrame usada para combiar la configuración de la conexión con el servidor.
+     * JFrame usada para combiar la configuración de la conexión con el
+     * servidor.
      */
     private FrmConfiguracionConexion configuracion;
 
@@ -112,11 +113,15 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
         Map<String, String> map = null;
         try {
             map = respaldo.obtenerIpPuerto();
+            Enlace.setIp(map.get(RespaldoJSON.IP));
+            Enlace.setPuerto(Integer.parseInt(map.get(RespaldoJSON.PUERTO)));
         } catch (FileNotFoundException ex) {
         } catch (IOException ex) {
+        } catch (NullPointerException ex) {
+            Enlace.setIp(RespaldoJSON.LOCAL_HOST);
+            Enlace.setPuerto(Integer.parseInt(RespaldoJSON.PUERTO_DEFECTO));
         }
-        Enlace.setIp(map.get(RespaldoJSON.IP));
-        Enlace.setPuerto(Integer.parseInt(map.get(RespaldoJSON.PUERTO)));
+        System.out.println(System.getProperty("os.name"));
     }
 
     /**
@@ -297,7 +302,7 @@ public class FrmLogin extends javax.swing.JFrame implements KeyListener {
             } else if (error == 1) {
                 JOptionPane.showMessageDialog(this, "Password Incorrecto",
                         "Login", JOptionPane.ERROR_MESSAGE);
-            } else if(error == 0){
+            } else if (error == 0) {
                 JOptionPane.showMessageDialog(this, "Usuario no existente",
                         "Login", JOptionPane.ERROR_MESSAGE);
             } else {
