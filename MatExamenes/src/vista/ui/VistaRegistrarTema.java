@@ -70,13 +70,21 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
     */
     private javax.swing.JButton btnCancelar;
     /**
+    * Botón para guardar el tema.
+    */
+    private javax.swing.JButton btnGuardar;
+    /**
+    * ComboBox para los bloques (del 1 al 5).
+    */
+    private javax.swing.JComboBox cbBloques;
+    /**
     * ComboBox para los cursos.
     */
     private javax.swing.JComboBox cbCursos;
     /**
-    * Botón para guardar el tema.
+    * Label para los bloques.
     */
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel lblBloque;
     /**
     * Label para los cursos.
     */
@@ -114,7 +122,7 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
      */
     private final String MENSAJE_DATOS_INCORRECTOS = "No se puede completar la "
             + "operación, los siguientes campos necesitan ser corregidos:\n"
-            + "* Nombre del curso.";
+            + "* Nombre del tema.";
 
     /**
      * Crea un objeto VistaRegistrarTema e inicializa sus atributos.
@@ -161,21 +169,17 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
     private TemaDTO encapsularTema() {
         TemaDTO tema = null;
 
-        //Validar campos
+        //Se valida que el campo del nombre del tema no esté vacío.
         String txtNombre = txtfNombreTema.getText();
-        if (Validador.esCurso(txtNombre)) {
-            //Crear objeto tema
+        if (!Validador.estaVacio(txtNombre)) {
+            //Si el campo del nombre del tema no está vacío se crea
+            //el nuevo objeto TemaDTO.
             tema = new TemaDTO();
             tema.setNombre(txtNombre);
             mostrarLabelEstado(txtfNombreTema, true, "");
         } else {
-            if (Validador.estaVacio(txtNombre)) {
-                mostrarLabelEstado(txtfNombreTema, false,
-                        "No ingrese datos vacíos.");
-            } else {
-                mostrarLabelEstado(txtfNombreTema, false,
-                        "Ingrese sólo letras y/o números.");
-            }
+            mostrarLabelEstado(txtfNombreTema, false,
+                    "No ingrese datos vacíos.");
         }
 
         return tema;
@@ -233,7 +237,8 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
             } else {
                 label.setIcon(ICONO_MAL);
             }
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+        } catch (NoSuchFieldException | SecurityException | 
+                IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(VistaRegistrarTema.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -245,7 +250,7 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
         txtfNombreTema = new javax.swing.JTextField();
         lblNombreTema = new javax.swing.JLabel();
         lblTitulo = new javax.swing.JLabel();
@@ -253,14 +258,16 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
         cbCursos = new javax.swing.JComboBox();
         btnCancelar = new javax.swing.JButton();
         lblEstadoNombreTema = new javax.swing.JLabel();
+        lblBloque = new javax.swing.JLabel();
+        cbBloques = new javax.swing.JComboBox();
 
         setPreferredSize(new java.awt.Dimension(800, 600));
 
-        jButton1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/guardar24.png"))); // NOI18N
-        jButton1.setText("Guardar");
-        jButton1.setPreferredSize(new java.awt.Dimension(115, 30));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/guardar24.png"))); // NOI18N
+        btnGuardar.setText("Guardar");
+        btnGuardar.setPreferredSize(new java.awt.Dimension(115, 30));
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 guardarTema(evt);
             }
@@ -295,30 +302,45 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
 
         lblEstadoNombreTema.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
 
+        lblBloque.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblBloque.setText("Seleccione un bloque:");
+
+        cbBloques.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cbBloques.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5" }));
+        cbBloques.setPreferredSize(new java.awt.Dimension(80, 30));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(179, 179, 179)
-                .addComponent(lblNombreTema)
-                .addGap(38, 38, 38)
-                .addComponent(txtfNombreTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(lblEstadoNombreTema))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(179, 179, 179)
-                .addComponent(lblCursos)
-                .addGap(27, 27, 27)
-                .addComponent(cbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(498, 498, 498)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(498, 498, 498)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(165, 165, 165)
+                        .addComponent(lblBloque)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbBloques, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(168, 168, 168)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblNombreTema)
+                            .addComponent(lblCursos))
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtfNombreTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(lblEstadoNombreTema)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -327,20 +349,21 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
                 .addComponent(lblTitulo)
                 .addGap(66, 66, 66)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(13, 13, 13)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtfNombreTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblNombreTema))
-                    .addComponent(txtfNombreTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblEstadoNombreTema))
-                .addGap(100, 100, 100)
+                .addGap(72, 72, 72)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCursos))
+                .addGap(67, 67, 67)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblBloque)
+                    .addComponent(cbBloques, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(113, 113, 113)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addComponent(lblCursos))
-                    .addComponent(cbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(172, 172, 172)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -353,25 +376,27 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
      */
     private void guardarTema(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarTema
         //Guardar Tema
-        //Encapsular objeto
+        //Encapsular objeto con los datos obtenidos de la interfaz.
         TemaDTO tema = encapsularTema();
         if (tema == null) {
-            JOptionPane.showMessageDialog(this, MENSAJE_DATOS_INCORRECTOS, "Advertencia",
-                    JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, MENSAJE_DATOS_INCORRECTOS, 
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
         } else {
-            //Verifica si el nombre ingresado ya existe.
+            //Verifica si el nombre de tema ingresado ya existe.
             if (controlVista.verificarExistencia(tema.getNombre())) {
                 mostrarLabelEstado(txtfNombreTema, false,
                         "Ya existe un tema con ese nombre.");
 
-                JOptionPane.showMessageDialog(this, MENSAJE_DATOS_INCORRECTOS, "Advertencia",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, MENSAJE_DATOS_INCORRECTOS, 
+                        "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
                 int indexCurso = cbCursos.getSelectedIndex();
-                Integer id = controlVista.guardarTema(tema, indexCurso);
+                int bloque = Integer.parseInt(cbBloques.getSelectedItem().toString());
+                Integer id = controlVista.guardarTema(tema, indexCurso, bloque);
 
                 if (id == null) {
-                    JOptionPane.showMessageDialog(this, "No se pudo guardar el curso.", "Error",
+                    JOptionPane.showMessageDialog(this, 
+                            "No se pudo guardar el curso.", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "Registro completo.");
@@ -398,7 +423,6 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
             limpiar();
         }
     }//GEN-LAST:event_btnCancelarActionPerformed
-
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
@@ -486,19 +510,15 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
         JTextField src = (JTextField) e.getSource();
 
         String nombreTema = src.getText();
-        if (!Validador.esCurso(nombreTema)) {
-            if (Validador.estaVacio(nombreTema)) {
-                mostrarLabelEstado(txtfNombreTema, false,
-                        "No ingrese datos vacíos.");
-            } else {
-                mostrarLabelEstado(txtfNombreTema, false,
-                        "Ingrese sólo letras y/o números.");
-            }
+        if (Validador.estaVacio(nombreTema)) {
+            mostrarLabelEstado(txtfNombreTema, false,
+                    "No ingrese datos vacíos.");
         } else {
             boolean ok = controlVista.verificarExistencia(nombreTema);
 
             if (ok) {
-                mostrarLabelEstado(txtfNombreTema, false, "Ya existe un tema con ese nombre.");
+                mostrarLabelEstado(txtfNombreTema, false, 
+                        "Ya existe un tema con ese nombre.");
             } else {
                 mostrarLabelEstado(txtfNombreTema, true, "");
             }
@@ -523,11 +543,13 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
                 System.out.println(ex);
             }
 
-            if (!Validador.validarLongitud(Validador.LONGITUD_TEMA, txtfNombreTema.getText() + portapapeles)) {
+            if (!Validador.validarLongitud(Validador.LONGITUD_TEMA, 
+                    txtfNombreTema.getText() + portapapeles)) {
                 e.consume();
                 Toolkit.getDefaultToolkit().beep();
             }
-        } else if (!Validador.validarLongitud(Validador.LONGITUD_TEMA, txtfNombreTema.getText())) {
+        } else if (!Validador.validarLongitud(Validador.LONGITUD_TEMA, 
+                txtfNombreTema.getText())) {
             e.consume();
             Toolkit.getDefaultToolkit().beep();
         }
@@ -551,7 +573,8 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
                 System.out.println(ex);
             }
 
-            if (!Validador.validarLongitud(Validador.LONGITUD_TEMA, txtfNombreTema.getText() + portapapeles)) {
+            if (!Validador.validarLongitud(Validador.LONGITUD_TEMA, 
+                    txtfNombreTema.getText() + portapapeles)) {
                 e.consume();
                 Toolkit.getDefaultToolkit().beep();
             }

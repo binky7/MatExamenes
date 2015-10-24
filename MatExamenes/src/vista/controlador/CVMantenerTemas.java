@@ -23,6 +23,7 @@ import control.delegate.MantenerTemasDELEGATE;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.dto.CursoDTO;
+import modelo.dto.CursoTemaDTO;
 import modelo.dto.TemaDTO;
 
 /**
@@ -78,24 +79,27 @@ public class CVMantenerTemas {
      * @param tema El tema a guardar en la base de datos.
      * @param indexCurso Posición del curso al que pertenece el tema a guardar
      * en la lista de cursos.
+     * @param bloque El bloque al que pertenece el tema en el curso.
      * @return Regresa el id del tema si se guardó exitósamente. Regresa null si
      * hubo problemas al guardar el tema.
      */
-    public Integer guardarTema(TemaDTO tema, int indexCurso) {
+    public Integer guardarTema(TemaDTO tema, int indexCurso, int bloque) {
         Integer id = mantenerTemasDELEGATE.guardarTema(tema);
 
         if (id != null) {
+            tema.setId(id);
             CursoDTO objCurso = listaCursos.get(indexCurso);
 
-            //Se busca la lista de temas pertenecientes al curso seleccionado
-            //para agregar el tema a la lista.
-            List<TemaDTO> temasDeCurso = obtenerTemasDeCurso(indexCurso);
-            if (temasDeCurso == null || temasDeCurso.isEmpty()) {
-                temasDeCurso = new ArrayList<TemaDTO>();
-            }
-            tema.setId(id);
-            temasDeCurso.add(tema);
-            objCurso.setTemas(temasDeCurso);
+            //Obtiene el curso completo con todas sus relaciones para poder
+            //asociar el nuevo tema creado.
+            objCurso = mantenerTemasDELEGATE.obtenerCurso(objCurso.getId());
+
+            CursoTemaDTO nuevoTema = new CursoTemaDTO();
+            nuevoTema.setCurso(objCurso);
+            nuevoTema.setTema(tema);
+            nuevoTema.setBloque(bloque);
+            objCurso.addTema(nuevoTema);
+
             mantenerTemasDELEGATE.actualizarCurso(objCurso);
         }
         return id;
@@ -117,20 +121,23 @@ public class CVMantenerTemas {
     }
 
     /**
-     * Obtiene los temas del curso seleccionado.
+     * Obtiene los temas del curso seleccionado dependiendo del bloque
+     * seleccionado.
      *
      * @param indexCurso Posición del curso en la lista de cursos del cual se
      * quiere obtener los temas.
-     * @return Regresa lista de temas pertenecientes al curso seleccionado.
+     * @param bloque El bloque seleccionado.
+     * @return Regresa lista de temas pertenecientes al curso seleccionado
+     * dependiendo del bloque seleccionado.
      * Regresa null si el curso seleccionado no tiene temas.
      */
-    public List<TemaDTO> obtenerTemasDeCurso(int indexCurso) {
+    public List<TemaDTO> obtenerTemasDeCurso(int indexCurso, int bloque) {
         List<TemaDTO> listaTemasBusqueda = null;
 
         if (listaCursos != null && !listaCursos.isEmpty()) {
             CursoDTO objCurso = listaCursos.get(indexCurso);
             listaTemasBusqueda = mantenerTemasDELEGATE
-                    .obtenerTemasDeCurso(objCurso);
+                    .obtenerTemasDeCurso(objCurso, bloque);
             this.listaTemas = listaTemasBusqueda;
             temaSinAsignar = false;
         }
@@ -165,7 +172,7 @@ public class CVMantenerTemas {
      * @return Regresa verdadero si la modificación del tema se realizó
      * exitósamente. Regresa falso si hubo problemas al modificar el tema.
      */
-    public boolean modificarTema(TemaDTO tema, int indexCurso) {
+    public boolean modificarTema(TemaDTO tema, int indexCurso, int bloque) {
         boolean ok;
 
         if (this.temaSeleccionado != null) {
@@ -175,38 +182,82 @@ public class CVMantenerTemas {
             if (ok) {
                 CursoDTO objCurso = listaCursos.get(indexCurso);
                 if (this.cursoSeleccionado != null) {
+                    //Verificar si el curso seleccionado en la vista es el mismo
+                    //curso que originalmente tenía el tema a modificar.
                     if (objCurso.getId() != this.cursoSeleccionado.getId()) {
-                    //Cambió el curso.
+                    //El curso seleccionado cambió.
 
                         //Eliminar la relación que existía entre el tema y el curso
                         //anterior.
-                        List<TemaDTO> temasDeCurso
-                                = obtenerTemasDeCurso(listaCursos.indexOf(this.cursoSeleccionado));
+                        List<CursoTemaDTO> temasDeCurso
+                                = this.cursoSeleccionado.getTemas();
+                        CursoTemaDTO temaEliminado = null;
                         if (temasDeCurso != null && !temasDeCurso.isEmpty()) {
-                            temasDeCurso.remove(tema);
+                            //Si la lista de temas no está vacía se hace un
+                            //recorrido por toda la lista de temas para encontrar
+                            //el tema que se eliminará de la relación.
+                            for (CursoTemaDTO j : temasDeCurso) {
+                                //Durante el ciclo se pregunta si el id del tema
+                                //actual en el ciclo es igual al id del tema
+                                //del cual se quiere eliminar la relación.
+                                if (j.getTema().getId() == tema.getId()) {
+                                    //Si se encuentra el tema con el id buscado
+                                    //se guarda para ser posteriormente eliminado.
+                                    temaEliminado = j;
+                                }
+                            }
+                            temasDeCurso.remove(temaEliminado);
                             this.cursoSeleccionado.setTemas(temasDeCurso);
                             mantenerTemasDELEGATE.actualizarCurso(this.cursoSeleccionado);
                         }
 
                         //Crear la relación entre el tema y el nuevo curso que
                         //se le asignó.
-                        temasDeCurso = obtenerTemasDeCurso(indexCurso);
-                        if (temasDeCurso == null || temasDeCurso.isEmpty()) {
-                            temasDeCurso = new ArrayList<TemaDTO>();
-                        }
-                        temasDeCurso.add(tema);
-                        objCurso.setTemas(temasDeCurso);
+                        objCurso = mantenerTemasDELEGATE.obtenerCurso(objCurso.getId());
+                        CursoTemaDTO nuevoTema = new CursoTemaDTO();
+                        nuevoTema.setCurso(objCurso);
+                        nuevoTema.setTema(tema);
+                        nuevoTema.setBloque(bloque);
+                        objCurso.addTema(nuevoTema);
                         mantenerTemasDELEGATE.actualizarCurso(objCurso);
+                    } else {
+                        //El curso no cambió, por lo que se verifica si el
+                        //bloque cambió o no.
+                        int bloqueTemaSeleccionado = 0;
+                        List<CursoTemaDTO> temasDeCurso
+                                = this.cursoSeleccionado.getTemas();
+                        for (CursoTemaDTO j : temasDeCurso) {
+                            if (j.getTema().getId() == tema.getId()) {
+                                //Si se encuentra el tema con el id buscado
+                                //se guarda su bloque para ser posteriormente
+                                //verificar si cambió o no.
+                                bloqueTemaSeleccionado = j.getBloque();
+                            }
+                        }
+
+                        //Si el bloque del tema a modificar es diferente del
+                        //seleccionado en la vista, significa que el bloque
+                        //cambió y se debe actualizar.
+                        if (bloqueTemaSeleccionado != bloque) {
+                            for (CursoTemaDTO j : temasDeCurso) {
+                                if (j.getTema().getId() == tema.getId()) {
+                                    j.setBloque(bloque);
+                                }
+                            }
+                            this.cursoSeleccionado.setTemas(temasDeCurso);
+                            mantenerTemasDELEGATE.actualizarCurso(this.cursoSeleccionado);
+                        }
                     }
                 } else {
                     //Crear la relación entre el tema y el nuevo curso que
                     //se le asignó.
-                    List<TemaDTO> temasDeCurso = obtenerTemasDeCurso(indexCurso);
-                    if (temasDeCurso == null || temasDeCurso.isEmpty()) {
-                        temasDeCurso = new ArrayList<TemaDTO>();
-                    }
-                    temasDeCurso.add(tema);
-                    objCurso.setTemas(temasDeCurso);
+                    objCurso = listaCursos.get(indexCurso);
+                    objCurso = mantenerTemasDELEGATE.obtenerCurso(objCurso.getId());
+                    CursoTemaDTO nuevoTema = new CursoTemaDTO();
+                    nuevoTema.setCurso(objCurso);
+                    nuevoTema.setTema(tema);
+                    nuevoTema.setBloque(bloque);
+                    objCurso.addTema(nuevoTema);
                     mantenerTemasDELEGATE.actualizarCurso(objCurso);
                 }
             }

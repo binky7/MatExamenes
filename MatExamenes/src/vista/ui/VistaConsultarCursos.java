@@ -264,15 +264,15 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
     private void eliminarCurso(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarCurso
         // TODO add your handling code here:
         if (!lstCursos.isSelectionEmpty()) {
-            int banEliminar = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                    + "desea eliminar el curso?", "Eliminación", JOptionPane.YES_NO_OPTION);
+            int banEliminar = JOptionPane.showConfirmDialog(this, "Este curso "
+                    + "podría tener temas asociados ¿Está seguro de que "
+                    + "desea eliminarlo?", "Eliminación", JOptionPane.YES_NO_OPTION);
             if (banEliminar == 0) {
                 int indexCurso = lstCursos.getSelectedIndex();
                 boolean ok = controlVista.eliminarCurso(indexCurso);
 
                 if (ok) {
                     ((DefaultListModel) lstCursos.getModel()).remove(indexCurso);
-                    JOptionPane.showMessageDialog(this, "Curso eliminado.");
                 } else {
                     JOptionPane.showMessageDialog(this, "No se pudo eliminar el "
                             + "curso.", "Error", JOptionPane.ERROR_MESSAGE);

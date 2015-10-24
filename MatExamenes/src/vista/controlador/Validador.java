@@ -40,7 +40,7 @@ public class Validador {
     /**
      * Longitud máxima del tema
      */
-    public static final int LONGITUD_TEMA = 50;
+    public static final int LONGITUD_TEMA = 200;
     /**
      * Longitud máxima del nombre del reactivo
      */
@@ -242,6 +242,45 @@ public class Validador {
         pattern = Pattern.compile(EXPRESION_IP);
         matcher = pattern.matcher(ip);
         return matcher.matches();
+    }
+    
+    /**
+     * Elimina las letras que contengan acentos en una cadena de caracteres 
+     * dada.
+     * 
+     * @param cadena cadena de caracteres de la cual se eliminarán los acentos.
+     * @return Cadena de caracteres sin letras con acentos.
+     */
+    public static String quitarAcentos(String cadena) {
+        String noAcentos = "";
+
+        char caracteres[] = cadena.toLowerCase().toCharArray();
+
+        for (int i = 0;i<caracteres.length;i++) {
+            switch(caracteres[i]){
+                case 'á':
+                    caracteres[i] = 'a';
+                    break;
+                case 'é':
+                    caracteres[i] = 'e';
+                    break;
+                case 'í':
+                    caracteres[i] = 'i';
+                    break;
+                case 'ó':
+                    caracteres[i] = 'o';
+                    break;
+                case 'ú':
+                    caracteres[i] = 'u';
+                    break;
+                default:
+                    
+            }
+        }
+        
+        noAcentos = String.valueOf(caracteres);
+
+        return noAcentos;
     }
 
 }

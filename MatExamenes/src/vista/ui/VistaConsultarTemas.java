@@ -19,6 +19,8 @@
  */
 package vista.ui;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -56,6 +58,10 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     /**
+    * Botón para buscar los temas.
+    */
+    private javax.swing.JButton btnBuscar;
+    /**
     * Botón para cancelar la consulta de temas.
     */
     private javax.swing.JButton btnCancelar;
@@ -67,8 +73,19 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
     * Botón para modificar un tema seleccionado.
     */
     private javax.swing.JButton btnModificar;
-    private javax.swing.JScrollPane jScrollPane1;
+    /**
+    * ComboBox para mostrar los bloques.
+    */
+    private javax.swing.JComboBox cbBloques;
+    /**
+    * ComboBox para mostrar los cursos.
+    */
+    private javax.swing.JComboBox cbCursos;
     private javax.swing.JScrollPane jScrollPane2;
+    /**
+    * Label para los bloques.
+    */
+    private javax.swing.JLabel lblBloques;
     /**
     * Label para los cursos.
     */
@@ -82,10 +99,6 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
     */
     private javax.swing.JLabel lblTitulo;
     /**
-    * Lista para mostrar los cursos.
-    */
-    private javax.swing.JList lstCursos;
-    /**
     * Lista para mostrar los temas de un curso.
     */
     private javax.swing.JList lstTemas;
@@ -98,23 +111,17 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         initComponents();
         this.addAncestorListener(this);
         //Para manipular las listas
-        lstCursos.setModel(new DefaultListModel());
         lstTemas.setModel(new DefaultListModel());
 
-        //Solo seleccionar uno a la vez
-        lstCursos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        //Sólo seleccionar un tema de la lista a la vez
         lstTemas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         //Manejador de eventos para curso
-        lstCursos.addListSelectionListener(new ListSelectionListener() {
+        cbCursos.addItemListener(new ItemListener() {
 
             @Override
-            public void valueChanged(ListSelectionEvent e) {
-                //Para saber si se hizo click a la lista
-                if (!e.getValueIsAdjusting()) {
-                    consultarTemas();
-                }
+            public void itemStateChanged(ItemEvent e) {
+                verificarCursoSeleccionado();
             }
-
         });
     }
 
@@ -157,49 +164,17 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
     }
 
     /**
-     * Obtiene los cursos almacenados en la base de datos. Se llama
-     * automaticamente después de seleccionar un curso.
-     */
-    private void consultarTemas() {
-
-        List<TemaDTO> temas;
-
-        if (lstCursos.getSelectedIndex() == -1) {
-            //Evitar que ocurra algo al cambiar de panel
-            return;
-        }
-
-        //Traer los temas sin asignar
-        if (lstCursos.getSelectedValue().toString().equals("Otros")) {
-            temas = controlVista.obtenerTemasSinAsignar();
-        } else {
-
-            temas = controlVista.obtenerTemasDeCurso(lstCursos
-                    .getSelectedIndex());
-        }
-        if (temas != null && !temas.isEmpty()) {
-            mostrarTemas(temas);
-        } else {
-            JOptionPane.showMessageDialog(this, "El curso seleccionado no tiene temas.",
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
-            ((DefaultListModel) lstTemas.getModel()).clear();
-        }
-    }
-
-    /**
      * Muestra los cursos en la vista.
      *
      * @param cursos Lista de cursos para mostrar en la vista.
      */
     private void mostrarCursos(List<CursoDTO> cursos) {
-        DefaultListModel listModel = (DefaultListModel) lstCursos.getModel();
         DefaultListModel modeloTemas = (DefaultListModel) lstTemas.getModel();
         modeloTemas.clear();
 
-        listModel.clear();
         //Mostrar cada curso, no remover, si no buscar por medio del for
         for (CursoDTO curso : cursos) {
-            listModel.addElement(curso.getNombre());
+            cbCursos.addItem(curso.getNombre());
         }
     }
 
@@ -219,6 +194,27 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
     }
 
     /**
+     * Verifica cuál curso se seleccionó y si el seleccionado fue "Otros"
+     * desactiva el ComboBox de bloques ya que son temas que no están asignados
+     * a ningún curso.
+     */
+    private void verificarCursoSeleccionado() {
+        String cursoSeleccionado = cbCursos.getSelectedItem().toString();
+        if (cursoSeleccionado.compareToIgnoreCase("Otros") == 0) {
+            //Si el curso seleccionado es "Otros" se inhabilita el ComboBox
+            //de bloques.
+            cbBloques.setEnabled(false);
+        } else {
+            if (!cbBloques.isEnabled()) {
+                //Si el curso seleccionado es diferente de "Otros" 
+                //se verifica si el ComboBox de bloques está inhabilitado
+                //para habilitarlo.
+                cbBloques.setEnabled(true);
+            }
+        }
+    }
+
+    /**
      * Inicializa los atributos gráficos y los coloca en su posición.
      */
     @SuppressWarnings("unchecked")
@@ -228,13 +224,15 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         lblTitulo = new javax.swing.JLabel();
         lblCursos = new javax.swing.JLabel();
         lblTemas = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        lstCursos = new javax.swing.JList();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstTemas = new javax.swing.JList();
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        cbCursos = new javax.swing.JComboBox();
+        lblBloques = new javax.swing.JLabel();
+        cbBloques = new javax.swing.JComboBox();
+        btnBuscar = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(800, 579));
 
@@ -243,14 +241,11 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         lblTitulo.setText("Consultar Temas");
 
         lblCursos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblCursos.setText("Cursos");
+        lblCursos.setText("Cursos:");
 
         lblTemas.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblTemas.setText("Temas");
-
-        lstCursos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(lstCursos);
-        lstCursos.getAccessibleContext().setAccessibleName("");
+        lblTemas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTemas.setText("Temas:");
 
         lstTemas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(lstTemas);
@@ -285,33 +280,59 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
             }
         });
 
+        cbCursos.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cbCursos.setPreferredSize(new java.awt.Dimension(155, 25));
+
+        lblBloques.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblBloques.setText("Bloques:");
+
+        cbBloques.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cbBloques.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5" }));
+        cbBloques.setPreferredSize(new java.awt.Dimension(80, 25));
+
+        btnBuscar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/buscar24_2.png"))); // NOI18N
+        btnBuscar.setText("Buscar");
+        btnBuscar.setPreferredSize(new java.awt.Dimension(99, 30));
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                consultarTemas(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 790, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(651, 651, 651)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(62, 62, 62)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGap(39, 39, 39)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCursos)
+                            .addComponent(cbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblBloques)
+                            .addComponent(cbBloques, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTemas, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(93, 93, 93)
+                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(143, 143, 143))
             .addGroup(layout.createSequentialGroup()
-                .addGap(175, 175, 175)
-                .addComponent(lblCursos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblTemas)
-                .addGap(237, 237, 237))
+                .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -319,13 +340,20 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
                 .addGap(36, 36, 36)
                 .addComponent(lblTitulo)
                 .addGap(48, 48, 48)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCursos)
-                    .addComponent(lblTemas))
+                .addComponent(lblTemas)
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblCursos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51)
+                        .addComponent(lblBloques)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbBloques, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(57, 57, 57)
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -401,10 +429,36 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         limpiar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    /**
+     * Obtiene los temas almacenados en la base de datos dependiendo del curso y
+     * bloque que se haya seleccionado.
+     *
+     * @param evt Objeto que contiene información del evento.
+     */
+    private void consultarTemas(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarTemas
+        // TODO add your handling code here:
+        List<TemaDTO> temas;
+
+        //Si el curso seleccionado es "Otros", traer los temas sin asignar
+        if (cbCursos.getSelectedItem().toString().equals("Otros")) {
+            temas = controlVista.obtenerTemasSinAsignar();
+        } else {
+            int indexCurso = cbCursos.getSelectedIndex();
+            int bloque = Integer.parseInt(cbBloques.getSelectedItem().toString());
+            temas = controlVista.obtenerTemasDeCurso(indexCurso, bloque);
+        }
+        if (temas != null && !temas.isEmpty()) {
+            mostrarTemas(temas);
+        } else {
+            JOptionPane.showMessageDialog(this, "El curso seleccionado no tiene temas.",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+            ((DefaultListModel) lstTemas.getModel()).clear();
+        }
+    }//GEN-LAST:event_consultarTemas
+
     @Override
     public void limpiar() {
         //Limpiar las listas
-        ((DefaultListModel) lstCursos.getModel()).clear();
         ((DefaultListModel) lstTemas.getModel()).clear();
         //Liberar memoria dto
         controlVista.liberarMemoriaConsultar();
@@ -425,7 +479,7 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
                     "Advertencia", JOptionPane.WARNING_MESSAGE);
             padre.mostrarVista(Vista.HOME);
         }
-        ((DefaultListModel) lstCursos.getModel()).addElement("Otros");
+        cbCursos.addItem("Otros");
     }
 
     @Override

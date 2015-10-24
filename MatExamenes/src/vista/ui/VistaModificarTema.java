@@ -72,9 +72,17 @@ public class VistaModificarTema extends javax.swing.JPanel implements
     */
     private javax.swing.JButton btnGuardar;
     /**
+    * ComboBox para mostrar los bloques.
+    */
+    private javax.swing.JComboBox cbBloques;
+    /**
     * ComboBox para los cursos.
     */
     private javax.swing.JComboBox cbCursos;
+    /**
+    * Label para los bloques.
+    */
+    private javax.swing.JLabel lblBloques;
     /**
     * Label para los cursos.
     */
@@ -265,6 +273,8 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         lblCursos = new javax.swing.JLabel();
         cbCursos = new javax.swing.JComboBox();
         lblEstadoNombreTema = new javax.swing.JLabel();
+        lblBloques = new javax.swing.JLabel();
+        cbBloques = new javax.swing.JComboBox();
 
         setPreferredSize(new java.awt.Dimension(800, 579));
 
@@ -307,6 +317,13 @@ public class VistaModificarTema extends javax.swing.JPanel implements
 
         lblEstadoNombreTema.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
 
+        lblBloques.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblBloques.setText("Seleccione un bloque:");
+
+        cbBloques.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cbBloques.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5" }));
+        cbBloques.setPreferredSize(new java.awt.Dimension(80, 30));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -321,11 +338,14 @@ public class VistaModificarTema extends javax.swing.JPanel implements
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(142, 142, 142)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblNombreTema)
-                    .addComponent(lblCursos))
-                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(lblNombreTema)
+                        .addComponent(lblCursos))
+                    .addComponent(lblBloques))
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cbBloques, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtfNombreTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(4, 4, 4)
@@ -349,7 +369,11 @@ public class VistaModificarTema extends javax.swing.JPanel implements
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCursos)
                     .addComponent(cbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(193, 193, 193)
+                .addGap(68, 68, 68)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblBloques)
+                    .addComponent(cbBloques, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(108, 108, 108)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -391,7 +415,8 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         } else {
             //Persistir el objeto en la base de datos
             int indexCurso = cbCursos.getSelectedIndex();
-            boolean ok = controlVista.modificarTema(tema, indexCurso);
+            int bloque = (int)cbBloques.getSelectedItem();
+            boolean ok = controlVista.modificarTema(tema, indexCurso, bloque);
             if (!ok) {
                 JOptionPane.showMessageDialog(this, "No se pudo modificar el tema.", "Error",
                         JOptionPane.ERROR_MESSAGE);

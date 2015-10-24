@@ -162,7 +162,13 @@ public class VistaModificarCurso extends javax.swing.JPanel
             curso = new CursoDTO();
             curso.setNombre(nombreCurso);
             
+            //Se obtiene el nombre del curso seleccionado y se le quitan las
+            //letras con acentos para poder comparar posteriormente si el
+            //usuario escribió un nombre de curso diferente
             String cursoActual = controlVista.getCursoSeleccionado().getNombre();
+            cursoActual = Validador.quitarAcentos(cursoActual);
+            
+            nombreCurso = Validador.quitarAcentos(nombreCurso);
             //Validar si escribió el mismo nombre de antes.
             if (nombreCurso.compareToIgnoreCase(cursoActual) != 0) {
                 
@@ -330,7 +336,6 @@ public class VistaModificarCurso extends javax.swing.JPanel
             boolean ok = controlVista.modificarCurso(curso);
 
             if (ok) {
-                JOptionPane.showMessageDialog(this, "Curso modificado.");
                 padre.mostrarVistaConEntidad(curso, Vista.ConsultarCursos);
                 limpiar();
             } else {
@@ -381,6 +386,11 @@ public class VistaModificarCurso extends javax.swing.JPanel
 
     @Override
     public boolean confirmarCambio() {
+        /*
+        Esta parte del código se eliminó el 19 de octubre del 2015 debido
+        a que ya no se utilizará confirmación de cambio de vistas. El método
+        'confirmarCambio' posiblemente sea eliminado de la 'InterfaceVista'
+        
         boolean cambiar = false;
         int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
                 + "quiere cambiar de pantalla?\nTodos los cambios no "
@@ -389,6 +399,9 @@ public class VistaModificarCurso extends javax.swing.JPanel
             cambiar = true;
         }
         return cambiar;
+        */
+        
+        return true;
     }
 
     @Override
@@ -436,7 +449,10 @@ public class VistaModificarCurso extends javax.swing.JPanel
             //El nombre del curso ingresado cumple con las validaciones.
             
             String cursoActual = controlVista.getCursoSeleccionado().getNombre();
+            cursoActual = Validador.quitarAcentos(cursoActual);
+            
             //Validar si escribió el mismo nombre de antes.
+            nombreCurso = Validador.quitarAcentos(nombreCurso);
             if (nombreCurso.compareToIgnoreCase(cursoActual) == 0) {
                 mostrarLabelEstado(txtfNombreCurso, true, "");
             } else {

@@ -881,10 +881,17 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         //Para cuando se haga click en un menu item
         //Obtener la vista actual
         JPanel actual = getVistaActual();
-        boolean ok = true;
+        //boolean ok = true;
 
         String nombreMenu = ((JMenuItem) e.getSource()).getName();
 
+        /*
+        Esta parte del código fue eliminada el 19 de octubre del 2015 debido
+        a que ya no se utilizará el método para confirmar el cambio cuando se
+        quiere cambiar de vista. El método llamado 'confirmarCambio'
+        posiblemente sea eliminado de la 'InterfaceVista'.
+        
+        
         //Si la vista actual no tiene que ver con Registrar, Modificar, Generar
         //o Asignar simplemente se muestra la vista, en caso contrario se pide
         //la confirmación a la vista actual para cambiar de panel.
@@ -895,8 +902,10 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
             ok = ((InterfaceVista) actual).confirmarCambio();
         }
 
+        */
+        
         //Si todo es correcto limpia la vista actual y muestra la nueva vista
-        if (ok && !actual.getName().equals(nombreMenu)) {
+        if (!actual.getName().equals(nombreMenu)) {
             ((InterfaceVista) actual).limpiar();
             manejadorVista.show(vistas, nombreMenu);
         }

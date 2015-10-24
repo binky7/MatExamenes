@@ -307,7 +307,6 @@ public class VistaRegistrarCurso extends javax.swing.JPanel
                 Integer id = controlVista.guardarCurso(curso);
                 if (id != null) {
                     mostrarLabelEstado(txtfNombreCurso, true, "");
-                    JOptionPane.showMessageDialog(this, "Registro completo.");
                     limpiar();
                 } else {
                     JOptionPane.showMessageDialog(this, "No se pudo guardar el curso.", "Error",
@@ -348,6 +347,11 @@ public class VistaRegistrarCurso extends javax.swing.JPanel
 
     @Override
     public boolean confirmarCambio() {
+        /*
+        Esta parte del código se eliminó el 19 de octubre del 2015 debido
+        a que ya no se utilizará confirmación de cambio de vistas. El método
+        'confirmarCambio' posiblemente sea eliminado de la 'InterfaceVista'
+        
         boolean cambiar = false;
 
         int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
@@ -358,6 +362,8 @@ public class VistaRegistrarCurso extends javax.swing.JPanel
         }
 
         return cambiar;
+        */
+        return true;
     }
 
     @Override

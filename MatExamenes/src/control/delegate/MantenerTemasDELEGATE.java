@@ -49,6 +49,16 @@ public class MantenerTemasDELEGATE {
         }
         return id;
     }
+    
+    public CursoDTO obtenerCurso(int idCurso) {
+        CursoDTO curso = null;
+        try {
+            curso = Enlace.getPersistencia().obtenerCurso(idCurso);
+        } catch (RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+        return curso;
+    }
 
     /**
      * Obtener todos los cursos almacenados en la base de datos.
@@ -77,11 +87,11 @@ public class MantenerTemasDELEGATE {
      * @return Regresa lista de temas pertenecientes al curso seleccionado.
      * Regresa null si el curso seleccionado no tiene temas.
      */
-    public List<TemaDTO> obtenerTemasDeCurso(CursoDTO curso) {
+    public List<TemaDTO> obtenerTemasDeCurso(CursoDTO curso, int bloque) {
         List<TemaDTO> listaTemas = null;
 
         try {
-            listaTemas = Enlace.getPersistencia().obtenerTemasDeCurso(curso);
+            listaTemas = Enlace.getPersistencia().obtenerTemasDeCurso(curso, bloque);
         } catch (RemoteException ex) {
             System.out.println(ex);
         } catch (NotBoundException ex) {
