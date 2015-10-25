@@ -309,12 +309,13 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements
             JOptionPane.showMessageDialog(this, "Debes seleccionar un grupo.",
                     "Advertencia", 2);
         } else {
-            int ok = JOptionPane.showConfirmDialog(this, "¿Estás segur@ de que "
-                    + "quieres eliminar este grupo?\nEste proceso es irreversible");
+            int ok = JOptionPane.showConfirmDialog(this, "Atención, al eliminar este grupo"
+                    + " los alumnos que pertenezcan a el automáticamente quedaran\n como alumnos"
+                    + " sin grupo.\n  ¿Está seguro que desea realizar esta acción?");
             if (ok == JOptionPane.YES_OPTION) {
                 if (controladorVista.eliminarGrupo(index)) {
                     JOptionPane.showMessageDialog(this, "Grupo eliminado "
-                            + "correctamente", "Exito", 1);
+                            + "correctamente!.", "Exito", 1);
                     DefaultTableModel modelo = (DefaultTableModel) tblGrupos.getModel();
                     modelo.removeRow(index);
                     tblGrupos.setModel(modelo);

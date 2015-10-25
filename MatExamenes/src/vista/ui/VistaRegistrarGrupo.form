@@ -210,9 +210,9 @@
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="5" rowCount="0">
                 <Column editable="false" title="Id" type="java.lang.Integer"/>
-                <Column editable="false" title="Nom" type="java.lang.String"/>
-                <Column editable="false" title="Apellido P." type="java.lang.String"/>
-                <Column editable="false" title="Apellido M." type="java.lang.String"/>
+                <Column editable="false" title="Nombre" type="java.lang.String"/>
+                <Column editable="false" title="Apellido Paterno" type="java.lang.String"/>
+                <Column editable="false" title="Apellido Materno" type="java.lang.String"/>
                 <Column editable="false" title="Curso" type="java.lang.String"/>
               </Table>
             </Property>
@@ -275,9 +275,9 @@
               <Table columnCount="5" rowCount="0">
                 <Column editable="true" title="[x]" type="java.lang.Boolean"/>
                 <Column editable="false" title="Id" type="java.lang.Integer"/>
-                <Column editable="false" title="Nom" type="java.lang.String"/>
-                <Column editable="false" title="Apellido P." type="java.lang.String"/>
-                <Column editable="false" title="Apellido M." type="java.lang.String"/>
+                <Column editable="false" title="Nombre" type="java.lang.String"/>
+                <Column editable="false" title="Apellido Paterno" type="java.lang.String"/>
+                <Column editable="false" title="Apellido Materno" type="java.lang.String"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">

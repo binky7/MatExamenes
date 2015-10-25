@@ -785,7 +785,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtfAlumno">
               <Properties>
-                <Property name="enabled" type="boolean" value="false"/>
+                <Property name="editable" type="boolean" value="false"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Textfield para el nombre del alumno.&#xa; */"/>
@@ -793,7 +793,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtfTitulo">
               <Properties>
-                <Property name="enabled" type="boolean" value="false"/>
+                <Property name="editable" type="boolean" value="false"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Textfield para el titulo del examen.&#xa; */"/>
@@ -801,7 +801,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtfCalificacion">
               <Properties>
-                <Property name="enabled" type="boolean" value="false"/>
+                <Property name="editable" type="boolean" value="false"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**&#xa; * Textfield para la calificacion.&#xa; */"/>
