@@ -40,7 +40,7 @@ public class Validador {
     /**
      * Longitud máxima del tema
      */
-    public static final int LONGITUD_TEMA = 200;
+    public static final int LONGITUD_TEMA = 150;
     /**
      * Longitud máxima del nombre del reactivo
      */
@@ -243,11 +243,11 @@ public class Validador {
         matcher = pattern.matcher(ip);
         return matcher.matches();
     }
-    
+
     /**
-     * Elimina las letras que contengan acentos en una cadena de caracteres 
-     * dada.
-     * 
+     * Reemplaza las letras que contengan acentos a su letra equivalente sin
+     * acento en una cadena de caracteres dada.
+     *
      * @param cadena cadena de caracteres de la cual se eliminarán los acentos.
      * @return Cadena de caracteres sin letras con acentos.
      */
@@ -256,8 +256,8 @@ public class Validador {
 
         char caracteres[] = cadena.toLowerCase().toCharArray();
 
-        for (int i = 0;i<caracteres.length;i++) {
-            switch(caracteres[i]){
+        for (int i = 0; i < caracteres.length; i++) {
+            switch (caracteres[i]) {
                 case 'á':
                     caracteres[i] = 'a';
                     break;
@@ -273,11 +273,14 @@ public class Validador {
                 case 'ú':
                     caracteres[i] = 'u';
                     break;
+                case 'ü':
+                    caracteres[i] = 'u';
+                    break;
                 default:
-                    
+
             }
         }
-        
+
         noAcentos = String.valueOf(caracteres);
 
         return noAcentos;

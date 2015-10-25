@@ -36,6 +36,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import modelo.dto.CursoDTO;
+import modelo.dto.CursoTemaDTO;
 import modelo.dto.TemaDTO;
 import modelo.dto.UsuarioDTO;
 import vista.controlador.CVMantenerTemas;
@@ -167,19 +168,26 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         TemaDTO tema = null;
         boolean ok = true;
 
-        //Validar campos
+        //Si escribió otro nombre verificar si ya existe.
         String txtNombre = txtfNombreTema.getText();
-        if (Validador.esCurso(txtNombre)) {
-            //Crear objeto tema
+        if (!Validador.estaVacio(txtNombre)) {
+            //Si el campo del nombre del tema no está vacío se crea
+            //el nuevo objeto TemaDTO.
             tema = new TemaDTO();
             tema.setNombre(txtNombre);
 
+            //Se obtiene el nombre del tema seleccionado y se le quitan las
+            //letras con acentos para poder comparar posteriormente si el
+            //usuario escribió un nombre de tema diferente.
             String temaActual = controlVista.getTemaSeleccionado().getNombre();
+            temaActual = Validador.quitarAcentos(temaActual);
+            txtNombre = Validador.quitarAcentos(txtNombre);
+
             //Validar si escribió el mismo nombre de antes.
             if (txtNombre.compareToIgnoreCase(temaActual) != 0) {
 
                 //Si escribió otro nombre verificar si ya existe.
-                boolean existe = controlVista.verificarExistencia(txtNombre);
+                boolean existe = controlVista.verificarExistencia(tema.getNombre());
 
                 if (existe) {
                     ok = false;
@@ -193,13 +201,9 @@ public class VistaModificarTema extends javax.swing.JPanel implements
             }
         } else {
             ok = false;
-            if (Validador.estaVacio(txtNombre)) {
-                mostrarLabelEstado(txtfNombreTema, false,
-                        "No ingrese datos vacíos.");
-            } else {
-                mostrarLabelEstado(txtfNombreTema, false,
-                        "Ingrese sólo letras y/o números.");
-            }
+            mostrarLabelEstado(txtfNombreTema, false,
+                    "No ingrese datos vacíos.");
+
         }
 
         if (!ok) {
@@ -228,6 +232,16 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         if (!controlVista.esTemaSinAsignar()) {
             CursoDTO objCurso = controlVista.obtenerCursoPorTema(tema);
             cbCursos.setSelectedItem(objCurso.getNombre());
+
+            List<CursoTemaDTO> temasDeCurso = objCurso.getTemas();
+            int bloqueDeTema = 0;
+            for (CursoTemaDTO j : temasDeCurso) {
+                if (j.getTema().getId() == tema.getId()) {
+                    bloqueDeTema = j.getBloque();
+                }
+            }
+
+            cbBloques.setSelectedItem(String.valueOf(bloqueDeTema));
         }
     }
 
@@ -415,13 +429,12 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         } else {
             //Persistir el objeto en la base de datos
             int indexCurso = cbCursos.getSelectedIndex();
-            int bloque = (int)cbBloques.getSelectedItem();
+            int bloque = Integer.parseInt(cbBloques.getSelectedItem().toString());
             boolean ok = controlVista.modificarTema(tema, indexCurso, bloque);
             if (!ok) {
                 JOptionPane.showMessageDialog(this, "No se pudo modificar el tema.", "Error",
                         JOptionPane.ERROR_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Tema Modificado.");
                 padre.mostrarVista(Vista.ConsultarTemas);
                 limpiar();
             }
@@ -432,6 +445,7 @@ public class VistaModificarTema extends javax.swing.JPanel implements
     @Override
     public void limpiar() {
         txtfNombreTema.setText("");
+        cbBloques.setSelectedIndex(0);
         controlVista.liberarMemoriaModificar();
         lblEstadoNombreTema.setVisible(false);
     }
@@ -462,6 +476,12 @@ public class VistaModificarTema extends javax.swing.JPanel implements
 
     @Override
     public boolean confirmarCambio() {
+        
+        /*
+        Esta parte del código se eliminó el 24 de octubre del 2015 debido
+        a que ya no se utilizará confirmación de cambio de vistas. El método
+        'confirmarCambio' posiblemente sea eliminado de la 'InterfaceVista'
+        
         boolean cambiar = false;
         int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
                 + "quiere cambiar de pantalla?\nTodos los cambios no "
@@ -470,6 +490,8 @@ public class VistaModificarTema extends javax.swing.JPanel implements
             cambiar = true;
         }
         return cambiar;
+        */
+        return true;
     }
 
     @Override
@@ -498,18 +520,19 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         JTextField src = (JTextField) e.getSource();
 
         String nombreTema = src.getText();
-        if (!Validador.esCurso(nombreTema)) {
-            if (Validador.estaVacio(nombreTema)) {
-                mostrarLabelEstado(txtfNombreTema, false,
-                        "No ingrese datos vacíos.");
-            } else {
-                mostrarLabelEstado(txtfNombreTema, false,
-                        "Ingrese sólo letras y/o números.");
-            }
+        if (Validador.estaVacio(nombreTema)) {
+            mostrarLabelEstado(txtfNombreTema, false,
+                    "No ingrese datos vacíos.");
         } else {
             //El nombre del tema ingresado cumple con las validaciones.
 
+            //Se obtiene el nombre del tema seleccionado y se le quitan las
+            //letras con acentos para poder comparar posteriormente si el
+            //usuario escribió un nombre de tema diferente.
             String temaActual = controlVista.getTemaSeleccionado().getNombre();
+            nombreTema = Validador.quitarAcentos(nombreTema);
+            temaActual = Validador.quitarAcentos(temaActual);
+            
             //Validar si escribió el mismo nombre de antes.
             if (nombreTema.compareToIgnoreCase(temaActual) == 0) {
                 mostrarLabelEstado(txtfNombreTema, true, "");

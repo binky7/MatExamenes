@@ -23,6 +23,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
 import modelo.dto.CursoDTO;
+import modelo.dto.ReactivoDTO;
 import modelo.dto.TemaDTO;
 import remoteAccess.Enlace;
 
@@ -200,7 +201,6 @@ public class MantenerTemasDELEGATE {
     }
 
     /**
-     *
      * Obtiene los temas que no pertenecen a ningún curso.
      *
      * @return Lista de temas que no pertenecen a ningún curso.
@@ -217,5 +217,24 @@ public class MantenerTemasDELEGATE {
         }
 
         return listaTemas;
+    }
+    
+    /**
+     * Obtiene todos los reactivos del tema ingresado
+     *
+     * @param tema el objeto TemaDTO del que se quieren obtener los reactivos
+     * @return una lista de ReactivoDTO del tema ingresado, o null en caso de
+     * que no exista ningún reactivo.
+     */
+    public List<ReactivoDTO> obtenerReactivosPorTema(TemaDTO tema) {
+        List<ReactivoDTO> listaReactivos = null;
+        
+        try {
+            listaReactivos = Enlace.getPersistencia().obtenerReactivosPorTema(tema);
+        } catch (RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+        
+        return listaReactivos;
     }
 }

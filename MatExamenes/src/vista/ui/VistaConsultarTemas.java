@@ -121,6 +121,7 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
             @Override
             public void itemStateChanged(ItemEvent e) {
                 verificarCursoSeleccionado();
+                cbBloques.setSelectedIndex(0);
             }
         });
     }
@@ -199,17 +200,19 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
      * a ningún curso.
      */
     private void verificarCursoSeleccionado() {
-        String cursoSeleccionado = cbCursos.getSelectedItem().toString();
-        if (cursoSeleccionado.compareToIgnoreCase("Otros") == 0) {
-            //Si el curso seleccionado es "Otros" se inhabilita el ComboBox
-            //de bloques.
-            cbBloques.setEnabled(false);
-        } else {
-            if (!cbBloques.isEnabled()) {
-                //Si el curso seleccionado es diferente de "Otros" 
-                //se verifica si el ComboBox de bloques está inhabilitado
-                //para habilitarlo.
-                cbBloques.setEnabled(true);
+        if (cbCursos.getItemCount() != 0) {
+            String cursoSeleccionado = cbCursos.getSelectedItem().toString();
+            if (cursoSeleccionado.compareToIgnoreCase("Otros") == 0) {
+                //Si el curso seleccionado es "Otros" se inhabilita el ComboBox
+                //de bloques.
+                cbBloques.setEnabled(false);
+            } else {
+                if (!cbBloques.isEnabled()) {
+                    //Si el curso seleccionado es diferente de "Otros" 
+                    //se verifica si el ComboBox de bloques está inhabilitado
+                    //para habilitarlo.
+                    cbBloques.setEnabled(true);
+                }
             }
         }
     }
@@ -305,25 +308,20 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(651, 651, 651)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblCursos)
-                            .addComponent(cbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblBloques)
-                            .addComponent(cbBloques, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTemas, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap())
+                    .addComponent(lblCursos)
+                    .addComponent(cbCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBloques)
+                    .addComponent(cbBloques, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblTemas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(651, 651, 651)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -370,21 +368,33 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
      */
     private void eliminarTema(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarTema
         //Eliminar Tema
-        //Si se selecciono algo
+        //Verificar si se seleccionó un tema
         boolean ok;
         if (lstTemas.getSelectedIndex() != -1) {
-            int banEliminar = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                    + "desea eliminar el tema?", "Eliminación", JOptionPane.YES_NO_OPTION);
-            if (banEliminar == JOptionPane.YES_OPTION) {
-                ok = controlVista.eliminarTema(lstTemas.getSelectedIndex());
-                if (ok) {
-                    JOptionPane.showMessageDialog(this, "Tema eliminado.");
-                    ((DefaultListModel) lstTemas.getModel())
-                            .remove(lstTemas.getSelectedIndex());
-                } else {
-                    JOptionPane.showMessageDialog(this, "No se pudo eliminar el tema.",
-                            "Error", JOptionPane.ERROR_MESSAGE);
+            int indexTema = lstTemas.getSelectedIndex();
+
+            //Se verifica si el tema seleccionado tiene reactivos asociados.
+            //Si el tema no tiene reactivos se procede a solicitar la
+            //confirmación del usuario para eliminar el tema.
+            if (!controlVista.tieneRactivosAsociados(indexTema)) {
+                int banEliminar = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+                        + "desea eliminar el tema?", "Eliminación", JOptionPane.YES_NO_OPTION);
+                if (banEliminar == JOptionPane.YES_OPTION) {
+                    ok = controlVista.eliminarTema(indexTema);
+                    if (ok) {
+                        ((DefaultListModel) lstTemas.getModel())
+                                .remove(lstTemas.getSelectedIndex());
+                    } else {
+                        JOptionPane.showMessageDialog(this, "No se pudo eliminar el tema.",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
+            } else {
+                //El tema tiene reactivos asociados por lo que no se puede eliminar.
+                JOptionPane.showMessageDialog(this, "El tema seleccionado no "
+                        + "se puede eliminar debido a que tiene "
+                        + "reactivos asociados.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione un tema.",
@@ -438,10 +448,12 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
     private void consultarTemas(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarTemas
         // TODO add your handling code here:
         List<TemaDTO> temas;
+        boolean esTemasSinAsignar = false;
 
         //Si el curso seleccionado es "Otros", traer los temas sin asignar
-        if (cbCursos.getSelectedItem().toString().equals("Otros")) {
+        if (cbCursos.getSelectedItem().toString().compareToIgnoreCase("Otros") == 0) {
             temas = controlVista.obtenerTemasSinAsignar();
+            esTemasSinAsignar = true;
         } else {
             int indexCurso = cbCursos.getSelectedIndex();
             int bloque = Integer.parseInt(cbBloques.getSelectedItem().toString());
@@ -450,7 +462,14 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
         if (temas != null && !temas.isEmpty()) {
             mostrarTemas(temas);
         } else {
-            JOptionPane.showMessageDialog(this, "El curso seleccionado no tiene temas.",
+            String mensaje;
+
+            if (esTemasSinAsignar) {
+                mensaje = "No hay temas sin asignar.";
+            } else {
+                mensaje = "El bloque seleccionado no tiene temas";
+            }
+            JOptionPane.showMessageDialog(this, mensaje,
                     "Advertencia", JOptionPane.WARNING_MESSAGE);
             ((DefaultListModel) lstTemas.getModel()).clear();
         }
@@ -459,6 +478,8 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
     @Override
     public void limpiar() {
         //Limpiar las listas
+        cbCursos.removeAllItems();
+        cbBloques.setSelectedIndex(0);
         ((DefaultListModel) lstTemas.getModel()).clear();
         //Liberar memoria dto
         controlVista.liberarMemoriaConsultar();
@@ -473,11 +494,12 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
      */
     @Override
     public void ancestorAdded(AncestorEvent event) {
+        limpiar();
+
         if (!consultarCursos()) {
-            limpiar();
-            JOptionPane.showMessageDialog(this, "No hay cursos registrados.",
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
-            padre.mostrarVista(Vista.HOME);
+//            JOptionPane.showMessageDialog(this, "No hay cursos registrados.",
+//                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+//            padre.mostrarVista(Vista.HOME);
         }
         cbCursos.addItem("Otros");
     }

@@ -399,7 +399,6 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
                             "No se pudo guardar el curso.", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Registro completo.");
                     limpiar();
                 }
             }
@@ -439,6 +438,11 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
     @Override
     public boolean confirmarCambio() {
 
+        /*
+        Esta parte del código se eliminó el 24 de octubre del 2015 debido
+        a que ya no se utilizará confirmación de cambio de vistas. El método
+        'confirmarCambio' posiblemente sea eliminado de la 'InterfaceVista'
+        
         boolean cambiar = false;
 
         int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
@@ -448,6 +452,8 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
             cambiar = true;
         }
         return cambiar;
+        */
+        return true;
     }
 
     @Override
@@ -458,6 +464,7 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
     @Override
     public void limpiar() {
         txtfNombreTema.setText("");
+        cbBloques.setSelectedIndex(0);
         lblEstadoNombreTema.setVisible(false);
     }
 

@@ -20,10 +20,10 @@
 package vista.controlador;
 
 import control.delegate.MantenerTemasDELEGATE;
-import java.util.ArrayList;
 import java.util.List;
 import modelo.dto.CursoDTO;
 import modelo.dto.CursoTemaDTO;
+import modelo.dto.ReactivoDTO;
 import modelo.dto.TemaDTO;
 
 /**
@@ -57,7 +57,8 @@ public class CVMantenerTemas {
     private TemaDTO temaSeleccionado;
 
     /**
-     *
+     * Lista de objetos de tipo TemaDTO que representan los temas que no están
+     * asociados s ningún curso.
      */
     private boolean temaSinAsignar;
 
@@ -180,12 +181,16 @@ public class CVMantenerTemas {
 
             ok = mantenerTemasDELEGATE.modificarTema(tema);
             if (ok) {
+                //Se obtiene el curso que está seleccionado en la vista de moficar.
                 CursoDTO objCurso = listaCursos.get(indexCurso);
+                
+                //Si cursoSeleccionado no es null, significa que el tema sí está
+                //asociado a un curso.
                 if (this.cursoSeleccionado != null) {
                     //Verificar si el curso seleccionado en la vista es el mismo
-                    //curso que originalmente tenía el tema a modificar.
+                    //curso al que originalmente estaba asociado el tema a modificar.
                     if (objCurso.getId() != this.cursoSeleccionado.getId()) {
-                    //El curso seleccionado cambió.
+                        //El curso seleccionado cambió.
 
                         //Eliminar la relación que existía entre el tema y el curso
                         //anterior.
@@ -313,6 +318,7 @@ public class CVMantenerTemas {
      * Libera la memoria de los objetos utilizados en la vista de modificar.
      */
     public void liberarMemoriaModificar() {
+        cursoSeleccionado = null;
         temaSeleccionado = null;
         temaSinAsignar = false;
     }
@@ -370,5 +376,25 @@ public class CVMantenerTemas {
      */
     public boolean esTemaSinAsignar() {
         return this.temaSinAsignar;
+    }
+    
+    /**
+     * Verifica si el tema tiene reactivos asociados.
+     * 
+     * @param indexTema el tema del cuál se quiere saber si tiene reactivos asociados.
+     * @return true si el tema tiene reactivos asociados. Regresa false si el
+     * tema no tiene reactivos asociados.
+     */
+    public boolean tieneRactivosAsociados(int indexTema) {
+        boolean tieneReactivos = false;
+        TemaDTO objTema = listaTemas.get(indexTema);
+        
+        List<ReactivoDTO> listaReactivos = 
+                mantenerTemasDELEGATE.obtenerReactivosPorTema(objTema);
+        if(listaReactivos != null && !listaReactivos.isEmpty()) {
+            tieneReactivos = true;
+        }
+        
+        return tieneReactivos;
     }
 }
