@@ -90,7 +90,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
      */
     private int nReactivos;
     /**
-     * Almacenara el númeor del reactivo actual.
+     * Almacenara el número del reactivo actual.
      */
     private int reactivoActual;
     /**
@@ -281,7 +281,8 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
      */
     private void mostrarDatosReactivo() {
         for (int i = 0; i < OPCIONES; i++) {
-            rbtnOpciones[i].setText(opcionesAleatorias.get(reactivoActual).get(i));
+            rbtnOpciones[i].setText(partirOpcion(opcionesAleatorias.
+                    get(reactivoActual).get(i)));
         }
         txtaRedaccion.setText(opcionesAleatorias.get(reactivoActual).get(OPCIONES));
         txtaRedaccion.setCaretPosition(INICIO_TEXT_AREA);
@@ -511,6 +512,30 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
     }
 
     /**
+     * En caso de que las opciones contengan mas de 125 caracteres, 
+     * se partirán en dos, evitando la perdida de visibilidad en la aplicación.
+     * @param opcion La opción que se desea dividir en dos.
+     * @return La opción dividida en dos.
+     */
+    private String partirOpcion(String opcion) {
+        String opcionPartida = "";
+
+        if (opcion.length() > 125) {
+            String parte1 = opcion.substring(0, 124);
+            String parte2 = opcion.substring(125);
+            if (opcion.charAt(124) == ' ') {
+                opcionPartida = "<html>" + parte1 + "<br>" + parte2 + "</html>";
+            } else {
+                opcionPartida = "<html>" + parte1 + "-<br>" + parte2 + "</html>";
+            }
+        } else {
+            opcionPartida = opcion;
+        }
+
+        return opcionPartida;
+    }
+
+    /**
      * Inicializa los atributos gráficos y los coloca en su posición.
      */
     @SuppressWarnings("unchecked")
@@ -533,8 +558,11 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         txtaInstrucciones = new javax.swing.JTextArea();
         txtaInstrucciones.setEditable(false);
 
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         lblTiempo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblTiempo.setText("Tiempo restante:");
+        add(lblTiempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(603, 23, -1, -1));
 
         txtaRedaccion.setEditable(false);
         txtaRedaccion.setBackground(new java.awt.Color(240, 240, 240));
@@ -544,17 +572,22 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         txtaRedaccion.setToolTipText("");
         jScrollPane2.setViewportView(txtaRedaccion);
 
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 249, 740, 125));
+
         rbtnGrupoRespuestas.add(rbtnOpcion1);
         rbtnOpcion1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         rbtnOpcion1.setText("opcion1");
+        add(rbtnOpcion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 390, -1, -1));
 
         rbtnGrupoRespuestas.add(rbtnOpcion2);
         rbtnOpcion2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         rbtnOpcion2.setText("opcion2");
+        add(rbtnOpcion2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 430, -1, -1));
 
         rbtnGrupoRespuestas.add(rbtnOpcion3);
         rbtnOpcion3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         rbtnOpcion3.setText("opcion3");
+        add(rbtnOpcion3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 470, -1, -1));
 
         btnSiguiente.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnSiguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/siguiente24.png"))); // NOI18N
@@ -565,10 +598,12 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
                 siguienteReactivo(evt);
             }
         });
+        add(btnSiguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 550, 120, -1));
 
         rbtnGrupoRespuestas.add(rbtnOpcion4);
         rbtnOpcion4.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         rbtnOpcion4.setText("opcion4");
+        add(rbtnOpcion4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 510, -1, -1));
 
         btnTerminarExamen.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnTerminarExamen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
@@ -580,6 +615,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
                 terminarExamen(evt);
             }
         });
+        add(btnTerminarExamen, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 550, 160, -1));
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reactivos", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 12))); // NOI18N
         jScrollPane1.setMaximumSize(null);
@@ -589,69 +625,14 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         pnlReactivos.setMinimumSize(null);
         jScrollPane1.setViewportView(pnlReactivos);
 
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 41, 740, 130));
+
         txtaInstrucciones.setColumns(20);
         txtaInstrucciones.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtaInstrucciones.setRows(1);
         jScrollPane3.setViewportView(txtaInstrucciones);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(603, 603, 603)
-                .addComponent(lblTiempo))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(rbtnOpcion1))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(rbtnOpcion2))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(rbtnOpcion3))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(rbtnOpcion4))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(450, 450, 450)
-                .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(btnTerminarExamen, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(lblTiempo)
-                .addGap(1, 1, 1)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16)
-                .addComponent(rbtnOpcion1)
-                .addGap(17, 17, 17)
-                .addComponent(rbtnOpcion2)
-                .addGap(17, 17, 17)
-                .addComponent(rbtnOpcion3)
-                .addGap(17, 17, 17)
-                .addComponent(rbtnOpcion4)
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnTerminarExamen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
+        add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 177, 740, 63));
     }// </editor-fold>//GEN-END:initComponents
 
     /**
