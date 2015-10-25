@@ -852,11 +852,11 @@ public class VistaConsultarCalificaciones extends javax.swing.JPanel implements
         lblCalificacion.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblCalificacion.setText("Calificación:");
 
-        txtfAlumno.setEnabled(false);
+        txtfAlumno.setEditable(false);
 
-        txtfTitulo.setEnabled(false);
+        txtfTitulo.setEditable(false);
 
-        txtfCalificacion.setEnabled(false);
+        txtfCalificacion.setEditable(false);
 
         lblReactivos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblReactivos.setText("Reactivos");

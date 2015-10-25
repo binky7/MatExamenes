@@ -356,7 +356,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements
 
             },
             new String [] {
-                "Id", "Nom", "Apellido P.", "Apellido M.", "Curso"
+                "Id", "Nombre", "Apellido Paterno", "Apellido Materno", "Curso"
             }
         ) {
             Class[] types = new Class [] {
@@ -384,7 +384,7 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements
 
             },
             new String [] {
-                "[x]", "Id", "Nom", "Apellido P.", "Apellido M."
+                "[x]", "Id", "Nombre", "Apellido Paterno", "Apellido Materno"
             }
         ) {
             Class[] types = new Class [] {

@@ -102,7 +102,7 @@ public class FrmAgregarAlumnos extends javax.swing.JFrame {
         controladorVista = new CVMantenerGrupos();
         initComponents();
         setVisible(false);
-        this.setTitle("Agregar Alumnos");
+        this.setTitle("MatExámenes");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 

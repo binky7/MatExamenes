@@ -22,6 +22,7 @@ package vista.controlador;
 import control.delegate.MantenerGruposDELEGATE;
 import control.delegate.MantenerUsuariosDELEGATE;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +91,12 @@ public class CVMantenerGrupos {
 
     /**
      * Lista de objetos UsuarioDTO que se utilizará como almacén temporal para
+     * los alumnos que se obtienen de las busquedas.
+     */
+    private List<UsuarioDTO> listaPosiblesAlumnos;
+
+    /**
+     * Lista de objetos UsuarioDTO que se utilizará como almacén temporal para
      * utilizar su información en las vistas como alumnos removidos.
      */
     private List<UsuarioDTO> listaRemovidos;
@@ -122,7 +129,7 @@ public class CVMantenerGrupos {
             for (CursoDTO curso : mapaMaestro.keySet()) {
                 if (maestro.getId() == mapaMaestro.get(curso).getId()) {
                     this.listaCursos.remove(curso);
-                }
+                } 
             }
         }
         return this.listaCursos;
@@ -228,26 +235,53 @@ public class CVMantenerGrupos {
      * @return regresa la lista de alumnos.
      */
     public List<UsuarioDTO> obtenerAlumnos(String busqueda) {
-        listaAlumnos = usuariosDELEGATE.obtenerAlumnosPorApellido(busqueda);
+        listaPosiblesAlumnos = usuariosDELEGATE.obtenerAlumnosPorApellido(busqueda);
         List<Integer> ids = new ArrayList<>();
-        for (UsuarioDTO listaAlumno : listaAlumnos) {
+        for (UsuarioDTO listaAlumno : listaPosiblesAlumnos) {
             ids.add(listaAlumno.getId());
         }
         for (UsuarioDTO alumno : usuariosDELEGATE.obtenerAlumnosPorApellidoM(busqueda)) {
             if (!ids.contains(alumno.getId())) {
                 ids.add(alumno.getId());
-                listaAlumnos.add(alumno);
+                listaPosiblesAlumnos.add(alumno);
             }
         }
         for (UsuarioDTO alumno : usuariosDELEGATE.obtenerAlumnosPorNombre(busqueda)) {
             if (!ids.contains(alumno.getId())) {
                 ids.add(alumno.getId());
-                listaAlumnos.add(alumno);
+                listaPosiblesAlumnos.add(alumno);
             }
         }
-        listaAlumnos.removeAll(listaRemovidos);
-        listaAlumnos.addAll(listaRemovidos);
-        return listaAlumnos;
+        //Eliminar de la lista a los alumnos que fueron removidos anteriormente.
+        for (UsuarioDTO removido : listaRemovidos) {
+            try {
+                for (UsuarioDTO posible : listaPosiblesAlumnos) {
+                if (removido.getId() == posible.getId()) {
+                    listaPosiblesAlumnos.remove(posible);
+                    }
+                }
+            } catch (ConcurrentModificationException e) {
+                continue;
+            }
+            
+        }
+        //Agregar a la lista los alumnos que fueron removidos anteriormente.
+        for (UsuarioDTO removido : listaRemovidos) {
+            listaPosiblesAlumnos.add(removido);
+        }
+        //Eliminar de la lista a los alumnos que ya estan en la lista.
+        for (UsuarioDTO alumno : listaAlumnos) {
+            try {
+                for (UsuarioDTO posible : listaPosiblesAlumnos) {
+                    if (posible.getId() == alumno.getId()) {
+                        listaPosiblesAlumnos.remove(posible);
+                    }
+                }
+            } catch (ConcurrentModificationException e) {
+                continue;
+            }
+        }
+        return listaPosiblesAlumnos;
     }
 
     /**
@@ -290,8 +324,8 @@ public class CVMantenerGrupos {
         int cont = indexesAlumnos.size();
         for (int x = 0; x < cont; x++) {
             int index = indexesAlumnos.get(x);
-            if (this.listaAlumnos != null && !this.listaAlumnos.isEmpty()) {
-                UsuarioDTO alumno = this.listaAlumnos.get(index);
+            if (this.listaPosiblesAlumnos != null && !this.listaPosiblesAlumnos.isEmpty()) {
+                UsuarioDTO alumno = this.listaPosiblesAlumnos.get(index);
                 alumnos.add(alumno);
             }
         }
@@ -393,7 +427,10 @@ public class CVMantenerGrupos {
                 for (int i = 0; i < cont; i++) {
                     listaRemover.add(this.listaAlumnos.get(indexes.get(i)));
                 }
-                this.listaAlumnos.removeAll(listaRemover);
+                for (UsuarioDTO alumno : listaRemover) {
+                    listaAlumnos.remove(alumno);
+                }
+                agregarEliminados(listaRemover);
             }
         }
     }
@@ -404,8 +441,12 @@ public class CVMantenerGrupos {
      * @param eliminados recibe la lista de alumnos removidos.
      */
     public void agregarEliminados(List<UsuarioDTO> eliminados) {
-        this.listaRemovidos.removeAll(eliminados);
-        this.listaRemovidos.addAll(eliminados);
+        for (UsuarioDTO eliminado : eliminados) {
+            listaRemovidos.remove(eliminado);
+        }
+        for (UsuarioDTO eliminado : eliminados) {
+            listaRemovidos.add(eliminado);
+        }
     }
 
     /**
