@@ -397,7 +397,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
 
             },
             new String [] {
-                "Id", "Nom", "A.P.", "A.M.", "Curso"
+                "Id", "Nombre", "Apellido Paterno", "Apellido Materno", "Curso"
             }
         ) {
             Class[] types = new Class [] {
@@ -425,7 +425,7 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
 
             },
             new String [] {
-                "[x]", "Id", "Nom", "A.P.", "A.M."
+                "[x]", "Id", "Nombre", "Apellido Paterno", "Apellido Materno"
             }
         ) {
             Class[] types = new Class [] {
@@ -662,7 +662,6 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
                     + "alumno", "Advertencia", 2);
         } else {
             controlVista.removerAlumnos(indexes);
-            controlVista.agregarEliminados(eliminados);
             removerAlumnos(indexes);
         }
     }//GEN-LAST:event_RemoverAlumnos
