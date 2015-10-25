@@ -92,11 +92,19 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
     // End of variables declaration//GEN-END:variables
 
     /**
+     * Variable usada para saber si hay que mostrar el mensaje de confirmación
+     * para mostrar la consulta general. Si hay una previa eliminación no se
+     * debe de mostrar el mensaje.
+     */
+    private boolean usuarioEliminado;
+
+    /**
      * Crea una nueva VistaConsultarUsuario e inicializa sus atributos.
      */
     public VistaConsultarUsuarios() {
         initComponents();
         DTM = (DefaultTableModel) tblUsuarios.getModel();
+        usuarioEliminado = false;
     }
 
     /**
@@ -311,15 +319,20 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
      */
     private void buscarUsuarios(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarUsuarios
         String apellido = txtfNombre.getText();
-        boolean ok;
+        boolean ok = true;
         if (Validador.estaVacio(apellido)) {
-            int opcion = JOptionPane.showConfirmDialog(this, "Realizar una consulta con"
-                    + " el campo vacio regresara todos los usuarios.\n¿Desea continuar?",
-                    "Busqueda", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            ok = (opcion == JOptionPane.YES_OPTION);
-        } else {
-            ok = true;
-        }
+            if (!usuarioEliminado) {
+                int opcion = JOptionPane.showConfirmDialog(this, "Realizar una consulta con"
+                        + " el campo vacio regresara todos los usuarios.\n¿Desea continuar?",
+                        "Busqueda", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                ok = (opcion == JOptionPane.YES_OPTION);
+            } else {
+                usuarioEliminado = false;
+            }
+
+        } //else {
+        //ok = true;
+        //}
         if (ok) {
             try {
                 List<UsuarioDTO> usuarios;
@@ -334,7 +347,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
                 }
             } catch (NullPointerException e) {
                 JOptionPane.showMessageDialog(this, "Probleas en conexión",
-                            "Busqueda", JOptionPane.INFORMATION_MESSAGE);
+                        "Busqueda", JOptionPane.INFORMATION_MESSAGE);
             }
 
         }
@@ -349,16 +362,26 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
         int i = tblUsuarios.getSelectedRow();
         UsuarioDTO usuario = cvMantenerUsuarios.getUsuariosBuscados().get(i);
 
-        int opcion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar al usuario: "
-                + usuario.getUsuario() + "?", "Eliminar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        boolean perteneceGrupo = cvMantenerUsuarios.perteneceAGrupo(usuario);
+        int opcion;
+        if (perteneceGrupo) {
+            opcion = JOptionPane.showConfirmDialog(this, "El usuario " + usuario.getUsuario()
+                    + " pertenece a un grupo.\n¿Está seguro de que desea eliminarlo ?",
+                    "Eliminar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        } else {
+            opcion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar al usuario: "
+                    + usuario.getUsuario() + "?", "Eliminar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        }
+
         if (opcion == JOptionPane.YES_OPTION) {
             boolean ok = cvMantenerUsuarios.eliminarUsuario(usuario);
             if (ok) {
-                JOptionPane.showMessageDialog(this, "Usuario eliminado",
-                        "Eliminar usuario", JOptionPane.INFORMATION_MESSAGE);
+//                JOptionPane.showMessageDialog(this, "Usuario eliminado",
+//                        "Eliminar usuario", JOptionPane.INFORMATION_MESSAGE);
+                usuarioEliminado = true;
                 btnBuscar.doClick();
             } else {
-                JOptionPane.showMessageDialog(this, "Usuario no eliminado",
+                JOptionPane.showMessageDialog(this, "Usuario no eliminado, problemas en la conexión",
                         "Eliminar usuario", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -464,6 +487,7 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
     public void limpiar() {
         DTM.setRowCount(0);
         txtfNombre.setText("");
+        usuarioEliminado = false;
     }
 
 }

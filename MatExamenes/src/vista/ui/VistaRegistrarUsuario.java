@@ -571,11 +571,11 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
         Integer id = cvMantenerUsuarios.guardarUsuario(usuario);
 
         if (id == null) {
-            JOptionPane.showMessageDialog(this, "Error al registrar", "Registro usuario",
+            JOptionPane.showMessageDialog(this, "Usuario no registrado, problemas en la conexión", "Registro usuario",
                     JOptionPane.ERROR_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "Registro completo", "Registro usuario",
-                    JOptionPane.INFORMATION_MESSAGE);
+//            JOptionPane.showMessageDialog(this, "Registro completo", "Registro usuario",
+//                    JOptionPane.INFORMATION_MESSAGE);
             limpiar();
         }
     }//GEN-LAST:event_guardarUsuario
@@ -624,13 +624,13 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
 
     @Override
     public boolean confirmarCambio() {
-        boolean cambiar = false;
-        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                + "desea cambiar de pantalla?\nTodos los cambios no "
-                + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
-        if (ok == JOptionPane.YES_OPTION) {
-            cambiar = true;
-        }
+        boolean cambiar = true;
+//        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+//                + "desea cambiar de pantalla?\nTodos los cambios no "
+//                + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
+//        if (ok == JOptionPane.YES_OPTION) {
+//            cambiar = true;
+//        }
         return cambiar;
     }
 

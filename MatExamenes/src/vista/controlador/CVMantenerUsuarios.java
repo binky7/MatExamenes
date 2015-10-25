@@ -149,4 +149,14 @@ public class CVMantenerUsuarios {
         return this.usuarioAModificar;
     }
 
+    /**
+     * Validara si el usuario se encuentra inscrito en un grupo.
+     *
+     * @param usuario El usuario a validar si existe en un grupo.
+     * @return Verdadero si el usuario esta inscrito a un grupo.<br>
+     * Falso de otra forma.
+     */
+    public boolean perteneceAGrupo(UsuarioDTO usuario) {
+        return mantenerUsuariosDELEGATE.perteneceAGrupo(usuario);
+    }
 }

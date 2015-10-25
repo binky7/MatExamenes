@@ -266,7 +266,8 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
         if (!Validador.esUsuario(datos[USUARIO])) {
             mensajeDatosIncorrectos += "Usuario\n";
             ok = false;
-        } else if (cvMantenerUsuarios.getUsuarioModificar().getUsuario().compareTo(datos[USUARIO]) != 0) {
+        } else if (Validador.quitarAcentos(cvMantenerUsuarios.getUsuarioModificar().getUsuario())
+                .compareTo(Validador.quitarAcentos(datos[USUARIO])) != 0) {
             if (!cvMantenerUsuarios.validarUsuario(datos[USUARIO])) {
                 mensajeDatosIncorrectos += "Usuario\n";
                 ok = false;
@@ -524,14 +525,14 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
             //datos capturados correctos
             ok = cvMantenerUsuarios.modificarUsuario(cvMantenerUsuarios.getUsuarioModificar());
             if (ok) {
-                JOptionPane.showMessageDialog(this, "Usuario Modificado", "Modificación",
-                        JOptionPane.INFORMATION_MESSAGE);
+//                JOptionPane.showMessageDialog(this, "Usuario Modificado", "Modificación",
+//                        JOptionPane.INFORMATION_MESSAGE);
                 limpiar();
                 padre.mostrarVistaConEntidad(cvMantenerUsuarios.getUsuariosBuscados(),
                         Vista.ConsultarUsuarios);
 
             } else {
-                JOptionPane.showMessageDialog(this, "Usuario no Modiicado", "Modificación",
+                JOptionPane.showMessageDialog(this, "Usuario no Modiicado, problemas en la conexión", "Modificación",
                         JOptionPane.ERROR_MESSAGE);
                 padre.mostrarVista(Vista.ConsultarUsuarios);
             }
@@ -578,13 +579,13 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
 
     @Override
     public boolean confirmarCambio() {
-        boolean cambiar = false;
-        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                + "desea cambiar de pantalla?\nTodos los cambios no "
-                + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
-        if (ok == JOptionPane.YES_OPTION) {
-            cambiar = true;
-        }
+        boolean cambiar = true;
+//        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+//                + "desea cambiar de pantalla?\nTodos los cambios no "
+//                + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
+//        if (ok == JOptionPane.YES_OPTION) {
+//            cambiar = true;
+//        }
         return cambiar;
     }
 
@@ -626,7 +627,8 @@ public class VistaModificarUsuario extends javax.swing.JPanel implements
             mostrarLabelEstado(ob, Validador.esNombre(ob.getText()));
         } else if (ob == txtfUsuario) {
             boolean ok = true;
-            if (ob.getText().compareTo(cvMantenerUsuarios.getUsuarioModificar().getUsuario()) != 0) {
+            if (Validador.quitarAcentos(ob.getText()).compareTo(Validador.
+                    quitarAcentos(cvMantenerUsuarios.getUsuarioModificar().getUsuario())) != 0) {
                 if (!cvMantenerUsuarios.validarUsuario(ob.getText())) {
                     ok = false;
                 } else {

@@ -194,4 +194,20 @@ public class MantenerUsuariosDELEGATE {
         return usuario;
     }
 
+    /**
+     * Validara si el usuario se encuentra inscrito en un grupo.
+     *
+     * @param usuario El usuario a validar si existe en un grupo.
+     * @return Verdadero si el usuario esta inscrito a un grupo.<br>
+     * Falso de otra forma.
+     */
+    public boolean perteneceAGrupo(UsuarioDTO usuario) {
+        boolean ok = false;
+        try {
+            ok = Enlace.getPersistencia().perteneceAGrupo(usuario);
+        } catch (RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+        return ok;
+    }
 }
