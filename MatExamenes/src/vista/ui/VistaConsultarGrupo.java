@@ -311,7 +311,7 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements
         } else {
             int ok = JOptionPane.showConfirmDialog(this, "Atención, al eliminar este grupo"
                     + " los alumnos que pertenezcan a el automáticamente quedaran\n como alumnos"
-                    + "sin grupo,\n  ¿Está seguro que desea realizar esta acción?");
+                    + " sin grupo.\n  ¿Está seguro que desea realizar esta acción?");
             if (ok == JOptionPane.YES_OPTION) {
                 if (controladorVista.eliminarGrupo(index)) {
                     JOptionPane.showMessageDialog(this, "Grupo eliminado "
