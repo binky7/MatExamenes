@@ -44,7 +44,7 @@ public class Validador {
     /**
      * Longitud máxima del nombre del reactivo
      */
-    public static final int LONGITUD_NOMBRE_REACTIVO = 50;
+    public static final int LONGITUD_NOMBRE_REACTIVO = 100;
     /**
      * Longitud máxima de la redacción del reactivo
      */

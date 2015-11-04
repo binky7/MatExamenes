@@ -166,113 +166,32 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
     private javax.swing.JMenu jMenu9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
-    /**
-     * Menú para calificaciones
-     */
     private javax.swing.JMenu mCalificaciones;
-    /**
-     * Menú para contestar exámenes
-     */
     private javax.swing.JMenu mContestarExamenes;
-    /**
-     * Menú para cursos
-     */
     private javax.swing.JMenu mCursos;
-    /**
-     * Menú para estadísticas
-     */
     private javax.swing.JMenu mEstadisticas;
-    /**
-     * Menú para exámenes
-     */
     private javax.swing.JMenu mExamenes;
-    /**
-     * Menú para grupos
-     */
     private javax.swing.JMenu mGrupos;
-    /**
-     * Menú para reactivos
-     */
     private javax.swing.JMenu mReactivos;
-    /**
-     * Menú para temas
-     */
     private javax.swing.JMenu mTemas;
-    /**
-     * Menú para usuarios
-     */
     private javax.swing.JMenu mUsuarios;
-    /**
-     * Barra de menu del Principal
-     */
     private javax.swing.JMenuBar mbPrincipal;
-    /**
-     * Opción Menú para Asignar Exámenes
-     */
     private javax.swing.JMenuItem miAsignarExamenes;
-    /**
-     * Opción Menú para Consultar Calificaciones
-     */
     private javax.swing.JMenuItem miConsultarCalificaciones;
-    /**
-     * Opción Menú para Consultar Cursos
-     */
     private javax.swing.JMenuItem miConsultarCursos;
-    /**
-     * Opción Menú para Consultar Exámenes
-     */
     private javax.swing.JMenuItem miConsultarExamenes;
-    /**
-     * Opción Menú para Consultar Grupos
-     */
     private javax.swing.JMenuItem miConsultarGrupos;
-    /**
-     * Opción Menú para Consultar Reactivos
-     */
     private javax.swing.JMenuItem miConsultarReactivos;
-    /**
-     * Opción Menú para Consultar Temas
-     */
     private javax.swing.JMenuItem miConsultarTemas;
-    /**
-     * Opción Menú para Consultar Exámenes
-     */
     private javax.swing.JMenuItem miConsultarUsuarios;
-    /**
-     * Opción Menú para Contestar Exámenes
-     */
     private javax.swing.JMenuItem miContestarExamenes;
-    /**
-     * Opción Menú para Generar Estadísticas
-     */
     private javax.swing.JMenuItem miGenerarEstadisticas;
-    /**
-     * Opción Menú para Registrar Curso
-     */
     private javax.swing.JMenuItem miRegistrarCurso;
-    /**
-     * Opción Menú para Registrar Examen
-     */
     private javax.swing.JMenuItem miRegistrarExamen;
-    /**
-     * Opción Menú para Registrar Grupo
-     */
     private javax.swing.JMenuItem miRegistrarGrupo;
-    /**
-     * Opción Menú para Registrar Reactivo
-     */
     private javax.swing.JMenuItem miRegistrarReactivo;
-    /**
-     * Opción Menú para Registrar Tema
-     */
     private javax.swing.JMenuItem miRegistrarTema;
-    /**
-     * Opción Menú para Registrar Usuario
-     */
     private javax.swing.JMenuItem miRegistrarUsuario;
-    /**
-     * Panel maestro que contendrá todas las vistas
-     */
     private javax.swing.JPanel vistas;
     // End of variables declaration//GEN-END:variables
 
@@ -668,7 +587,6 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         mbPrincipal.add(mUsuarios);
 
         mReactivos.setText("Reactivos");
-        mReactivos.setToolTipText("");
 
         miRegistrarReactivo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
         miRegistrarReactivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/nuevo24.png"))); // NOI18N

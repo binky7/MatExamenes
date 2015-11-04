@@ -64,54 +64,20 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
     private boolean noSelect;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-     * Botón usado para buscar reactivos
-     */
     private javax.swing.JButton btnBuscar;
-    /**
-     * Botón usado para cancelar la operación
-     */
     private javax.swing.JButton btnCancelar;
-    /**
-     * Botón usado para eliminar reactivos
-     */
     private javax.swing.JButton btnEliminar;
-    /**
-     * Botón usado para modificar reactivos
-     */
     private javax.swing.JButton btnModificar;
-    /**
-     * ComboBox usado para mostrar los cursos
-     */
+    private javax.swing.JComboBox cmbBloque;
     private javax.swing.JComboBox cmbCurso;
-    /**
-     * ComboBox usado para mostrar los temas
-     */
     private javax.swing.JComboBox cmbTema;
     private javax.swing.JPanel jPanel1;
-    /**
-     * ScrollPane usado para la tabla de reactivos
-     */
     private javax.swing.JScrollPane jScrollPane1;
-    /**
-     * Label para el cmbCurso
-     */
+    private javax.swing.JLabel lblBloque;
     private javax.swing.JLabel lblCurso;
-    /**
-     * Label para la tblReactivos
-     */
     private javax.swing.JLabel lblReactivos;
-    /**
-     * Label para el cmbTema
-     */
     private javax.swing.JLabel lblTema;
-    /**
-     * Label para el título de la interfaz gráfica.
-     */
     private javax.swing.JLabel lblTitulo;
-    /**
-     * Table utilizada para mostrar los reactivos
-     */
     private javax.swing.JTable tblReactivos;
     // End of variables declaration//GEN-END:variables
 
@@ -125,13 +91,13 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
         addAncestorListener(this);
 
         //Listener para el cmbCurso
-        cmbCurso.addActionListener(new ActionListener() {
+        cmbBloque.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!noSelect) {
-                    //Una vez seleccionado un curso del cmbCurso se consultan
-                    //los temas de ese curso
+                    //Una vez seleccionado un bloque del cmbBloque se consultan
+                    //los temas del curso y bloque
                     consultarTemasDeCurso();
                 }
             }
@@ -212,19 +178,20 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
 
     /**
      * Este método sirve para consultar los temas pertenecientes al curso
-     * seleccionado en el cmbCurso. Al haber obtenido todos los cursos de la
-     * base de datos anteriormente pero no tener los temas inicializados (lazy),
-     * se requiere hacer una segunda llamada a la base de datos para obtener
-     * los temas, por medio del controlVista.
+     * seleccionado en el cmbCurso y al bloque del cmbBloque.
+     * Al haber obtenido todos los cursos de la base de datos anteriormente
+     * pero no tener los temas inicializados (lazy), se requiere hacer una
+     * segunda llamada a la base de datos para obtener los temas, por medio
+     * del controlVista.
      * @see consultarCursos
      */
     private void consultarTemasDeCurso() {
-        //Si el cmbCurso tiene un curso seleccionado
-        if (cmbCurso.getSelectedIndex() != -1) {
+        //Si el cmbCurso y el cmbBloque tienen un curso seleccionado
+        if (cmbCurso.getSelectedIndex() != -1 && cmbBloque.getSelectedIndex() != -1) {
             //La lista de temas recibida del controlVista, la cual pertenece
-            //al curso seleccionado en el cmbCurso
+            //al curso seleccionado en el cmbCurso y al bloque del cmbBloque
             List<TemaDTO> temas = controlVista.obtenerTemasDeCurso(cmbCurso
-                    .getSelectedIndex());
+                    .getSelectedIndex(), cmbBloque.getSelectedIndex() + 1);
 
             //Si la lista de temas no está vacía...
             if (temas != null && !temas.isEmpty()) {
@@ -236,7 +203,7 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
             }
         }
         else {
-            //Si no hay selección de curso limpiar cmbTema
+            //Si no hay selección de curso o bloque limpiar cmbTema
             cmbTema.removeAllItems();
         }
     }
@@ -366,6 +333,8 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
         btnEliminar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
+        lblBloque = new javax.swing.JLabel();
+        cmbBloque = new javax.swing.JComboBox();
 
         setPreferredSize(new java.awt.Dimension(790, 579));
 
@@ -409,6 +378,7 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
 
         cmbCurso.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         cmbCurso.setToolTipText("Selección de un curso existente");
+        cmbCurso.setName(""); // NOI18N
         cmbCurso.setPreferredSize(new java.awt.Dimension(78, 25));
 
         lblTema.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -464,6 +434,15 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
             }
         });
 
+        lblBloque.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblBloque.setText("Bloque:");
+
+        cmbBloque.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cmbBloque.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5" }));
+        cmbBloque.setSelectedIndex(-1);
+        cmbBloque.setToolTipText("Selección del bloque al que pertenecen los temas");
+        cmbBloque.setPreferredSize(new java.awt.Dimension(78, 25));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -479,6 +458,16 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(29, 29, 29))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmbBloque, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBloque)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lblTema)
+                        .addComponent(cmbTema, 0, 156, Short.MAX_VALUE)))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -488,12 +477,9 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
                             .addGap(245, 245, 245))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(28, 28, 28)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(lblCurso)
-                                .addComponent(lblTema)
-                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(cmbCurso, 0, 156, Short.MAX_VALUE)
-                                .addComponent(cmbTema, 0, 156, Short.MAX_VALUE))
+                                .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGap(110, 110, 110)
@@ -507,7 +493,17 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(456, Short.MAX_VALUE)
+                .addContainerGap(192, Short.MAX_VALUE)
+                .addComponent(lblBloque)
+                .addGap(18, 18, 18)
+                .addComponent(cmbBloque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(lblTema)
+                .addGap(18, 18, 18)
+                .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(66, 66, 66)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -525,13 +521,7 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(lblCurso)
                             .addGap(7, 7, 7)
-                            .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(53, 53, 53)
-                            .addComponent(lblTema)
-                            .addGap(18, 18, 18)
-                            .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(47, 47, 47)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
@@ -637,9 +627,37 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
                             .removeRow(index);
                 }
             } else {
+                //Antes de limpiar todo guardar los índices de los comboBox para
+                //reiniciar la búsqueda después
+                int indexCurso = cmbCurso.getSelectedIndex();
+                int indexBloque = cmbBloque.getSelectedIndex();
+                int indexTema = cmbTema.getSelectedIndex();
+                
                 //Mostrar el mensaje en caso de un error al eliminar
                 JOptionPane.showMessageDialog(this, "No se pudieron eliminar "
-                        + "los reactivos", "Error", JOptionPane.ERROR_MESSAGE);
+                        + "todos los reactivos. Existen exámenes que los utilizan",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                
+                //Limpiar todo y reiniciar la búsqueda...
+                limpiar();
+                repaint();
+                
+                //Volver a consultar cursos para volver a empezar
+                noSelect = true;
+                consultarCursos();
+                
+                //Después de limpiar toda la vista recrear las consultas
+                
+                //Consultar temas...
+                cmbCurso.setSelectedIndex(indexCurso);
+                cmbBloque.setSelectedIndex(indexBloque);
+                consultarTemasDeCurso();
+                
+                //Consultar los reactivos...
+                cmbTema.setSelectedIndex(indexTema);
+                consultarReactivos();
+                
+                
             }
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione un reactivo");
@@ -704,6 +722,8 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
         //Limpiar datos
         cmbCurso.removeAllItems();
         cmbTema.removeAllItems();
+        cmbBloque.setSelectedIndex(-1);
+        
         ((DefaultTableModel) tblReactivos.getModel()).setRowCount(0);
         controlVista.liberarMemoriaConsultar();
     }

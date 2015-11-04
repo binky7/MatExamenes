@@ -81,6 +81,28 @@ public class MantenerReactivosDELEGATE {
     }
     
     /**
+     * Obtiene los temas pertenecientes al curso y al bloque seleccionado
+     * 
+     * @param curso el objeto CursoDTO del que se quieren obtener los temas
+     * @param bloque un entero que representa el bloque del que se quieren obtener
+     * los temas
+     * 
+     * @return una lista de TemaDTO con los temas del curso y bloque seleccionados,
+     * en caso de que no exista ningún tema regresa null
+     */
+    public List<TemaDTO> obtenerTemasDeCurso(CursoDTO curso, int bloque) {
+        List<TemaDTO> temas = null;
+        try{
+            //Por medio de la interface Persistencia se obtiene los temas del curso
+            temas = Enlace.getPersistencia().obtenerTemasDeCurso(curso, bloque);
+        }catch(RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+        
+        return temas;
+    }
+    
+    /**
      * Este método es utilizado para obtener el objeto reactivo perteneciente
      * al id ingresado
      * 

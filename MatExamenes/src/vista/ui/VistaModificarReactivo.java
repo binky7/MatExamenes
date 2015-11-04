@@ -91,133 +91,39 @@ implements InterfaceVista, FocusListener, KeyListener {
     private String mensajeDatosIncorrectos;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-     * Botón usado para cancelar la operación
-     */
     private javax.swing.JButton btnCancelar;
-    /**
-     * Botón usado para guardar el reactivo
-     */
     private javax.swing.JButton btnGuardar;
-    /**
-     * ComboBox usado para mostrar los cursos
-     */
+    private javax.swing.JComboBox cmbBloque;
     private javax.swing.JComboBox cmbCurso;
-    /**
-     * ComboBox usado para mostrar los temas
-     */
     private javax.swing.JComboBox cmbTema;
-    /**
-     * ScrollPane usado para el área de texto de redacción
-     */
     private javax.swing.JScrollPane jScrollPane1;
-    /**
-     * Label para el cmbCurso
-     */
+    private javax.swing.JLabel lblBloque;
     private javax.swing.JLabel lblCurso;
-    /**
-     * Label para mostrar el estado del campo nombre
-     */
     private javax.swing.JLabel lblEstadoNombre;
-    /**
-     * Label para mostrar el estado del campo opt1
-     */
     private javax.swing.JLabel lblEstadoOpt1;
-    /**
-     * Label para mostrar el estado del campo opt2
-     */
     private javax.swing.JLabel lblEstadoOpt2;
-    /**
-     * Label para mostrar el estado del campo opt3
-     */
     private javax.swing.JLabel lblEstadoOpt3;
-    /**
-     * Label para mostrar el estado del campo opt4
-     */
     private javax.swing.JLabel lblEstadoOpt4;
-    /**
-     * Label para mostrar el estado del campo redaccion
-     */
     private javax.swing.JLabel lblEstadoRedaccion;
-    /**
-     * Label para el campo de texto del nombre
-     */
     private javax.swing.JLabel lblNombre;
-    /**
-     * Label para el campo de texto de la opcion 1
-     */
     private javax.swing.JLabel lblOpciones1;
-    /**
-     * Label para el campo de texto de la opcion 2
-     */
     private javax.swing.JLabel lblOpciones2;
-    /**
-     * Label para el campo de texto de la opcion 3
-     */
     private javax.swing.JLabel lblOpciones3;
-    /**
-     * Label para el campo de texto de la opcion 4
-     */
     private javax.swing.JLabel lblOpciones4;
-    /**
-     * Label para el campo de texto de la redaccion
-     */
     private javax.swing.JLabel lblRedaccion;
-    /**
-     * Label para mostrar Respuesta
-     */
     private javax.swing.JLabel lblRespuesta;
-    /**
-     * Label para el cmbTema
-     */
     private javax.swing.JLabel lblTema;
-    /**
-     * Label para el título de la interfaz gráfica.
-     */
     private javax.swing.JLabel lblTitulo;
-    /**
-     * Panel para agrupar los componentes de las opciones del reactivo
-     */
     private javax.swing.JPanel pnlOpciones;
-    /**
-     * Radio Button para la opción 1.
-     */
     private javax.swing.JRadioButton rbtnOpt1;
-    /**
-     * Radio Button para la opción 2.
-     */
     private javax.swing.JRadioButton rbtnOpt2;
-    /**
-     * Radio Button para la opción 3.
-     */
     private javax.swing.JRadioButton rbtnOpt3;
-    /**
-     * Radio Button para la opción 4.
-     */
     private javax.swing.JRadioButton rbtnOpt4;
-    /**
-    * Área de texto utilizado para ingresar la redacción.
-    */
     private javax.swing.JTextArea txtaRedaccion;
-    /**
-    * Campo de texto utilizado para ingresar el nombre.
-    */
     private javax.swing.JTextField txtfNombre;
-    /**
-    * Campo de texto utilizado para ingresar la opción 1.
-    */
     private javax.swing.JTextField txtfOpt1;
-    /**
-    * Campo de texto utilizado para ingresar la opción 2.
-    */
     private javax.swing.JTextField txtfOpt2;
-    /**
-    * Campo de texto utilizado para ingresar la opción 3.
-    */
     private javax.swing.JTextField txtfOpt3;
-    /**
-    * Campo de texto utilizado para ingresar la opción 4.
-    */
     private javax.swing.JTextField txtfOpt4;
     // End of variables declaration//GEN-END:variables
     
@@ -520,6 +426,8 @@ implements InterfaceVista, FocusListener, KeyListener {
         btnCancelar = new javax.swing.JButton();
         lblEstadoNombre = new javax.swing.JLabel();
         lblEstadoRedaccion = new javax.swing.JLabel();
+        lblBloque = new javax.swing.JLabel();
+        cmbBloque = new javax.swing.JComboBox();
 
         setPreferredSize(new java.awt.Dimension(790, 579));
 
@@ -543,7 +451,6 @@ implements InterfaceVista, FocusListener, KeyListener {
         jScrollPane1.setViewportView(txtaRedaccion);
 
         cmbCurso.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        cmbCurso.setToolTipText("");
         cmbCurso.setEnabled(false);
         cmbCurso.setPreferredSize(new java.awt.Dimension(78, 25));
 
@@ -722,6 +629,13 @@ implements InterfaceVista, FocusListener, KeyListener {
         lblEstadoRedaccion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/bien.png"))); // NOI18N
         lblEstadoRedaccion.setToolTipText("No ingresar datos vacios");
 
+        lblBloque.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblBloque.setText("Bloque:");
+
+        cmbBloque.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cmbBloque.setEnabled(false);
+        cmbBloque.setPreferredSize(new java.awt.Dimension(78, 25));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -737,7 +651,9 @@ implements InterfaceVista, FocusListener, KeyListener {
                     .addComponent(lblCurso)
                     .addComponent(lblTema)
                     .addComponent(cmbCurso, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cmbTema, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cmbTema, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblBloque)
+                    .addComponent(cmbBloque, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(31, 31, 31)
@@ -748,7 +664,7 @@ implements InterfaceVista, FocusListener, KeyListener {
                                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(47, Short.MAX_VALUE))
+                        .addContainerGap(42, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblRedaccion)
@@ -780,7 +696,11 @@ implements InterfaceVista, FocusListener, KeyListener {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(7, 7, 7)
                         .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(48, 48, 48)
+                        .addGap(33, 33, 33)
+                        .addComponent(lblBloque)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbBloque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)
                         .addComponent(lblTema)
                         .addGap(18, 18, 18)
                         .addComponent(cmbTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -791,7 +711,7 @@ implements InterfaceVista, FocusListener, KeyListener {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -833,7 +753,8 @@ implements InterfaceVista, FocusListener, KeyListener {
             else {
                 //Si no se pudo modificar el reactivo mostrar un mensaje de error
                 JOptionPane.showMessageDialog(this, "No se pudo modificar "
-                    + "el reactivo", "Error", JOptionPane.ERROR_MESSAGE);
+                    + "el reactivo, el nombre ya existe o alguna opción se repite",
+                        "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 

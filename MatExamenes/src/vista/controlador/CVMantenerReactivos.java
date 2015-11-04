@@ -124,6 +124,29 @@ public class CVMantenerReactivos {
     }
     
     /**
+     * Obtiene los temas pertenecientes al curso y bloque seleccionado,
+     * en base al índice del curso y al bloque ingresados
+     * 
+     * @param indexCurso el índice que representa al objeto CursoDTO en la lista
+     * de cursos almacenada en este objeto.
+     * @param bloque el número de bloque del que se desea obtener los temas.
+     * 
+     * @return una lista de TemaDTO con los temas del curso seleccionado, en caso
+     * de que no exista ningún tema regresa null
+     */
+    public List<TemaDTO> obtenerTemasDeCurso(int indexCurso, int bloque) {
+        List<TemaDTO> listaTemas = null;
+        
+        if(cursos != null && !cursos.isEmpty()) {
+            CursoDTO curso = cursos.get(indexCurso);
+            listaTemas = mantenerReactivosDELEGATE.obtenerTemasDeCurso(curso, bloque);
+            this.temas = listaTemas;
+        }
+        
+        return listaTemas;
+    }
+    
+    /**
      * Obtiene los reactivos pertenecientes al tema seleccionado, en base al
      * nombre del tema ingresado
      * @param nombreTema el nombre del tema del objeto TemaDTO en la lista
