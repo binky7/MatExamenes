@@ -147,42 +147,68 @@ public class CVMantenerExamenes {
         return reactivo;
     }
     
+//    /**
+//     * Obtiene los temas pertenecientes al curso seleccionado, en base al índice
+//     * ingresado
+//     * 
+//     * @param indexCurso el índice que representa al objeto CursoDTO en la lista
+//     * de cursos almacenada en este objeto.
+//     * 
+//     * @return una lista de TemaDTO con los temas del curso seleccionado, en caso
+//     * de que no exista ningún tema regresa null
+//     */
+//    public List<TemaDTO> obtenerTemasDeCurso(int indexCurso) {
+//        List<TemaDTO> listaTemas = null;
+//        
+//        if(cursos != null && !cursos.isEmpty()) {
+//            CursoDTO curso = cursos.get(indexCurso);
+//            listaTemas = mantenerExamenesDELEGATE.obtenerTemasDeCurso(curso);
+//        }
+//        return listaTemas;
+//    }
+    
     /**
-     * Obtiene los temas pertenecientes al curso seleccionado, en base al índice
-     * ingresado
+     * Obtiene los temas pertenecientes al curso y bloque seleccionados, en base
+     * al índice ingresado
      * 
      * @param indexCurso el índice que representa al objeto CursoDTO en la lista
      * de cursos almacenada en este objeto.
+     * @param bloque el número de bloque del que se quieren extraer los temas
      * 
-     * @return una lista de TemaDTO con los temas del curso seleccionado, en caso
-     * de que no exista ningún tema regresa null
+     * @return una lista de TemaDTO con los temas del curso y bloque
+     * seleccionados, en caso de que no exista ningún tema regresa null
      */
-    public List<TemaDTO> obtenerTemasDeCurso(int indexCurso) {
+    public List<TemaDTO> obtenerTemasDeCurso(int indexCurso, int bloque) {
         List<TemaDTO> listaTemas = null;
         
         if(cursos != null && !cursos.isEmpty()) {
             CursoDTO curso = cursos.get(indexCurso);
-            listaTemas = mantenerExamenesDELEGATE.obtenerTemasDeCurso(curso);
+            listaTemas = mantenerExamenesDELEGATE
+                    .obtenerTemasDeCurso(curso, bloque);
         }
         return listaTemas;
     }
     
+    
     /**
-     * Obtiene los temas pertenecientes al curso seleccionado, en este caso el
-     * curso seleccionado será el que ya pertenezca al examen actual (Examen a 
-     * modificar)
+     * Obtiene los temas pertenecientes al curso seleccionado y al bloque que se
+     * envió como parámetro, en este caso el curso seleccionado será al que ya
+     * pertenezca al examen actual (Examen a modificar)
      * 
-     * @return una lista de TemaDTO con los temas del curso seleccionado, en caso
-     * de que no exista ningún tema regresa null
+     * @param bloque el entero que representa el bloque de donde se quieren
+     * obtener los temas
+     * 
+     * @return una lista de TemaDTO con los temas del curso y bloque
+     * seleccionados, en caso de que no exista ningún tema regresa null
      */
-    public List<TemaDTO> obtenerTemasDeCurso() {
+    public List<TemaDTO> obtenerTemasDeCurso(int bloque) {
         List<TemaDTO> listaTemas = null;
         
         if(examen != null) {
-            //Obtiene los temas del curso del examen en vez de seleccionar un
-            //curso por medio de un índice
+            //Obtiene los temas del curso del examen y el bloque en vez de
+            //seleccionar un curso por medio de un índice
             listaTemas = mantenerExamenesDELEGATE
-                    .obtenerTemasDeCurso(examen.getCurso());
+                    .obtenerTemasDeCurso(examen.getCurso(), bloque);
         }
         return listaTemas;
     }
@@ -334,13 +360,13 @@ public class CVMantenerExamenes {
      * @param cantidad la cantidad por el tema seleccionado
      */
     public void agregarSeleccion(String nombreTema, int cantidad) {
+        TemaDTO tema = new TemaDTO();
+        tema.setNombre(nombreTema);
         
         if(temas == null) {
             temas = new ArrayList<TemaDTO>();
             cantidades = new ArrayList<Integer>();
         }
-        TemaDTO tema = new TemaDTO();
-        tema.setNombre(nombreTema);
         
         //Se agregan los datos a las listas paralelas de temas y cantidades
         temas.add(tema);
@@ -610,13 +636,12 @@ public class CVMantenerExamenes {
      * @param clave el número real que la clave tendrá como identificador
      */
     public void agregarClave(int clave) {
-
+        ClaveExamenDTO objClave = new ClaveExamenDTO();
+        ClaveExamenPK clavePK = new ClaveExamenPK();
+        
         if (examen == null) {
             examen = new ExamenDTO();
         }
-        
-        ClaveExamenDTO objClave = new ClaveExamenDTO();
-        ClaveExamenPK clavePK = new ClaveExamenPK();
 
         clavePK.setClave(clave);
         objClave.setId(clavePK);

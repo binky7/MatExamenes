@@ -19,6 +19,8 @@
  */
 package vista.ui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
@@ -84,12 +86,16 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnRemoverSeleccion;
     private javax.swing.JButton btnVer;
+    private javax.swing.JComboBox cmbBloquesAuto;
+    private javax.swing.JComboBox cmbBloquesManual;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JLabel lblBloquesAuto;
+    private javax.swing.JLabel lblBloquesManual;
     private javax.swing.JLabel lblCantidad;
     private javax.swing.JLabel lblReactivos;
     private javax.swing.JLabel lblSeleccion;
@@ -130,6 +136,33 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
      */
     private void initListeners() {
 
+        //Agregar listeners a los cmb Bloques
+        cmbBloquesManual.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!noSelect) {
+                    //Una vez seleccionado un bloque del cmbBloque se consultan
+                    //los temas del curso y bloque seleccionados
+                    consultarTemas();
+                }
+            }
+            
+        });
+        
+        cmbBloquesAuto.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!noSelect) {
+                    //Una vez seleccionado un bloque del cmbBloque se consultan
+                    //los temas del curso y bloque seleccionados
+                    consultarTemas();
+                }
+            }
+            
+        });
+        
         lstTemasManual.addListSelectionListener(new ListSelectionListener() {
 
             @Override
@@ -215,7 +248,8 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         this.indexCurso = indexCurso;
         this.clave = clave;
         setVisible(true);
-        consultarTemas();
+        noSelect = false;
+        //consultarTemas();
     }
 
     /**
@@ -226,9 +260,11 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
      * vista
      */
     private void mostrarTemas(List<TemaDTO> temas, JList lista) {
-
+        
         DefaultListModel listModel = (DefaultListModel) lista.getModel();
 
+        noSelect = true;
+        
         listModel.clear();
         //Mostrar cada tema, no remover, si no buscar por medio del for
         for (TemaDTO tema : temas) {
@@ -300,30 +336,59 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
 
     /**
      * Este método sirve para consultar los temas pertenecientes al curso que
-     * representa el índice del curso almacenado en este frame.
+     * representa el índice del curso almacenado en este frame, también se toma
+     * como parámetro el bloque del que se quiere obtener los temas.
      */
     private void consultarTemas() {
         List<TemaDTO> temas;
-
-        //Si el indexCurso == -1 significa que no se envió el curso porque era
-        //en modificar examen
-        if (indexCurso != -1) {
-            temas = controlVista.obtenerTemasDeCurso(indexCurso);
+        int bloque;
+        
+        //Para ambos casos obtener el bloque seleccionado
+        
+        //Se tiene que saber de cual comboBox obtener el bloque ya que hay dos
+        //y se puede estar en la selección manual o la automática...
+        if (tbpSeleccion.getSelectedIndex() == 0) {
+            //Selección manual
+            bloque = cmbBloquesManual.getSelectedIndex() + 1;
+            
+            //Si el indexCurso == -1 significa que no se envió el curso porque era
+            //en modificar examen
+            if (indexCurso != -1) {
+                temas = controlVista.obtenerTemasDeCurso(indexCurso, bloque);
+            } else {
+                temas = controlVista.obtenerTemasDeCurso(bloque);
+            }
+            
+            //Si llegó algo mostrar los temas en la lista
+            if (temas != null && !temas.isEmpty()) {
+                mostrarTemas(temas, lstTemasManual);
+            } else {
+                JOptionPane.showMessageDialog(this, "No hay temas");
+                ((DefaultListModel)lstTemasManual.getModel()).clear();
+                //((JFrame) padre.getPadre()).setEnabled(true);
+                //dispose();
+                //limpiar();
+            }
         } else {
-            temas = controlVista.obtenerTemasDeCurso();
+            //Selección Aleatoria
+            bloque = cmbBloquesAuto.getSelectedIndex() + 1;
+            
+            //Si el indexCurso == -1 significa que no se envió el curso porque era
+            //en modificar examen
+            if (indexCurso != -1) {
+                temas = controlVista.obtenerTemasDeCurso(indexCurso, bloque);
+            } else {
+                temas = controlVista.obtenerTemasDeCurso(bloque);
+            }
+            
+            //Si llegó algo mostrar los temas en la lista
+            if (temas != null && !temas.isEmpty()) {
+                mostrarTemas(temas, lstTemasAuto);
+            } else {
+                JOptionPane.showMessageDialog(this, "No hay temas");
+                ((DefaultListModel)lstTemasAuto.getModel()).clear();
+            }
         }
-
-        //Si llegó algo mostrar los temas en las dos listas
-        if (temas != null && !temas.isEmpty()) {
-            mostrarTemas(temas, lstTemasManual);
-            mostrarTemas(temas, lstTemasAuto);
-        } else {
-            JOptionPane.showMessageDialog(this, "No hay temas");
-            ((JFrame) padre.getPadre()).setEnabled(true);
-            dispose();
-            limpiar();
-        }
-
     }
 
     /**
@@ -404,6 +469,9 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         ((DefaultTableModel) tblReactivos.getModel()).setRowCount(0);
         ((DefaultTableModel) tblSeleccion.getModel()).setRowCount(0);
         spnCantidad.setValue(0);
+        
+        cmbBloquesAuto.setSelectedIndex(-1);
+        cmbBloquesManual.setSelectedIndex(-1);
 
         lblTotal.setText("");
 
@@ -426,6 +494,8 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         lstTemasManual = new javax.swing.JList();
         lblTemasManual = new javax.swing.JLabel();
         btnVer = new javax.swing.JButton();
+        lblBloquesManual = new javax.swing.JLabel();
+        cmbBloquesManual = new javax.swing.JComboBox();
         jPanel4 = new javax.swing.JPanel();
         spnCantidad = new javax.swing.JSpinner();
         lblTemasAuto = new javax.swing.JLabel();
@@ -439,6 +509,8 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         btnRemoverSeleccion = new javax.swing.JButton();
         lblTotalReactivos = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
+        lblBloquesAuto = new javax.swing.JLabel();
+        cmbBloquesAuto = new javax.swing.JComboBox();
         btnCancelar = new javax.swing.JButton();
         btnAceptar = new javax.swing.JButton();
 
@@ -499,37 +571,60 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
             }
         });
 
+        lblBloquesManual.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblBloquesManual.setText("Bloque:");
+
+        cmbBloquesManual.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cmbBloquesManual.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5" }));
+        cmbBloquesManual.setSelectedIndex(-1);
+        cmbBloquesManual.setToolTipText("Selección del bloque al que pertenecen los temas");
+        cmbBloquesManual.setPreferredSize(new java.awt.Dimension(78, 25));
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addComponent(lblTemasManual)
-                .addGap(222, 222, 222)
-                .addComponent(lblReactivos))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(lblBloquesManual)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbBloquesManual, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(160, 160, 160)
+                        .addComponent(lblReactivos))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(47, 47, 47)
+                                .addComponent(lblTemasManual))
+                            .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(16, 16, 16)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(11, 11, 11)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTemasManual)
-                    .addComponent(lblReactivos))
-                .addGap(11, 11, 11)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblBloquesManual)
+                            .addComponent(cmbBloquesManual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(lblTemasManual)
+                        .addGap(14, 14, 14)
                         .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(lblReactivos)
+                        .addGap(11, 11, 11)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(43, 43, 43))
         );
 
         tbpSeleccion.addTab("Selección Manual", jPanel3);
@@ -609,6 +704,15 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         lblTotal.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lblTotal.setText(".");
 
+        lblBloquesAuto.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        lblBloquesAuto.setText("Bloque:");
+
+        cmbBloquesAuto.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cmbBloquesAuto.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5" }));
+        cmbBloquesAuto.setSelectedIndex(-1);
+        cmbBloquesAuto.setToolTipText("Selección del bloque al que pertenecen los temas");
+        cmbBloquesAuto.setPreferredSize(new java.awt.Dimension(78, 25));
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -617,45 +721,58 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblBloquesAuto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbBloquesAuto, 0, 113, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addComponent(lblTemasAuto))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(lblCantidad)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(spnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblTotalReactivos)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblTotal)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(69, 69, 69)
+                                .addComponent(lblTemasAuto))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(lblCantidad)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(spnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblTotalReactivos)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblTotal)))
+                        .addGap(0, 1, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addComponent(lblSeleccion)
                         .addGap(194, 194, 194))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(btnAgregarSeleccion)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnRemoverSeleccion)
-                                .addGap(47, 47, 47))
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(34, 34, 34))))
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(btnAgregarSeleccion)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRemoverSeleccion)
+                        .addGap(104, 104, 104))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTemasAuto)
-                    .addComponent(lblSeleccion))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(lblSeleccion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblBloquesAuto)
+                            .addComponent(cmbBloquesAuto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblTemasAuto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -664,9 +781,8 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
                         .addGap(14, 14, 14)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblCantidad)
-                            .addComponent(spnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(spnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnRemoverSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAgregarSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -699,7 +815,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(400, Short.MAX_VALUE)
+                .addGap(433, 433, 433)
                 .addComponent(btnAceptar)
                 .addGap(18, 18, 18)
                 .addComponent(btnCancelar)

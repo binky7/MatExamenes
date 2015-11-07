@@ -60,7 +60,7 @@ public class Validador {
     /**
      * Longitud máxima de las instrucciones del examen
      */
-    public static final int LONGITUD_INSTRUCCIONES_EXAMEN = 200;
+    public static final int LONGITUD_INSTRUCCIONES_EXAMEN = 350;
     /**
      * Longitud máxima de los datos del usuario
      */
