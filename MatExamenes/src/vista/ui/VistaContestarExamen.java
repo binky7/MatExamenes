@@ -76,6 +76,24 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
      */
     private static final int INICIO_TEXT_AREA = 0;
     /**
+     * Cadena para el salto de linea en medio de una palabra
+     */
+    private static final String GUION_BR = "-<br>";
+    /**
+     * Cadena para el salto de linea cuando hay un espacio
+     */
+    private static final String BR = "<br>";
+    /**
+     * Cierre de la etiqueta html que permite los espacios en los textos de
+     * JRadioButton
+     */
+    private static final String CIERRE_HTML = "</html>";
+    /**
+     * Apertura de la etiqueta html que permite los espacio en los texto de
+     * JRadioButton
+     */
+    private static final String INICIO_HTML = "<html>";
+    /**
      * Interface para interactuar con el JFrame principal.
      */
     private InterfaceVista padre;
@@ -350,7 +368,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         if (cvContestarExamen.actualizarExamen(cvContestarExamen.getExamenAsignado())) {
             respaldo.eliminarRespaldo();
         } else {
-            JOptionPane.showMessageDialog(this, "Exmen no actualizado");
+            JOptionPane.showMessageDialog(this, "Examen no actualizado");
         }
 
         padre.mostrarVista(Vista.HOME);
@@ -465,28 +483,57 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         }
     }
 
+/**
+ * Se cambio la forma de obtener la respuesta seleccionada por el alumno,
+ * ahora se obtiene en base al índice del botón y no se obtiene directamente del
+ * texto del RadioButton
+ */
+//    /**
+//     * Obtiene los botones en el grupo de botones y verifica si están
+//     * seleccionados.
+//     *
+//     * @param grupoBotones El grupo de botones del cual se quiere obtener el
+//     * texto del seleccionado.
+//     * @return El texto del botón seleccionado.<br>
+//     * Si no hay un botón seleccionado retorna null.
+//     */
+//    private String obtenerTextoBotonSeleccionado(ButtonGroup grupoBotones) {
+//        int i = 0;
+//        for (Enumeration<AbstractButton> buttons = grupoBotones.getElements(); buttons.hasMoreElements();) {
+//            AbstractButton button = buttons.nextElement();
+//
+//            if (button.isSelected()) {
+//                reactivosContestados[reactivoActual] = i;
+//                return button.getText();
+//            }
+//            i++;
+//        }
+//        return null;
+//    }
+    
     /**
-     * Obtiene los botones en el grupo de botones y verifica si estan
+     * Obtiene los botones en el grupo de botones y verifica si están
      * seleccionados.
      *
      * @param grupoBotones El grupo de botones del cual se quiere obtener el
-     * texto del seleccionado.
-     * @return El texto del boton seleccionado.<br>
-     * Si no hay un boton seleccionado retorna null.
+     * índice del seleccionado.
+     * @return El índice del botón seleccionado.<br>
+     * Si no hay un botón seleccionado retorna -1.
      */
-    private String obtenerTextoBotonSeleccionado(ButtonGroup grupoBotones) {
+    private int obtenerIndexBotonSeleccionado(ButtonGroup grupoBotones) {
         int i = 0;
         for (Enumeration<AbstractButton> buttons = grupoBotones.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
 
             if (button.isSelected()) {
                 reactivosContestados[reactivoActual] = i;
-                return button.getText();
+                return i;
             }
             i++;
         }
-        return null;
+        return -1;
     }
+    
 
     /**
      * Inicia el Thread del cronómetro.
@@ -512,21 +559,22 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
     }
 
     /**
-     * En caso de que las opciones contengan mas de 125 caracteres, 
-     * se partirán en dos, evitando la perdida de visibilidad en la aplicación.
+     * En caso de que las opciones contengan mas de 125 caracteres, se partirán
+     * en dos, evitando la perdida de visibilidad en la aplicación.
+     *
      * @param opcion La opción que se desea dividir en dos.
      * @return La opción dividida en dos.
      */
     private String partirOpcion(String opcion) {
-        String opcionPartida = "";
+        String opcionPartida;
 
         if (opcion.length() > 125) {
             String parte1 = opcion.substring(0, 124);
             String parte2 = opcion.substring(125);
             if (opcion.charAt(124) == ' ') {
-                opcionPartida = "<html>" + parte1 + "<br>" + parte2 + "</html>";
+                opcionPartida = INICIO_HTML + parte1 + BR + parte2 + CIERRE_HTML;
             } else {
-                opcionPartida = "<html>" + parte1 + "-<br>" + parte2 + "</html>";
+                opcionPartida = INICIO_HTML + parte1 + GUION_BR + parte2 + CIERRE_HTML;
             }
         } else {
             opcionPartida = opcion;
@@ -699,7 +747,8 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
             }
         } else {
             //botones radio
-            String respuesta = obtenerTextoBotonSeleccionado(rbtnGrupoRespuestas);
+//            String respuesta = limpiarOpcion(obtenerTextoBotonSeleccionado(rbtnGrupoRespuestas));
+            String respuesta = opcionesAleatorias.get(reactivoActual).get(obtenerIndexBotonSeleccionado(rbtnGrupoRespuestas));
             guardarRespuestaAlumno(reactivoActual, respuesta);
             try {
                 respaldo.modificarRespuesta(reactivoActual, respuesta);
