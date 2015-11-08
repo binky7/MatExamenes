@@ -618,7 +618,7 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
             //Si la eliminación se llevó correctamente mostrar el mensaje y
             //eliminar las filas de la tabla
             if (ok) {
-                JOptionPane.showMessageDialog(this, "Reactivos Eliminados");
+                //JOptionPane.showMessageDialog(this, "Reactivos Eliminados");
                 //Ordena los indices alrrevez para eliminar las filas selecc.
                 Collections.sort(indexesReactivos, Collections.reverseOrder());
 

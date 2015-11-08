@@ -23,6 +23,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +57,18 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import modelo.dto.CursoDTO;
 import modelo.dto.ExamenDTO;
+import modelo.dto.GrupoDTO.Turno;
 import modelo.dto.TablaEstadisticas;
 import modelo.dto.UsuarioDTO;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.WorkbookUtil;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import vista.controlador.CVGenerarEstadisticas;
 import vista.interfaz.InterfaceVista;
 
@@ -197,16 +208,22 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     private void initFX() {
         //Crea los paneles JavaFX necesarios
         fxpnlGrafica = new JFXPanel();
-        fxpnlGrafica.setBounds(0, 0, 800, 500);
         JFXPanel fxpnlBoton = new JFXPanel();
-        fxpnlBoton.setBounds(620, 520, 150, 30);
-
+        JFXPanel fxpnlBotonExcel = new JFXPanel();
+        
+        fxpnlGrafica.setBounds(0, 0, 800, 500);
+        fxpnlBoton.setBounds(420, 520, 150, 30);
+        fxpnlBotonExcel.setBounds(600, 520, 180, 30);
+        
         //Asigna un listener al boton JavaFX para guardar la gráfica como imagen
         //en el equipo
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 Button btnGuardar = new Button("Guardar Gráfica");
+                Button btnExportar = new Button("Exportar a Excel");
+                
+                //Agregar los listeners
                 btnGuardar.setOnAction(new EventHandler<ActionEvent>() {
 
                     @Override
@@ -215,9 +232,22 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
                     }
 
                 });
+                
+                btnExportar.setOnAction(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent event) {
+                        exportarAExcel();
+                    }
+
+                });
+                
                 //Crear la scene y lo necesario para mostrar la grafica
                 Scene scene = new Scene(btnGuardar);
                 fxpnlBoton.setScene(scene);
+                
+                scene = new Scene(btnExportar);
+                fxpnlBotonExcel.setScene(scene);
             }
         });
 
@@ -225,6 +255,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         frmGrafica.setLayout(null);
         frmGrafica.add(fxpnlGrafica);
         frmGrafica.add(fxpnlBoton);
+        frmGrafica.add(fxpnlBotonExcel);
         frmGrafica.setSize(800, 600);
         frmGrafica.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frmGrafica.setResizable(false);
@@ -484,8 +515,8 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     private void generarGrafica(String tipo, String ejeX, String ejeY,
             String titulo) {
 
-        //Comprobar que se seleccionaron 2 examenes
-        if (indexesExamen.size() == 2) {
+        //Comprobar que se seleccionaron uno o dos examenes
+        if (indexesExamen.size() > 0) {
             TablaEstadisticas tabla;
             //Elegir que tipo de estadística realizar
             if (tipo.equals("Grupo")) {
@@ -529,7 +560,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione dos exámenes");
+            JOptionPane.showMessageDialog(this, "Seleccione uno o dos exámenes");
         }
     }
 
@@ -597,6 +628,42 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     }
 
     /**
+     * Este método sirve para mostrar un díalogo gráfico para que el usuario
+     * seleccione un archivo de destino para guardar un archivo
+     *
+     * @param extension una cadena con el nombre del tipo de archivo que se
+     * puede seleccionar
+     * @param titulo una cadena con el nombre del diálogo
+     * @param botonOK una cadena con el nombre del botón de aprovación
+     * @param tooltipOk una cadena con el nombre del tooltip del botón de
+     * aprovación
+     *
+     * @return el objeto File con la dirección del archivo en caso de que haya
+     * seleccionado uno válido, regresa null en caso contrario.
+     */
+    private File elegirArchivo(String extension, String titulo, String botonOk,
+            String tooltipOk) {
+        JFileChooser chooser = new JFileChooser();
+        FileFilter filter = new FileNameExtensionFilter(extension.toUpperCase()
+                + " file", new String[]{extension});
+
+        //Inicializar atributos del diálogo de archivos
+        chooser.addChoosableFileFilter(filter);
+        chooser.setFileFilter(filter);
+        chooser.setDialogTitle(titulo);
+        chooser.setApproveButtonText(botonOk);
+        chooser.setApproveButtonToolTipText(tooltipOk);
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setMultiSelectionEnabled(false);
+
+        //Mostrar el diálogo de archivos
+        chooser.showOpenDialog(null);
+
+        //Obtener el archivo en el que se quiere guardar la imagen
+        return chooser.getSelectedFile();
+    }
+
+    /**
      * Este método sirve para guardar la gráfica como una imagen png en la
      * ubicación especificada por el usuario. Este método es llamado al
      * seleccionar Guardar en el JFrame emergente.
@@ -605,25 +672,9 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         //Crear una imagen de la gráfica
         WritableImage imagen = bcGrafica.snapshot(new SnapshotParameters(), null);
 
-        //Elegir el archivo para guardar...
-        JFileChooser chooser = new JFileChooser();
-        FileFilter filter = new FileNameExtensionFilter("PNG file",
-                new String[]{"png"});
-
-        //Inicializar atributos del diálogo de archivos
-        chooser.addChoosableFileFilter(filter);
-        chooser.setFileFilter(filter);
-        chooser.setDialogTitle("Guardar Gráfica");
-        chooser.setApproveButtonText("Guardar");
-        chooser.setApproveButtonToolTipText("Guarda la gráfica en la ruta "
-                + "seleccionada");
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setMultiSelectionEnabled(false);
-
-        //Mostrar el diálogo de archivos
-        chooser.showOpenDialog(null);
         //Obtener el archivo en el que se quiere guardar la imagen
-        File file = chooser.getSelectedFile();
+        File file = elegirArchivo("png", "Guardar Gráfica", "Guardar", "Guarda "
+                + "la gráfica en la ruta seleccionada");
 
         try {
             //Si el archivo no termina en .png concatenárselo
@@ -640,6 +691,163 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         } catch (IOException e) {
             System.out.println(e);
         }
+    }
+
+    /**
+     * Este método sirve para exportar a un libro de trabajo en Excel los datos
+     * de la gráfica actual.
+     *
+     */
+    private void exportarAExcel() {
+        //Abrir el nuevo libro de trabajo, con el nombre de archivo elegido por
+        //el usuario
+        //Obtener el archivo en el que se quiere guardar
+        File file = elegirArchivo("xlsx", "Exportar datos a Excel", "Exportar",
+                "Guarda el archivo de Excel en la ruta seleccionada");
+
+        //Verificar que se haya elegido un nombre correcto
+        try {
+            //Crear el workbook
+            Workbook workbook = new XSSFWorkbook();
+                
+            //Si el archivo no termina en .xls concatenárselo
+            if (file != null) {
+                String path = file.getAbsolutePath();
+                if (!path.endsWith(".xlsx")) {
+                    path += ".xlsx";
+                    file = new File(path);
+                }
+
+                //Escribir las hojas en el workbook
+                for (int index : indexesExamen) {
+                    TablaEstadisticas calificaciones = controlVista
+                            .obtenerCalificacionesPorExamen(index);
+                    
+                    if(calificaciones != null) {
+                        //Obtener el nombre del examen a guardar...
+                        String nombreExamen = (String)tblExamenes.getValueAt(index, 2);
+                        
+                        //Crear la hoja
+                        crearHoja(workbook, nombreExamen, calificaciones);
+                    }
+                    
+                }
+                
+                //Escribirlo en el sistema de archivos
+                try (FileOutputStream out = new FileOutputStream(file)) {
+                    workbook.write(out);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
+    }
+
+    /**
+     * Este método sirve para crear una nueva hoja de Excel en el libro de
+     * trabajo seleccionado, no es trabajo de este método guardar los cambios en
+     * el sistema de archivos, sólo agrega la hoja de Excel al libro de trabajo
+     * en memoria.
+     *
+     * @param workbook el objeto Workbook al que se le adjuntará la nueva hoja
+     * de Excel
+     * @param nombre un String con el nombre que tendrá la nueva hoja de Excel
+     * @param datos un objeto TablaEstadisticas con los datos y los nombres de
+     * columnas que serán agregados a la hoja
+     */
+    private void crearHoja(Workbook workbook, String nombre,
+            TablaEstadisticas datos) {
+        //Crear la hoja
+        CreationHelper createHelper = workbook.getCreationHelper();
+        Sheet nuevaHoja = workbook.createSheet(WorkbookUtil.createSafeSheetName(nombre));
+
+        //Escribir los nombres de las columnas en la hoja
+        Row headers = nuevaHoja.createRow(0);
+
+        for (int i = 0; i < datos.getColumnCount(); i++) {
+            //Crear headers con estilo
+            Cell cell = headers.createCell(i);
+            CellStyle style = crearEstiloCelda(workbook, IndexedColors.BLACK,
+                    CellStyle.BORDER_THICK, CellStyle.ALIGN_CENTER,
+                    CellStyle.VERTICAL_CENTER);
+            
+            cell.setCellValue(createHelper.createRichTextString(datos
+                    .getColumnName(i)));
+            cell.setCellStyle(style);
+            
+            //Autoajustar
+            nuevaHoja.autoSizeColumn(i);
+        }
+
+        //Escribir los datos de la tabla en la hoja
+        for (int i = 0; i < datos.getRowCount(); i++) {
+            Row fila = nuevaHoja.createRow(i + 1);
+            CellStyle style = crearEstiloCelda(workbook, IndexedColors.GREEN,
+                    CellStyle.BORDER_THIN, (short)-18, (short)-18);
+
+            for (int j = 0; j < datos.getColumnCount(); j++) {
+                Cell cell = fila.createCell(j);
+                
+                //Escribir de acuerdo al tipo de dato
+                if (datos.getColumnClass(j).equals(String.class)) {
+                    cell.setCellValue(createHelper.createRichTextString(
+                            datos.getValueAt(i, j).toString()));
+
+                } else if (datos.getColumnClass(j).equals(Integer.class)) {
+                    cell.setCellValue((int) datos.getValueAt(i, j));
+
+                } else if (datos.getColumnClass(j).equals(Double.class)) {
+                    cell.setCellValue((double) datos.getValueAt(i, j));
+
+                }
+                
+                else if (datos.getColumnClass(j).equals(Turno.class)) {
+                    cell.setCellValue(((Turno)datos.getValueAt(i, j)).toString());
+
+                }
+
+                //Agregar el estilo
+                cell.setCellStyle(style);
+            }
+        }
+
+    }
+
+    /**
+     * Este método sirve para crear un estilo de celda básico con un estilo de
+     * borde y color para borde
+     * 
+     * @param workbook el objeto Workbook dueño de la celda
+     * @param borderColor el color del borde
+     * @param borderStyle el estilo del borde
+     * @param halign la alineación horizontal de la celda o un número negativo 
+     * si no se desea tener alineación horizontal
+     * @param valign la alineación vertical de la celda o un número negativo si
+     * no se desea tener alineación vertical
+     * 
+     * @return un objeto CellStyle con el estilo de la celda creado
+     */
+    private CellStyle crearEstiloCelda(Workbook workbook, IndexedColors borderColor,
+            short borderStyle, short halign, short valign) {
+        CellStyle style = workbook.createCellStyle();
+
+        //Estilo centrado y con bordes
+        style.setBorderBottom(borderStyle);
+        style.setBottomBorderColor(borderColor.getIndex());
+        style.setBorderLeft(borderStyle);
+        style.setLeftBorderColor(borderColor.getIndex());
+        style.setBorderRight(borderStyle);
+        style.setRightBorderColor(borderColor.getIndex());
+        style.setBorderTop(borderStyle);
+        style.setTopBorderColor(borderColor.getIndex());
+
+        if(halign >= 0) {
+            style.setAlignment(halign);
+            style.setVerticalAlignment(valign);
+        }
+        
+        return style;
     }
 
     /**

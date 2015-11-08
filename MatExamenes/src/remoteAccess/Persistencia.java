@@ -110,17 +110,65 @@ public interface Persistencia extends Remote {
 
     boolean verificarExistencia(CursoDTO curso) throws RemoteException;
 
+    /**
+     * Obtiene el usuario completo que concuerde con su nombre de usuario.
+     *
+     * @param usuario El nombre de usuario a obtener.
+     * @return el objeto UsuarioDTO completo, con todas sus relaciones, o null
+     * en caso de que no exista
+     *
+     * @throws RemoteException En caso de que ocurra un error remoto
+     */
     UsuarioDTO obtenerUsuario(String usuario) throws RemoteException;
 
+    /**
+     * Obtiene todos los usuarios que concuerden con los parametros
+     *
+     * @param apellidoPaterno El patron por el cual se buscaran los usuarios
+     * @param tipo el tipo de usuario a buscar
+     * @return Lista de UsuarioDTO que concuerden con el nombre ingresado, o
+     * null en caso de que ningun usuario concuerde
+     *
+     * @throws RemoteException En caso de que ocurra un error remoto
+     */
     List<UsuarioDTO> obtenerUsuariosPorApellido(String apellidoPaterno,
             Tipo tipo) throws RemoteException;
 
+    /**
+     * Obtiene todos los usuarios que concuerden con el parametro
+     *
+     * @param nombre El patron por el cual se buscaran los usuarios
+     * @return Lista de UsuarioDTO que concuerden con el nombre ingresado, o
+     * null en caso de que ningun usuario concuerde
+     *
+     * @throws RemoteException En caso de que ocurra un error remoto
+     */
     List<UsuarioDTO> obtenerUsuariosPorNombreOApellidos(String nombre)
             throws RemoteException;
 
+    /**
+     * Obtiene todos los usuarios que concuerden con los parametros
+     *
+     * @param apellidoMaterno El patron por el cual se buscaran los usuarios
+     * @param tipo el tipo de usuario a buscar
+     * @return Lista de UsuarioDTO que concuerden con el nombre ingresado, o
+     * null en caso de que ningun usuario concuerde
+     *
+     * @throws RemoteException En caso de que ocurra un error remoto
+     */
     List<UsuarioDTO> obtenerUsuariosPorApellidoM(String apellidoMaterno, Tipo tipo)
             throws RemoteException;
 
+    /**
+     * Obtiene todos los usuarios que concuerden con los parametros
+     *
+     * @param nombre El patron por el cual se buscaran los usuarios
+     * @param tipo el tipo de usuario a buscar
+     * @return Lista de UsuarioDTO que concuerden con el nombre ingresado, o
+     * null en caso de que ningun usuario concuerde
+     *
+     * @throws RemoteException En caso de que ocurra un error remoto
+     */
     List<UsuarioDTO> obtenerUsuariosPorNombre(String nombre, Tipo tipo)
             throws RemoteException;
 
@@ -409,6 +457,22 @@ public interface Persistencia extends Remote {
     TablaEstadisticas generarEstadisticasPorTurnos(List<ExamenDTO> examenes)
             throws RemoteException;
 
+    /**
+     * 
+     * Este método devuelve un objeto TablaEstadisticas que contiene los datos de
+     * todos los alumnos que hayan contestado el examen ingresado.
+     * 
+     * @param examen el objeto ExamenDTO del cuál se quieren obtener los alumnos
+     * con sus calificaciones
+     * 
+     * @return un objeto de tipo TablaEstadisticas o null en caso de no
+     * encontrarse datos
+     * 
+     * @throws RemoteException en caso de que ocurra un error remoto
+     */
+    TablaEstadisticas obtenerCalificaciones(ExamenDTO examen)
+            throws RemoteException;
+    
     /**
      * Almacena la lista de objetos ExamenAsignadoDTO ingresada y la vuelve
      * persistente. En caso de que ya existiera un mismo objeto de la lista en

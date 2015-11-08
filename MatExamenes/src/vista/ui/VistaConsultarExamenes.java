@@ -564,7 +564,7 @@ public class VistaConsultarExamenes extends javax.swing.JPanel
             //Si la eliminación se llevó correctamente mostrar el mensaje y
                 //eliminar la fila de la tabla
                 if (ok) {
-                    JOptionPane.showMessageDialog(this, "Examen eliminado");
+                    //JOptionPane.showMessageDialog(this, "Examen eliminado");
                     ((DefaultTableModel) tblExamenes.getModel())
                             .removeRow(tblExamenes.getSelectedRow());
                 } else {

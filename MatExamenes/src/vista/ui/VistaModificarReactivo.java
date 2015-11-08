@@ -746,7 +746,7 @@ implements InterfaceVista, FocusListener, KeyListener {
             if(ok) {
                 //Si la operación se realiza con éxito se muestra un mensaje
                 //de confirmación y se regresa el control a la Vista Consultar
-                JOptionPane.showMessageDialog(this, "Reactivo Modificado");
+                //JOptionPane.showMessageDialog(this, "Reactivo Modificado");
                 padre.mostrarVistaConEntidad(reactivo, Vista.ConsultarReactivos);
                 limpiar();
             }

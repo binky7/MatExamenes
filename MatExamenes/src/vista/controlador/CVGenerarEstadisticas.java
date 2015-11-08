@@ -196,6 +196,31 @@ public class CVGenerarEstadisticas {
         return tabla;
     }
     
+    
+    /**
+     * Este método devuelve un objeto TablaEstadisticas que contiene los datos de
+     * todos los alumnos que hayan contestado el examen ingresado.
+     * 
+     * @param indexExamen el índice del examen que representa el objeto ExamenDTO
+     * almacenado en este controlador
+     * 
+     * @return un objeto TablaEstadisticas con los datos de los alumnos y sus
+     * calificaciones en ese examen o null, en caso de no encontrar resultados
+     */
+    public TablaEstadisticas obtenerCalificacionesPorExamen(int indexExamen) {
+        TablaEstadisticas calificaciones = null;
+        
+        if(examenes != null && !examenes.isEmpty()) {
+            //Obtener el examen
+            ExamenDTO examen = examenes.get(indexExamen);            
+            
+            calificaciones = generarEstadisticasDELEGATE
+                    .obtenerCalificaciones(examen);
+        }
+        
+        return calificaciones;
+    }
+    
     /**
      * Utilizado para liberar la memoria almacenada en el objeto.
      */

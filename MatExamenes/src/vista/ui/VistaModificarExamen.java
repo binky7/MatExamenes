@@ -841,7 +841,7 @@ implements InterfaceVista, InterfaceExamen, FocusListener, KeyListener {
             if(ok) {
                 //Si la operación se realiza con éxito se muestra un mensaje
                 //de confirmación y se regresa el control a la Vista Consultar
-                JOptionPane.showMessageDialog(this, "Examen Modificado");
+                //JOptionPane.showMessageDialog(this, "Examen Modificado");
                 padre.mostrarVistaConEntidad(examen, Vista.ConsultarExamenes);
                 limpiar();
             }

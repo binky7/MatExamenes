@@ -898,7 +898,7 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
             if (id != null) {
                 //Si la operación se realiza con éxito se muestra un mensaje
                 //de confirmación y se limpian los datos de la vista
-                JOptionPane.showMessageDialog(this, "Registro Completo");
+                //JOptionPane.showMessageDialog(this, "Registro Completo");
                 limpiar();
                 //Realizar todo como si fuera un nuevo registro
                 noSelect = true;

@@ -182,4 +182,29 @@ public class GenerarEstadisticasDELEGATE {
         return tabla;
     }
     
+    /**
+     *
+     * Este método devuelve un objeto TablaEstadisticas que contiene los datos de
+     * todos los alumnos que hayan contestado el examen ingresado.
+     * 
+     * @param examen el objeto ExamenDTO del cuál se quieren obtener los alumnos
+     * con sus calificaciones
+     * 
+     * @return un objeto de tipo TablaEstadisticas o null en caso de no
+     * encontrarse datos
+     * 
+     */
+    public TablaEstadisticas obtenerCalificaciones(ExamenDTO examen) {
+        TablaEstadisticas calificaciones = null;
+        
+        try {
+            calificaciones = Enlace.getPersistencia().obtenerCalificaciones(examen);
+            
+        } catch (RemoteException | NotBoundException ex) {
+            System.out.println(ex);
+        }
+        
+        return calificaciones;
+    }
+    
 }

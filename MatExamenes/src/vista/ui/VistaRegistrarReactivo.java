@@ -808,7 +808,7 @@ implements InterfaceVista, FocusListener, AncestorListener, KeyListener {
             if(id != null) {
                 //Si la operación se realiza con éxito se muestra un mensaje
                 //de confirmación y se limpian los datos de la vista
-                JOptionPane.showMessageDialog(this, "Registro Completo");
+                //JOptionPane.showMessageDialog(this, "Registro Completo");
                 limpiar();
                 //Mostrar de nuevo los cursos
                 noSelect = true;
