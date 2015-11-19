@@ -138,7 +138,7 @@ public class FrmAgregarMaestro extends javax.swing.JFrame {
      * @param controladorVista el controlador de vista.
      * @param padre el padre de la vista.
      */
-    void inicializar(CVMantenerGrupos controladorVista, InterfaceGrupo padre) {
+    void inicializar(final CVMantenerGrupos controladorVista, InterfaceGrupo padre) {
         this.setVisible(true);
         this.controladorVista = controladorVista;
         this.padre = padre;

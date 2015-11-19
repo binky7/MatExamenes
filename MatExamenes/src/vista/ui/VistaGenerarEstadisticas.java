@@ -208,8 +208,8 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     private void initFX() {
         //Crea los paneles JavaFX necesarios
         fxpnlGrafica = new JFXPanel();
-        JFXPanel fxpnlBoton = new JFXPanel();
-        JFXPanel fxpnlBotonExcel = new JFXPanel();
+        final JFXPanel fxpnlBoton = new JFXPanel();
+        final JFXPanel fxpnlBotonExcel = new JFXPanel();
         
         fxpnlGrafica.setBounds(0, 0, 800, 500);
         fxpnlBoton.setBounds(420, 520, 150, 30);
@@ -480,7 +480,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
      *
      * @param grafica el objeto BarChart que se mostrará como gráfica de barras
      */
-    private void mostrarGrafica(BarChart grafica) {
+    private void mostrarGrafica(final BarChart grafica) {
         //deshabilita el padre de esta vista y muestra el frame que contendrá
         //la gráfica
         frmGrafica.setVisible(true);
@@ -577,8 +577,8 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
      * @param titulo la etiqueta del título de la gráfica
      * @return un objeto BarChart con toda la información de la tabla vaciada.
      */
-    private BarChart crearGrafica(TablaEstadisticas tabla, String ejeX, String ejeY,
-            String titulo) {
+    private BarChart crearGrafica(final TablaEstadisticas tabla, String ejeX, String ejeY,
+            final String titulo) {
 
         //Crea el eje X en base a las columnas de la tabla y le asigna la etiqueta
         //correspondiente
