@@ -606,6 +606,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         txtaInstrucciones = new javax.swing.JTextArea();
         txtaInstrucciones.setEditable(false);
 
+        setPreferredSize(new java.awt.Dimension(800, 579));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTiempo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N

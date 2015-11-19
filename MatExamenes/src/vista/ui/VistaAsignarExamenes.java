@@ -644,13 +644,6 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         tblExamenes.setFocusable(false);
         tblExamenes.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblExamenes);
-        if (tblExamenes.getColumnModel().getColumnCount() > 0) {
-            tblExamenes.getColumnModel().getColumn(0).setResizable(false);
-            tblExamenes.getColumnModel().getColumn(1).setResizable(false);
-            tblExamenes.getColumnModel().getColumn(2).setResizable(false);
-            tblExamenes.getColumnModel().getColumn(3).setResizable(false);
-            tblExamenes.getColumnModel().getColumn(4).setResizable(false);
-        }
         tblExamenes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tblExamenes.getColumnModel().getColumn(0).setPreferredWidth(55);
         tblExamenes.getColumnModel().getColumn(1).setPreferredWidth(175);
@@ -837,10 +830,6 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         jScrollPane4.setViewportView(tblAlumnos);
         if (tblAlumnos.getColumnModel().getColumnCount() > 0) {
             tblAlumnos.getColumnModel().getColumn(0).setResizable(false);
-            tblAlumnos.getColumnModel().getColumn(1).setResizable(false);
-            tblAlumnos.getColumnModel().getColumn(2).setResizable(false);
-            tblAlumnos.getColumnModel().getColumn(3).setResizable(false);
-            tblAlumnos.getColumnModel().getColumn(4).setResizable(false);
         }
         tblAlumnos.getColumnModel().getColumn(0).setPreferredWidth(36);
         tblAlumnos.getColumnModel().getColumn(1).setPreferredWidth(145);
@@ -889,11 +878,6 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         jScrollPane5.setViewportView(tblAsignaciones);
         if (tblAsignaciones.getColumnModel().getColumnCount() > 0) {
             tblAsignaciones.getColumnModel().getColumn(0).setResizable(false);
-            tblAsignaciones.getColumnModel().getColumn(1).setResizable(false);
-            tblAsignaciones.getColumnModel().getColumn(2).setResizable(false);
-            tblAsignaciones.getColumnModel().getColumn(3).setResizable(false);
-            tblAsignaciones.getColumnModel().getColumn(4).setResizable(false);
-            tblAsignaciones.getColumnModel().getColumn(5).setResizable(false);
         }
         TableColumnModel modeloColAsignaciones = tblAsignaciones.getColumnModel();
         modeloColAsignaciones.getColumn(0).setPreferredWidth(36);
@@ -1106,13 +1090,6 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         tblAsignacionesFinal.setRowSelectionAllowed(false);
         tblAsignacionesFinal.getTableHeader().setReorderingAllowed(false);
         jScrollPane6.setViewportView(tblAsignacionesFinal);
-        if (tblAsignacionesFinal.getColumnModel().getColumnCount() > 0) {
-            tblAsignacionesFinal.getColumnModel().getColumn(0).setResizable(false);
-            tblAsignacionesFinal.getColumnModel().getColumn(1).setResizable(false);
-            tblAsignacionesFinal.getColumnModel().getColumn(2).setResizable(false);
-            tblAsignacionesFinal.getColumnModel().getColumn(3).setResizable(false);
-            tblAsignacionesFinal.getColumnModel().getColumn(4).setResizable(false);
-        }
 
         javax.swing.GroupLayout pnlDatosAsignacionLayout = new javax.swing.GroupLayout(pnlDatosAsignacion);
         pnlDatosAsignacion.setLayout(pnlDatosAsignacionLayout);
