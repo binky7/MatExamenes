@@ -131,53 +131,17 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     private boolean noSelect;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-     * Botón utilizado para cancelar
-     */
     private javax.swing.JButton btnCancelar;
-    /**
-     * Botón utilizado para generar la gráfica
-     */
     private javax.swing.JButton btnGenerar;
-    /**
-     * ComboBox utilizado para mostrar los cursos
-     */
     private javax.swing.JComboBox cmbCurso;
-    /**
-     * Scroll Pane utilizado para mostrar tblExamenes
-     */
     private javax.swing.JScrollPane jScrollPane1;
-    /**
-     * Label para cmbCurso
-     */
     private javax.swing.JLabel lblCurso;
-    /**
-     * Label para tblExamenes
-     */
     private javax.swing.JLabel lblExamenes;
-    /**
-     * Label para el título de la interfaz
-     */
     private javax.swing.JLabel lblTitulo1;
-    /**
-     * Panel para agrupar los tipos de estadísticas
-     */
     private javax.swing.JPanel pnlEstadisticas;
-    /**
-     * Radio button para el tipo de estadística por grados
-     */
     private javax.swing.JRadioButton rbtnGrados;
-    /**
-     * Radio button para el tipo de estadística por grupos
-     */
     private javax.swing.JRadioButton rbtnGrupos;
-    /**
-     * Radio button para el tipo de estadística por turnos
-     */
     private javax.swing.JRadioButton rbtnTurnos;
-    /**
-     * Table para mostrar los exámenes
-     */
     private javax.swing.JTable tblExamenes;
     // End of variables declaration//GEN-END:variables
 
@@ -905,7 +869,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         }
 
         lblExamenes.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        lblExamenes.setText("Seleccione dos exámenes:");
+        lblExamenes.setText("Seleccione uno o dos exámenes:");
 
         lblCurso.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         lblCurso.setText("Curso:");
@@ -986,9 +950,6 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
                 .addGap(18, 18, 18)
                 .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(312, 312, 312)
-                .addComponent(lblExamenes))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(214, 214, 214)
                 .addComponent(pnlEstadisticas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
@@ -999,6 +960,10 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
                         .addGap(18, 18, 18)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblExamenes)
+                .addGap(268, 268, 268))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

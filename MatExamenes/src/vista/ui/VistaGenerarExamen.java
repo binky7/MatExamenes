@@ -116,98 +116,29 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
     private boolean noSelect;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-     * Botón usado para agregar reactivos
-     */
     private javax.swing.JButton btnAgregar;
-    /**
-     * Botón usado para agregar claves
-     */
     private javax.swing.JButton btnAgregarClave;
-    /**
-     * Botón usado para cancelar la operación
-     */
     private javax.swing.JButton btnCancelar;
-    /**
-     * Botón usado para desbloquear el curso
-     */
     private javax.swing.JButton btnDesbloquear;
-    /**
-     * Botón usado para guardar el examen
-     */
     private javax.swing.JButton btnGuardar;
-    /**
-     * Botón usado para remover reactivos
-     */
     private javax.swing.JButton btnRemover;
-    /**
-     * Botón usado para remover claves
-     */
     private javax.swing.JButton btnRemoverClave;
-    /**
-     * Botón usado para ver reactivos
-     */
     private javax.swing.JButton btnVer;
-    /**
-     * ComboBox usado para mostrar los cursos
-     */
     private javax.swing.JComboBox cmbCurso;
     private javax.swing.JPanel jPanel4;
-    /**
-     * ScrollPane usado para el área de texto de instrucciones
-     */
     private javax.swing.JScrollPane jScrollPane2;
-    /**
-     * Label para el tpbClaves
-     */
     private javax.swing.JLabel lblClaves;
-    /**
-     * Label para el cmbCurso
-     */
     private javax.swing.JLabel lblCurso;
-    /**
-     * Label para mostrar el estado del área de texto instrucciones
-     */
     private javax.swing.JLabel lblEstadoInstrucciones;
-    /**
-     * Label para mostrar el estado del campo nombre
-     */
     private javax.swing.JLabel lblEstadoNombre;
-    /**
-     * Label para el área de texto de las instrucciones
-     */
     private javax.swing.JLabel lblInstrucciones;
-    /**
-     * Label para el campo de texto del nombre
-     */
     private javax.swing.JLabel lblNombre;
-    /**
-     * Label para el título de la interfaz gráfica.
-     */
     private javax.swing.JLabel lblTitulo;
-    /**
-     * Panel para agrupar los componentes del tipo de permiso
-     */
     private javax.swing.JPanel pnlPermiso;
-    /**
-     * Radio Button para permiso privado
-     */
     private javax.swing.JRadioButton rbtnPrivado;
-    /**
-     * Radio Button para permiso público
-     */
     private javax.swing.JRadioButton rbtnPublico;
-    /**
-     * TabbedPane para agregar las pestañas de las claves
-     */
     private javax.swing.JTabbedPane tbpClaves;
-    /**
-    * Área de texto utilizada para ingresar las instrucciones
-    */
     private javax.swing.JTextArea txtaInstrucciones;
-    /**
-    * Campo de texto utilizado para ingresar el nombre
-    */
     private javax.swing.JTextField txtfNombre;
     // End of variables declaration//GEN-END:variables
 
@@ -692,6 +623,7 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
         btnDesbloquear.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnDesbloquear.setText("Desbloquear");
         btnDesbloquear.setToolTipText("habilita la selección de cursos. Esto también remueve todas las claves de examen");
+        btnDesbloquear.setActionCommand("Desbloquear");
         btnDesbloquear.setEnabled(false);
         btnDesbloquear.setPreferredSize(new java.awt.Dimension(77, 30));
         btnDesbloquear.addActionListener(new java.awt.event.ActionListener() {
