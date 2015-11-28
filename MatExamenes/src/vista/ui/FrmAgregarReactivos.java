@@ -675,10 +675,6 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         tblSeleccion.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblSeleccion.getTableHeader().setReorderingAllowed(false);
         jScrollPane4.setViewportView(tblSeleccion);
-        if (tblSeleccion.getColumnModel().getColumnCount() > 0) {
-            tblSeleccion.getColumnModel().getColumn(0).setResizable(false);
-            tblSeleccion.getColumnModel().getColumn(1).setResizable(false);
-        }
 
         btnAgregarSeleccion.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnAgregarSeleccion.setText("Agregar Seleccion");

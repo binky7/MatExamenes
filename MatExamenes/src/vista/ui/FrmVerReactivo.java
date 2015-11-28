@@ -20,12 +20,17 @@
 package vista.ui;
 
 import java.awt.Component;
+import java.awt.TextComponent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.lang.reflect.Field;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.text.JTextComponent;
 import modelo.dto.ReactivoDTO;
 
 /**
@@ -130,6 +135,39 @@ public class FrmVerReactivo extends javax.swing.JFrame {
         txtfOpt4.setName("Opt4");
         
         setTitle("Ver Reactivo");
+        
+        //Agregar caret...
+        for (Component campo : pnlOpciones.getComponents()) {
+            if(campo instanceof JTextComponent) {
+                JTextComponent campoTexto = (JTextComponent) campo;
+                
+                campoTexto.addFocusListener(new FocusListener() {
+
+                    @Override
+                    public void focusGained(FocusEvent e) {
+                        campoTexto.getCaret().setVisible(true);
+                    }
+
+                    @Override
+                    public void focusLost(FocusEvent e) {
+                        campoTexto.getCaret().setVisible(false);
+                    }
+                });
+            }
+        }
+        
+        txtaRedaccion.addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                txtaRedaccion.getCaret().setVisible(true);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                txtaRedaccion.getCaret().setVisible(false);
+            }
+        });
     }
 
     /**
