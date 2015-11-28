@@ -268,55 +268,73 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
      */
     private void buscarExamenes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarExamenes
         limpiar();
+        boolean buscarExamen = false;
         if (respaldo.existeRespaldo()) {
-            ArrayList alumno = respaldo.getRespaldo();
-            ExamenAsignadoPK eapk = (ExamenAsignadoPK) alumno.get(RespaldoJSON.I_EXAMEN_ASIGNADO_PK);
-            cvContestarExamen.setExamenAsignado(eapk);
-            ExamenAsignadoDTO examen = cvContestarExamen.getExamenAsignado();
-            long inicio = examen.getFechaAsignacion().getTime();
-            long fin = inicio + (examen.getTiempo() * MINUTOS_A_MILIS);
-            boolean usuarioRespaldo = padre.obtenerUsuarioActual().getId() == eapk.getIdAlumno();
-            boolean contestado = respaldo.estaContestado();
+            try {
+                ArrayList alumno = respaldo.getRespaldo();
+                ExamenAsignadoPK eapk = (ExamenAsignadoPK) alumno.get(RespaldoJSON.I_EXAMEN_ASIGNADO_PK);
+                cvContestarExamen.setExamenAsignado(eapk);
+                ExamenAsignadoDTO examen = cvContestarExamen.getExamenAsignado();
+                System.out.println(examen.getCalificacion());
+                if (examen.getCalificacion() != CALIFICACION_PREDETERMINADA) {
+                    buscarExamen = true;
+                } else {
+                    long inicio = examen.getFechaAsignacion().getTime();
+                    long fin = inicio + (examen.getTiempo() * MINUTOS_A_MILIS);
+                    boolean usuarioRespaldo = padre.obtenerUsuarioActual().getId() == eapk.getIdAlumno();
+                    boolean contestado = respaldo.estaContestado();
 
-            if (contestado && usuarioRespaldo) {
-                //Respaldo contestado y es el mismo usuario que inicio el creador del respaldo.
-                JOptionPane.showMessageDialog(this, "Tienes un examen pendiente "
-                        + "por enviar." + "\n" + "Re enviando",
-                        "Respaldo examen", JOptionPane.INFORMATION_MESSAGE);
-                mostrarCalificacion(examen, alumno);
-            } else if (usuarioRespaldo && cvContestarExamen.obtenerTiempoServidor() < (fin + HOLGURA) && !contestado) {
-                //El usuario que inicio es el mismo que tiene el respaldo,
-                //el tiempo actual es menor que el tiempo de terminación
-                //más la holgura y el examen no fue contestado.
-                int ok = JOptionPane.showConfirmDialog(this, "¿Desea continuar "
-                        + "con el examen pendiente?" + "\n" + "Se perderán sus respuestas anteriores si selecciona no.",
-                        "Respaldo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                if (ok == JOptionPane.YES_OPTION) {
-                    padre.mostrarVistaConEntidad(respaldo, Vista.ContestarExamen);
-                    limpiar();
+                    if (contestado && usuarioRespaldo) {
+                        //Respaldo contestado y es el mismo usuario que inicio el creador del respaldo.
+                        JOptionPane.showMessageDialog(this, "Tienes un examen pendiente "
+                                + "por enviar." + "\n" + "Re enviando",
+                                "Respaldo examen", JOptionPane.INFORMATION_MESSAGE);
+                        mostrarCalificacion(examen, alumno);
+                        buscarExamen = true;
+                    } else if (usuarioRespaldo && cvContestarExamen.obtenerTiempoServidor() < (fin + HOLGURA) && !contestado) {
+                        //El usuario que inicio es el mismo que tiene el respaldo,
+                        //el tiempo actual es menor que el tiempo de terminación
+                        //más la holgura y el examen no fue contestado.
+                        int ok = JOptionPane.showConfirmDialog(this, "¿Desea continuar "
+                                + "con el examen pendiente?" + "\n" + "Se perderán sus respuestas anteriores si selecciona no.",
+                                "Respaldo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                        if (ok == JOptionPane.YES_OPTION) {
+                            padre.mostrarVistaConEntidad(respaldo, Vista.ContestarExamen);
+                            limpiar();
+                        } else {
+                            buscarExamen = true;
+                        }
+                    } else if (usuarioRespaldo && (cvContestarExamen.obtenerTiempoServidor() + HOLGURA) > fin && !contestado) {
+                        //El usuario que inicio es el mismo que tiene el respaldo,
+                        //el tiempo actual más la holgura supera el tiempo de terminación y
+                        //el examen no fue contestado.
+                        mostrarCalificacion(examen, alumno);
+                        buscarExamen = true;
+                    } else if (!usuarioRespaldo) {
+                        //El usuario que inicio en el sistema no es igual al que genero el respaldo.
+                        cvContestarExamen.calificarExamen(examen.getReactivos().size(),
+                                (List<String>) alumno.get(RespaldoJSON.I_RESPUESTAS), examen);
+                        cvContestarExamen.actualizarExamen(examen);
+                        respaldo.eliminarRespaldo();
+                        buscarExamen = true;
+                    }
                 }
-            } else if (usuarioRespaldo && (cvContestarExamen.obtenerTiempoServidor() + HOLGURA) > fin && !contestado) {
-                //El usuario que inicio es el mismo que tiene el respaldo,
-                //el tiempo actual más la holgura supera el tiempo de terminación y
-                //el examen no fue contestado.
-                mostrarCalificacion(examen, alumno);
-            } else if (!usuarioRespaldo) {
-                //El usuario que inicio en el sistema no es igual al que genero el respaldo.
-                cvContestarExamen.calificarExamen(examen.getReactivos().size(),
-                        (List<String>) alumno.get(RespaldoJSON.I_RESPUESTAS), examen);
-                cvContestarExamen.actualizarExamen(examen);
-                respaldo.eliminarRespaldo();
+            } catch (NullPointerException e) {
+                buscarExamen = true;
             }
         }
-        //no hay respaldo o no desea continuar con su examen anterior
-        List<ExamenAsignadoDTO> ea;
-        ea = cvContestarExamen.obtenerExamenesAsignados(padre.obtenerUsuarioActual());
-        if (ea.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No hay exámenes asignados");
-        } else {
-            mostrarExamenes(ea);
+        if (buscarExamen) {
+            //no hay respaldo o no desea continuar con su examen anterior
+            List<ExamenAsignadoDTO> ea;
+            ea = cvContestarExamen.obtenerExamenesAsignados(padre.obtenerUsuarioActual());
+            if (ea.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No hay exámenes asignados");
+            } else {
+                mostrarExamenes(ea);
+            }
         }
     }//GEN-LAST:event_buscarExamenes
+    private static final int CALIFICACION_PREDETERMINADA = -1;
 
     /**
      * Inicia el examen seleccionado de la lista.
@@ -325,7 +343,7 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
      */
     private void iniciarExamen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarExamen
         int index = lstExamenesEncontrados.getSelectedIndex();
-        if (index != -1) {
+        if (index != CALIFICACION_PREDETERMINADA) {
             ExamenAsignadoPK expk = cvContestarExamen.getExamenesAsignados().get(index).getId();
             cvContestarExamen.setExamenAsignado(expk);
             padre.mostrarVistaConEntidad(expk, Vista.ContestarExamen);
