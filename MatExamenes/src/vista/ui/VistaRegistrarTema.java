@@ -396,7 +396,7 @@ public class VistaRegistrarTema extends javax.swing.JPanel implements
 
                 if (id == null) {
                     JOptionPane.showMessageDialog(this, 
-                            "No se pudo guardar el curso.", "Error",
+                            "No se pudo guardar el tema.", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
                     limpiar();

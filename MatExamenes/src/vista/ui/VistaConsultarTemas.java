@@ -412,15 +412,21 @@ public class VistaConsultarTemas extends javax.swing.JPanel implements
 
         //Mostrar la vista modificar
         if (lstTemas.getSelectedIndex() != -1) {
-            TemaDTO tema = controlVista.obtenerTema(lstTemas.getSelectedIndex());
-
-            if (tema != null) {
-                //Mostrar la vista modificar tema enviandole el objeto tema
-                padre.mostrarVistaConEntidad(tema, Vista.ModificarTema);
+            if (cbCursos.getItemCount() == 1) {
+                JOptionPane.showMessageDialog(this, "No hay cursos registrados.",
+                        "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Ha ocurrido un error",
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                TemaDTO tema = controlVista.obtenerTema(lstTemas.getSelectedIndex());
+
+                if (tema != null) {
+                    //Mostrar la vista modificar tema enviandole el objeto tema
+                    padre.mostrarVistaConEntidad(tema, Vista.ModificarTema);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Ha ocurrido un error",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
+
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione un tema.",
                     "Advertencia", JOptionPane.WARNING_MESSAGE);
