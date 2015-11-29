@@ -141,28 +141,28 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!noSelect) {
+                if (!noSelect) {
                     //Una vez seleccionado un bloque del cmbBloque se consultan
                     //los temas del curso y bloque seleccionados
                     consultarTemas();
                 }
             }
-            
+
         });
-        
+
         cmbBloquesAuto.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!noSelect) {
+                if (!noSelect) {
                     //Una vez seleccionado un bloque del cmbBloque se consultan
                     //los temas del curso y bloque seleccionados
                     consultarTemas();
                 }
             }
-            
+
         });
-        
+
         lstTemasManual.addListSelectionListener(new ListSelectionListener() {
 
             @Override
@@ -260,11 +260,11 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
      * vista
      */
     private void mostrarTemas(List<TemaDTO> temas, JList lista) {
-        
+
         DefaultListModel listModel = (DefaultListModel) lista.getModel();
 
         noSelect = true;
-        
+
         listModel.clear();
         //Mostrar cada tema, no remover, si no buscar por medio del for
         for (TemaDTO tema : temas) {
@@ -342,15 +342,14 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
     private void consultarTemas() {
         List<TemaDTO> temas;
         int bloque;
-        
+
         //Para ambos casos obtener el bloque seleccionado
-        
         //Se tiene que saber de cual comboBox obtener el bloque ya que hay dos
         //y se puede estar en la selección manual o la automática...
         if (tbpSeleccion.getSelectedIndex() == 0) {
             //Selección manual
             bloque = cmbBloquesManual.getSelectedIndex() + 1;
-            
+
             //Si el indexCurso == -1 significa que no se envió el curso porque era
             //en modificar examen
             if (indexCurso != -1) {
@@ -358,13 +357,13 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
             } else {
                 temas = controlVista.obtenerTemasDeCurso(bloque);
             }
-            
+
             //Si llegó algo mostrar los temas en la lista
             if (temas != null && !temas.isEmpty()) {
                 mostrarTemas(temas, lstTemasManual);
             } else {
                 JOptionPane.showMessageDialog(this, "No hay temas");
-                ((DefaultListModel)lstTemasManual.getModel()).clear();
+                ((DefaultListModel) lstTemasManual.getModel()).clear();
                 //((JFrame) padre.getPadre()).setEnabled(true);
                 //dispose();
                 //limpiar();
@@ -372,7 +371,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         } else {
             //Selección Aleatoria
             bloque = cmbBloquesAuto.getSelectedIndex() + 1;
-            
+
             //Si el indexCurso == -1 significa que no se envió el curso porque era
             //en modificar examen
             if (indexCurso != -1) {
@@ -380,13 +379,13 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
             } else {
                 temas = controlVista.obtenerTemasDeCurso(bloque);
             }
-            
+
             //Si llegó algo mostrar los temas en la lista
             if (temas != null && !temas.isEmpty()) {
                 mostrarTemas(temas, lstTemasAuto);
             } else {
                 JOptionPane.showMessageDialog(this, "No hay temas");
-                ((DefaultListModel)lstTemasAuto.getModel()).clear();
+                ((DefaultListModel) lstTemasAuto.getModel()).clear();
             }
         }
     }
@@ -469,7 +468,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
         ((DefaultTableModel) tblReactivos.getModel()).setRowCount(0);
         ((DefaultTableModel) tblSeleccion.getModel()).setRowCount(0);
         spnCantidad.setValue(0);
-        
+
         cmbBloquesAuto.setSelectedIndex(-1);
         cmbBloquesManual.setSelectedIndex(-1);
 
@@ -880,16 +879,9 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
      * @param evt el objeto ActionEvent que contiene la información del evento
      */
     private void cancelarAgregarReactivos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarAgregarReactivos
-
-        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                + "desea cancelar la operación?\nTodo el progreso "
-                + "se perderá", "Confirmación", JOptionPane.YES_NO_OPTION);
-        
-        if (ok == JOptionPane.YES_OPTION) {
-            ((JFrame) padre.getPadre()).setEnabled(true);
-            limpiar();
-            dispose();
-        }
+        ((JFrame) padre.getPadre()).setEnabled(true);
+        limpiar();
+        dispose();
     }//GEN-LAST:event_cancelarAgregarReactivos
 
     /**

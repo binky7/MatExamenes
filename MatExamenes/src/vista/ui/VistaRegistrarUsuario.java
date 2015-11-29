@@ -586,13 +586,8 @@ public class VistaRegistrarUsuario extends javax.swing.JPanel implements
      * @param evt Objeto que contiene información del evento.
      */
     private void cancelarRegistroUsuario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarRegistroUsuario
-        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                + "desea cancelar la operación?\nTodos los cambios no "
-                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
-        if (ok == JOptionPane.YES_OPTION) {
-            padre.mostrarVista(Vista.HOME);
-            limpiar();
-        }
+        padre.mostrarVista(Vista.HOME);
+        limpiar();
     }//GEN-LAST:event_cancelarRegistroUsuario
 
     @Override

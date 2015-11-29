@@ -103,98 +103,29 @@ implements InterfaceVista, InterfaceExamen, FocusListener, KeyListener {
     private String mensajeDatosIncorrectos;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    /**
-     * Botón usado para agregar reactivos
-     */
     private javax.swing.JButton btnAgregar;
-    /**
-     * Botón usado para agregar claves
-     */
     private javax.swing.JButton btnAgregarClave;
-    /**
-     * Botón usado para cancelar la operación
-     */
     private javax.swing.JButton btnCancelar;
-    /**
-     * Botón usado para desbloquear el curso
-     */
     private javax.swing.JButton btnDesbloquear;
-    /**
-     * Botón usado para guardar el examen
-     */
     private javax.swing.JButton btnGuardar;
-    /**
-     * Botón usado para remover reactivos
-     */
     private javax.swing.JButton btnRemover;
-    /**
-     * Botón usado para remover claves
-     */
     private javax.swing.JButton btnRemoverClave;
-    /**
-     * Botón usado para ver reactivos
-     */
     private javax.swing.JButton btnVer;
-    /**
-     * ComboBox usado para mostrar los cursos
-     */
     private javax.swing.JComboBox cmbCurso;
     private javax.swing.JPanel jPanel4;
-    /**
-     * ScrollPane usado para el área de texto de instrucciones
-     */
     private javax.swing.JScrollPane jScrollPane2;
-    /**
-     * Label para el tpbClaves
-     */
     private javax.swing.JLabel lblClaves;
-    /**
-     * Label para el cmbCurso
-     */
     private javax.swing.JLabel lblCurso;
-    /**
-     * Label para mostrar el estado del área de texto instrucciones
-     */
     private javax.swing.JLabel lblEstadoInstrucciones;
-    /**
-     * Label para mostrar el estado del campo nombre
-     */
     private javax.swing.JLabel lblEstadoNombre;
-    /**
-     * Label para el área de texto de las instrucciones
-     */
     private javax.swing.JLabel lblInstrucciones;
-    /**
-     * Label para el campo de texto del nombre
-     */
     private javax.swing.JLabel lblNombre;
-    /**
-     * Label para el título de la interfaz gráfica.
-     */
     private javax.swing.JLabel lblTitulo;
-    /**
-     * Panel para agrupar los componentes del tipo de permiso
-     */
     private javax.swing.JPanel pnlPermiso;
-    /**
-     * Radio Button para permiso privado
-     */
     private javax.swing.JRadioButton rbtnPrivado;
-    /**
-     * Radio Button para permiso público
-     */
     private javax.swing.JRadioButton rbtnPublico;
-    /**
-     * TabbedPane para agregar las pestañas de las claves
-     */
     private javax.swing.JTabbedPane tbpClaves;
-    /**
-    * Área de texto utilizada para ingresar las instrucciones
-    */
     private javax.swing.JTextArea txtaInstrucciones;
-    /**
-    * Campo de texto utilizado para ingresar el nombre
-    */
     private javax.swing.JTextField txtfNombre;
     // End of variables declaration//GEN-END:variables
     
@@ -860,14 +791,8 @@ implements InterfaceVista, InterfaceExamen, FocusListener, KeyListener {
      * @param evt un objeto de tipo ActionEvent generado al ocurrir el evento
      */
     private void pasarControlVistaConsulta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarControlVistaConsulta
-        // TODO add your handling code here:
-        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-            + "desea cancelar la operación?\nTodos los cambios no "
-            + "guardados se perderán", "Confirmación", JOptionPane.YES_NO_OPTION);
-        if (ok == JOptionPane.YES_OPTION) {
-            padre.mostrarVista(Vista.ConsultarExamenes);
-            limpiar();
-        }
+        padre.mostrarVista(Vista.ConsultarExamenes);
+        limpiar();  
     }//GEN-LAST:event_pasarControlVistaConsulta
 
     /**

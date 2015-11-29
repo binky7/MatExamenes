@@ -174,11 +174,11 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         fxpnlGrafica = new JFXPanel();
         JFXPanel fxpnlBoton = new JFXPanel();
         JFXPanel fxpnlBotonExcel = new JFXPanel();
-        
+
         fxpnlGrafica.setBounds(0, 0, 800, 500);
         fxpnlBoton.setBounds(420, 520, 150, 30);
         fxpnlBotonExcel.setBounds(600, 520, 180, 30);
-        
+
         //Asigna un listener al boton JavaFX para guardar la gráfica como imagen
         //en el equipo
         Platform.runLater(new Runnable() {
@@ -186,7 +186,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
             public void run() {
                 Button btnGuardar = new Button("Guardar Gráfica");
                 Button btnExportar = new Button("Exportar a Excel");
-                
+
                 //Agregar los listeners
                 btnGuardar.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -196,7 +196,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
                     }
 
                 });
-                
+
                 btnExportar.setOnAction(new EventHandler<ActionEvent>() {
 
                     @Override
@@ -205,11 +205,11 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
                     }
 
                 });
-                
+
                 //Crear la scene y lo necesario para mostrar la grafica
                 Scene scene = new Scene(btnGuardar);
                 fxpnlBoton.setScene(scene);
-                
+
                 scene = new Scene(btnExportar);
                 fxpnlBotonExcel.setScene(scene);
             }
@@ -673,7 +673,7 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         try {
             //Crear el workbook
             Workbook workbook = new XSSFWorkbook();
-                
+
             //Si el archivo no termina en .xls concatenárselo
             if (file != null) {
                 String path = file.getAbsolutePath();
@@ -686,17 +686,17 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
                 for (int index : indexesExamen) {
                     TablaEstadisticas calificaciones = controlVista
                             .obtenerCalificacionesPorExamen(index);
-                    
-                    if(calificaciones != null) {
+
+                    if (calificaciones != null) {
                         //Obtener el nombre del examen a guardar...
-                        String nombreExamen = (String)tblExamenes.getValueAt(index, 2);
-                        
+                        String nombreExamen = (String) tblExamenes.getValueAt(index, 2);
+
                         //Crear la hoja
                         crearHoja(workbook, nombreExamen, calificaciones);
                     }
-                    
+
                 }
-                
+
                 //Escribirlo en el sistema de archivos
                 try (FileOutputStream out = new FileOutputStream(file)) {
                     workbook.write(out);
@@ -735,11 +735,11 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
             CellStyle style = crearEstiloCelda(workbook, IndexedColors.BLACK,
                     CellStyle.BORDER_THICK, CellStyle.ALIGN_CENTER,
                     CellStyle.VERTICAL_CENTER);
-            
+
             cell.setCellValue(createHelper.createRichTextString(datos
                     .getColumnName(i)));
             cell.setCellStyle(style);
-            
+
             //Autoajustar
             nuevaHoja.autoSizeColumn(i);
         }
@@ -748,11 +748,11 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         for (int i = 0; i < datos.getRowCount(); i++) {
             Row fila = nuevaHoja.createRow(i + 1);
             CellStyle style = crearEstiloCelda(workbook, IndexedColors.GREEN,
-                    CellStyle.BORDER_THIN, (short)-18, (short)-18);
+                    CellStyle.BORDER_THIN, (short) -18, (short) -18);
 
             for (int j = 0; j < datos.getColumnCount(); j++) {
                 Cell cell = fila.createCell(j);
-                
+
                 //Escribir de acuerdo al tipo de dato
                 if (datos.getColumnClass(j).equals(String.class)) {
                     cell.setCellValue(createHelper.createRichTextString(
@@ -764,10 +764,8 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
                 } else if (datos.getColumnClass(j).equals(Double.class)) {
                     cell.setCellValue((double) datos.getValueAt(i, j));
 
-                }
-                
-                else if (datos.getColumnClass(j).equals(Turno.class)) {
-                    cell.setCellValue(((Turno)datos.getValueAt(i, j)).toString());
+                } else if (datos.getColumnClass(j).equals(Turno.class)) {
+                    cell.setCellValue(((Turno) datos.getValueAt(i, j)).toString());
 
                 }
 
@@ -781,15 +779,15 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     /**
      * Este método sirve para crear un estilo de celda básico con un estilo de
      * borde y color para borde
-     * 
+     *
      * @param workbook el objeto Workbook dueño de la celda
      * @param borderColor el color del borde
      * @param borderStyle el estilo del borde
-     * @param halign la alineación horizontal de la celda o un número negativo 
+     * @param halign la alineación horizontal de la celda o un número negativo
      * si no se desea tener alineación horizontal
      * @param valign la alineación vertical de la celda o un número negativo si
      * no se desea tener alineación vertical
-     * 
+     *
      * @return un objeto CellStyle con el estilo de la celda creado
      */
     private CellStyle crearEstiloCelda(Workbook workbook, IndexedColors borderColor,
@@ -806,11 +804,11 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
         style.setBorderTop(borderStyle);
         style.setTopBorderColor(borderColor.getIndex());
 
-        if(halign >= 0) {
+        if (halign >= 0) {
             style.setAlignment(halign);
             style.setVerticalAlignment(valign);
         }
-        
+
         return style;
     }
 
@@ -1022,14 +1020,8 @@ public class VistaGenerarEstadisticas extends javax.swing.JPanel
     }//GEN-LAST:event_generarGrafica
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
-        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                + "desea cancelar la operación?\nTodos los cambios no "
-                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
-        if (ok == JOptionPane.YES_OPTION) {
-            padre.mostrarVista(Vista.HOME);
-            limpiar();
-        }
+        padre.mostrarVista(Vista.HOME);
+        limpiar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     @Override

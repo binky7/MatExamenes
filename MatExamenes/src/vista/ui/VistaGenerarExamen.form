@@ -469,7 +469,6 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Desbloquear"/>
             <Property name="toolTipText" type="java.lang.String" value="habilita la selecci&#xf3;n de cursos. Esto tambi&#xe9;n remueve todas las claves de examen"/>
-            <Property name="actionCommand" type="java.lang.String" value="Desbloquear"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[77, 30]"/>

@@ -387,8 +387,8 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
             List<ClaveExamenDTO> claves = examen.getClaves();
             if (claves != null) {
                 mostrarClaves(claves);
-            } 
-        } 
+            }
+        }
     }
 
     /**
@@ -1259,14 +1259,8 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
      * @param evt Objeto que contiene información del evento.
      */
     private void cancelarAsignarExamenes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarAsignarExamenes
-        // TODO add your handling code here:
-        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                + "desesa cancelar la operación?\nTodos los cambios no "
-                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
-        if (ok == JOptionPane.YES_OPTION) {
-            padre.mostrarVista(Vista.HOME);
-            limpiar();
-        }
+        padre.mostrarVista(Vista.HOME);
+        limpiar();
     }//GEN-LAST:event_cancelarAsignarExamenes
 
     /**
@@ -1593,7 +1587,6 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
         }
     }//GEN-LAST:event_btnDeseleccionarAsignacionesActionPerformed
 
-
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
     }
@@ -1645,7 +1638,7 @@ public class VistaAsignarExamenes extends javax.swing.JPanel
     @Override
     public void ancestorAdded(AncestorEvent event) {
         if (!consultarCursos()) {
-            JOptionPane.showMessageDialog(this, "No hay cursos disponibles.", 
+            JOptionPane.showMessageDialog(this, "No hay cursos disponibles.",
                     "Advertencia", JOptionPane.WARNING_MESSAGE);
             padre.mostrarVista(Vista.HOME);
         }

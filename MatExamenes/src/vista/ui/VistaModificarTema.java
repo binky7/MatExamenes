@@ -403,14 +403,8 @@ public class VistaModificarTema extends javax.swing.JPanel implements
         // Ejecutado cuando selecciona regresar, pero es lo mismo que al
         //Seleccionar modificar
         //Muestra la vista consultar temas
-        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                + "desea cancelar la operación?\nTodos los cambios no "
-                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
-
-        if (ok == JOptionPane.YES_OPTION) {
-            padre.mostrarVista(Vista.ConsultarTemas);
-            limpiar();
-        }
+        padre.mostrarVista(Vista.ConsultarTemas);
+        limpiar();
     }//GEN-LAST:event_pasarControlVistaConsulta
 
     /**

@@ -58,7 +58,7 @@ import vista.interfaz.InterfaceVista;
 
 /**
  * JPanel que mostrará la interfaz gráfica de Registrar Examen
- * 
+ *
  * @author Jesus Donaldo Osornio Hernández
  * @version 1 18 Mayo 2015
  */
@@ -68,14 +68,14 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
 
     /**
      * Controlador de la vista del caso de uso mantener exámenes, funciona para
-     * manejar la información obtenida en la vista para comunicarse con las capas
-     * inferiores
+     * manejar la información obtenida en la vista para comunicarse con las
+     * capas inferiores
      */
     private CVMantenerExamenes controlVista;
     /**
      * Interface de comunicación con la interfaz padre, la cuál sirve para
-     * comunicarse con ella y recibir mensajes para mostrar otras vistas.
-     * En ese caso es utilizada para comunicarse con el JFrame Principal
+     * comunicarse con ella y recibir mensajes para mostrar otras vistas. En ese
+     * caso es utilizada para comunicarse con el JFrame Principal
      */
     private InterfaceVista padre;
     /**
@@ -103,8 +103,8 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
     private final ImageIcon ICONO_MAL;
 
     /**
-     * Cadena para almacenar el mensaje que se cree en caso de que los campos
-     * de la interfaz no cumplan con el formato esperado
+     * Cadena para almacenar el mensaje que se cree en caso de que los campos de
+     * la interfaz no cumplan con el formato esperado
      */
     private String mensajeDatosIncorrectos;
 
@@ -143,8 +143,8 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
     // End of variables declaration//GEN-END:variables
 
     /**
-     * Crea un objeto VistaRegistrarExamen e inicializa sus atributos,
-     * oculta las etiquetas para mostrar el estado de los campos de la vista,
+     * Crea un objeto VistaRegistrarExamen e inicializa sus atributos, oculta
+     * las etiquetas para mostrar el estado de los campos de la vista,
      * inicializa los frames para agregar y ver reactivos y agrega los listeners
      * necesarios
      */
@@ -172,7 +172,7 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
         //Agrega los listeners
         txtfNombre.addKeyListener(this);
         txtaInstrucciones.addKeyListener(this);
-        
+
         addAncestorListener(this);
 
         cmbCurso.addActionListener(new ActionListener() {
@@ -188,13 +188,14 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
             }
 
         });
-        
+
         //Para hacer wrap de palabras en las instrucciones
         txtaInstrucciones.setWrapStyleWord(true);
     }
 
     /**
      * Almacena la interface del JFrame principal.
+     *
      * @param padre Interface para interactuar con el JFrame principal.
      */
     public void setPadre(InterfaceVista padre) {
@@ -204,6 +205,7 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
 
     /**
      * Almacena el control de la vista
+     *
      * @param controlVista El objeto encargado de realizar comunicar la vista
      * con las capas inferiores para acceder a los datos
      */
@@ -221,12 +223,11 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
     private void consultarCursos() {
         //la lista de cursos obtenida desde la base de datos por el controlVista
         List<CursoDTO> cursos = controlVista.obtenerCursos();
-        
+
         //Si hay cursos...
-        if(cursos != null && !cursos.isEmpty()) {
+        if (cursos != null && !cursos.isEmpty()) {
             mostrarCursos(cursos);
-        }
-        else {
+        } else {
             //Si no hay mostrar un mensaje, regresar a la vista principal y
             //limpiar la vista actual
             JOptionPane.showMessageDialog(this, "No hay cursos");
@@ -236,20 +237,21 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
     }
 
     /**
-     * Este método es utilizado para mostrar una lista de cursos en el componente
-     * comboBox de la vista para mostrar los cursos disponibles.
+     * Este método es utilizado para mostrar una lista de cursos en el
+     * componente comboBox de la vista para mostrar los cursos disponibles.
+     *
      * @param cursos una lista de cursos CursoDTO a ser mostrada en el comboBox
      * de la vista
      */
     private void mostrarCursos(List<CursoDTO> cursos) {
         //Para limpiar el cmbCurso de información previa
         cmbCurso.removeAllItems();
-        
+
         //Recorrer todos los elementos de la lista para mostrarlos en el comboBox
-        for(CursoDTO curso : cursos) {
+        for (CursoDTO curso : cursos) {
             cmbCurso.addItem(curso.getNombre());
         }
-        
+
         //Deselecciona el comboBox y permite la funcionalidad correcta del
         //listener del cmbCurso al igualar la bandera a falso
         cmbCurso.setSelectedIndex(-1);
@@ -258,13 +260,14 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
 
     /**
      * Crea un objeto de tipo ExamenDTO obteniendo los datos de los campos de
-     * texto de la vista, también valida si la información capturada es correcta,
-     * en caso de que no el objeto no se construye y se agrega la información de
-     * la falla en una cadena mensajeDatosIncorrectos, de igual forma se le
-     * muestra al usuario los campos donde falló por medio de las etiquetas 
-     * ICONO_BIEN, ICONO_MAL
-     * 
-     * @return Un objeto ExamenDTO si los datos de los campos fueron validos.<br>
+     * texto de la vista, también valida si la información capturada es
+     * correcta, en caso de que no el objeto no se construye y se agrega la
+     * información de la falla en una cadena mensajeDatosIncorrectos, de igual
+     * forma se le muestra al usuario los campos donde falló por medio de las
+     * etiquetas ICONO_BIEN, ICONO_MAL
+     *
+     * @return Un objeto ExamenDTO si los datos de los campos fueron
+     * validos.<br>
      * Retorna null de otra forma.
      */
     private ExamenDTO encapsularExamen() {
@@ -369,11 +372,10 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
     /**
      * Este método es utilizado para remover de la tabla seleccionada las filas
      * de reactivos especificadas en indexesReactivo.
-     * 
+     *
      * @param indexesReactivo la lista de números de fila de la tabla, en el
      * orden en el que aparecen
-     * @param tabla la tabla de la cuál se quieren eliminar las filas
-     * ingresadas
+     * @param tabla la tabla de la cuál se quieren eliminar las filas ingresadas
      */
     private void removerReactivos(List<Integer> indexesReactivo, JTable tabla) {
 
@@ -389,9 +391,9 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
 
     /**
      * Este método sirve para mostrar el objeto ReactivoDTO ingresado en el
-     * frame Ver Reactivo. Este método deshabilita la vista y muestra en un frame
-     * nuevo los datos del reactivo.
-     * 
+     * frame Ver Reactivo. Este método deshabilita la vista y muestra en un
+     * frame nuevo los datos del reactivo.
+     *
      * @param reactivo el objeto ReactivoDTO que se desea mostrar.
      */
     private void mostrarReactivo(ReactivoDTO reactivo) {
@@ -401,10 +403,11 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
     /**
      * Este método se encarga de mostrar la lista de objetos reactivo ingresada
      * en la tabla ingresada.
-     * 
-     * @param reactivos la lista de ReactivoDTO que se quiere mostrar en la tabla
-     * @param tabla la tabla JTable en la cuál se quiere mostrar los datos de los
-     * reactivos
+     *
+     * @param reactivos la lista de ReactivoDTO que se quiere mostrar en la
+     * tabla
+     * @param tabla la tabla JTable en la cuál se quiere mostrar los datos de
+     * los reactivos
      */
     private void mostrarReactivos(List<ReactivoDTO> reactivos, JTable tabla) {
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
@@ -427,7 +430,7 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
             model.addRow(datos);
         }
     }
-    
+
     /**
      * Muestra el estado del campo de texto dependiendo si la validacion fue
      * verdadera o falsa.
@@ -786,10 +789,10 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Este método es utilizado para remover una clave del examen a guardar,
-     * la clave es removida junto con todos los reactivos que tuviera. Este método
+     * Este método es utilizado para remover una clave del examen a guardar, la
+     * clave es removida junto con todos los reactivos que tuviera. Este método
      * es invocado al seleccionar la opción Remover Clave
-     * 
+     *
      * @param evt objeto ActionEvent generado en el evento
      */
     private void removerClave(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerClave
@@ -806,11 +809,11 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
 
     /**
      * Este método es llamado cuando el botón para guardar el examen es
-     * seleccionado. Encapsula la información de la vista en un objeto examen
-     * y lo almacena en la base de datos mediante el controlVista. En caso de
-     * que la validación falle se muestra un mensaje al usuario. Si todo fue
+     * seleccionado. Encapsula la información de la vista en un objeto examen y
+     * lo almacena en la base de datos mediante el controlVista. En caso de que
+     * la validación falle se muestra un mensaje al usuario. Si todo fue
      * correcto se limpian los campos para volver a ingresar otro registro
-     * 
+     *
      * @param evt el objeto ActionEvent generado por el evento, no es utilizado.
      */
     private void guardarExamen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarExamen
@@ -846,28 +849,23 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
     }//GEN-LAST:event_guardarExamen
 
     /**
-     * Este método es llamado cuando se selecciona el botón de cancelar el registro,
-     * lo que hace es pedir una confirmación de la operación mediante un mensaje,
-     * en caso de que se acepte se vuelve a la vista principal.
+     * Este método es llamado cuando se selecciona el botón de cancelar el
+     * registro, lo que hace es pedir una confirmación de la operación mediante
+     * un mensaje, en caso de que se acepte se vuelve a la vista principal.
+     *
      * @param evt el objeto ActionEvent generado por el evento, no es utilizado
      */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
-        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                + "desea cancelar la operación?\nTodos los cambios no "
-                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
-        if (ok == JOptionPane.YES_OPTION) {
-            padre.mostrarVista(Vista.HOME);
-            limpiar();
-        }
+        padre.mostrarVista(Vista.HOME);
+        limpiar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
-     * Este método es utilizado para remover los reactivos seleccionados de
-     * una clave seleccionada, todos los reactivos seleccionados son removidos
-     * de esa clave. Este método es invocado al seleccionar la opción
-     * Remover Reactivos
-     * 
+     * Este método es utilizado para remover los reactivos seleccionados de una
+     * clave seleccionada, todos los reactivos seleccionados son removidos de
+     * esa clave. Este método es invocado al seleccionar la opción Remover
+     * Reactivos
+     *
      * @param evt objeto ActionEvent generado en el evento
      */
     private void removerReactivos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerReactivos
@@ -900,7 +898,7 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
      * Este método es utilizado para agregar mostrar el frame Agregar Reactivos
      * para agregar reactivos a la clave seleccionada. Este método es llamado
      * cuando se selecciona la opción Agregar Reactivos
-     * 
+     *
      * @param evt objeto ActionEvent generado en el evento
      */
     private void agregarReactivos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarReactivos
@@ -923,7 +921,7 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
     /**
      * Este método es llamado cuando se selecciona la opción Ver Reactivo, y es
      * utilizado para mostrar la información del reactivo seleccionado
-     * 
+     *
      * @param evt el objeto ActionEvent generado por el evento
      */
     private void verReactivo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verReactivo
@@ -950,16 +948,15 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
     }//GEN-LAST:event_verReactivo
 
     /**
-     * Este método sirve para permitir al usuario seleccionar un curso nuevamente,
-     * sin embargo, al momento de permitir seleccionar otro curso todas las claves
-     * y sus reactivos previos se eliminarán, ya que en un examen no puede haber
-     * reactivos de cursos diferentes. Este método es llamado cuando se selecciona
-     * la opción Desbloquear Curso
-     * 
+     * Este método sirve para permitir al usuario seleccionar un curso
+     * nuevamente, sin embargo, al momento de permitir seleccionar otro curso
+     * todas las claves y sus reactivos previos se eliminarán, ya que en un
+     * examen no puede haber reactivos de cursos diferentes. Este método es
+     * llamado cuando se selecciona la opción Desbloquear Curso
+     *
      * @param evt el objeto ActionEvent generado con el evento
      */
     private void desbloquearCurso(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desbloquearCurso
-
 
         int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
                 + "desea desbloquear los cursos?\nTodas las claves del examen "
@@ -979,10 +976,10 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
     }//GEN-LAST:event_desbloquearCurso
 
     /**
-     * Este método es utilizado para agregar una clave al examen a guardar,
-     * una nueva clave vacía es agregada al examen. Este método es invocado al
+     * Este método es utilizado para agregar una clave al examen a guardar, una
+     * nueva clave vacía es agregada al examen. Este método es invocado al
      * seleccionar la opción Agregar Clave
-     * 
+     *
      * @param evt objeto ActionEvent generado en el evento
      */
     private void agregarClave(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarClave
@@ -1004,9 +1001,9 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
 
     /**
      * Este método es utilizado por los frames de ver y agregar reactivos para
-     * poder deshabilitar el padre de esta vista y así enfocarse sólo a la función
-     * que se está realizando en el frame emergente
-     * 
+     * poder deshabilitar el padre de esta vista y así enfocarse sólo a la
+     * función que se está realizando en el frame emergente
+     *
      * @return una interface InterfaceVista que conecta con el padre de esta
      * vista
      */
@@ -1030,7 +1027,7 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
 
         controlVista.liberarMemoriaRegistrar();
     }
-    
+
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -1069,14 +1066,15 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
     }
 
     /**
-     * Este método es invocado cuando un campo pierde el foco, sirve para validar
-     * los campos y para mostrar su label correspondiente en caso de que los
-     * campos estén correctos o incorrectos
+     * Este método es invocado cuando un campo pierde el foco, sirve para
+     * validar los campos y para mostrar su label correspondiente en caso de que
+     * los campos estén correctos o incorrectos
+     *
      * @param e el objeto FocusEvent que se obtiene del evento
      */
     @Override
     public void focusLost(FocusEvent e) {
-        JTextComponent ob = (JTextComponent) e.getSource();        
+        JTextComponent ob = (JTextComponent) e.getSource();
 
         mostrarLabelEstado(ob, !Validador.estaVacio(ob.getText()));
 
@@ -1086,6 +1084,7 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
      * Este método es llamado cada vez que se muestra esta vista en el frame
      * principal, sirve para realizar el método inicial al mostrar una vista,
      * como una consulta
+     *
      * @param event el objeto AncestorEvent que se obtiene del evento
      */
     @Override
@@ -1108,10 +1107,10 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
     }
 
     /**
-     * Este método sirve para mostrar los reactivos en la clave seleccionada, los
-     * cuales son enviados por el frame Agregar Reactivos al haber hecho la
+     * Este método sirve para mostrar los reactivos en la clave seleccionada,
+     * los cuales son enviados por el frame Agregar Reactivos al haber hecho la
      * selección.
-     * 
+     *
      * @param reactivos la lista de ReactivoDTO a mostrar
      * @param clave el índice de la clave donde se mostrarán los reactivos
      */
@@ -1134,19 +1133,18 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
     public void keyTyped(KeyEvent e) {
         JTextComponent campo = (JTextComponent) e.getSource();
         int longitud = 0;
-        
+
         //Asignar la longitud máxima según el campo de la vista
-        if(campo.getName().contains("Nombre")) {
+        if (campo.getName().contains("Nombre")) {
             longitud = Validador.LONGITUD_NOMBRE_EXAMEN;
-        }
-        else if(campo.getName().contains("Instrucciones")) {
+        } else if (campo.getName().contains("Instrucciones")) {
             longitud = Validador.LONGITUD_INSTRUCCIONES_EXAMEN;
         }
-        
+
         //Verificar si se está pegando contenido mediante Ctrl + V
-        if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
+        if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
             String portapapeles = "";
-            
+
             try {
                 //Obtener la cadena del portapapeles del sistema
                 portapapeles = (String) Toolkit.getDefaultToolkit()
@@ -1154,15 +1152,14 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
             } catch (UnsupportedFlavorException | IOException | ClassCastException ex) {
                 System.out.println(ex);
             }
-            
+
             //Si la longitud del campo de texto mas la cadena del portapapeles
             //Es mayor del máximo permitido evitar la acción...
-            if(!Validador.validarLongitud(longitud, campo.getText() + portapapeles)) {
+            if (!Validador.validarLongitud(longitud, campo.getText() + portapapeles)) {
                 e.consume();
                 Toolkit.getDefaultToolkit().beep();
             }
-        }
-        //Si no hay acción de pegado pero aún así se llegó al límite de caracteres
+        } //Si no hay acción de pegado pero aún así se llegó al límite de caracteres
         //evitar la acción
         else if (!Validador.validarLongitud(longitud, campo.getText())) {
             e.consume();
@@ -1180,29 +1177,28 @@ public class VistaGenerarExamen extends javax.swing.JPanel implements
     public void keyPressed(KeyEvent e) {
         JTextComponent campo = (JTextComponent) e.getSource();
         int longitud = 0;
-        
+
         //Asignar la longitud máxima según el campo de la vista
-        if(campo.getName().contains("Nombre")) {
+        if (campo.getName().contains("Nombre")) {
             longitud = Validador.LONGITUD_NOMBRE_EXAMEN;
-        }
-        else if(campo.getName().contains("Instrucciones")) {
+        } else if (campo.getName().contains("Instrucciones")) {
             longitud = Validador.LONGITUD_INSTRUCCIONES_EXAMEN;
         }
-        
+
         //Verificar si se está pegando contenido mediante Ctrl + V
-        if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
+        if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
             String portapapeles = "";
-            
+
             try {
                 portapapeles = (String) Toolkit.getDefaultToolkit()
                         .getSystemClipboard().getData(DataFlavor.stringFlavor);
             } catch (UnsupportedFlavorException | IOException | ClassCastException ex) {
                 System.out.println(ex);
             }
-            
+
             //Si la longitud del campo de texto mas la cadena del portapapeles
             //Es mayor del máximo permitido evitar la acción...
-            if(!Validador.validarLongitud(longitud, campo.getText() + portapapeles)) {
+            if (!Validador.validarLongitud(longitud, campo.getText() + portapapeles)) {
                 e.consume();
                 Toolkit.getDefaultToolkit().beep();
             }

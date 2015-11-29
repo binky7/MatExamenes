@@ -699,14 +699,8 @@ implements InterfaceVista, FocusListener, KeyListener {
      * @param evt un objeto de tipo ActionEvent generado al ocurrir el evento
      */
     private void pasarControlVistaConsulta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarControlVistaConsulta
-
-        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-            + "desea cancelar la operación?\nTodos los cambios no "
-            + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
-        if (ok == JOptionPane.YES_OPTION) {
-            padre.mostrarVista(Vista.ConsultarReactivos);
-            limpiar();
-        }
+        padre.mostrarVista(Vista.ConsultarReactivos);
+        limpiar();
     }//GEN-LAST:event_pasarControlVistaConsulta
 
 

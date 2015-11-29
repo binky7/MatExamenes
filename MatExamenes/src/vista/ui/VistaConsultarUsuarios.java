@@ -450,13 +450,8 @@ public class VistaConsultarUsuarios extends javax.swing.JPanel implements Interf
      * @param evt Objeto que contiene información del evento.
      */
     private void cancelarConsultaUsuarios(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarConsultaUsuarios
-        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                + "desea cancelar la operación?\nTodos los cambios no "
-                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
-        if (ok == JOptionPane.YES_OPTION) {
-            padre.mostrarVista(Vista.HOME);
-            limpiar();
-        }
+        padre.mostrarVista(Vista.HOME);
+        limpiar();
     }//GEN-LAST:event_cancelarConsultaUsuarios
 
     @Override

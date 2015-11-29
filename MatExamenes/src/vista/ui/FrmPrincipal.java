@@ -804,24 +804,23 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
         String nombreMenu = ((JMenuItem) e.getSource()).getName();
 
         /*
-        Esta parte del código fue eliminada el 19 de octubre del 2015 debido
-        a que ya no se utilizará el método para confirmar el cambio cuando se
-        quiere cambiar de vista. El método llamado 'confirmarCambio'
-        posiblemente sea eliminado de la 'InterfaceVista'.
+         Esta parte del código fue eliminada el 19 de octubre del 2015 debido
+         a que ya no se utilizará el método para confirmar el cambio cuando se
+         quiere cambiar de vista. El método llamado 'confirmarCambio'
+         posiblemente sea eliminado de la 'InterfaceVista'.
         
         
-        //Si la vista actual no tiene que ver con Registrar, Modificar, Generar
-        //o Asignar simplemente se muestra la vista, en caso contrario se pide
-        //la confirmación a la vista actual para cambiar de panel.
-        if ((actual.getName().startsWith("Registrar") || actual.getName()
-                .startsWith("Modificar") || actual.getName().startsWith("Generar")
-                || actual.getName().startsWith("Asignar"))
-                && !actual.getName().equals(nombreMenu)) {
-            ok = ((InterfaceVista) actual).confirmarCambio();
-        }
+         //Si la vista actual no tiene que ver con Registrar, Modificar, Generar
+         //o Asignar simplemente se muestra la vista, en caso contrario se pide
+         //la confirmación a la vista actual para cambiar de panel.
+         if ((actual.getName().startsWith("Registrar") || actual.getName()
+         .startsWith("Modificar") || actual.getName().startsWith("Generar")
+         || actual.getName().startsWith("Asignar"))
+         && !actual.getName().equals(nombreMenu)) {
+         ok = ((InterfaceVista) actual).confirmarCambio();
+         }
 
-        */
-        
+         */
         //Si todo es correcto limpia la vista actual y muestra la nueva vista
         if (!actual.getName().equals(nombreMenu)) {
             ((InterfaceVista) actual).limpiar();
@@ -840,13 +839,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
      */
     @Override
     public void windowClosing(WindowEvent e) {
-        int sel = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                + "deseas salir? todos los cambios no guardados se perderán",
-                "Advertencia", JOptionPane.YES_NO_OPTION);
-
-        if (sel == 0) {
-            System.exit(0);
-        }
+        System.exit(0);
     }
 
     /**
@@ -856,13 +849,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements InterfaceVista,
      */
     @Override
     public void windowClosed(WindowEvent e) {
-        int sel = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                + "deseas salir? todos los cambios no guardados se perderán",
-                "Advertencia", JOptionPane.YES_NO_OPTION);
-
-        if (sel == 0) {
-            System.exit(0);
-        }
+        System.exit(0);
     }
 
     @Override

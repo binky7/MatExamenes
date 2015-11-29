@@ -603,14 +603,10 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
      * @param evt Recibe el evento del boton que lo activo.
      */
     private void Cancelar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Cancelar
-        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                + "desea cancelar la operación?\nTodos los cambios no "
-                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
-        if (ok == JOptionPane.YES_OPTION) {
-            limpiar();
-            controlVista.liberarMemoriaModificar();
-            padre.mostrarVista(Vista.ConsultarGrupo);
-        }
+        limpiar();
+        controlVista.liberarMemoriaModificar();
+        padre.mostrarVista(Vista.ConsultarGrupo);
+
     }//GEN-LAST:event_Cancelar
 
     /**

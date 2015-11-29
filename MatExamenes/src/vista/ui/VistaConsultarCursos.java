@@ -290,7 +290,6 @@ public class VistaConsultarCursos extends javax.swing.JPanel implements
      * @param evt Objeto que contiene información del evento.
      */
     private void cancelarConsultarCursos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarConsultarCursos
-        // TODO add your handling code here:
         padre.mostrarVista(Vista.HOME);
         limpiar();
     }//GEN-LAST:event_cancelarConsultarCursos

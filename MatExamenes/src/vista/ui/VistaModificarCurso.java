@@ -161,17 +161,17 @@ public class VistaModificarCurso extends javax.swing.JPanel
         if (Validador.esCurso(nombreCurso)) {
             curso = new CursoDTO();
             curso.setNombre(nombreCurso);
-            
+
             //Se obtiene el nombre del curso seleccionado y se le quitan las
             //letras con acentos para poder comparar posteriormente si el
             //usuario escribió un nombre de curso diferente
             String cursoActual = controlVista.getCursoSeleccionado().getNombre();
             cursoActual = Validador.quitarAcentos(cursoActual);
-            
+
             nombreCurso = Validador.quitarAcentos(nombreCurso);
             //Validar si escribió el mismo nombre de antes.
             if (nombreCurso.compareToIgnoreCase(cursoActual) != 0) {
-                
+
                 //Si escribió otro nombre verificar si ya existe.
                 boolean existe = controlVista.verificarExistencia(nombreCurso);
 
@@ -352,16 +352,9 @@ public class VistaModificarCurso extends javax.swing.JPanel
      * @param evt Objeto que contiene información del evento.
      */
     private void pasarControlVistaConsulta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasarControlVistaConsulta
-        // TODO add your handling code here:
-        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                + "desea cancelar la operación?\nTodos los cambios no "
-                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
-        if (ok == JOptionPane.YES_OPTION) {
-            padre.mostrarVista(Vista.ConsultarCursos);
-            limpiar();
-        }
+        padre.mostrarVista(Vista.ConsultarCursos);
+        limpiar();
     }//GEN-LAST:event_pasarControlVistaConsulta
-
 
     @Override
     public void mostrarVistaConEntidad(Object entidad, Vista vista) {
@@ -387,20 +380,20 @@ public class VistaModificarCurso extends javax.swing.JPanel
     @Override
     public boolean confirmarCambio() {
         /*
-        Esta parte del código se eliminó el 19 de octubre del 2015 debido
-        a que ya no se utilizará confirmación de cambio de vistas. El método
-        'confirmarCambio' posiblemente sea eliminado de la 'InterfaceVista'
+         Esta parte del código se eliminó el 19 de octubre del 2015 debido
+         a que ya no se utilizará confirmación de cambio de vistas. El método
+         'confirmarCambio' posiblemente sea eliminado de la 'InterfaceVista'
         
-        boolean cambiar = false;
-        int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                + "quiere cambiar de pantalla?\nTodos los cambios no "
-                + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
-        if (ok == JOptionPane.YES_OPTION) {
-            cambiar = true;
-        }
-        return cambiar;
-        */
-        
+         boolean cambiar = false;
+         int ok = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
+         + "quiere cambiar de pantalla?\nTodos los cambios no "
+         + "guardados se perderán", "Cancelación", JOptionPane.YES_NO_OPTION);
+         if (ok == JOptionPane.YES_OPTION) {
+         cambiar = true;
+         }
+         return cambiar;
+         */
+
         return true;
     }
 
@@ -447,10 +440,10 @@ public class VistaModificarCurso extends javax.swing.JPanel
             }
         } else {
             //El nombre del curso ingresado cumple con las validaciones.
-            
+
             String cursoActual = controlVista.getCursoSeleccionado().getNombre();
             cursoActual = Validador.quitarAcentos(cursoActual);
-            
+
             //Validar si escribió el mismo nombre de antes.
             nombreCurso = Validador.quitarAcentos(nombreCurso);
             if (nombreCurso.compareToIgnoreCase(cursoActual) == 0) {
