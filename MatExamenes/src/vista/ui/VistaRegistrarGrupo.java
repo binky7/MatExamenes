@@ -595,8 +595,6 @@ public class VistaRegistrarGrupo extends javax.swing.JPanel implements
         if (grupo != null) {
             Integer id = controlVista.guardarGrupo(grupo);
             if (id != null) {
-                JOptionPane.showMessageDialog(this, "Grupo registrado "
-                        + "correctamente.", "Exito", 1);
                 padre.mostrarVista(Vista.HOME);
                 limpiar();
             } else {

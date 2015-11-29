@@ -314,8 +314,6 @@ public class VistaConsultarGrupo extends javax.swing.JPanel implements
                     + " sin grupo.\n  ¿Está seguro que desea realizar esta acción?");
             if (ok == JOptionPane.YES_OPTION) {
                 if (controladorVista.eliminarGrupo(index)) {
-                    JOptionPane.showMessageDialog(this, "Grupo eliminado "
-                            + "correctamente!.", "Exito", 1);
                     DefaultTableModel modelo = (DefaultTableModel) tblGrupos.getModel();
                     modelo.removeRow(index);
                     tblGrupos.setModel(modelo);

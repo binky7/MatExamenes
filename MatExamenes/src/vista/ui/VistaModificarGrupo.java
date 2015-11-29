@@ -620,8 +620,6 @@ public class VistaModificarGrupo extends javax.swing.JPanel implements
         if (grupo != null) {
             boolean ok = controlVista.modificarGrupo(grupo);
             if (ok) {
-                JOptionPane.showMessageDialog(this, "Grupo modificado "
-                        + "correctamente.", "Exito", 1);
                 padre.mostrarVista(Vista.ConsultarGrupo);
                 limpiar();
             } else {
