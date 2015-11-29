@@ -438,11 +438,11 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         long asignadoMilis = fechaAsignacion.getTime();
         long actualMilis = cvContestarExamen.obtenerTiempoServidor();
         long terminacionMilis = asignadoMilis + (duracion * 60 * 1000);
-        long diferenciaMilis = terminacionMilis - actualMilis;
-        int seg = (int) diferenciaMilis / 1000;
-        int min = seg / 60;
-        int seg2 = (seg % 60);
-        iniciarCronometro(min, seg2);
+        long tiempoRestanteMilis = terminacionMilis - actualMilis;
+        int tiempoRestanteSegundos = (int) (tiempoRestanteMilis / 1000);
+        int minutosRestantes = tiempoRestanteSegundos / 60;
+        int segundosRestantes = tiempoRestanteSegundos % 60;
+        iniciarCronometro(minutosRestantes, segundosRestantes);
     }
 
     /**
@@ -617,6 +617,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
         txtaRedaccion.setBackground(new java.awt.Color(240, 240, 240));
         txtaRedaccion.setColumns(20);
         txtaRedaccion.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtaRedaccion.setLineWrap(true);
         txtaRedaccion.setRows(5);
         txtaRedaccion.setToolTipText("");
         jScrollPane2.setViewportView(txtaRedaccion);
@@ -678,6 +679,7 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
 
         txtaInstrucciones.setColumns(20);
         txtaInstrucciones.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtaInstrucciones.setLineWrap(true);
         txtaInstrucciones.setRows(1);
         jScrollPane3.setViewportView(txtaInstrucciones);
 

@@ -53,6 +53,11 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
      * Transforma los minutos a milisegundos.
      */
     private static final int MINUTOS_A_MILIS = 1000 * 60;
+
+    /**
+     * Calificación que todos los exámenes tienen al no haber sido contestados.
+     */
+    private static final int CALIFICACION_PREDETERMINADA = -1;
     /**
      * Interface para interactuar con el JFrame principal.
      */
@@ -270,12 +275,19 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
         limpiar();
         boolean buscarExamen = false;
         if (respaldo.existeRespaldo()) {
+            /*En caso de un NullPointerException será por intentar recuperar un
+             *examen que no existe en la base de datos, en ese caso simplemente
+             *pasamos a buscar los exámenes asignados.
+             */
             try {
                 ArrayList alumno = respaldo.getRespaldo();
                 ExamenAsignadoPK eapk = (ExamenAsignadoPK) alumno.get(RespaldoJSON.I_EXAMEN_ASIGNADO_PK);
                 cvContestarExamen.setExamenAsignado(eapk);
                 ExamenAsignadoDTO examen = cvContestarExamen.getExamenAsignado();
-                System.out.println(examen.getCalificacion());
+                /*Si el examen del respaldo tiene la calificación diferente 
+                 *a la predeterminada significa que ya fue contestado, 
+                 *procedemos a buscar los exámenes asignados.
+                 */
                 if (examen.getCalificacion() != CALIFICACION_PREDETERMINADA) {
                     buscarExamen = true;
                 } else {
@@ -292,9 +304,10 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
                         mostrarCalificacion(examen, alumno);
                         buscarExamen = true;
                     } else if (usuarioRespaldo && cvContestarExamen.obtenerTiempoServidor() < (fin + HOLGURA) && !contestado) {
-                        //El usuario que inicio es el mismo que tiene el respaldo,
-                        //el tiempo actual es menor que el tiempo de terminación
-                        //más la holgura y el examen no fue contestado.
+                        /*El usuario que inicio es el mismo que tiene el respaldo,
+                         *el tiempo actual es menor que el tiempo de terminación
+                         *más la holgura y el examen no fue contestado.
+                         */
                         int ok = JOptionPane.showConfirmDialog(this, "¿Desea continuar "
                                 + "con el examen pendiente?" + "\n" + "Se perderán sus respuestas anteriores si selecciona no.",
                                 "Respaldo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -305,9 +318,10 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
                             buscarExamen = true;
                         }
                     } else if (usuarioRespaldo && (cvContestarExamen.obtenerTiempoServidor() + HOLGURA) > fin && !contestado) {
-                        //El usuario que inicio es el mismo que tiene el respaldo,
-                        //el tiempo actual más la holgura supera el tiempo de terminación y
-                        //el examen no fue contestado.
+                        /*El usuario que inicio es el mismo que tiene el respaldo,
+                         *el tiempo actual más la holgura supera el tiempo de terminación y
+                         *el examen no fue contestado.
+                         */
                         mostrarCalificacion(examen, alumno);
                         buscarExamen = true;
                     } else if (!usuarioRespaldo) {
@@ -324,7 +338,6 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
             }
         }
         if (buscarExamen) {
-            //no hay respaldo o no desea continuar con su examen anterior
             List<ExamenAsignadoDTO> ea;
             ea = cvContestarExamen.obtenerExamenesAsignados(padre.obtenerUsuarioActual());
             if (ea.isEmpty()) {
@@ -334,7 +347,6 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
             }
         }
     }//GEN-LAST:event_buscarExamenes
-    private static final int CALIFICACION_PREDETERMINADA = -1;
 
     /**
      * Inicia el examen seleccionado de la lista.
