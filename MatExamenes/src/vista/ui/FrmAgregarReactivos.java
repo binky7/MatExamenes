@@ -144,6 +144,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
                 if (!noSelect) {
                     //Una vez seleccionado un bloque del cmbBloque se consultan
                     //los temas del curso y bloque seleccionados
+                    ((DefaultTableModel) tblReactivos.getModel()).setRowCount(0);
                     consultarTemas();
                 }
             }
@@ -353,7 +354,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
             //Si el indexCurso == -1 significa que no se envió el curso porque era
             //en modificar examen
             if (indexCurso != -1) {
-                temas = controlVista.obtenerTemasDeCurso(indexCurso, bloque);
+                temas = controlVista.obtenerTemasDeCurso(indexCurso, bloque, false);
             } else {
                 temas = controlVista.obtenerTemasDeCurso(bloque);
             }
@@ -375,7 +376,7 @@ public class FrmAgregarReactivos extends javax.swing.JFrame {
             //Si el indexCurso == -1 significa que no se envió el curso porque era
             //en modificar examen
             if (indexCurso != -1) {
-                temas = controlVista.obtenerTemasDeCurso(indexCurso, bloque);
+                temas = controlVista.obtenerTemasDeCurso(indexCurso, bloque, true);
             } else {
                 temas = controlVista.obtenerTemasDeCurso(bloque);
             }

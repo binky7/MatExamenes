@@ -218,6 +218,19 @@ implements InterfaceVista, FocusListener, AncestorListener, KeyListener {
         
         addAncestorListener(this);
         
+        //Listener para el cmbCurso
+        cmbCurso.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!noSelect) {
+                    //Si se selecciona un curso nuevo se limpian los demás comboBox.
+                    cmbBloque.setSelectedIndex(-1);
+                    cmbTema.removeAllItems();
+                }
+            }
+        });
+        
         //Listener para el cmbBloque
         cmbBloque.addActionListener(new ActionListener() {
 

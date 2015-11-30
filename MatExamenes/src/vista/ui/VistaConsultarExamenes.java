@@ -439,6 +439,7 @@ public class VistaConsultarExamenes extends javax.swing.JPanel
             //No selecciono curso ni nombre
             JOptionPane.showMessageDialog(this, "Seleccione por lo menos "
                     + "un curso o ingrese un nombre");
+            ((DefaultTableModel) tblExamenes.getModel()).setRowCount(0);
             ok = false;
         }
 
@@ -552,7 +553,9 @@ public class VistaConsultarExamenes extends javax.swing.JPanel
                     || (usuarioActual.getTipo() == UsuarioDTO.Tipo.Admin)) {
 
                 int q = JOptionPane.showConfirmDialog(this, "¿Está seguro de que "
-                        + "desea eliminar el examen seleccionado?",
+                        + "desea eliminar el examen seleccionado?\nTodas las "
+                        + "calificaciones de los alumnos que hayan contestado este"
+                        + " examen serán eliminadas",
                         "Confirmación", JOptionPane.YES_NO_OPTION);
                 if (q != 0) {
                     return;
@@ -652,7 +655,7 @@ public class VistaConsultarExamenes extends javax.swing.JPanel
      */
     @Override
     public void ancestorAdded(AncestorEvent event) {
-        if (isShowing()) {
+        if (isShowing() && tblExamenes.getRowCount() == 0) {
             consultarCursos();
         }
     }

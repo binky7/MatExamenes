@@ -174,17 +174,33 @@ public class CVMantenerExamenes {
      * @param indexCurso el índice que representa al objeto CursoDTO en la lista
      * de cursos almacenada en este objeto.
      * @param bloque el número de bloque del que se quieren extraer los temas
+     * @param aleatoria true si la petición se hizo desde la vista de selección
+     * aleatoria, false en caso contrario
      * 
      * @return una lista de TemaDTO con los temas del curso y bloque
      * seleccionados, en caso de que no exista ningún tema regresa null
      */
-    public List<TemaDTO> obtenerTemasDeCurso(int indexCurso, int bloque) {
+    public List<TemaDTO> obtenerTemasDeCurso(int indexCurso, int bloque,
+            boolean aleatoria) {
         List<TemaDTO> listaTemas = null;
         
         if(cursos != null && !cursos.isEmpty()) {
             CursoDTO curso = cursos.get(indexCurso);
             listaTemas = mantenerExamenesDELEGATE
                     .obtenerTemasDeCurso(curso, bloque);
+            
+            //Validar que los temas no se repitan si ya se agregaron a las
+            //selecciones
+            if (aleatoria && temas != null && !temas.isEmpty()) {
+                //Eliminar cada tema repetido de la lista a enviar
+                for (int i = 0; i < listaTemas.size(); i++) {
+                    if (temas.contains(listaTemas.get(i))) {
+                        listaTemas.remove(i);
+                        i--;
+                    }
+                }
+            }
+            
         }
         return listaTemas;
     }

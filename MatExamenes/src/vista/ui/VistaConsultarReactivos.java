@@ -91,6 +91,19 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
         addAncestorListener(this);
 
         //Listener para el cmbCurso
+        cmbCurso.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!noSelect) {
+                    cmbBloque.setSelectedIndex(-1);
+                    cmbTema.removeAllItems();
+                    ((DefaultTableModel)tblReactivos.getModel()).setRowCount(0);
+                }
+            }
+        });
+        
+        //Listener para el cmbBloque
         cmbBloque.addActionListener(new ActionListener() {
 
             @Override
@@ -737,7 +750,7 @@ public class VistaConsultarReactivos extends javax.swing.JPanel
     @Override
     public void ancestorAdded(AncestorEvent event) {
         //Invocar consultar cursos al mostrarse esta vista
-        if (isShowing()) {
+        if (isShowing() && tblReactivos.getRowCount() == 0) {
             noSelect = true;
             consultarCursos();
         }
