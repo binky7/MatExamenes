@@ -313,7 +313,6 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
                                 "Respaldo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                         if (ok == JOptionPane.YES_OPTION) {
                             padre.mostrarVistaConEntidad(respaldo, Vista.ContestarExamen);
-                            limpiar();
                         } else {
                             buscarExamen = true;
                         }
@@ -336,7 +335,10 @@ public class VistaConsultarExamenesAsignados extends javax.swing.JPanel implemen
             } catch (NullPointerException e) {
                 buscarExamen = true;
             }
+        } else {
+            buscarExamen = true;
         }
+        
         if (buscarExamen) {
             List<ExamenAsignadoDTO> ea;
             ea = cvContestarExamen.obtenerExamenesAsignados(padre.obtenerUsuarioActual());
