@@ -703,10 +703,10 @@ public class VistaContestarExamen extends javax.swing.JPanel implements
     private void terminarExamen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terminarExamen
         int ok;
         if (examenTerminado()) {
-            ok = JOptionPane.showConfirmDialog(this, "¿Esta seguro que desea terminar el examen?",
+            ok = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea terminar el examen?",
                     "Examen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         } else {
-            ok = JOptionPane.showConfirmDialog(this, "¿Esta seguro que desea terminar el examen?"
+            ok = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea terminar el examen?"
                     + "\n" + "Aún tiene reactivos pendientes", "Examen",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         }
